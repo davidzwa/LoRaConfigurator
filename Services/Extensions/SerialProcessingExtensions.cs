@@ -7,21 +7,22 @@ public static class SerialProcessingExtensions
     public static void SendPeriodicTransmitCommand(
         this SerialProcessorService processorService,
         uint period,
-        uint repetitions, 
+        uint repetitions,
         byte[] payload
-        )
+    )
     {
-        var command = new UartCommand()
+        var command = new UartCommand
         {
             TransmitCommand =
-            new (){
-                IsMulticast = false,
-                Period = period,
-                MaxPacketCount = repetitions,
-                Payload = ByteString.CopyFrom(payload)
-            }
+                new TransmitCommand
+                {
+                    IsMulticast = false,
+                    Period = period,
+                    MaxPacketCount = repetitions,
+                    Payload = ByteString.CopyFrom(payload)
+                }
         };
-        
+
         processorService.WriteMessage(command);
     }
 

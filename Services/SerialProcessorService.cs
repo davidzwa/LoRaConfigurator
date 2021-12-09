@@ -8,8 +8,8 @@ namespace LoraGateway.Services;
 public class SerialProcessorService : IDisposable
 {
     private readonly ILogger<SerialProcessorService> _logger;
-    private readonly DeviceDataStore _store;
     private readonly SelectedDeviceService _selectedDeviceService;
+    private readonly DeviceDataStore _store;
     private readonly byte endByte = 0x00;
 
     private readonly int maxIdle = 500;
@@ -111,7 +111,7 @@ public class SerialProcessorService : IDisposable
             return;
         }
 
-        byte[] messageBuffer = message.ToByteArray();
+        var messageBuffer = message.ToByteArray();
 
         byte[] transmitBuffer = { startByte };
         transmitBuffer = transmitBuffer

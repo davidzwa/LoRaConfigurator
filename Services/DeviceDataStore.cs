@@ -63,13 +63,10 @@ public class DeviceDataStore
     {
         var gatewayDevice = GetDevice(deviceId, true);
         gatewayDevice.IsGateway = true;
-        
+
         _store?.Devices.ForEach(d =>
         {
-            if (!gatewayDevice.Id.Equals(deviceId))
-            {
-                d.IsGateway = false;
-            }
+            if (!gatewayDevice.Id.Equals(deviceId)) d.IsGateway = false;
         });
 
         await WriteStore();

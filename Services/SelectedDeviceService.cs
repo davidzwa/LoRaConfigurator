@@ -12,7 +12,7 @@ public class SelectedDeviceService
     public void SwitchIfSet(string disconnectedPort, string? altPortName)
     {
         if (SelectedPortName != null && !SelectedPortName.Equals(disconnectedPort)) return;
-        
+
         if (SelectedPortName != null) SelectedPortName = altPortName;
     }
 }

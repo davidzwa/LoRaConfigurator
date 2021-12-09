@@ -14,9 +14,9 @@ public class SerialWatcher : IDisposable
 {
     private readonly ManagementEventWatcher _arrivalwatcher;
     private readonly ManagementEventWatcher _removalwatcher;
-    private readonly SerialProcessorService _serialProcessorService;
 
     private readonly List<CancellableMessageProcessor> _serialProcessors = new();
+    private readonly SerialProcessorService _serialProcessorService;
 
     public SerialWatcher(
         SerialProcessorService serialProcessorService
