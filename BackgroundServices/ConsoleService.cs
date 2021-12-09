@@ -16,6 +16,30 @@ internal sealed class ConsoleHostedService : IHostedService
         _appLifetime = appLifetime;
     }
 
+                    
+    // Continue = true;
+    // _logger.LogInformation("Type QUIT to exit");
+    //
+    // while (Continue)
+    // {
+    //     // Block on read
+    //     var message = Console.ReadLine();
+    //     
+    //     // Decide quit or keep on going
+    //     if (StringComparer.OrdinalIgnoreCase.Equals("quit", message))
+    //     {
+    //         Continue = false;
+    //         innerCancellation.Cancel();
+    //     }
+    //     else
+    //     {
+    //         _serialService.SerialPort?.Write($"{0xFF}{message}\0");
+    //     }
+    // }
+    //
+    // _logger.LogInformation("Closing serial");
+    // _serialService.SerialPort?.Close();
+    
     public Task StartAsync(CancellationToken cancellationToken)
     {
         _logger.LogDebug($"Starting with arguments: {string.Join(" ", Environment.GetCommandLineArgs())}");
@@ -26,6 +50,8 @@ internal sealed class ConsoleHostedService : IHostedService
             {
                 try
                 {
+                    var message = Console.ReadLine();
+                    _logger.LogInformation("Received {Message}", message);
                     await DoWork();
                 }
                 catch (Exception ex)
