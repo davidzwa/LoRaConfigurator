@@ -50,11 +50,16 @@ public class SerialProcessorService : IDisposable
         {
             port.Open();
         }
-        catch (UnauthorizedAccessException)
+        catch (IOException)
+        {
+            _logger.LogWarning("Device IO error occurred");
+            return;
+        }
+        catch(UnauthorizedAccessException)
         {
             return;
         }
-        
+
         _logger.LogInformation("Connected to device {PortName}", portName);
         SerialPorts.Add(port);
     }
@@ -121,7 +126,7 @@ public class SerialProcessorService : IDisposable
                 }
             }
         }
-        catch (InvalidOperationException e)
+        catch (InvalidOperationException)
         {
             _logger.LogError("Invalid operation on Serial port. Closing");
         }
