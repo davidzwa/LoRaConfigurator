@@ -1,8 +1,6 @@
-﻿using LoraGateway.Models;
-using LoraGateway.Services;
+﻿using LoraGateway.Services;
 using LoraGateway.Utils;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace LoraGateway.BackgroundServices;
 
@@ -10,9 +8,9 @@ public sealed class SerialHostedService : IHostedService
 {
     private readonly IHostApplicationLifetime _appLifetime;
     private readonly ILogger _logger;
+    private readonly SerialWatcher _serialPortWatcher;
     private readonly SerialProcessorService _serialService;
     private readonly DeviceDataStore _store;
-    private readonly SerialWatcher _serialPortWatcher;
 
     public SerialHostedService(
         ILogger<SerialHostedService> logger,
@@ -43,10 +41,7 @@ public sealed class SerialHostedService : IHostedService
                 try
                 {
                     var ports = SerialUtil.GetStmDevicePorts();
-                    foreach (var port in ports)
-                    {
-                        _serialPortWatcher.CreateMessageProcessor(port.PortName);
-                    }
+                    foreach (var port in ports) _serialPortWatcher.CreateMessageProcessor(port.PortName);
                 }
                 catch (Exception ex)
                 {

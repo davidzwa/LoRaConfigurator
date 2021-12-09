@@ -11,12 +11,10 @@ public static class SerialUtil
     public static IEnumerable<PortWithCaption> GetStmDevicePorts(string captionFilter = "STMicroelectronics")
     {
         if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-        {
             return SerialPort.GetPortNames().Select(p => new PortWithCaption
             {
                 PortName = p
             }).ToList();
-        }
 
         using var searcher = new ManagementObjectSearcher("SELECT * FROM WIN32_SerialPort");
         var portNames = SerialPort.GetPortNames();
@@ -28,7 +26,7 @@ public static class SerialUtil
                 select new PortWithCaption
                 {
                     PortName = n,
-                    Caption = p["Caption"].ToString()
+                    Caption = p["Caption"]?.ToString()
                 })
             .ToList();
 #pragma warning restore CA1416

@@ -1,11 +1,9 @@
-﻿using System.Collections.ObjectModel;
-using System.Management;
-using LoraGateway.Models;
+﻿using System.Management;
 using LoraGateway.Utils;
 
 namespace LoraGateway.Services;
 
-class CancellableMessageProcessor
+internal class CancellableMessageProcessor
 {
     public Task MessageProcessor { get; set; }
     public CancellationTokenSource CancellationTokenSource { get; set; }
@@ -14,11 +12,11 @@ class CancellableMessageProcessor
 
 public class SerialWatcher : IDisposable
 {
-    private readonly SerialProcessorService _serialProcessorService;
     private readonly ManagementEventWatcher _arrivalwatcher;
     private readonly ManagementEventWatcher _removalwatcher;
 
-    private List<CancellableMessageProcessor> _serialProcessors = new();
+    private readonly List<CancellableMessageProcessor> _serialProcessors = new();
+    private readonly SerialProcessorService _serialProcessorService;
 
     public SerialWatcher(
         SerialProcessorService serialProcessorService
@@ -50,43 +48,34 @@ public class SerialWatcher : IDisposable
     public void CheckForNewPortsAsync(object sender, EventArrivedEventArgs eventArgs, bool removal)
     {
         var ports = SerialUtil.GetStmDevicePorts();
-        
+
         List<CancellableMessageProcessor> removedProcessors = new();
         foreach (var processor in _serialProcessors)
-        {
             if (!ports.Any(p => p.PortName.Equals(processor.PortName)))
             {
                 DisposeMessageProcessor(processor.PortName);
                 removedProcessors.Add(processor);
             }
-        }
 
-        foreach (var removedProcessor in removedProcessors)
-        {
-            _serialProcessors.Remove(removedProcessor);
-        }
+        foreach (var removedProcessor in removedProcessors) _serialProcessors.Remove(removedProcessor);
 
         foreach (var port in ports.ToList())
-        {
             if (!_serialProcessors.Any(s => s.PortName.Equals(port.PortName)))
-            {
                 CreateMessageProcessor(port.PortName);
-            }
-        }
     }
 
     public void CreateMessageProcessor(string portName)
     {
         var processor = _serialProcessors.Find(s => s.PortName.Equals(portName));
         if (processor != null) return;
-        
-        CancellationTokenSource innerCancellation = new CancellationTokenSource();
+
+        var innerCancellation = new CancellationTokenSource();
         _serialProcessorService.ConnectPort(portName);
         var task = Task.Run(() =>
                 _serialProcessorService.MessageProcessor(portName, innerCancellation.Token)
             , innerCancellation.Token);
-        
-        _serialProcessors.Add(new ()
+
+        _serialProcessors.Add(new CancellableMessageProcessor
         {
             MessageProcessor = task,
             PortName = portName,
@@ -98,7 +87,7 @@ public class SerialWatcher : IDisposable
     {
         var processor = _serialProcessors.Find(processor => processor.PortName.Equals(portName));
         if (processor == null) return;
-        
+
         _serialProcessorService.DisconnectPort(portName);
         processor.CancellationTokenSource.Cancel();
     }

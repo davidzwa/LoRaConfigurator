@@ -12,6 +12,7 @@
       "Id": "4522035-876106006-825374777",
       "NickName": "MotherShip",
       "RegisteredAt": "132835343136590640",
+      "LastPortName": "COM3",
       "IsGateway": false,
       "Meta": null
     },
@@ -19,6 +20,7 @@
       "Id": "4456526-808997123-808661810",
       "NickName": "Saeposezhijy",
       "RegisteredAt": "132835489004210116",
+      "LastPortName": "COM4",
       "IsGateway": false,
       "Meta": null
     }

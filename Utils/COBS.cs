@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace LoraGateway.Utils.COBS;
+namespace LoraGateway.Utils;
 
 /// <summary>
 ///     Consistent Overhead Byte Stuffing is an encoding that removes all 0
@@ -12,26 +12,24 @@ namespace LoraGateway.Utils.COBS;
 ///     byte, plus up to an additional byte per 254 bytes of data). For
 ///     messages smaller than 254 bytes, the overhead is constant.
 /// </summary>
-public static class COBS
+public static class Cobs
 {
     /// <summary>
     ///     The encoded data will contain only values from 0x01 to 0xFF.
     /// </summary>
-    /// <param name="Input">An array up to 254 bytes in length</param>
+    /// <param name="buffer">An array up to 254 bytes in length</param>
     /// <returns>Returns the encoded input</returns>
-    public static IEnumerable<byte> Encode(IEnumerable<byte> Input)
+    public static IEnumerable<byte> Encode(IEnumerable<byte> buffer)
     {
-        if (Input == null)
-            return null;
-
-        if (Input.Count() > 254)
-            throw new ArgumentOutOfRangeException("Input length must not exceed 254 bytes");
+        var bufferArray = buffer as byte[] ?? buffer.ToArray();
+        if (bufferArray.Count() > 254)
+            throw new ArgumentOutOfRangeException(nameof(buffer), "Input length must not exceed 254 bytes");
 
         var result = new List<byte>();
         var distanceIndex = 0;
         byte distance = 1; // Distance to next zero
 
-        foreach (var i in Input)
+        foreach (var i in bufferArray)
             // If we encounter a zero (the frame delimiter)
             if (i == 0)
             {
@@ -79,25 +77,25 @@ public static class COBS
     ///     The decoded data will be restored with all zeros which were removed
     ///     during the decoding process.
     /// </summary>
-    /// <param name="input">A COBS encoded array</param>
+    /// <param name="buffer">A COBS encoded array</param>
     /// <returns>Returns the decoded input</returns>
-    public static List<byte> Decode(byte[] input)
+    public static List<byte> Decode(byte[] buffer)
     {
-        if (input.Count() > 255)
-            throw new ArgumentOutOfRangeException("Input length must not exceed 254 bytes");
+        if (buffer.Count() > 255)
+            throw new ArgumentOutOfRangeException(nameof(buffer), "Input length must not exceed 254 bytes");
 
         var result = new List<byte>();
         var distanceIndex = 0;
         byte distance = 1; // Distance to next zero
 
         // Continue decoding which the next index is valid
-        while (distanceIndex < input.Length)
+        while (distanceIndex < buffer.Length)
         {
             // Get the next distance value
-            distance = input[distanceIndex];
+            distance = buffer[distanceIndex];
 
             // Ensure the input is formatted correctly (distanceIndex + distance)
-            if (input.Length < distanceIndex + distance || distance < 1)
+            if (buffer.Length < distanceIndex + distance || distance < 1)
             {
                 Trace.WriteLine("Consistent Overhead Byte Stuffing failed to parse an input.");
                 return new List<byte>();
@@ -106,13 +104,13 @@ public static class COBS
             // Add the range of byte up to the next zero
             if (distance > 1)
                 for (byte i = 1; i < distance; i++)
-                    result.Add(input[distanceIndex + i]);
+                    result.Add(buffer[distanceIndex + i]);
 
             // Determine the next distance index (doing this here assists the below if)
             distanceIndex += distance;
 
             // Add the original zero back
-            if (distance < 0xFF && distanceIndex < input.Length)
+            if (distance < 0xFF && distanceIndex < buffer.Length)
                 result.Add(0);
         }
 
