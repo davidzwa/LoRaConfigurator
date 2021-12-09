@@ -1,18 +1,21 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using LoraGateway.Services;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-
 namespace LoraGateway.BackgroundServices;
 
 internal sealed class ConsoleHostedService : IHostedService
 {
     private readonly IHostApplicationLifetime _appLifetime;
     private readonly ILogger _logger;
+    private readonly ConsoleProcessorService _consoleProcessorService;
 
     public ConsoleHostedService(
         ILogger<ConsoleHostedService> logger,
+        ConsoleProcessorService consoleProcessorService,
         IHostApplicationLifetime appLifetime)
     {
         _logger = logger;
+        _consoleProcessorService = consoleProcessorService;
         _appLifetime = appLifetime;
     }
 
@@ -48,16 +51,11 @@ internal sealed class ConsoleHostedService : IHostedService
         {
             Task.Run(async () =>
             {
-                try
+                while (!cancellationToken.IsCancellationRequested)
                 {
-                    var message = Console.ReadLine();
-                    _logger.LogInformation("Received {Message}", message);
-                    await DoWork();
+                    await _consoleProcessorService.ProcessCommandLine();
                 }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Unhandled exception!");
-                }
+
             });
         });
 
@@ -67,10 +65,5 @@ internal sealed class ConsoleHostedService : IHostedService
     public Task StopAsync(CancellationToken cancellationToken)
     {
         return Task.CompletedTask;
-    }
-
-    private async Task DoWork()
-    {
-        while (true) await Task.Delay(1000);
     }
 }

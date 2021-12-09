@@ -33,8 +33,9 @@ public static class PortChat
                 services.AddSingleton<DeviceDataStore>();
                 services.AddSingleton<SerialProcessorService>();
                 services.AddSingleton<SerialWatcher>();
-                services.AddHostedService<ConsoleHostedService>();
                 services.AddHostedService<SerialHostedService>();
+                services.AddSingleton<ConsoleProcessorService>();
+                services.AddHostedService<ConsoleHostedService>();
             })
             .RunConsoleAsync();
     }
