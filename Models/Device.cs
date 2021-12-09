@@ -1,6 +1,6 @@
 ﻿namespace LoraGateway.Models;
 
-public class DeviceModel
+public class Device
 {
     public string Id { get; set; }
     public string NickName { get; set; }

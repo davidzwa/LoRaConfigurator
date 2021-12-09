@@ -4,9 +4,9 @@ public class DeviceCollection
 {
     public GatewayModel Gateway { get; set; } = new()
     {
-        Receive = new (),
-        Transmit = new()
+        Receive = new RadioModel(),
+        Transmit = new RadioModel()
     };
 
-    public List<DeviceModel> Devices { get; set; } = new();
+    public List<Device> Devices { get; set; } = new();
 }

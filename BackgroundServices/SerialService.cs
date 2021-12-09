@@ -9,8 +9,10 @@ internal sealed class SerialHostedService : IHostedService
 {
     private readonly IHostApplicationLifetime _appLifetime;
     private readonly ILogger _logger;
-    private readonly DeviceDataStore _store;
     private readonly SerialProcessorService _serialService;
+    private readonly DeviceDataStore _store;
+
+    public bool Continue = false;
 
     public SerialHostedService(
         ILogger<SerialHostedService> logger,
@@ -27,48 +29,46 @@ internal sealed class SerialHostedService : IHostedService
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         await _store.LoadStore();
-        
-        Console.WriteLine(Directory.GetCurrentDirectory());
-        _logger.LogDebug($"Starting with arguments: {string.Join(" ", Environment.GetCommandLineArgs())}");
 
         _appLifetime.ApplicationStarted.Register(() =>
         {
-            Task.Run(async () =>
+            Task.Run(() =>
             {
+                CancellationTokenSource innerCancellation = new CancellationTokenSource();
+                
                 try
                 {
                     var ports = SerialUtil.GetStmDevicePorts("STMicroelectronics");
-                    
+
                     var stringComparer = StringComparer.OrdinalIgnoreCase;
-                    var readThread = _serialService.Initialize(ports.First().Port);
-                    _serialService.Continue = true;
-                    readThread.Start();
+                    _serialService.Initialize(ports.First().Port);
+                    Task.Run(() => _serialService.WaitMessage(innerCancellation.Token), innerCancellation.Token);
+                    Continue = true;
+                    _logger.LogInformation("Type QUIT to exit");
 
-                    Console.WriteLine("Type QUIT to exit");
-
-                    while (_serialService.Continue)
+                    while (Continue)
                     {
                         var message = Console.ReadLine();
-
                         if (stringComparer.Equals("quit", message))
-                            _serialService.Continue = false;
+                        {
+                            Continue = false;
+                            innerCancellation.Cancel();
+                        }
                         else
+                        {
                             _serialService.SerialPort?.Write($"{0xFF}{message}\0");
+                        }
                     }
 
-                    readThread.Join();
-                    await _store.AddDevice(new()
-                    {
-                        Id = _serialService.ConvertDeviceId(_serialService.LastBootMessage?.DeviceIdentifier),
-                        Meta = { },
-                        IsGateway = false
-                    });
+                    _logger.LogInformation("Closing serial");
                     _serialService.SerialPort?.Close();
                 }
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Unhandled exception!");
                 }
+                
+                _logger.LogInformation("Service stopped");
             }, cancellationToken);
         });
     }

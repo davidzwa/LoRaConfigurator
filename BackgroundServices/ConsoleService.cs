@@ -45,9 +45,6 @@ internal sealed class ConsoleHostedService : IHostedService
 
     private async Task DoWork()
     {
-        while (true)
-        {
-            await Task.Delay(1000);
-        }
+        while (true) await Task.Delay(1000);
     }
 }

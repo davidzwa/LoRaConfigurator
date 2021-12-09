@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using LoraGateway.BackgroundServices;
+﻿using LoraGateway.BackgroundServices;
 using LoraGateway.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -10,9 +9,6 @@ public static class PortChat
 {
     public static async Task Main(string[] args)
     {
-        Console.WriteLine(Assembly.GetExecutingAssembly().Location);
-        Console.WriteLine(Directory.GetCurrentDirectory());
-
         var store = new DeviceDataStore();
         await store.LoadStore();
 

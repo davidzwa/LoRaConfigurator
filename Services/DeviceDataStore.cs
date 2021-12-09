@@ -33,17 +33,29 @@ public class DeviceDataStore
 
     public async Task WriteStore(string path)
     {
-        var jsonStore = GetDefaultJson();
-        var serializedBlob = JsonSerializer.SerializeToUtf8Bytes(jsonStore);
+        var jsonStore = _store ?? GetDefaultJson();
+        var serializedBlob = JsonSerializer.SerializeToUtf8Bytes(jsonStore, new JsonSerializerOptions()
+        {
+            WriteIndented = true
+        });
 
         var stream = File.OpenWrite(path);
         await stream.WriteAsync(serializedBlob);
         stream.Close();
     }
 
-    public async Task AddDevice(DeviceModel device)
+    public Device? GetDevice(string deviceId)
+    {
+        return _store?.Devices?.Find(d => d.Id == deviceId);
+    }
+    
+    public async Task<Device> GetOrAddDevice(Device device)
     {
         if (_store == null) await LoadStore();
+
+        // Ensure device doesnt already exist
+        var existingDevice = GetDevice(device.Id);
+        if (existingDevice != null) return existingDevice;
 
         device.NickName = NameGenerator.GenerateName(10);
         device.RegisteredAt = DateTime.Now.ToFileTimeUtc().ToString();
@@ -51,6 +63,8 @@ public class DeviceDataStore
 
         var path = GetJsonFilePath();
         await WriteStore(path);
+
+        return device;
     }
 
     public async Task LoadStore()
