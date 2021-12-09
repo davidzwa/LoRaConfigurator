@@ -20,11 +20,11 @@ public class SelectDeviceCommandHandler
         _serialProcessorService = serialProcessorService;
     }
 
-    public Command GetHandler()
+    public Command GetSelectCommand()
     {
         var commandHandler = new Command("select");
         commandHandler.AddArgument(new Argument<int>("portNumber"));
-        
+
         commandHandler.Handler = CommandHandler.Create((int portNumber) =>
         {
             var portName = "COM" + portNumber;

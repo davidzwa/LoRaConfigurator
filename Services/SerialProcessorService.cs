@@ -2,7 +2,6 @@
 using Google.Protobuf;
 using LoraGateway.Models;
 using LoraGateway.Utils;
-using LoraGateway.Utils.COBS;
 
 namespace LoraGateway.Services;
 
@@ -10,34 +9,34 @@ public class SerialProcessorService : IDisposable
 {
     private readonly ILogger<SerialProcessorService> _logger;
     private readonly DeviceDataStore _store;
+    private readonly SelectedDeviceService _selectedDeviceService;
     private readonly byte endByte = 0x00;
 
     private readonly int maxIdle = 500;
     private readonly byte startByte = 0xFF;
     private BootMessage? _lastBootMessage;
 
-    public List<SerialPort> SerialPorts { get; } = new();
-
     public SerialProcessorService(
         DeviceDataStore store,
+        SelectedDeviceService selectedDeviceService,
         ILogger<SerialProcessorService> logger
     )
     {
         _store = store;
+        _selectedDeviceService = selectedDeviceService;
         _logger = logger;
+    }
+
+    public List<SerialPort> SerialPorts { get; } = new();
+
+    public void Dispose()
+    {
+        foreach (var port in SerialPorts) DisposePort(port.PortName);
     }
 
     public bool HasPort(string portName)
     {
         return SerialPorts.Any(p => p.PortName.Equals(portName));
-    }
-
-    public void Dispose()
-    {
-        foreach (var port in SerialPorts)
-        {
-            DisposePort(port.PortName);
-        }
     }
 
     public void ConnectPort(string portName)
@@ -64,6 +63,7 @@ public class SerialProcessorService : IDisposable
         try
         {
             port.Open();
+            _selectedDeviceService.SetPortIfUnset(portName);
         }
         catch (IOException)
         {
@@ -81,12 +81,17 @@ public class SerialProcessorService : IDisposable
 
     public SerialPort? GetPort(string portName)
     {
-        return SerialPorts.Find(p => p != null && p.PortName.Equals(portName));
+        return SerialPorts.Find(p => p.PortName.Equals(portName));
     }
 
     public void DisconnectPort(string portName)
     {
         var serialPort = GetPort(portName);
+
+        // Fallback to other selected port in case this one was used
+        var fallbackPort = SerialPorts.Find(p => !p.PortName.Equals(portName));
+        _selectedDeviceService.SwitchIfSet(portName, fallbackPort?.PortName);
+
         serialPort?.Close();
         SerialPorts.Remove(serialPort);
         _logger.LogInformation("Disconnected serial port {PortName}", portName);
@@ -97,10 +102,16 @@ public class SerialProcessorService : IDisposable
         _logger.LogWarning("Serial error {ErrorType}", e.EventType);
     }
 
-    public void WriteMessage(string portName, UartCommand message)
+    public void WriteMessage(UartCommand message)
     {
-        var messageBuffer = Array.Empty<byte>();
-        message.WriteTo(messageBuffer);
+        var selectedPortName = _selectedDeviceService.SelectedPortName;
+        if (selectedPortName == null)
+        {
+            _logger.LogWarning("Cant send as multiple devices are connected and 1 is not selected");
+            return;
+        }
+
+        byte[] messageBuffer = message.ToByteArray();
 
         byte[] transmitBuffer = { startByte };
         transmitBuffer = transmitBuffer
@@ -110,10 +121,10 @@ public class SerialProcessorService : IDisposable
             .ToArray();
 
         _logger.LogInformation("TX {Message:2X}", transmitBuffer);
-        var port = GetPort(portName);
+        var port = GetPort(selectedPortName);
         if (port == null)
         {
-            _logger.LogWarning("Port was null. Cant send to {Port}", portName);
+            _logger.LogWarning("Port was null. Cant send to {Port}", selectedPortName);
             return;
         }
 
@@ -134,7 +145,7 @@ public class SerialProcessorService : IDisposable
                 if (buffer == null) continue;
 
                 _logger.LogDebug("Serial decoding COBS buffer ({ByteLength})", buffer.Length);
-                var outputBuffer = COBS.Decode(buffer);
+                var outputBuffer = Cobs.Decode(buffer);
                 if (outputBuffer.Count == 0)
                 {
                     _logger.LogError("COBS output empty {HexString}", SerialUtil.ByteArrayToString(buffer));
