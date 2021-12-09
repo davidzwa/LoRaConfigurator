@@ -1,18 +1,22 @@
 ﻿using System.IO.Ports;
+using Google.Protobuf;
 using LoraGateway.Models;
 using LoraGateway.Utils;
 using LoraGateway.Utils.COBS;
-using Microsoft.Extensions.Logging;
 
 namespace LoraGateway.Services;
 
 public class SerialProcessorService : IDisposable
 {
-    private readonly DeviceDataStore _store;
     private readonly ILogger<SerialProcessorService> _logger;
+    private readonly DeviceDataStore _store;
+    private readonly byte endByte = 0x00;
 
     private readonly int maxIdle = 500;
+    private readonly byte startByte = 0xFF;
     private BootMessage? _lastBootMessage;
+
+    public List<SerialPort> SerialPorts { get; } = new();
 
     public SerialProcessorService(
         DeviceDataStore store,
@@ -23,7 +27,18 @@ public class SerialProcessorService : IDisposable
         _logger = logger;
     }
 
-    public List<SerialPort?> SerialPorts { get; private set; } = new();
+    public bool HasPort(string portName)
+    {
+        return SerialPorts.Any(p => p.PortName.Equals(portName));
+    }
+
+    public void Dispose()
+    {
+        foreach (var port in SerialPorts)
+        {
+            DisposePort(port.PortName);
+        }
+    }
 
     public void ConnectPort(string portName)
     {
@@ -55,7 +70,7 @@ public class SerialProcessorService : IDisposable
             _logger.LogWarning("Device IO error occurred");
             return;
         }
-        catch(UnauthorizedAccessException)
+        catch (UnauthorizedAccessException)
         {
             return;
         }
@@ -82,6 +97,29 @@ public class SerialProcessorService : IDisposable
         _logger.LogWarning("Serial error {ErrorType}", e.EventType);
     }
 
+    public void WriteMessage(string portName, UartCommand message)
+    {
+        var messageBuffer = Array.Empty<byte>();
+        message.WriteTo(messageBuffer);
+
+        byte[] transmitBuffer = { startByte };
+        transmitBuffer = transmitBuffer
+            .Concat(new[] { (byte)messageBuffer.Length })
+            .Concat(messageBuffer)
+            .Concat(new[] { endByte })
+            .ToArray();
+
+        _logger.LogInformation("TX {Message:2X}", transmitBuffer);
+        var port = GetPort(portName);
+        if (port == null)
+        {
+            _logger.LogWarning("Port was null. Cant send to {Port}", portName);
+            return;
+        }
+
+        port.Write(transmitBuffer, 0, transmitBuffer.Length);
+    }
+
     public async Task MessageProcessor(string portName, CancellationToken cancellationToken)
     {
         try
@@ -93,10 +131,7 @@ public class SerialProcessorService : IDisposable
 
                 var buffer = await WaitBuffer(portName, cancellationToken);
                 // We had an error so we loop to trigger read timeout to start again
-                if (buffer == null)
-                {
-                    continue;
-                }
+                if (buffer == null) continue;
 
                 _logger.LogDebug("Serial decoding COBS buffer ({ByteLength})", buffer.Length);
                 var outputBuffer = COBS.Decode(buffer);
@@ -118,7 +153,8 @@ public class SerialProcessorService : IDisposable
                     var device = await _store.GetOrAddDevice(new Device
                     {
                         Id = ConvertDeviceId(_lastBootMessage?.DeviceIdentifier),
-                        IsGateway = false
+                        IsGateway = false,
+                        LastPortName = portName
                     });
 
                     var deviceId = ConvertDeviceId(response.BootMessage.DeviceIdentifier);
@@ -159,10 +195,7 @@ public class SerialProcessorService : IDisposable
                 var currentIdle = 0;
                 while (serialPort.BytesToRead != dataLength || currentIdle > maxIdle)
                 {
-                    if (cancellationToken.IsCancellationRequested)
-                    {
-                        return null;
-                    }
+                    if (cancellationToken.IsCancellationRequested) return null;
 
                     currentIdle++;
                     Thread.Sleep(1);
@@ -188,14 +221,5 @@ public class SerialProcessorService : IDisposable
     {
         var port = GetPort(portName);
         port?.Dispose();
-    }
-
-    public void Dispose()
-    {
-        foreach (var port in SerialPorts)
-        {
-            if (port == null) continue;
-            DisposePort(port.PortName);
-        }
     }
 }
