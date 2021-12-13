@@ -158,7 +158,8 @@ public class SerialProcessorService : IDisposable
 
                 var decodedBuffer = outputBuffer.ToArray();
                 var response = UartResponse.Parser.ParseFrom(decodedBuffer);
-                if (response.BodyCase.Equals(UartResponse.BodyOneofCase.BootMessage))
+                var bodyCase = response.BodyCase;
+                if (bodyCase.Equals(UartResponse.BodyOneofCase.BootMessage))
                 {
                     _lastBootMessage = response.BootMessage;
 
@@ -173,6 +174,17 @@ public class SerialProcessorService : IDisposable
                     });
                     
                     _logger.LogInformation("[{Name}] heart beat {DeviceId}", device?.NickName, deviceId);
+                }
+                else if (bodyCase.Equals(UartResponse.BodyOneofCase.AckMessage))
+                {
+                    var ackNumber = response.AckMessage.SequenceNumber;
+                    _logger.LogInformation("[{Name}] ACK {Int}", port.PortName, ackNumber);
+                }
+                else if (bodyCase.Equals(UartResponse.BodyOneofCase.LoraMessage))
+                {
+                    var snr = response.LoraMessage.Snr;
+                    var rssi = response.LoraMessage.Rssi;
+                    _logger.LogInformation("[{Name}] LoRa RX snr: {SNR} rssi: {RSSI}", port.PortName, snr, rssi);
                 }
             }
         }
