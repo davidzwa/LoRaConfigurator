@@ -27,20 +27,29 @@
       "Meta": null
     },
     {
-      "Id": "2818104-876106005-825374777",
-      "NickName": "Kibyjiqiko",
+      "Id": "2293795-876106005-825374777",
+      "NickName": "Ritaekaesaete",
       "FirmwareVersion": "2.0.0.3",
-      "RegisteredAt": "132838669737723469",
-      "LastPortName": "COM19",
+      "RegisteredAt": "132838680900489570",
+      "LastPortName": "COM21",
       "IsGateway": false,
       "Meta": null
     },
     {
-      "Id": "2293795-876106005-825374777",
-      "NickName": "Ritaekaesaete",
-      "FirmwareVersion": "2.0.0.2",
-      "RegisteredAt": "132838680900489570",
-      "LastPortName": "COM21",
+      "Id": "5046325-876106005-825374777",
+      "NickName": "Xopihazhita",
+      "FirmwareVersion": "2.0.0.4",
+      "RegisteredAt": "132838798889785028",
+      "LastPortName": "COM18",
+      "IsGateway": false,
+      "Meta": null
+    },
+    {
+      "Id": "2818104-876106005-825374777",
+      "NickName": "Reshyniheda",
+      "FirmwareVersion": "2.0.0.4",
+      "RegisteredAt": "132838808759884393",
+      "LastPortName": "COM19",
       "IsGateway": false,
       "Meta": null
     }
