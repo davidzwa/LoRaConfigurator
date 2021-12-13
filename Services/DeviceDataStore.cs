@@ -54,7 +54,7 @@ public class DeviceDataStore
 
     public Device? GetDeviceByPort(string portName)
     {
-        return _store?.Devices?.Find(d => d.LastPortName == portName);
+        return _store?.Devices?.Find(d => d?.LastPortName == portName);
     }
 
     public async Task<Device?> MarkDeviceGateway(string deviceId)

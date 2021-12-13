@@ -5,7 +5,7 @@ namespace LoraGateway.Services;
 
 public class ConsoleProcessorService
 {
-    private readonly BootCommandHandler _bootCommandHandler;
+    private readonly SerialCommandHandler _serialCommandHandler;
     private readonly ListDeviceCommandHandler _listDeviceCommandHandler;
     private readonly ILogger _logger;
     private readonly SelectDeviceCommandHandler _selectDeviceCommandHandler;
@@ -13,13 +13,13 @@ public class ConsoleProcessorService
 
     public ConsoleProcessorService(
         ILogger<ConsoleProcessorService> logger,
-        BootCommandHandler bootCommandHandler,
+        SerialCommandHandler serialCommandHandler,
         SelectDeviceCommandHandler selectDeviceCommandHandler,
         ListDeviceCommandHandler listDeviceCommandHandler
     )
     {
         _logger = logger;
-        _bootCommandHandler = bootCommandHandler;
+        _serialCommandHandler = serialCommandHandler;
         _selectDeviceCommandHandler = selectDeviceCommandHandler;
         _listDeviceCommandHandler = listDeviceCommandHandler;
     }
@@ -33,8 +33,8 @@ public class ConsoleProcessorService
 
             var rootCommand = new RootCommand("Converts an image file from one format to another.");
             rootCommand.Add(_selectDeviceCommandHandler.GetSelectCommand());
-            rootCommand.Add(_bootCommandHandler.GetPeriodicSendCommand());
-            rootCommand.Add(_bootCommandHandler.GetBootCommand());
+            rootCommand.Add(_selectDeviceCommandHandler.GetCurrentSelectedCommand());
+            _serialCommandHandler.ApplyCommands(rootCommand);
             rootCommand.Add(_listDeviceCommandHandler.GetHandler());
             await rootCommand.InvokeAsync(message);
         }

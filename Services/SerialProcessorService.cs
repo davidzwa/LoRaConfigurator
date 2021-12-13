@@ -121,9 +121,7 @@ public class SerialProcessorService : IDisposable
             .Concat(new[] {endByte})
             .ToArray();
 
-        Console.WriteLine(SerialUtil.ByteArrayToString(transmitBuffer));
-
-        _logger.LogInformation("TX {Message:2X}", transmitBuffer);
+        _logger.LogInformation("TX {Message}", SerialUtil.ByteArrayToString(transmitBuffer));
         var port = GetPort(selectedPortName);
         if (port == null)
         {
@@ -160,20 +158,33 @@ public class SerialProcessorService : IDisposable
 
                 var decodedBuffer = outputBuffer.ToArray();
                 var response = UartResponse.Parser.ParseFrom(decodedBuffer);
-                if (response.BodyCase.Equals(UartResponse.BodyOneofCase.BootMessage))
+                var bodyCase = response.BodyCase;
+                if (bodyCase.Equals(UartResponse.BodyOneofCase.BootMessage))
                 {
                     _lastBootMessage = response.BootMessage;
 
+                    var deviceId = response.BootMessage.DeviceIdentifier.DeviceIdAsString();
+                    var firmwareVersion = response.BootMessage.GetFirmwareAsString();
                     var device = await _store.GetOrAddDevice(new Device
                     {
-                        Id = ConvertDeviceId(_lastBootMessage?.DeviceIdentifier),
-                        FirmwareVersion = ConvertFirmwareVersion(_lastBootMessage?.FirmwareVersion),
+                        Id = deviceId,
+                        FirmwareVersion = firmwareVersion,
                         IsGateway = false,
                         LastPortName = portName
                     });
-
-                    var deviceId = ConvertDeviceId(response.BootMessage.DeviceIdentifier);
-                    _logger.LogInformation("[{Name}] heart beat {DeviceId}", device.NickName, deviceId);
+                    
+                    _logger.LogInformation("[{Name}] heart beat {DeviceId}", device?.NickName, deviceId);
+                }
+                else if (bodyCase.Equals(UartResponse.BodyOneofCase.AckMessage))
+                {
+                    var ackNumber = response.AckMessage.SequenceNumber;
+                    _logger.LogInformation("[{Name}] ACK {Int}", port.PortName, ackNumber);
+                }
+                else if (bodyCase.Equals(UartResponse.BodyOneofCase.LoraMessage))
+                {
+                    var snr = response.LoraMessage.Snr;
+                    var rssi = (Int16)response.LoraMessage.Rssi;
+                    _logger.LogInformation("[{Name}] LoRa RX snr: {SNR} rssi: {RSSI}", port.PortName, snr, rssi);
                 }
             }
         }
@@ -184,20 +195,6 @@ public class SerialProcessorService : IDisposable
 
         DisconnectPort(portName);
         DisposePort(portName);
-    }
-
-    public string ConvertDeviceId(DeviceId? spec)
-    {
-        if (spec == null) return "";
-
-        return $"{spec.Id0}-{spec.Id1}-{spec.Id2}";
-    }
-
-    public string ConvertFirmwareVersion(Version? version)
-    {
-        if (version == null) return "";
-
-        return $"{version.Major}.{version.Minor}.{version.Patch}.{version.Revision}";
     }
 
     private async Task<byte[]?> WaitBuffer(string portName, CancellationToken cancellationToken)
