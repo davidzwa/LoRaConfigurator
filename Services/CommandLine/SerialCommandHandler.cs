@@ -4,14 +4,14 @@ using LoraGateway.Services.Extensions;
 
 namespace LoraGateway.Services.CommandLine;
 
-public class BootCommandHandler
+public class SerialCommandHandler
 {
     private readonly ILogger _logger;
     private readonly SelectedDeviceService _selectedDeviceService;
     private readonly SerialProcessorService _serialProcessorService;
 
-    public BootCommandHandler(
-        ILogger<BootCommandHandler> logger,
+    public SerialCommandHandler(
+        ILogger<SerialCommandHandler> logger,
         SelectedDeviceService selectedDeviceService,
         SerialProcessorService serialProcessorService
     )
@@ -21,6 +21,33 @@ public class BootCommandHandler
         _serialProcessorService = serialProcessorService;
     }
 
+    public RootCommand ApplyCommands(RootCommand rootCommand)
+    {
+        rootCommand.Add(GetPeriodicSendCommand());
+        rootCommand.Add(GetBootCommand());
+        rootCommand.Add(GetUnicastSendCommand());
+
+        return rootCommand;
+    }
+
+    public Command GetUnicastSendCommand()
+    {
+        var command = new Command("unicast");
+        command.AddAlias("u");
+        command.Handler = CommandHandler.Create(
+            () =>
+            {
+                var selectedPortName = _selectedDeviceService.SelectedPortName;
+                _logger.LogInformation("Unicast command {port}", selectedPortName);
+                _serialProcessorService.SendUnicastTransmitCommand(new byte[]
+                {
+                    0xFF, 0xFE, 0xFD
+                });
+            });
+
+        return command;
+    }
+    
     public Command GetPeriodicSendCommand()
     {
         var command = new Command("period");
@@ -31,7 +58,7 @@ public class BootCommandHandler
             (uint period, uint count) =>
             {
                 var selectedPortName = _selectedDeviceService.SelectedPortName;
-                _logger.LogInformation("Boot sent {port}", selectedPortName);
+                _logger.LogInformation("Periodic command {port}", selectedPortName);
                 _serialProcessorService.SendPeriodicTransmitCommand(period, count, new byte[]
                 {
                     0xFF, 0xFE, 0xFD

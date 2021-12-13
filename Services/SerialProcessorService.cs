@@ -121,9 +121,7 @@ public class SerialProcessorService : IDisposable
             .Concat(new[] {endByte})
             .ToArray();
 
-        Console.WriteLine(SerialUtil.ByteArrayToString(transmitBuffer));
-
-        _logger.LogInformation("TX {Message:2X}", transmitBuffer);
+        _logger.LogInformation("TX {Message}", SerialUtil.ByteArrayToString(transmitBuffer));
         var port = GetPort(selectedPortName);
         if (port == null)
         {
@@ -164,16 +162,17 @@ public class SerialProcessorService : IDisposable
                 {
                     _lastBootMessage = response.BootMessage;
 
+                    var deviceId = response.BootMessage.DeviceIdentifier.DeviceIdAsString();
+                    var firmwareVersion = response.BootMessage.GetFirmwareAsString();
                     var device = await _store.GetOrAddDevice(new Device
                     {
-                        Id = ConvertDeviceId(_lastBootMessage?.DeviceIdentifier),
-                        FirmwareVersion = ConvertFirmwareVersion(_lastBootMessage?.FirmwareVersion),
+                        Id = deviceId,
+                        FirmwareVersion = firmwareVersion,
                         IsGateway = false,
                         LastPortName = portName
                     });
-
-                    var deviceId = ConvertDeviceId(response.BootMessage.DeviceIdentifier);
-                    _logger.LogInformation("[{Name}] heart beat {DeviceId}", device.NickName, deviceId);
+                    
+                    _logger.LogInformation("[{Name}] heart beat {DeviceId}", device?.NickName, deviceId);
                 }
             }
         }
@@ -184,20 +183,6 @@ public class SerialProcessorService : IDisposable
 
         DisconnectPort(portName);
         DisposePort(portName);
-    }
-
-    public string ConvertDeviceId(DeviceId? spec)
-    {
-        if (spec == null) return "";
-
-        return $"{spec.Id0}-{spec.Id1}-{spec.Id2}";
-    }
-
-    public string ConvertFirmwareVersion(Version? version)
-    {
-        if (version == null) return "";
-
-        return $"{version.Major}.{version.Minor}.{version.Patch}.{version.Revision}";
     }
 
     private async Task<byte[]?> WaitBuffer(string portName, CancellationToken cancellationToken)

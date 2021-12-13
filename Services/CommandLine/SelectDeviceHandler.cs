@@ -7,17 +7,33 @@ public class SelectDeviceCommandHandler
 {
     private readonly ILogger _logger;
     private readonly SelectedDeviceService _selectedDeviceService;
+    private readonly DeviceDataStore _store;
     private readonly SerialProcessorService _serialProcessorService;
 
     public SelectDeviceCommandHandler(
         ILogger<SelectDeviceCommandHandler> logger,
         SelectedDeviceService selectedDeviceService,
+        DeviceDataStore store,
         SerialProcessorService serialProcessorService
     )
     {
         _logger = logger;
         _selectedDeviceService = selectedDeviceService;
+        _store = store;
         _serialProcessorService = serialProcessorService;
+    }
+
+    public Command GetCurrentSelectedCommand()
+    {
+        var commandHandler = new Command("current");
+        commandHandler.AddAlias("c");
+        commandHandler.Handler = CommandHandler.Create(() =>
+        {
+            var port = _selectedDeviceService.SelectedPortName;
+            var device = _store.GetDeviceByPort(port!);
+            _logger.LogInformation("Selected device {DeviceName} at port {Port}", device?.NickName, port);
+        });
+        return commandHandler;
     }
 
     public Command GetSelectCommand()
