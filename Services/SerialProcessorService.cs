@@ -111,14 +111,17 @@ public class SerialProcessorService : IDisposable
             return;
         }
 
-        var messageBuffer = message.ToByteArray();
-
-        byte[] transmitBuffer = { startByte };
-        transmitBuffer = transmitBuffer
-            .Concat(new[] { (byte)messageBuffer.Length })
+        var payload = message.ToByteArray();
+        var protoMessageBuffer = (new[] {(byte) payload.Length}).Concat(payload);
+        var messageBuffer = Cobs.Encode(protoMessageBuffer).ToArray();
+        var len = new[] {(byte) messageBuffer.Length};
+        byte[] transmitBuffer = new[] {startByte}
+            .Concat(len)
             .Concat(messageBuffer)
-            .Concat(new[] { endByte })
+            .Concat(new[] {endByte})
             .ToArray();
+
+        Console.WriteLine(SerialUtil.ByteArrayToString(transmitBuffer));
 
         _logger.LogInformation("TX {Message:2X}", transmitBuffer);
         var port = GetPort(selectedPortName);
@@ -193,7 +196,7 @@ public class SerialProcessorService : IDisposable
     public string ConvertFirmwareVersion(Version? version)
     {
         if (version == null) return "";
-        
+
         return $"{version.Major}.{version.Minor}.{version.Patch}.{version.Revision}";
     }
 

@@ -23,12 +23,13 @@ public class SelectDeviceCommandHandler
     public Command GetSelectCommand()
     {
         var commandHandler = new Command("select");
+        commandHandler.AddAlias("s");
         commandHandler.AddArgument(new Argument<int>("portNumber"));
 
         commandHandler.Handler = CommandHandler.Create((int portNumber) =>
         {
             var portName = "COM" + portNumber;
-            _logger.LogInformation("New Port {port}", portName);
+            _logger.LogInformation("Port selected {port}", portName);
 
             if (!_serialProcessorService.HasPort(portName))
             {
