@@ -38,7 +38,7 @@
     {
       "Id": "5046325-876106005-825374777",
       "NickName": "Xopihazhita",
-      "FirmwareVersion": "2.0.0.4",
+      "FirmwareVersion": "2.0.0.5",
       "RegisteredAt": "132838798889785028",
       "LastPortName": "COM18",
       "IsGateway": false,
@@ -47,7 +47,7 @@
     {
       "Id": "2818104-876106005-825374777",
       "NickName": "Reshyniheda",
-      "FirmwareVersion": "2.0.0.4",
+      "FirmwareVersion": "2.0.0.5",
       "RegisteredAt": "132838808759884393",
       "LastPortName": "COM19",
       "IsGateway": false,

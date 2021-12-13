@@ -182,6 +182,11 @@ public class SerialProcessorService : IDisposable
                 }
                 else if (bodyCase.Equals(UartResponse.BodyOneofCase.LoraMessage))
                 {
+                    if (!response.LoraMessage.Success)
+                    {
+                        _logger.LogInformation("[{Name}] LoRa RX error!", port.PortName);
+                        return;
+                    }
                     var snr = response.LoraMessage.Snr;
                     var rssi = (Int16)response.LoraMessage.Rssi;
                     _logger.LogInformation("[{Name}] LoRa RX snr: {SNR} rssi: {RSSI}", port.PortName, snr, rssi);
