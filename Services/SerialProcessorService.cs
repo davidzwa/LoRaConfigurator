@@ -164,6 +164,7 @@ public class SerialProcessorService : IDisposable
                     var device = await _store.GetOrAddDevice(new Device
                     {
                         Id = ConvertDeviceId(_lastBootMessage?.DeviceIdentifier),
+                        FirmwareVersion = ConvertFirmwareVersion(_lastBootMessage?.FirmwareVersion),
                         IsGateway = false,
                         LastPortName = portName
                     });
@@ -187,6 +188,13 @@ public class SerialProcessorService : IDisposable
         if (spec == null) return "";
 
         return $"{spec.Id0}-{spec.Id1}-{spec.Id2}";
+    }
+
+    public string ConvertFirmwareVersion(Version? version)
+    {
+        if (version == null) return "";
+        
+        return $"{version.Major}.{version.Minor}.{version.Patch}.{version.Revision}";
     }
 
     private async Task<byte[]?> WaitBuffer(string portName, CancellationToken cancellationToken)

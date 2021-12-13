@@ -11,6 +11,7 @@
     {
       "Id": "4522035-876106006-825374777",
       "NickName": "MotherShip",
+      "FirmwareVersion": null,
       "RegisteredAt": "132835343136590640",
       "LastPortName": "COM3",
       "IsGateway": false,
@@ -19,8 +20,27 @@
     {
       "Id": "4456526-808997123-808661810",
       "NickName": "Saeposezhijy",
+      "FirmwareVersion": null,
       "RegisteredAt": "132835489004210116",
       "LastPortName": "COM4",
+      "IsGateway": false,
+      "Meta": null
+    },
+    {
+      "Id": "2818104-876106005-825374777",
+      "NickName": "Kibyjiqiko",
+      "FirmwareVersion": "2.0.0.3",
+      "RegisteredAt": "132838669737723469",
+      "LastPortName": "COM19",
+      "IsGateway": false,
+      "Meta": null
+    },
+    {
+      "Id": "2293795-876106005-825374777",
+      "NickName": "Ritaekaesaete",
+      "FirmwareVersion": "2.0.0.2",
+      "RegisteredAt": "132838680900489570",
+      "LastPortName": "COM21",
       "IsGateway": false,
       "Meta": null
     }

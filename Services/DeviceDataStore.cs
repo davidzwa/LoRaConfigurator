@@ -41,12 +41,10 @@ public class DeviceDataStore
             WriteIndented = true
         });
 
-        var stream = File.OpenWrite(path);
-        await stream.WriteAsync(serializedBlob);
-        stream.Close();
+        await File.WriteAllBytesAsync(path, serializedBlob);
     }
 
-    public Device GetDevice(string deviceId, bool throwIfNotFound = false)
+    public Device? GetDevice(string deviceId, bool throwIfNotFound = false)
     {
         var existingDevice = _store?.Devices?.Find(d => d.Id == deviceId);
         if (existingDevice == null && throwIfNotFound)
@@ -59,10 +57,10 @@ public class DeviceDataStore
         return _store?.Devices?.Find(d => d.LastPortName == portName);
     }
 
-    public async Task<Device> MarkDeviceGateway(string deviceId)
+    public async Task<Device?> MarkDeviceGateway(string deviceId)
     {
         var gatewayDevice = GetDevice(deviceId, true);
-        gatewayDevice.IsGateway = true;
+        gatewayDevice!.IsGateway = true;
 
         _store?.Devices.ForEach(d =>
         {
@@ -74,10 +72,11 @@ public class DeviceDataStore
         return gatewayDevice;
     }
 
-    public async Task<Device> UpdateDevice(string deviceId, Device newDevice)
+    public async Task<Device?> UpdateDevice(string deviceId, Device newDevice)
     {
         var existingDevice = GetDevice(deviceId, true);
-        existingDevice.Meta = newDevice.Meta;
+        existingDevice!.Meta = newDevice.Meta;
+        existingDevice.FirmwareVersion = newDevice.FirmwareVersion;
         existingDevice.LastPortName = newDevice.LastPortName;
         existingDevice.IsGateway = newDevice.IsGateway;
 
@@ -85,7 +84,7 @@ public class DeviceDataStore
         return existingDevice;
     }
 
-    public async Task<Device> GetOrAddDevice(Device device)
+    public async Task<Device?> GetOrAddDevice(Device device)
     {
         if (_store == null) await LoadStore();
 
