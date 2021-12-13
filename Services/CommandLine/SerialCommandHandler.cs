@@ -1,4 +1,4 @@
-﻿using System.CommandLine;
+using System.CommandLine;
 using System.CommandLine.Invocation;
 using LoraGateway.Services.Extensions;
 
@@ -25,6 +25,8 @@ public class BootCommandHandler
     {
         var command = new Command("period");
         command.AddAlias("p");
+        command.AddArgument(new Argument<uint>("period"));
+        command.AddArgument(new Argument<uint>("count"));
         command.Handler = CommandHandler.Create(
             (uint period, uint count) =>
             {
