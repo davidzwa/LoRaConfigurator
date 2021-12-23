@@ -194,7 +194,7 @@ public class SerialProcessorService : IDisposable
                     var snr = response.LoraReceiveMessage.Snr;
                     var rssi = (Int16)response.LoraReceiveMessage.Rssi;
                     var sequenceNumber = response.LoraReceiveMessage.SequenceNumber;
-                    _logger.LogInformation("[{Name}] LoRa RX snr: {SNR} rssi: {RSSI} sed-id:{Index}", 
+                    _logger.LogInformation("[{Name}] LoRa RX snr: {SNR} rssi: {RSSI} sequence-id:{Index}", 
                         port.PortName,
                         snr, rssi, sequenceNumber);
                 }
