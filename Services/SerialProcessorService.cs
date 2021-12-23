@@ -31,7 +31,10 @@ public class SerialProcessorService : IDisposable
 
     public void Dispose()
     {
-        foreach (var port in SerialPorts) DisposePort(port.PortName);
+        foreach (var port in SerialPorts)
+        {
+            // DisposePort(port.PortName);
+        }
     }
 
     public bool HasPort(string portName)
@@ -112,13 +115,13 @@ public class SerialProcessorService : IDisposable
         }
 
         var payload = message.ToByteArray();
-        var protoMessageBuffer = (new[] {(byte) payload.Length}).Concat(payload);
+        var protoMessageBuffer = (new[] { (byte)payload.Length }).Concat(payload);
         var messageBuffer = Cobs.Encode(protoMessageBuffer).ToArray();
-        var len = new[] {(byte) messageBuffer.Length};
-        byte[] transmitBuffer = new[] {startByte}
+        var len = new[] { (byte)messageBuffer.Length };
+        byte[] transmitBuffer = new[] { startByte }
             .Concat(len)
             .Concat(messageBuffer)
-            .Concat(new[] {endByte})
+            .Concat(new[] { endByte })
             .ToArray();
 
         _logger.LogInformation("TX {Message}", SerialUtil.ByteArrayToString(transmitBuffer));
@@ -172,7 +175,7 @@ public class SerialProcessorService : IDisposable
                         IsGateway = false,
                         LastPortName = portName
                     });
-                    
+
                     _logger.LogInformation("[{Name}] heart beat {DeviceId}", device?.NickName, deviceId);
                 }
                 else if (bodyCase.Equals(UartResponse.BodyOneofCase.AckMessage))
@@ -180,16 +183,20 @@ public class SerialProcessorService : IDisposable
                     var ackNumber = response.AckMessage.SequenceNumber;
                     _logger.LogInformation("[{Name}] ACK {Int}", port.PortName, ackNumber);
                 }
-                else if (bodyCase.Equals(UartResponse.BodyOneofCase.LoraMessage))
+                else if (bodyCase.Equals(UartResponse.BodyOneofCase.LoraReceiveMessage))
                 {
-                    if (!response.LoraMessage.Success)
+                    if (!response.LoraReceiveMessage.Success)
                     {
                         _logger.LogInformation("[{Name}] LoRa RX error!", port.PortName);
                         return;
                     }
-                    var snr = response.LoraMessage.Snr;
-                    var rssi = (Int16)response.LoraMessage.Rssi;
-                    _logger.LogInformation("[{Name}] LoRa RX snr: {SNR} rssi: {RSSI}", port.PortName, snr, rssi);
+
+                    var snr = response.LoraReceiveMessage.Snr;
+                    var rssi = (Int16)response.LoraReceiveMessage.Rssi;
+                    var sequenceNumber = response.LoraReceiveMessage.SequenceNumber;
+                    _logger.LogInformation("[{Name}] LoRa RX snr: {SNR} rssi: {RSSI} sed-id:{Index}", 
+                        port.PortName,
+                        snr, rssi, sequenceNumber);
                 }
             }
         }
