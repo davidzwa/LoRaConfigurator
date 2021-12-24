@@ -9,6 +9,7 @@ public class SerialProcessorService : IDisposable
 {
     private readonly ILogger<SerialProcessorService> _logger;
     private readonly SelectedDeviceService _selectedDeviceService;
+    private readonly MeasurementsService _measurementsService;
     private readonly DeviceDataStore _store;
     private readonly byte endByte = 0x00;
 
@@ -19,11 +20,13 @@ public class SerialProcessorService : IDisposable
     public SerialProcessorService(
         DeviceDataStore store,
         SelectedDeviceService selectedDeviceService,
+        MeasurementsService measurementsService,
         ILogger<SerialProcessorService> logger
     )
     {
         _store = store;
         _selectedDeviceService = selectedDeviceService;
+        _measurementsService = measurementsService;
         _logger = logger;
     }
 
@@ -197,6 +200,13 @@ public class SerialProcessorService : IDisposable
                     var rssi = (Int16)response.LoraReceiveMessage.Rssi;
                     var sequenceNumber = response.LoraReceiveMessage.SequenceNumber;
                     var isMeasurement = response.LoraReceiveMessage.IsMeasurementFragment;
+
+                    await _measurementsService.AddMeasurement(sequenceNumber, snr, rssi);
+                    if (sequenceNumber > 60000)
+                    {
+                        _measurementsService.SetLocationText("");
+                    }
+                    
                     _logger.LogInformation("[{Name}] LoRa RX snr: {SNR} rssi: {RSSI} sequence-id:{Index} is-measurement:{IsMeasurement}", 
                         port.PortName,
                         snr, rssi, sequenceNumber, isMeasurement);

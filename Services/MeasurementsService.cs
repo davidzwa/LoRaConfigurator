@@ -1,9 +1,11 @@
-﻿namespace LoraGateway.Services;
+﻿using System.Text.Json;
+
+namespace LoraGateway.Services;
 
 public class MeasurementDto
 {
     public long TimeStamp { get; set; }
-    public int SequenceNumber { get; set; }
+    public uint SequenceNumber { get; set; }
     public uint Snr { get; set; }
     public int Rssi { get; set; }
 }
@@ -11,10 +13,11 @@ public class MeasurementDto
 public class MeasurementsService
 {
     private List<MeasurementDto> _measurementDtos = new();
+    private String _location = "";
     
     public string GetMeasurementFile()
     {
-        return Path.GetFullPath("../../../Data/measurement.txt", Directory.GetCurrentDirectory());
+        return Path.GetFullPath($"../../../Data/measurements{_location}.json", Directory.GetCurrentDirectory());
     }
     
 
@@ -37,7 +40,17 @@ public class MeasurementsService
         await EnsureSourceExists();
     }
 
-    public void AddMeasurement(int seq, uint snr, int rssi)
+    public void SetLocation(int x, int y)
+    {
+        _location = $"x{x}_y{y}";
+    }
+    
+    public void SetLocationText(string locationText)
+    {
+        _location = locationText.Trim().Replace(" ", "_");
+    }
+
+    public async Task AddMeasurement(uint seq, uint snr, int rssi)
     {
         _measurementDtos.Add(new()
         {
@@ -46,5 +59,9 @@ public class MeasurementsService
             Snr = snr,
             SequenceNumber = seq
         });
+
+        var jsonBlob = JsonSerializer.Serialize(_measurementDtos, new JsonSerializerOptions() {WriteIndented = true});
+        
+        await File.WriteAllTextAsync(GetMeasurementFile(), jsonBlob);
     }
 }

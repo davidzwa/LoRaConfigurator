@@ -8,16 +8,19 @@ public class SerialCommandHandler
 {
     private readonly ILogger _logger;
     private readonly SelectedDeviceService _selectedDeviceService;
+    private readonly MeasurementsService _measurementsService;
     private readonly SerialProcessorService _serialProcessorService;
 
     public SerialCommandHandler(
         ILogger<SerialCommandHandler> logger,
         SelectedDeviceService selectedDeviceService,
+        MeasurementsService measurementsService,
         SerialProcessorService serialProcessorService
     )
     {
         _logger = logger;
         _selectedDeviceService = selectedDeviceService;
+        _measurementsService = measurementsService;
         _serialProcessorService = serialProcessorService;
     }
 
@@ -54,9 +57,12 @@ public class SerialCommandHandler
         command.AddAlias("p");
         command.AddArgument(new Argument<uint>("period"));
         command.AddArgument(new Argument<uint>("count"));
+        command.AddArgument(new Argument<int>("x"));
+        command.AddArgument(new Argument<int>("y"));
         command.Handler = CommandHandler.Create(
-            (uint period, uint count) =>
+            (uint period, uint count, int x, int y) =>
             {
+                _measurementsService.SetLocation(x, y);
                 var selectedPortName = _selectedDeviceService.SelectedPortName;
                 _logger.LogInformation("Periodic command {port}", selectedPortName);
                 _serialProcessorService.SendPeriodicTransmitCommand(period, count, new byte[]
