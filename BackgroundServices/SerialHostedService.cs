@@ -10,6 +10,7 @@ public sealed class SerialHostedService : IHostedService
     private readonly ILogger _logger;
     private readonly SerialWatcher _serialPortWatcher;
     private readonly SerialProcessorService _serialService;
+    private readonly MeasurementsService _measurementsService;
     private readonly DeviceDataStore _store;
 
     public SerialHostedService(
@@ -17,12 +18,14 @@ public sealed class SerialHostedService : IHostedService
         DeviceDataStore store,
         SerialWatcher serialPortWatcher,
         SerialProcessorService serialService,
+        MeasurementsService measurementsService,
         IHostApplicationLifetime appLifetime)
     {
         _logger = logger;
         _store = store;
         _serialPortWatcher = serialPortWatcher;
         _serialService = serialService;
+        _measurementsService = measurementsService;
         _appLifetime = appLifetime;
     }
 
@@ -30,6 +33,7 @@ public sealed class SerialHostedService : IHostedService
     {
         // Load data store
         await _store.LoadStore();
+        _measurementsService.InitMeasurements();
 
         // Initiate the event watchers
         _serialPortWatcher.Initiate();
