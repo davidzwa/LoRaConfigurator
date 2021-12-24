@@ -13,7 +13,7 @@
       "NickName": "MotherShip",
       "FirmwareVersion": null,
       "RegisteredAt": "132835343136590640",
-      "LastPortName": "COM3",
+      "LastPortName": null,
       "IsGateway": false,
       "Meta": null
     },
@@ -22,7 +22,7 @@
       "NickName": "Saeposezhijy",
       "FirmwareVersion": null,
       "RegisteredAt": "132835489004210116",
-      "LastPortName": "COM4",
+      "LastPortName": null,
       "IsGateway": false,
       "Meta": null
     },
@@ -50,6 +50,24 @@
       "FirmwareVersion": "2.0.0.9",
       "RegisteredAt": "132838808759884393",
       "LastPortName": "COM6",
+      "IsGateway": false,
+      "Meta": null
+    },
+    {
+      "Id": "4784163-808997123-808661810",
+      "NickName": "Qepyshavaely",
+      "FirmwareVersion": "2.0.0.9",
+      "RegisteredAt": "132848143947603040",
+      "LastPortName": "COM4",
+      "IsGateway": false,
+      "Meta": null
+    },
+    {
+      "Id": "5570643-859328791-892940854",
+      "NickName": "Humatameha",
+      "FirmwareVersion": "2.0.0.9",
+      "RegisteredAt": "132848144244789782",
+      "LastPortName": "COM3",
       "IsGateway": false,
       "Meta": null
     }
