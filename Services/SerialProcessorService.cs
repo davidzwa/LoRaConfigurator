@@ -70,7 +70,9 @@ public class SerialProcessorService : IDisposable
         }
         catch (IOException)
         {
-            _logger.LogWarning("Device IO error occurred");
+            _logger.LogWarning("Device IO error occurred. Retrying once after 2 sec");
+            Thread.Sleep(2000);
+            port.Open();
             return;
         }
         catch (UnauthorizedAccessException)
@@ -194,9 +196,10 @@ public class SerialProcessorService : IDisposable
                     var snr = response.LoraReceiveMessage.Snr;
                     var rssi = (Int16)response.LoraReceiveMessage.Rssi;
                     var sequenceNumber = response.LoraReceiveMessage.SequenceNumber;
-                    _logger.LogInformation("[{Name}] LoRa RX snr: {SNR} rssi: {RSSI} sequence-id:{Index}", 
+                    var isMeasurement = response.LoraReceiveMessage.IsMeasurementFragment;
+                    _logger.LogInformation("[{Name}] LoRa RX snr: {SNR} rssi: {RSSI} sequence-id:{Index} is-measurement:{IsMeasurement}", 
                         port.PortName,
-                        snr, rssi, sequenceNumber);
+                        snr, rssi, sequenceNumber, isMeasurement);
                 }
             }
         }
