@@ -1,4 +1,5 @@
 ﻿using System.IO.Ports;
+using System.Text;
 using Google.Protobuf;
 using LoraGateway.Models;
 using LoraGateway.Utils;
@@ -187,6 +188,12 @@ public class SerialProcessorService : IDisposable
                 {
                     var ackNumber = response.AckMessage.SequenceNumber;
                     _logger.LogInformation("[{Name}] ACK {Int}", port.PortName, ackNumber);
+                }
+                else if (bodyCase.Equals(UartResponse.BodyOneofCase.DebugMessage))
+                {
+                    var payload = response.DebugMessage.Payload;
+                    
+                    _logger.LogInformation("[{Name}, Debug] {Payload}", port.PortName, payload.ToStringUtf8());
                 }
                 else if (bodyCase.Equals(UartResponse.BodyOneofCase.LoraReceiveMessage))
                 {

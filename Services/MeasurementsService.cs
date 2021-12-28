@@ -12,9 +12,14 @@ public class MeasurementDto
 
 public class MeasurementsService
 {
+    private readonly ILogger<MeasurementsService> _logger;
     private List<MeasurementDto> _measurementDtos = new();
     private String _location = "";
     
+    public MeasurementsService(ILogger<MeasurementsService> logger)
+    {
+        _logger = logger;
+    }
     public string GetMeasurementFile()
     {
         return Path.GetFullPath($"../../../Data/measurements{_location}.json", Directory.GetCurrentDirectory());
@@ -52,6 +57,11 @@ public class MeasurementsService
 
     public async Task AddMeasurement(uint seq, uint snr, int rssi)
     {
+        if (String.IsNullOrEmpty(_location))
+        {
+            _logger.LogInformation("Skipped measurement as location was unset. SeqNr:{Seq}", seq);
+            return;
+        }
         _measurementDtos.Add(new()
         {
             TimeStamp = DateTimeOffset.Now.ToUnixTimeSeconds(),
