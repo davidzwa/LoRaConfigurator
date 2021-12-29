@@ -10,6 +10,7 @@ public class SerialProcessorService
 {
     private readonly ILogger<SerialProcessorService> _logger;
     private readonly SelectedDeviceService _selectedDeviceService;
+    private readonly MeasurementsService _measurementsService;
     private readonly DeviceDataStore _store;
     private readonly byte endByte = 0x00;
     private readonly byte startByte = 0xFF;
@@ -17,11 +18,13 @@ public class SerialProcessorService
     public SerialProcessorService(
         DeviceDataStore store,
         SelectedDeviceService selectedDeviceService,
+        MeasurementsService measurementsService,
         ILogger<SerialProcessorService> logger
     )
     {
         _store = store;
         _selectedDeviceService = selectedDeviceService;
+        _measurementsService = measurementsService;
         _logger = logger;
     }
 
@@ -252,8 +255,17 @@ public class SerialProcessorService
             var snr = response.LoraReceiveMessage.Snr;
             var rssi = (Int16)response.LoraReceiveMessage.Rssi;
             var sequenceNumber = response.LoraReceiveMessage.SequenceNumber;
-            _logger.LogInformation("[{Name}] LoRa RX snr: {SNR} rssi: {RSSI} sequence-id:{Index}",
-                portName, snr, rssi, sequenceNumber);
+            var isMeasurement = response.LoraReceiveMessage.IsMeasurementFragment;
+
+            await _measurementsService.AddMeasurement(sequenceNumber, snr, rssi);
+            if (sequenceNumber > 60000)
+            {
+                _measurementsService.SetLocationText("");
+            }
+                  
+            _logger.LogInformation("[{Name}] LoRa RX snr: {SNR} rssi: {RSSI} sequence-id:{Index} is-measurement:{IsMeasurement}", 
+                portName,
+                snr, rssi, sequenceNumber, isMeasurement);
         }
     }
 
