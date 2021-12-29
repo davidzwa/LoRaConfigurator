@@ -1,20 +1,18 @@
-﻿using System.IO.Ports;
+using System.IO.Ports;
+using System.Text;
 using Google.Protobuf;
 using LoraGateway.Models;
 using LoraGateway.Utils;
 
 namespace LoraGateway.Services;
 
-public class SerialProcessorService : IDisposable
+public class SerialProcessorService
 {
     private readonly ILogger<SerialProcessorService> _logger;
     private readonly SelectedDeviceService _selectedDeviceService;
     private readonly DeviceDataStore _store;
     private readonly byte endByte = 0x00;
-
-    private readonly int maxIdle = 500;
     private readonly byte startByte = 0xFF;
-    private BootMessage? _lastBootMessage;
 
     public SerialProcessorService(
         DeviceDataStore store,
@@ -28,14 +26,6 @@ public class SerialProcessorService : IDisposable
     }
 
     public List<SerialPort> SerialPorts { get; } = new();
-
-    public void Dispose()
-    {
-        foreach (var port in SerialPorts)
-        {
-            // DisposePort(port.PortName);
-        }
-    }
 
     public bool HasPort(string portName)
     {
@@ -56,16 +46,22 @@ public class SerialProcessorService : IDisposable
         port.Parity = Parity.None;
         port.DataBits = 8;
         port.StopBits = StopBits.One;
-        port.Handshake = Handshake.None;
+        port.Handshake = Handshake.RequestToSend;
+        port.DtrEnable = true;
+        port.RtsEnable = true;
+        port.NewLine = "\0";
+        port.Encoding = Encoding.UTF8;
 
         // Set the read/write timeouts
         port.ReadTimeout = 10000;
         port.WriteTimeout = 500;
 
-        port.ErrorReceived += OnPortError;
+        port.ErrorReceived += ((sender, args) => OnPortError((SerialPort)sender, args));
+        port.DataReceived += (async (sender, args) => await OnPortData((SerialPort)sender, args));
         try
         {
             port.Open();
+            port.BaseStream.Flush();
             _selectedDeviceService.SetPortIfUnset(portName);
         }
         catch (IOException)
@@ -87,22 +83,83 @@ public class SerialProcessorService : IDisposable
         return SerialPorts.Find(p => p.PortName.Equals(portName));
     }
 
-    public void DisconnectPort(string portName)
-    {
-        var serialPort = GetPort(portName);
-
-        // Fallback to other selected port in case this one was used
-        var fallbackPort = SerialPorts.Find(p => !p.PortName.Equals(portName));
-        _selectedDeviceService.SwitchIfSet(portName, fallbackPort?.PortName);
-
-        serialPort?.Close();
-        SerialPorts.Remove(serialPort);
-        _logger.LogInformation("Disconnected serial port {PortName}", portName);
-    }
-
-    public void OnPortError(object subject, SerialErrorReceivedEventArgs e)
+    public void OnPortError(SerialPort subject, SerialErrorReceivedEventArgs e)
     {
         _logger.LogWarning("Serial error {ErrorType}", e.EventType);
+    }
+
+    public async Task OnPortData(SerialPort port, SerialDataReceivedEventArgs d)
+    {
+        if (port.BytesToRead == 0 || d.EventType == SerialData.Eof)
+        {
+            _logger.LogDebug("EOF");
+            return;
+        }
+
+        var readyBytes = port.BytesToRead;
+        List<byte> buffer = new List<byte>();
+        bool packetWaitingBytes = true;
+        try
+        {
+            while (packetWaitingBytes)
+            {
+                var newByte = (byte)port.ReadByte();
+                buffer.Add(newByte);
+                packetWaitingBytes = newByte != 0x00;
+            }
+        }
+        catch (TimeoutException)
+        {
+            _logger.LogDebug("Read timeout");
+            return;
+        }
+        catch (OperationCanceledException)
+        {
+            _logger.LogWarning("Serial closed");
+            return;
+        }
+        catch (InvalidOperationException)
+        {
+            _logger.LogError("Invalid operation on Serial port. Closing");
+            return;
+        }
+        catch (Exception e)
+        {
+            _logger.LogError("Serial port error. Closing {Error}", e.Message);
+            DisconnectPort(port.PortName);
+            DisposePort(port.PortName);
+            return;
+        }
+
+        if (buffer.Count <= 3)
+        {
+            _logger.LogWarning("Illegal packet length <3. Skipping");
+            return;
+        }
+
+        var listBuffer = buffer.ToList();
+        var hasStart = listBuffer.FindIndex(val => val == 0xFF);
+        var dataLength = listBuffer[hasStart + 1];
+        var hasEnd = listBuffer.FindIndex(val => val == 0x00);
+
+        // Packet bytes: Start, Length, ...Data..., End
+        var overhead = 3;
+        if (dataLength + overhead != listBuffer.Count)
+        {
+            _logger.LogWarning("Packet length {DataCount} did not match buffer length {PacketLength}. Skipping",
+                listBuffer.Count, dataLength + overhead);
+            return;
+        }
+
+        listBuffer.RemoveAt(0);
+        listBuffer.RemoveAt(1);
+        listBuffer.RemoveAt(listBuffer.Count - 1);
+
+        _logger.LogInformation("Data [{Port}] Bytes [{Bytes}] Expected [{dataLength}] Start [{Start}] End [{End}] LeftOver [{LeftOver}]",
+            port.PortName, listBuffer.Count, dataLength, hasStart, hasEnd, port.BytesToRead);
+        _logger.LogInformation(SerialUtil.ByteArrayToString(listBuffer.ToArray()));
+
+        await ProcessMessage(port.PortName, listBuffer.ToArray());
     }
 
     public void WriteMessage(UartCommand message)
@@ -135,122 +192,85 @@ public class SerialProcessorService : IDisposable
         port.Write(transmitBuffer, 0, transmitBuffer.Length);
     }
 
-    public async Task MessageProcessor(string portName, CancellationToken cancellationToken)
+    private async Task ProcessMessage(string portName, byte[] buffer)
     {
+        _logger.LogDebug("Serial decoding COBS buffer ({ByteLength})", buffer.Length);
+        var outputBuffer = Cobs.Decode(buffer);
+        if (outputBuffer.Count == 0)
+        {
+            _logger.LogError("COBS output empty {HexString}", SerialUtil.ByteArrayToString(buffer));
+            return;
+        }
+
+        // Remove COBS overhead of 2
+        outputBuffer.RemoveAt(0);
+        outputBuffer.RemoveAt(outputBuffer.Count - 1);
+
+        var decodedBuffer = outputBuffer.ToArray();
+        UartResponse response;
         try
         {
-            while (!cancellationToken.IsCancellationRequested)
+            response = UartResponse.Parser.ParseFrom(decodedBuffer);
+        }
+        catch (InvalidProtocolBufferException e)
+        {
+            _logger.LogInformation(SerialUtil.ByteArrayToString(decodedBuffer));
+            _logger.LogError("Protobuf decoding error {Error}. Skipping packet.", e.Message);
+            return;
+        }
+
+        var bodyCase = response.BodyCase;
+        if (bodyCase.Equals(UartResponse.BodyOneofCase.BootMessage))
+        {
+            var deviceId = response.BootMessage.DeviceIdentifier.DeviceIdAsString();
+            var firmwareVersion = response.BootMessage.GetFirmwareAsString();
+            var device = await _store.GetOrAddDevice(new Device
             {
-                var port = GetPort(portName);
-                if (port == null) throw new Exception("Serial Port was not created, call ConnectPort first");
+                Id = deviceId,
+                FirmwareVersion = firmwareVersion,
+                IsGateway = false,
+                LastPortName = portName
+            });
 
-                var buffer = await WaitBuffer(portName, cancellationToken);
-                // We had an error so we loop to trigger read timeout to start again
-                if (buffer == null) continue;
-
-                _logger.LogDebug("Serial decoding COBS buffer ({ByteLength})", buffer.Length);
-                var outputBuffer = Cobs.Decode(buffer);
-                if (outputBuffer.Count == 0)
-                {
-                    _logger.LogError("COBS output empty {HexString}", SerialUtil.ByteArrayToString(buffer));
-                    continue;
-                }
-
-                outputBuffer.RemoveAt(0);
-                outputBuffer.RemoveAt(outputBuffer.Count - 1);
-
-                var decodedBuffer = outputBuffer.ToArray();
-                var response = UartResponse.Parser.ParseFrom(decodedBuffer);
-                var bodyCase = response.BodyCase;
-                if (bodyCase.Equals(UartResponse.BodyOneofCase.BootMessage))
-                {
-                    _lastBootMessage = response.BootMessage;
-
-                    var deviceId = response.BootMessage.DeviceIdentifier.DeviceIdAsString();
-                    var firmwareVersion = response.BootMessage.GetFirmwareAsString();
-                    var device = await _store.GetOrAddDevice(new Device
-                    {
-                        Id = deviceId,
-                        FirmwareVersion = firmwareVersion,
-                        IsGateway = false,
-                        LastPortName = portName
-                    });
-
-                    _logger.LogInformation("[{Name}] heart beat {DeviceId}", device?.NickName, deviceId);
-                }
-                else if (bodyCase.Equals(UartResponse.BodyOneofCase.AckMessage))
-                {
-                    var ackNumber = response.AckMessage.SequenceNumber;
-                    _logger.LogInformation("[{Name}] ACK {Int}", port.PortName, ackNumber);
-                }
-                else if (bodyCase.Equals(UartResponse.BodyOneofCase.LoraReceiveMessage))
-                {
-                    if (!response.LoraReceiveMessage.Success)
-                    {
-                        _logger.LogInformation("[{Name}] LoRa RX error!", port.PortName);
-                        return;
-                    }
-
-                    var snr = response.LoraReceiveMessage.Snr;
-                    var rssi = (Int16)response.LoraReceiveMessage.Rssi;
-                    var sequenceNumber = response.LoraReceiveMessage.SequenceNumber;
-                    _logger.LogInformation("[{Name}] LoRa RX snr: {SNR} rssi: {RSSI} sequence-id:{Index}", 
-                        port.PortName,
-                        snr, rssi, sequenceNumber);
-                }
-            }
+            _logger.LogInformation("[{Name}] heart beat {DeviceId}", device?.NickName, deviceId);
         }
-        catch (InvalidOperationException)
+        else if (bodyCase.Equals(UartResponse.BodyOneofCase.AckMessage))
         {
-            _logger.LogError("Invalid operation on Serial port. Closing");
+            var ackNumber = response.AckMessage.SequenceNumber;
+            _logger.LogInformation("[{Name}] ACK {Int}", portName, ackNumber);
         }
-
-        DisconnectPort(portName);
-        DisposePort(portName);
-    }
-
-    private async Task<byte[]?> WaitBuffer(string portName, CancellationToken cancellationToken)
-    {
-        var serialPort = GetPort(portName);
-        if (serialPort == null) return null;
-
-        try
+        else if (bodyCase.Equals(UartResponse.BodyOneofCase.LoraReceiveMessage))
         {
-            var data = serialPort.ReadByte();
-            if (data == 0xFF)
+            if (!response.LoraReceiveMessage.Success)
             {
-                var dataLength = serialPort.ReadByte();
-                _logger.LogDebug("Serial packet started, expecting {Count} bytes ", dataLength);
-
-                var buffer = new byte[dataLength];
-                var currentIdle = 0;
-                while (serialPort.BytesToRead != dataLength || currentIdle > maxIdle)
-                {
-                    if (cancellationToken.IsCancellationRequested) return null;
-
-                    currentIdle++;
-                    Thread.Sleep(1);
-                }
-
-                await serialPort.BaseStream.ReadAsync(buffer, 0, dataLength, cancellationToken);
-                return buffer;
+                _logger.LogInformation("[{Name}] LoRa RX error!", portName);
+                return;
             }
-        }
-        catch (TimeoutException)
-        {
-            _logger.LogDebug("Read timeout");
-        }
-        catch (OperationCanceledException)
-        {
-            _logger.LogWarning("Serial closed");
-        }
 
-        return null;
+            var snr = response.LoraReceiveMessage.Snr;
+            var rssi = (Int16)response.LoraReceiveMessage.Rssi;
+            var sequenceNumber = response.LoraReceiveMessage.SequenceNumber;
+            _logger.LogInformation("[{Name}] LoRa RX snr: {SNR} rssi: {RSSI} sequence-id:{Index}",
+                portName, snr, rssi, sequenceNumber);
+        }
     }
 
     public void DisposePort(string portName)
     {
         var port = GetPort(portName);
         port?.Dispose();
+    }
+
+    public void DisconnectPort(string portName)
+    {
+        var serialPort = GetPort(portName);
+
+        // Fallback to other selected port in case this one was used
+        var fallbackPort = SerialPorts.Find(p => !p.PortName.Equals(portName));
+        _selectedDeviceService.SwitchIfSet(portName, fallbackPort?.PortName);
+
+        serialPort?.Close();
+        SerialPorts.Remove(serialPort);
+        _logger.LogInformation("Disconnected serial port {PortName}", portName);
     }
 }
