@@ -29,10 +29,27 @@ public class SerialCommandHandler
         rootCommand.Add(GetPeriodicSendCommand());
         rootCommand.Add(GetBootCommand());
         rootCommand.Add(GetUnicastSendCommand());
+        rootCommand.Add(DeviceConfigurationCommand());
 
         return rootCommand;
     }
 
+    public Command DeviceConfigurationCommand()
+    {
+        var command = new Command("device");
+        command.AddAlias("d");
+        command.AddArgument(new Argument<bool>("enableAlwaysSend"));
+        command.AddArgument(new Argument<uint>("alwaysSendPeriod"));
+        command.Handler = CommandHandler.Create(
+            (bool enableAlwaysSend, uint alwaysSendPeriod) =>
+            {
+                var selectedPortName = _selectedDeviceService.SelectedPortName;
+                _logger.LogInformation("Unicast command {port}", selectedPortName);
+                _serialProcessorService.SendDeviceConfiguration(enableAlwaysSend, alwaysSendPeriod);
+            });
+        return command;
+    }
+    
     public Command GetUnicastSendCommand()
     {
         var command = new Command("unicast");

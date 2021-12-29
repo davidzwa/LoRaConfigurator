@@ -45,6 +45,25 @@ public static class SerialProcessingExtensions
         processorService.WriteMessage(command);
     }
 
+    public static void SendDeviceConfiguration(
+        this SerialProcessorService processorService,
+        bool enableAlwaysSend,
+        uint alwaysSendPeriod
+    )
+    {
+        var command = new UartCommand
+        {
+            DeviceConfiguration = 
+                new ()
+                {
+                    AlwaysSendPeriod = alwaysSendPeriod,
+                    EnableAlwaysSend = enableAlwaysSend
+                }
+        };
+
+        processorService.WriteMessage(command);
+    }
+    
     public static void SendBootCommand(
         this SerialProcessorService processorService)
     {
