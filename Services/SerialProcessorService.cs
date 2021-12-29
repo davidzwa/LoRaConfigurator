@@ -244,16 +244,22 @@ public class SerialProcessorService : IDisposable
             if (data == 0xFF)
             {
                 var dataLength = serialPort.ReadByte();
-                _logger.LogDebug("Serial packet started, expecting {Count} bytes ", dataLength);
+                _logger.LogInformation("Serial packet started, expecting {Count} bytes ", dataLength);
 
                 var buffer = new byte[dataLength];
                 var currentIdle = 0;
-                while (serialPort.BytesToRead != dataLength || currentIdle > maxIdle)
+                while (serialPort.BytesToRead != dataLength && currentIdle < maxIdle)
                 {
                     if (cancellationToken.IsCancellationRequested) return null;
 
                     currentIdle++;
                     Thread.Sleep(1);
+                }
+
+                if (currentIdle > maxIdle)
+                {
+                    _logger.LogError("Packet exceeded max idle of 500ms");
+                    return null;
                 }
 
                 await serialPort.BaseStream.ReadAsync(buffer, 0, dataLength, cancellationToken);
@@ -262,7 +268,7 @@ public class SerialProcessorService : IDisposable
         }
         catch (TimeoutException)
         {
-            _logger.LogDebug("Read timeout");
+            _logger.LogInformation("Read timeout");
         }
         catch (OperationCanceledException)
         {
