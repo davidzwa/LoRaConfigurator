@@ -66,7 +66,9 @@ public class SerialProcessorService
         }
         catch (IOException)
         {
-            _logger.LogWarning("Device IO error occurred");
+            _logger.LogWarning("Device IO error occurred. Retrying once after 2 sec");
+            Thread.Sleep(2000);
+            port.Open();
             return;
         }
         catch (UnauthorizedAccessException)
