@@ -218,6 +218,10 @@ public class SerialProcessorService : IDisposable
                         port.PortName,
                         snr, rssi, sequenceNumber, isMeasurement);
                 }
+                else
+                {
+                    _logger.LogInformation("Got a different message");
+                }
             }
         }
         catch (InvalidOperationException)
