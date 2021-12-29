@@ -44,7 +44,7 @@ public class SerialCommandHandler
             (bool enableAlwaysSend, uint alwaysSendPeriod) =>
             {
                 var selectedPortName = _selectedDeviceService.SelectedPortName;
-                _logger.LogInformation("Unicast command {port}", selectedPortName);
+                _logger.LogInformation("Device config {port}", selectedPortName);
                 _serialProcessorService.SendDeviceConfiguration(enableAlwaysSend, alwaysSendPeriod);
             });
         return command;
