@@ -349,3 +349,5 @@ healthchecksdb
 MigrationBackup/
 
 .idea/
+
+Data/measurements.json
