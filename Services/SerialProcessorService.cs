@@ -65,6 +65,7 @@ public class SerialProcessorService : IDisposable
         try
         {
             port.Open();
+            port.BaseStream.Flush();
             _selectedDeviceService.SetPortIfUnset(portName);
         }
         catch (IOException)
@@ -217,7 +218,8 @@ public class SerialProcessorService : IDisposable
             if (data == 0xFF)
             {
                 var dataLength = serialPort.ReadByte();
-                _logger.LogDebug("Serial packet started, expecting {Count} bytes ", dataLength);
+                _logger.LogInformation("[{Port}] Serial packet started, expecting {Count} bytes ", portName, dataLength);
+                return null;
 
                 var buffer = new byte[dataLength];
                 var currentIdle = 0;
@@ -232,6 +234,7 @@ public class SerialProcessorService : IDisposable
 
                 if (currentIdle > maxIdle)
                 {
+                    _logger.LogWarning("Flushing UART due to timed out packet end");
                     await serialPort.BaseStream.FlushAsync();
                     return null;
                 }
