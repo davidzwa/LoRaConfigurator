@@ -273,6 +273,10 @@ public class SerialProcessorService
                 portName,
                 snr, rssi, sequenceNumber, isMeasurement);
         }
+        else
+        {
+            _logger.LogInformation("Got an unknown message");
+        }
     }
 
     public void DisposePort(string portName)
