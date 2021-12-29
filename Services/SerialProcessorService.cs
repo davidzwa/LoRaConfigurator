@@ -12,9 +12,8 @@ public class SerialProcessorService : IDisposable
     private readonly DeviceDataStore _store;
     private readonly byte endByte = 0x00;
 
-    private readonly int maxIdle = 500;
+    private readonly int maxIdle = 100;
     private readonly byte startByte = 0xFF;
-    private BootMessage? _lastBootMessage;
 
     public SerialProcessorService(
         DeviceDataStore store,
@@ -164,8 +163,6 @@ public class SerialProcessorService : IDisposable
                 var bodyCase = response.BodyCase;
                 if (bodyCase.Equals(UartResponse.BodyOneofCase.BootMessage))
                 {
-                    _lastBootMessage = response.BootMessage;
-
                     var deviceId = response.BootMessage.DeviceIdentifier.DeviceIdAsString();
                     var firmwareVersion = response.BootMessage.GetFirmwareAsString();
                     var device = await _store.GetOrAddDevice(new Device
@@ -224,12 +221,19 @@ public class SerialProcessorService : IDisposable
 
                 var buffer = new byte[dataLength];
                 var currentIdle = 0;
-                while (serialPort.BytesToRead != dataLength || currentIdle > maxIdle)
+                while (serialPort.BytesToRead != dataLength)
                 {
+                    if (currentIdle > maxIdle) break;
                     if (cancellationToken.IsCancellationRequested) return null;
 
                     currentIdle++;
                     Thread.Sleep(1);
+                }
+
+                if (currentIdle > maxIdle)
+                {
+                    await serialPort.BaseStream.FlushAsync();
+                    return null;
                 }
 
                 await serialPort.BaseStream.ReadAsync(buffer, 0, dataLength, cancellationToken);
