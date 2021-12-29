@@ -71,13 +71,9 @@ public class SerialWatcher : IDisposable
 
         var innerCancellation = new CancellationTokenSource();
         _serialProcessorService.ConnectPort(portName);
-        var task = Task.Run(() =>
-                _serialProcessorService.MessageProcessor(portName, innerCancellation.Token)
-            , innerCancellation.Token);
 
         _serialProcessors.Add(new CancellableMessageProcessor
         {
-            MessageProcessor = task,
             PortName = portName,
             CancellationTokenSource = innerCancellation
         });

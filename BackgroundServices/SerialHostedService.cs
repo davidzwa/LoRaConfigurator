@@ -53,7 +53,6 @@ public sealed class SerialHostedService : IHostedService
 
     public Task StopAsync(CancellationToken cancellationToken)
     {
-        _serialService.Dispose();
         _serialPortWatcher.Dispose();
         return Task.CompletedTask;
     }
