@@ -244,6 +244,12 @@ public class SerialProcessorService
             var ackNumber = response.AckMessage.SequenceNumber;
             _logger.LogInformation("[{Name}] ACK {Int}", portName, ackNumber);
         }
+        else if (bodyCase.Equals(UartResponse.BodyOneofCase.DebugMessage))
+        {
+            var payload = response.DebugMessage.Payload;
+                    
+            _logger.LogInformation("[{Name}, Debug] {Payload}", portName, payload.ToStringUtf8());
+        }
         else if (bodyCase.Equals(UartResponse.BodyOneofCase.LoraReceiveMessage))
         {
             if (!response.LoraReceiveMessage.Success)
