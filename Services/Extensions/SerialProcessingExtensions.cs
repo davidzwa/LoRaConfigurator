@@ -53,12 +53,12 @@ public static class SerialProcessingExtensions
     {
         var command = new UartCommand
         {
-            // DeviceConfiguration = 
-            //     new ()
-            //     {
-            //         AlwaysSendPeriod = alwaysSendPeriod,
-            //         EnableAlwaysSend = enableAlwaysSend
-            //     }
+            DeviceConfiguration = 
+                new ()
+                {
+                    AlwaysSendPeriod = alwaysSendPeriod,
+                    EnableAlwaysSend = enableAlwaysSend
+                }
         };
 
         processorService.WriteMessage(command);
