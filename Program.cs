@@ -34,6 +34,7 @@ public static class PortChat
                 services.AddSingleton<SerialProcessorService>();
                 services.AddSingleton<SelectedDeviceService>();
                 services.AddSingleton<SerialWatcher>();
+                services.AddSingleton<MeasurementsService>();
                 services.AddHostedService<SerialHostedService>();
                 services.AddTransient<SerialCommandHandler>();
                 services.AddTransient<SelectDeviceCommandHandler>();
