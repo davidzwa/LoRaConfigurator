@@ -101,7 +101,6 @@ public class SerialProcessorService
             return;
         }
 
-        var readyBytes = port.BytesToRead;
         List<byte> buffer = new List<byte>();
         bool packetWaitingBytes = true;
         try
@@ -115,7 +114,7 @@ public class SerialProcessorService
         }
         catch (TimeoutException)
         {
-            _logger.LogDebug("Read timeout");
+            _logger.LogInformation("Read timeout");
             return;
         }
         catch (OperationCanceledException)
@@ -143,26 +142,30 @@ public class SerialProcessorService
         }
 
         var listBuffer = buffer.ToList();
-        var hasStart = listBuffer.FindIndex(val => val == 0xFF);
-        var dataLength = listBuffer[hasStart + 1];
+        var startByteIndex = listBuffer.FindIndex(val => val == 0xFF);
+        var dataLength = listBuffer[startByteIndex + 1];
         var hasEnd = listBuffer.FindIndex(val => val == 0x00);
 
         // Packet bytes: Start, Length, ...Data..., End
         var overhead = 3;
-        if (dataLength + overhead != listBuffer.Count)
+        if (dataLength + overhead < listBuffer.Count)
         {
-            _logger.LogWarning("Packet length {DataCount} did not match buffer length {PacketLength}. Skipping",
+            _logger.LogWarning("Packet length {DataCount} smaller than buffer length {PacketLength}. Skipping",
                 listBuffer.Count, dataLength + overhead);
             return;
         }
 
+        if (startByteIndex > 0) {
+            // Clear unknown bytes
+            listBuffer.RemoveRange(0, startByteIndex);
+        }
         listBuffer.RemoveAt(0);
         listBuffer.RemoveAt(1);
         listBuffer.RemoveAt(listBuffer.Count - 1);
 
-        _logger.LogInformation("Data [{Port}] Bytes [{Bytes}] Expected [{dataLength}] Start [{Start}] End [{End}] LeftOver [{LeftOver}]",
-            port.PortName, listBuffer.Count, dataLength, hasStart, hasEnd, port.BytesToRead);
-        _logger.LogInformation(SerialUtil.ByteArrayToString(listBuffer.ToArray()));
+        _logger.LogDebug("Data [{Port}] Bytes [{Bytes}] Expected [{dataLength}] Start [{Start}] End [{End}] LeftOver [{LeftOver}]",
+            port.PortName, listBuffer.Count, dataLength, startByteIndex, hasEnd, port.BytesToRead);
+        _logger.LogDebug(SerialUtil.ByteArrayToString(listBuffer.ToArray()));
 
         await ProcessMessage(port.PortName, listBuffer.ToArray());
     }
