@@ -73,4 +73,15 @@ public static class SerialProcessingExtensions
         };
         processorService.WriteMessage(command);
     }
+
+    public static void SendClearMeasurementsCommands(
+        this SerialProcessorService processorService)
+    {
+        
+        var command = new UartCommand
+        {
+            ClearMeasurementsCommand = new ClearMeasurementsCommand(){ SendBootAfter = true }
+        };
+        processorService.WriteMessage(command);
+    } 
 }

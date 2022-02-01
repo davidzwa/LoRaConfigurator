@@ -7,7 +7,7 @@ public class MeasurementDto
 {
     public long TimeStamp { get; set; }
     public uint SequenceNumber { get; set; }
-    public uint Snr { get; set; }
+    public int Snr { get; set; }
     public int Rssi { get; set; }
 }
 
@@ -81,7 +81,7 @@ public class MeasurementsService : IDisposable
         UpdateFileLock();
     }
 
-    public async Task AddMeasurement(uint seq, uint snr, int rssi)
+    public async Task AddMeasurement(uint seq, int snr, int rssi)
     {
         if (string.IsNullOrEmpty(_location))
         {

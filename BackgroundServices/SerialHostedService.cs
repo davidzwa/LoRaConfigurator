@@ -8,9 +8,9 @@ public sealed class SerialHostedService : IHostedService
 {
     private readonly IHostApplicationLifetime _appLifetime;
     private readonly ILogger _logger;
+    private readonly MeasurementsService _measurementsService;
     private readonly SerialWatcher _serialPortWatcher;
     private readonly SerialProcessorService _serialService;
-    private readonly MeasurementsService _measurementsService;
     private readonly DeviceDataStore _store;
 
     public SerialHostedService(

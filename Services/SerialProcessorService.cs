@@ -232,6 +232,8 @@ public class SerialProcessorService
         {
             var deviceId = response.BootMessage.DeviceIdentifier.DeviceIdAsString();
             var firmwareVersion = response.BootMessage.GetFirmwareAsString();
+            var measurementCount = response.BootMessage.MeasurementCount;
+            var measurementDisabled = response.BootMessage.MeasurementsDisabled;
             var device = await _store.GetOrAddDevice(new Device
             {
                 Id = deviceId,
@@ -240,7 +242,7 @@ public class SerialProcessorService
                 LastPortName = portName
             });
 
-            _logger.LogInformation("[{Name}] heart beat {DeviceId}", device?.NickName, deviceId);
+            _logger.LogInformation("[{Name}, MC:{Count}, MD:{Disabled}] heart beat {DeviceId}", device?.NickName, measurementCount, measurementDisabled, deviceId);
         }
         else if (bodyCase.Equals(UartResponse.BodyOneofCase.AckMessage))
         {
@@ -262,7 +264,7 @@ public class SerialProcessorService
             }
 
             var snr = response.LoraReceiveMessage.Snr;
-            var rssi = (Int16)response.LoraReceiveMessage.Rssi;
+            var rssi = response.LoraReceiveMessage.Rssi;
             var sequenceNumber = response.LoraReceiveMessage.SequenceNumber;
             var isMeasurement = response.LoraReceiveMessage.IsMeasurementFragment;
 
