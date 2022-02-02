@@ -268,15 +268,15 @@ public class SerialProcessorService
             var sequenceNumber = response.LoraReceiveMessage.SequenceNumber;
             var isMeasurement = response.LoraReceiveMessage.IsMeasurementFragment;
 
-            await _measurementsService.AddMeasurement(sequenceNumber, snr, rssi);
+            var result = await _measurementsService.AddMeasurement(sequenceNumber, snr, rssi);
             if (sequenceNumber > 60000)
             {
                 _measurementsService.SetLocationText("");
             }
                   
-            _logger.LogInformation("[{Name}] LoRa RX snr: {SNR} rssi: {RSSI} sequence-id:{Index} is-measurement:{IsMeasurement}", 
+            _logger.LogInformation("[{Name}] LoRa RX snr: {SNR} rssi: {RSSI} sequence-id:{Index} is-measurement:{IsMeasurement}, skipped:{Skipped}", 
                 portName,
-                snr, rssi, sequenceNumber, isMeasurement);
+                snr, rssi, sequenceNumber, isMeasurement, result);
         }
         else
         {

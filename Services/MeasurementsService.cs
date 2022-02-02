@@ -81,12 +81,12 @@ public class MeasurementsService : IDisposable
         UpdateFileLock();
     }
 
-    public async Task AddMeasurement(uint seq, int snr, int rssi)
+    public async Task<bool> AddMeasurement(uint seq, int snr, int rssi)
     {
         if (string.IsNullOrEmpty(_location))
         {
-            _logger.LogInformation("Skipped measurement as location was unset. SeqNr:{Seq}", seq);
-            return;
+            // _logger.LogInformation("Skipped measurement as location was unset. SeqNr:{Seq}", seq);
+            return false;
         }
 
         _measurementDtos.Add(new MeasurementDto
@@ -102,5 +102,7 @@ public class MeasurementsService : IDisposable
         if (_measurementFile == null) OpenFile(GetMeasurementFile());
 
         await _measurementFile.WriteAsync(blob);
+        
+        return true;
     }
 }
