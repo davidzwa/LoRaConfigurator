@@ -29,12 +29,27 @@ public class SerialCommandHandler
         rootCommand.Add(GetPeriodicSendCommand());
         rootCommand.Add(GetBootCommand());
         rootCommand.Add(GetUnicastSendCommand());
-        rootCommand.Add(DeviceConfigurationCommand());
+        rootCommand.Add(GetDeviceConfigurationCommand());
+        rootCommand.Add(GetClearMeasurementsCommand());
 
         return rootCommand;
     }
 
-    public Command DeviceConfigurationCommand()
+    public Command GetClearMeasurementsCommand()
+    {
+        var command = new Command("clear-measurements");
+        command.AddAlias("clc");
+        command.Handler = CommandHandler.Create(
+            () =>
+            {
+                var selectedPortName = _selectedDeviceService.SelectedPortName;
+                _logger.LogInformation("Clearing device measurements {port}", selectedPortName);
+                _serialProcessorService.SendClearMeasurementsCommands();
+            });
+        return command;
+    }
+    
+    public Command GetDeviceConfigurationCommand()
     {
         var command = new Command("device");
         command.AddAlias("d");
