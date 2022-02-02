@@ -1,5 +1,7 @@
 ﻿namespace LoraGateway.Utils;
 
+using LoRa;
+
 public static class ProtoDataUtils
 {
     private static string ConvertFirmwareVersion(Version? version)
@@ -13,7 +15,7 @@ public static class ProtoDataUtils
         return ConvertFirmwareVersion(response.FirmwareVersion);
     } 
     
-    public static string DeviceIdAsString(this DeviceId? spec)
+    public static string DeviceIdAsString(this DeviceId spec)
     {
         if (spec == null) return "";
         return $"{spec.Id0}-{spec.Id1}-{spec.Id2}";

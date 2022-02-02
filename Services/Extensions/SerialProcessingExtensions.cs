@@ -1,4 +1,5 @@
 ﻿using Google.Protobuf;
+using LoRa;
 
 namespace LoraGateway.Services.Extensions;
 
