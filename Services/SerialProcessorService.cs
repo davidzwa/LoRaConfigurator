@@ -1,6 +1,7 @@
 using System.IO.Ports;
 using System.Text;
 using Google.Protobuf;
+using LoRa;
 using LoraGateway.Models;
 using LoraGateway.Utils;
 
@@ -246,7 +247,7 @@ public class SerialProcessorService
         }
         else if (bodyCase.Equals(UartResponse.BodyOneofCase.AckMessage))
         {
-            var ackNumber = response.AckMessage.SequenceNumber;
+            var ackNumber = response.AckMessage.Code;
             _logger.LogInformation("[{Name}] ACK {Int}", portName, ackNumber);
         }
         else if (bodyCase.Equals(UartResponse.BodyOneofCase.DebugMessage))
@@ -255,18 +256,18 @@ public class SerialProcessorService
                     
             _logger.LogInformation("[{Name}, Debug] {Payload}", portName, payload.ToStringUtf8());
         }
-        else if (bodyCase.Equals(UartResponse.BodyOneofCase.LoraReceiveMessage))
+        else if (bodyCase.Equals(UartResponse.BodyOneofCase.LoraMeasurement))
         {
-            if (!response.LoraReceiveMessage.Success)
+            if (!response.LoraMeasurement.Success)
             {
                 _logger.LogInformation("[{Name}] LoRa RX error!", portName);
                 return;
             }
 
-            var snr = response.LoraReceiveMessage.Snr;
-            var rssi = response.LoraReceiveMessage.Rssi;
-            var sequenceNumber = response.LoraReceiveMessage.SequenceNumber;
-            var isMeasurement = response.LoraReceiveMessage.IsMeasurementFragment;
+            var snr = response.LoraMeasurement.Snr;
+            var rssi = response.LoraMeasurement.Rssi;
+            var sequenceNumber = response.LoraMeasurement.SequenceNumber;
+            var isMeasurement = response.LoraMeasurement.IsMeasurementFragment;
 
             var result = await _measurementsService.AddMeasurement(sequenceNumber, snr, rssi);
             if (sequenceNumber > 60000)
