@@ -13,7 +13,7 @@
       "NickName": "MotherShip",
       "FirmwareVersion": null,
       "RegisteredAt": "132835343136590640",
-      "LastPortName": null,
+      "LastPortName": "COM3",
       "IsGateway": false,
       "Meta": null
     },
@@ -65,7 +65,7 @@
     {
       "Id": "5570643-859328791-892940854",
       "NickName": "Humatameha",
-      "FirmwareVersion": "2.0.1.10",
+      "FirmwareVersion": "2.0.1.11",
       "RegisteredAt": "132848144244789782",
       "LastPortName": "COM3",
       "IsGateway": false,
