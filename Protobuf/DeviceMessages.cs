@@ -33,19 +33,19 @@ namespace LoRa {
             "CS5EZXZpY2VJZBIhCg9GaXJtd2FyZVZlcnNpb24YAiABKAsyCC5WZXJzaW9u",
             "Eg8KB0FwcE5hbWUYAyABKAkSGAoQTWVhc3VyZW1lbnRDb3VudBgEIAEoDRIc",
             "ChRNZWFzdXJlbWVudHNEaXNhYmxlZBgFIAEoCCIaCgpBY2tNZXNzYWdlEgwK",
-            "BENvZGUYASABKA0iHwoMRGVidWdNZXNzYWdlEg8KB3BheWxvYWQYASABKAwi",
-            "sgEKDFVhcnRSZXNwb25zZRIjCgtib290TWVzc2FnZRgBIAEoCzIMLkJvb3RN",
-            "ZXNzYWdlSAASIQoKYWNrTWVzc2FnZRgCIAEoCzILLkFja01lc3NhZ2VIABIr",
-            "Cg9sb3JhTWVhc3VyZW1lbnQYAyABKAsyEC5Mb3JhTWVhc3VyZW1lbnRIABIl",
-            "CgxkZWJ1Z01lc3NhZ2UYBCABKAsyDS5EZWJ1Z01lc3NhZ2VIAEIGCgRCb2R5",
-            "QgeqAgRMb1JhYgZwcm90bzM="));
+            "BENvZGUYASABKA0iLQoMRGVidWdNZXNzYWdlEgwKBENvZGUYASABKA0SDwoH",
+            "UGF5bG9hZBgCIAEoDCKyAQoMVWFydFJlc3BvbnNlEiMKC2Jvb3RNZXNzYWdl",
+            "GAEgASgLMgwuQm9vdE1lc3NhZ2VIABIhCgphY2tNZXNzYWdlGAIgASgLMgsu",
+            "QWNrTWVzc2FnZUgAEisKD2xvcmFNZWFzdXJlbWVudBgDIAEoCzIQLkxvcmFN",
+            "ZWFzdXJlbWVudEgAEiUKDGRlYnVnTWVzc2FnZRgEIAEoCzINLkRlYnVnTWVz",
+            "c2FnZUgAQgYKBEJvZHlCB6oCBExvUmFiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LoRa.FirmwareReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.LoraMeasurement), global::LoRa.LoraMeasurement.Parser, new[]{ "Size", "Rssi", "Snr", "SequenceNumber", "IsMeasurementFragment", "Success", "Payload" }, new[]{ "IsMeasurementFragment" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.BootMessage), global::LoRa.BootMessage.Parser, new[]{ "DeviceIdentifier", "FirmwareVersion", "AppName", "MeasurementCount", "MeasurementsDisabled" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.AckMessage), global::LoRa.AckMessage.Parser, new[]{ "Code" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DebugMessage), global::LoRa.DebugMessage.Parser, new[]{ "Payload" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DebugMessage), global::LoRa.DebugMessage.Parser, new[]{ "Code", "Payload" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.UartResponse), global::LoRa.UartResponse.Parser, new[]{ "BootMessage", "AckMessage", "LoraMeasurement", "DebugMessage" }, new[]{ "Body" }, null, null, null)
           }));
     }
@@ -1057,6 +1057,7 @@ namespace LoRa {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public DebugMessage(DebugMessage other) : this() {
+      code_ = other.code_;
       payload_ = other.payload_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -1067,8 +1068,20 @@ namespace LoRa {
       return new DebugMessage(this);
     }
 
-    /// <summary>Field number for the "payload" field.</summary>
-    public const int PayloadFieldNumber = 1;
+    /// <summary>Field number for the "Code" field.</summary>
+    public const int CodeFieldNumber = 1;
+    private uint code_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint Code {
+      get { return code_; }
+      set {
+        code_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "Payload" field.</summary>
+    public const int PayloadFieldNumber = 2;
     private pb::ByteString payload_ = pb::ByteString.Empty;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1094,6 +1107,7 @@ namespace LoRa {
       if (ReferenceEquals(other, this)) {
         return true;
       }
+      if (Code != other.Code) return false;
       if (Payload != other.Payload) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -1102,6 +1116,7 @@ namespace LoRa {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
+      if (Code != 0) hash ^= Code.GetHashCode();
       if (Payload.Length != 0) hash ^= Payload.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -1121,8 +1136,12 @@ namespace LoRa {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
+      if (Code != 0) {
+        output.WriteRawTag(8);
+        output.WriteUInt32(Code);
+      }
       if (Payload.Length != 0) {
-        output.WriteRawTag(10);
+        output.WriteRawTag(18);
         output.WriteBytes(Payload);
       }
       if (_unknownFields != null) {
@@ -1135,8 +1154,12 @@ namespace LoRa {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Code != 0) {
+        output.WriteRawTag(8);
+        output.WriteUInt32(Code);
+      }
       if (Payload.Length != 0) {
-        output.WriteRawTag(10);
+        output.WriteRawTag(18);
         output.WriteBytes(Payload);
       }
       if (_unknownFields != null) {
@@ -1149,6 +1172,9 @@ namespace LoRa {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
+      if (Code != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Code);
+      }
       if (Payload.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeBytesSize(Payload);
       }
@@ -1163,6 +1189,9 @@ namespace LoRa {
     public void MergeFrom(DebugMessage other) {
       if (other == null) {
         return;
+      }
+      if (other.Code != 0) {
+        Code = other.Code;
       }
       if (other.Payload.Length != 0) {
         Payload = other.Payload;
@@ -1182,7 +1211,11 @@ namespace LoRa {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 10: {
+          case 8: {
+            Code = input.ReadUInt32();
+            break;
+          }
+          case 18: {
             Payload = input.ReadBytes();
             break;
           }
@@ -1201,7 +1234,11 @@ namespace LoRa {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 10: {
+          case 8: {
+            Code = input.ReadUInt32();
+            break;
+          }
+          case 18: {
             Payload = input.ReadBytes();
             break;
           }
