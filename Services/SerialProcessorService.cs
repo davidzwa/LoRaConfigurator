@@ -253,8 +253,9 @@ public class SerialProcessorService
         else if (bodyCase.Equals(UartResponse.BodyOneofCase.DebugMessage))
         {
             var payload = response.DebugMessage.Payload;
+            var code = response.DebugMessage.Code;
                     
-            _logger.LogInformation("[{Name}, Debug] {Payload}", portName, payload.ToStringUtf8());
+            _logger.LogInformation("[{Name}, Debug] {Payload} Code:{Code}", portName, payload.ToStringUtf8(), code);
         }
         else if (bodyCase.Equals(UartResponse.BodyOneofCase.LoraMeasurement))
         {

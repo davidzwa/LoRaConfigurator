@@ -13,10 +13,9 @@ public static class SerialProcessingExtensions
         var command = new UartCommand
         {
             TransmitCommand =
-                new TransmitCommand
+                new LoRaMessage
                 {
                     IsMulticast = false,
-                    Period = 0,
                     Payload = ByteString.CopyFrom(payload)
                 }
         };
@@ -27,6 +26,7 @@ public static class SerialProcessingExtensions
     public static void SendPeriodicTransmitCommand(
         this SerialProcessorService processorService,
         uint period,
+        bool infinite,
         uint repetitions,
         byte[] payload
     )
@@ -34,11 +34,15 @@ public static class SerialProcessingExtensions
         var command = new UartCommand
         {
             TransmitCommand =
-                new TransmitCommand
+                new LoRaMessage
                 {
                     IsMulticast = false,
-                    Period = period,
-                    MaxPacketCount = repetitions,
+                    SequenceConfig = new ()
+                    {
+                        Period = period,
+                        Indefinite = infinite,
+                        SequenceCountLimit = repetitions 
+                    },
                     Payload = ByteString.CopyFrom(payload)
                 }
         };

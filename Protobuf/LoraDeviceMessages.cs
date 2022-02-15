@@ -25,16 +25,20 @@ namespace LoRa {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Chpsb3JhX2RldmljZV9tZXNzYWdlcy5wcm90bxoec2hhcmVkL2V4cGVyaW1l",
-            "bnRfY29uZmlnLnByb3RvItEBCgtMb1JhTWVzc2FnZRIdCgdjb21tYW5kGAEg",
-            "ASgOMgwuQ29tbWFuZFR5cGUSFgoOU2VxdWVuY2VOdW1iZXIYAiABKA0SNwoV",
-            "c3ByZWFkaW5nRmFjdG9yQ29uZmlnGAMgASgLMhYuU3ByZWFkaW5nRmFjdG9y",
-            "Q29uZmlnSAASNwoVc2VxdWVuY2VSZXF1ZXN0Q29uZmlnGAQgASgLMhYuU2Vx",
-            "dWVuY2VSZXF1ZXN0Q29uZmlnSAASEQoHcGF5bG9hZBgFIAEoDEgAQgYKBEJv",
-            "ZHlCB6oCBExvUmFiBnByb3RvMw=="));
+            "bnRfY29uZmlnLnByb3RvIpYDCgtMb1JhTWVzc2FnZRITCgtJc011bHRpY2Fz",
+            "dBgBIAEoCBIQCghEZXZpY2VJZBgCIAEoDRIXCg9Db3JyZWxhdGlvbkNvZGUY",
+            "AyABKA0SDwoHUGF5bG9hZBgEIAEoDBIwCg5zZXF1ZW5jZUNvbmZpZxgFIAEo",
+            "CzIWLkZvcndhcmRTZXF1ZW5jZUNvbmZpZ0gAEj0KGGZvcndhcmRSYWRpb0Nv",
+            "bmZpZ1VwZGF0ZRgGIAEoCzIZLkZvcndhcmRSYWRpb0NvbmZpZ1VwZGF0ZUgA",
+            "Ej0KGGZvcndhcmRFeHBlcmltZW50Q29tbWFuZBgHIAEoCzIZLkZvcndhcmRF",
+            "eHBlcmltZW50Q29tbWFuZEgAEj0KGG1lYXN1cmVtZW50U3RyZWFtUmVxdWVz",
+            "dBgIIAEoCzIZLk1lYXN1cmVtZW50U3RyZWFtUmVxdWVzdEgAEj8KGW1lYXN1",
+            "cmVtZW50U3RyZWFtRnJhZ21lbnQYCSABKAsyGi5NZWFzdXJlbWVudFN0cmVh",
+            "bUZyYWdtZW50SABCBgoEQm9keUIHqgIETG9SYWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LoRa.ExperimentConfigReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.LoRaMessage), global::LoRa.LoRaMessage.Parser, new[]{ "Command", "SequenceNumber", "SpreadingFactorConfig", "SequenceRequestConfig", "Payload" }, new[]{ "Body" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.LoRaMessage), global::LoRa.LoRaMessage.Parser, new[]{ "IsMulticast", "DeviceId", "CorrelationCode", "Payload", "SequenceConfig", "ForwardRadioConfigUpdate", "ForwardExperimentCommand", "MeasurementStreamRequest", "MeasurementStreamFragment" }, new[]{ "Body" }, null, null, null)
           }));
     }
     #endregion
@@ -75,17 +79,25 @@ namespace LoRa {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public LoRaMessage(LoRaMessage other) : this() {
-      command_ = other.command_;
-      sequenceNumber_ = other.sequenceNumber_;
+      isMulticast_ = other.isMulticast_;
+      deviceId_ = other.deviceId_;
+      correlationCode_ = other.correlationCode_;
+      payload_ = other.payload_;
       switch (other.BodyCase) {
-        case BodyOneofCase.SpreadingFactorConfig:
-          SpreadingFactorConfig = other.SpreadingFactorConfig.Clone();
+        case BodyOneofCase.SequenceConfig:
+          SequenceConfig = other.SequenceConfig.Clone();
           break;
-        case BodyOneofCase.SequenceRequestConfig:
-          SequenceRequestConfig = other.SequenceRequestConfig.Clone();
+        case BodyOneofCase.ForwardRadioConfigUpdate:
+          ForwardRadioConfigUpdate = other.ForwardRadioConfigUpdate.Clone();
           break;
-        case BodyOneofCase.Payload:
-          Payload = other.Payload;
+        case BodyOneofCase.ForwardExperimentCommand:
+          ForwardExperimentCommand = other.ForwardExperimentCommand.Clone();
+          break;
+        case BodyOneofCase.MeasurementStreamRequest:
+          MeasurementStreamRequest = other.MeasurementStreamRequest.Clone();
+          break;
+        case BodyOneofCase.MeasurementStreamFragment:
+          MeasurementStreamFragment = other.MeasurementStreamFragment.Clone();
           break;
       }
 
@@ -98,63 +110,114 @@ namespace LoRa {
       return new LoRaMessage(this);
     }
 
-    /// <summary>Field number for the "command" field.</summary>
-    public const int CommandFieldNumber = 1;
-    private global::LoRa.CommandType command_ = global::LoRa.CommandType.Configuration;
+    /// <summary>Field number for the "IsMulticast" field.</summary>
+    public const int IsMulticastFieldNumber = 1;
+    private bool isMulticast_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LoRa.CommandType Command {
-      get { return command_; }
+    public bool IsMulticast {
+      get { return isMulticast_; }
       set {
-        command_ = value;
+        isMulticast_ = value;
       }
     }
 
-    /// <summary>Field number for the "SequenceNumber" field.</summary>
-    public const int SequenceNumberFieldNumber = 2;
-    private uint sequenceNumber_;
+    /// <summary>Field number for the "DeviceId" field.</summary>
+    public const int DeviceIdFieldNumber = 2;
+    private uint deviceId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public uint SequenceNumber {
-      get { return sequenceNumber_; }
+    public uint DeviceId {
+      get { return deviceId_; }
       set {
-        sequenceNumber_ = value;
+        deviceId_ = value;
       }
     }
 
-    /// <summary>Field number for the "spreadingFactorConfig" field.</summary>
-    public const int SpreadingFactorConfigFieldNumber = 3;
+    /// <summary>Field number for the "CorrelationCode" field.</summary>
+    public const int CorrelationCodeFieldNumber = 3;
+    private uint correlationCode_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LoRa.SpreadingFactorConfig SpreadingFactorConfig {
-      get { return bodyCase_ == BodyOneofCase.SpreadingFactorConfig ? (global::LoRa.SpreadingFactorConfig) body_ : null; }
+    public uint CorrelationCode {
+      get { return correlationCode_; }
       set {
-        body_ = value;
-        bodyCase_ = value == null ? BodyOneofCase.None : BodyOneofCase.SpreadingFactorConfig;
+        correlationCode_ = value;
       }
     }
 
-    /// <summary>Field number for the "sequenceRequestConfig" field.</summary>
-    public const int SequenceRequestConfigFieldNumber = 4;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LoRa.SequenceRequestConfig SequenceRequestConfig {
-      get { return bodyCase_ == BodyOneofCase.SequenceRequestConfig ? (global::LoRa.SequenceRequestConfig) body_ : null; }
-      set {
-        body_ = value;
-        bodyCase_ = value == null ? BodyOneofCase.None : BodyOneofCase.SequenceRequestConfig;
-      }
-    }
-
-    /// <summary>Field number for the "payload" field.</summary>
-    public const int PayloadFieldNumber = 5;
+    /// <summary>Field number for the "Payload" field.</summary>
+    public const int PayloadFieldNumber = 4;
+    private pb::ByteString payload_ = pb::ByteString.Empty;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public pb::ByteString Payload {
-      get { return bodyCase_ == BodyOneofCase.Payload ? (pb::ByteString) body_ : pb::ByteString.Empty; }
+      get { return payload_; }
       set {
-        body_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-        bodyCase_ = BodyOneofCase.Payload;
+        payload_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "sequenceConfig" field.</summary>
+    public const int SequenceConfigFieldNumber = 5;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LoRa.ForwardSequenceConfig SequenceConfig {
+      get { return bodyCase_ == BodyOneofCase.SequenceConfig ? (global::LoRa.ForwardSequenceConfig) body_ : null; }
+      set {
+        body_ = value;
+        bodyCase_ = value == null ? BodyOneofCase.None : BodyOneofCase.SequenceConfig;
+      }
+    }
+
+    /// <summary>Field number for the "forwardRadioConfigUpdate" field.</summary>
+    public const int ForwardRadioConfigUpdateFieldNumber = 6;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LoRa.ForwardRadioConfigUpdate ForwardRadioConfigUpdate {
+      get { return bodyCase_ == BodyOneofCase.ForwardRadioConfigUpdate ? (global::LoRa.ForwardRadioConfigUpdate) body_ : null; }
+      set {
+        body_ = value;
+        bodyCase_ = value == null ? BodyOneofCase.None : BodyOneofCase.ForwardRadioConfigUpdate;
+      }
+    }
+
+    /// <summary>Field number for the "forwardExperimentCommand" field.</summary>
+    public const int ForwardExperimentCommandFieldNumber = 7;
+    /// <summary>
+    /// Set role TX/RX, play/pause or switch to predefined experiment
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LoRa.ForwardExperimentCommand ForwardExperimentCommand {
+      get { return bodyCase_ == BodyOneofCase.ForwardExperimentCommand ? (global::LoRa.ForwardExperimentCommand) body_ : null; }
+      set {
+        body_ = value;
+        bodyCase_ = value == null ? BodyOneofCase.None : BodyOneofCase.ForwardExperimentCommand;
+      }
+    }
+
+    /// <summary>Field number for the "measurementStreamRequest" field.</summary>
+    public const int MeasurementStreamRequestFieldNumber = 8;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LoRa.MeasurementStreamRequest MeasurementStreamRequest {
+      get { return bodyCase_ == BodyOneofCase.MeasurementStreamRequest ? (global::LoRa.MeasurementStreamRequest) body_ : null; }
+      set {
+        body_ = value;
+        bodyCase_ = value == null ? BodyOneofCase.None : BodyOneofCase.MeasurementStreamRequest;
+      }
+    }
+
+    /// <summary>Field number for the "measurementStreamFragment" field.</summary>
+    public const int MeasurementStreamFragmentFieldNumber = 9;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LoRa.MeasurementStreamFragment MeasurementStreamFragment {
+      get { return bodyCase_ == BodyOneofCase.MeasurementStreamFragment ? (global::LoRa.MeasurementStreamFragment) body_ : null; }
+      set {
+        body_ = value;
+        bodyCase_ = value == null ? BodyOneofCase.None : BodyOneofCase.MeasurementStreamFragment;
       }
     }
 
@@ -162,9 +225,11 @@ namespace LoRa {
     /// <summary>Enum of possible cases for the "Body" oneof.</summary>
     public enum BodyOneofCase {
       None = 0,
-      SpreadingFactorConfig = 3,
-      SequenceRequestConfig = 4,
-      Payload = 5,
+      SequenceConfig = 5,
+      ForwardRadioConfigUpdate = 6,
+      ForwardExperimentCommand = 7,
+      MeasurementStreamRequest = 8,
+      MeasurementStreamFragment = 9,
     }
     private BodyOneofCase bodyCase_ = BodyOneofCase.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -195,11 +260,15 @@ namespace LoRa {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (Command != other.Command) return false;
-      if (SequenceNumber != other.SequenceNumber) return false;
-      if (!object.Equals(SpreadingFactorConfig, other.SpreadingFactorConfig)) return false;
-      if (!object.Equals(SequenceRequestConfig, other.SequenceRequestConfig)) return false;
+      if (IsMulticast != other.IsMulticast) return false;
+      if (DeviceId != other.DeviceId) return false;
+      if (CorrelationCode != other.CorrelationCode) return false;
       if (Payload != other.Payload) return false;
+      if (!object.Equals(SequenceConfig, other.SequenceConfig)) return false;
+      if (!object.Equals(ForwardRadioConfigUpdate, other.ForwardRadioConfigUpdate)) return false;
+      if (!object.Equals(ForwardExperimentCommand, other.ForwardExperimentCommand)) return false;
+      if (!object.Equals(MeasurementStreamRequest, other.MeasurementStreamRequest)) return false;
+      if (!object.Equals(MeasurementStreamFragment, other.MeasurementStreamFragment)) return false;
       if (BodyCase != other.BodyCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -208,11 +277,15 @@ namespace LoRa {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Command != global::LoRa.CommandType.Configuration) hash ^= Command.GetHashCode();
-      if (SequenceNumber != 0) hash ^= SequenceNumber.GetHashCode();
-      if (bodyCase_ == BodyOneofCase.SpreadingFactorConfig) hash ^= SpreadingFactorConfig.GetHashCode();
-      if (bodyCase_ == BodyOneofCase.SequenceRequestConfig) hash ^= SequenceRequestConfig.GetHashCode();
-      if (bodyCase_ == BodyOneofCase.Payload) hash ^= Payload.GetHashCode();
+      if (IsMulticast != false) hash ^= IsMulticast.GetHashCode();
+      if (DeviceId != 0) hash ^= DeviceId.GetHashCode();
+      if (CorrelationCode != 0) hash ^= CorrelationCode.GetHashCode();
+      if (Payload.Length != 0) hash ^= Payload.GetHashCode();
+      if (bodyCase_ == BodyOneofCase.SequenceConfig) hash ^= SequenceConfig.GetHashCode();
+      if (bodyCase_ == BodyOneofCase.ForwardRadioConfigUpdate) hash ^= ForwardRadioConfigUpdate.GetHashCode();
+      if (bodyCase_ == BodyOneofCase.ForwardExperimentCommand) hash ^= ForwardExperimentCommand.GetHashCode();
+      if (bodyCase_ == BodyOneofCase.MeasurementStreamRequest) hash ^= MeasurementStreamRequest.GetHashCode();
+      if (bodyCase_ == BodyOneofCase.MeasurementStreamFragment) hash ^= MeasurementStreamFragment.GetHashCode();
       hash ^= (int) bodyCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -232,25 +305,41 @@ namespace LoRa {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Command != global::LoRa.CommandType.Configuration) {
+      if (IsMulticast != false) {
         output.WriteRawTag(8);
-        output.WriteEnum((int) Command);
+        output.WriteBool(IsMulticast);
       }
-      if (SequenceNumber != 0) {
+      if (DeviceId != 0) {
         output.WriteRawTag(16);
-        output.WriteUInt32(SequenceNumber);
+        output.WriteUInt32(DeviceId);
       }
-      if (bodyCase_ == BodyOneofCase.SpreadingFactorConfig) {
-        output.WriteRawTag(26);
-        output.WriteMessage(SpreadingFactorConfig);
+      if (CorrelationCode != 0) {
+        output.WriteRawTag(24);
+        output.WriteUInt32(CorrelationCode);
       }
-      if (bodyCase_ == BodyOneofCase.SequenceRequestConfig) {
+      if (Payload.Length != 0) {
         output.WriteRawTag(34);
-        output.WriteMessage(SequenceRequestConfig);
-      }
-      if (bodyCase_ == BodyOneofCase.Payload) {
-        output.WriteRawTag(42);
         output.WriteBytes(Payload);
+      }
+      if (bodyCase_ == BodyOneofCase.SequenceConfig) {
+        output.WriteRawTag(42);
+        output.WriteMessage(SequenceConfig);
+      }
+      if (bodyCase_ == BodyOneofCase.ForwardRadioConfigUpdate) {
+        output.WriteRawTag(50);
+        output.WriteMessage(ForwardRadioConfigUpdate);
+      }
+      if (bodyCase_ == BodyOneofCase.ForwardExperimentCommand) {
+        output.WriteRawTag(58);
+        output.WriteMessage(ForwardExperimentCommand);
+      }
+      if (bodyCase_ == BodyOneofCase.MeasurementStreamRequest) {
+        output.WriteRawTag(66);
+        output.WriteMessage(MeasurementStreamRequest);
+      }
+      if (bodyCase_ == BodyOneofCase.MeasurementStreamFragment) {
+        output.WriteRawTag(74);
+        output.WriteMessage(MeasurementStreamFragment);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -262,25 +351,41 @@ namespace LoRa {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Command != global::LoRa.CommandType.Configuration) {
+      if (IsMulticast != false) {
         output.WriteRawTag(8);
-        output.WriteEnum((int) Command);
+        output.WriteBool(IsMulticast);
       }
-      if (SequenceNumber != 0) {
+      if (DeviceId != 0) {
         output.WriteRawTag(16);
-        output.WriteUInt32(SequenceNumber);
+        output.WriteUInt32(DeviceId);
       }
-      if (bodyCase_ == BodyOneofCase.SpreadingFactorConfig) {
-        output.WriteRawTag(26);
-        output.WriteMessage(SpreadingFactorConfig);
+      if (CorrelationCode != 0) {
+        output.WriteRawTag(24);
+        output.WriteUInt32(CorrelationCode);
       }
-      if (bodyCase_ == BodyOneofCase.SequenceRequestConfig) {
+      if (Payload.Length != 0) {
         output.WriteRawTag(34);
-        output.WriteMessage(SequenceRequestConfig);
-      }
-      if (bodyCase_ == BodyOneofCase.Payload) {
-        output.WriteRawTag(42);
         output.WriteBytes(Payload);
+      }
+      if (bodyCase_ == BodyOneofCase.SequenceConfig) {
+        output.WriteRawTag(42);
+        output.WriteMessage(SequenceConfig);
+      }
+      if (bodyCase_ == BodyOneofCase.ForwardRadioConfigUpdate) {
+        output.WriteRawTag(50);
+        output.WriteMessage(ForwardRadioConfigUpdate);
+      }
+      if (bodyCase_ == BodyOneofCase.ForwardExperimentCommand) {
+        output.WriteRawTag(58);
+        output.WriteMessage(ForwardExperimentCommand);
+      }
+      if (bodyCase_ == BodyOneofCase.MeasurementStreamRequest) {
+        output.WriteRawTag(66);
+        output.WriteMessage(MeasurementStreamRequest);
+      }
+      if (bodyCase_ == BodyOneofCase.MeasurementStreamFragment) {
+        output.WriteRawTag(74);
+        output.WriteMessage(MeasurementStreamFragment);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -292,20 +397,32 @@ namespace LoRa {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Command != global::LoRa.CommandType.Configuration) {
-        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Command);
+      if (IsMulticast != false) {
+        size += 1 + 1;
       }
-      if (SequenceNumber != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(SequenceNumber);
+      if (DeviceId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(DeviceId);
       }
-      if (bodyCase_ == BodyOneofCase.SpreadingFactorConfig) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(SpreadingFactorConfig);
+      if (CorrelationCode != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(CorrelationCode);
       }
-      if (bodyCase_ == BodyOneofCase.SequenceRequestConfig) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(SequenceRequestConfig);
-      }
-      if (bodyCase_ == BodyOneofCase.Payload) {
+      if (Payload.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeBytesSize(Payload);
+      }
+      if (bodyCase_ == BodyOneofCase.SequenceConfig) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(SequenceConfig);
+      }
+      if (bodyCase_ == BodyOneofCase.ForwardRadioConfigUpdate) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(ForwardRadioConfigUpdate);
+      }
+      if (bodyCase_ == BodyOneofCase.ForwardExperimentCommand) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(ForwardExperimentCommand);
+      }
+      if (bodyCase_ == BodyOneofCase.MeasurementStreamRequest) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(MeasurementStreamRequest);
+      }
+      if (bodyCase_ == BodyOneofCase.MeasurementStreamFragment) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(MeasurementStreamFragment);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -319,27 +436,48 @@ namespace LoRa {
       if (other == null) {
         return;
       }
-      if (other.Command != global::LoRa.CommandType.Configuration) {
-        Command = other.Command;
+      if (other.IsMulticast != false) {
+        IsMulticast = other.IsMulticast;
       }
-      if (other.SequenceNumber != 0) {
-        SequenceNumber = other.SequenceNumber;
+      if (other.DeviceId != 0) {
+        DeviceId = other.DeviceId;
+      }
+      if (other.CorrelationCode != 0) {
+        CorrelationCode = other.CorrelationCode;
+      }
+      if (other.Payload.Length != 0) {
+        Payload = other.Payload;
       }
       switch (other.BodyCase) {
-        case BodyOneofCase.SpreadingFactorConfig:
-          if (SpreadingFactorConfig == null) {
-            SpreadingFactorConfig = new global::LoRa.SpreadingFactorConfig();
+        case BodyOneofCase.SequenceConfig:
+          if (SequenceConfig == null) {
+            SequenceConfig = new global::LoRa.ForwardSequenceConfig();
           }
-          SpreadingFactorConfig.MergeFrom(other.SpreadingFactorConfig);
+          SequenceConfig.MergeFrom(other.SequenceConfig);
           break;
-        case BodyOneofCase.SequenceRequestConfig:
-          if (SequenceRequestConfig == null) {
-            SequenceRequestConfig = new global::LoRa.SequenceRequestConfig();
+        case BodyOneofCase.ForwardRadioConfigUpdate:
+          if (ForwardRadioConfigUpdate == null) {
+            ForwardRadioConfigUpdate = new global::LoRa.ForwardRadioConfigUpdate();
           }
-          SequenceRequestConfig.MergeFrom(other.SequenceRequestConfig);
+          ForwardRadioConfigUpdate.MergeFrom(other.ForwardRadioConfigUpdate);
           break;
-        case BodyOneofCase.Payload:
-          Payload = other.Payload;
+        case BodyOneofCase.ForwardExperimentCommand:
+          if (ForwardExperimentCommand == null) {
+            ForwardExperimentCommand = new global::LoRa.ForwardExperimentCommand();
+          }
+          ForwardExperimentCommand.MergeFrom(other.ForwardExperimentCommand);
+          break;
+        case BodyOneofCase.MeasurementStreamRequest:
+          if (MeasurementStreamRequest == null) {
+            MeasurementStreamRequest = new global::LoRa.MeasurementStreamRequest();
+          }
+          MeasurementStreamRequest.MergeFrom(other.MeasurementStreamRequest);
+          break;
+        case BodyOneofCase.MeasurementStreamFragment:
+          if (MeasurementStreamFragment == null) {
+            MeasurementStreamFragment = new global::LoRa.MeasurementStreamFragment();
+          }
+          MeasurementStreamFragment.MergeFrom(other.MeasurementStreamFragment);
           break;
       }
 
@@ -359,33 +497,64 @@ namespace LoRa {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            Command = (global::LoRa.CommandType) input.ReadEnum();
+            IsMulticast = input.ReadBool();
             break;
           }
           case 16: {
-            SequenceNumber = input.ReadUInt32();
+            DeviceId = input.ReadUInt32();
             break;
           }
-          case 26: {
-            global::LoRa.SpreadingFactorConfig subBuilder = new global::LoRa.SpreadingFactorConfig();
-            if (bodyCase_ == BodyOneofCase.SpreadingFactorConfig) {
-              subBuilder.MergeFrom(SpreadingFactorConfig);
-            }
-            input.ReadMessage(subBuilder);
-            SpreadingFactorConfig = subBuilder;
+          case 24: {
+            CorrelationCode = input.ReadUInt32();
             break;
           }
           case 34: {
-            global::LoRa.SequenceRequestConfig subBuilder = new global::LoRa.SequenceRequestConfig();
-            if (bodyCase_ == BodyOneofCase.SequenceRequestConfig) {
-              subBuilder.MergeFrom(SequenceRequestConfig);
-            }
-            input.ReadMessage(subBuilder);
-            SequenceRequestConfig = subBuilder;
+            Payload = input.ReadBytes();
             break;
           }
           case 42: {
-            Payload = input.ReadBytes();
+            global::LoRa.ForwardSequenceConfig subBuilder = new global::LoRa.ForwardSequenceConfig();
+            if (bodyCase_ == BodyOneofCase.SequenceConfig) {
+              subBuilder.MergeFrom(SequenceConfig);
+            }
+            input.ReadMessage(subBuilder);
+            SequenceConfig = subBuilder;
+            break;
+          }
+          case 50: {
+            global::LoRa.ForwardRadioConfigUpdate subBuilder = new global::LoRa.ForwardRadioConfigUpdate();
+            if (bodyCase_ == BodyOneofCase.ForwardRadioConfigUpdate) {
+              subBuilder.MergeFrom(ForwardRadioConfigUpdate);
+            }
+            input.ReadMessage(subBuilder);
+            ForwardRadioConfigUpdate = subBuilder;
+            break;
+          }
+          case 58: {
+            global::LoRa.ForwardExperimentCommand subBuilder = new global::LoRa.ForwardExperimentCommand();
+            if (bodyCase_ == BodyOneofCase.ForwardExperimentCommand) {
+              subBuilder.MergeFrom(ForwardExperimentCommand);
+            }
+            input.ReadMessage(subBuilder);
+            ForwardExperimentCommand = subBuilder;
+            break;
+          }
+          case 66: {
+            global::LoRa.MeasurementStreamRequest subBuilder = new global::LoRa.MeasurementStreamRequest();
+            if (bodyCase_ == BodyOneofCase.MeasurementStreamRequest) {
+              subBuilder.MergeFrom(MeasurementStreamRequest);
+            }
+            input.ReadMessage(subBuilder);
+            MeasurementStreamRequest = subBuilder;
+            break;
+          }
+          case 74: {
+            global::LoRa.MeasurementStreamFragment subBuilder = new global::LoRa.MeasurementStreamFragment();
+            if (bodyCase_ == BodyOneofCase.MeasurementStreamFragment) {
+              subBuilder.MergeFrom(MeasurementStreamFragment);
+            }
+            input.ReadMessage(subBuilder);
+            MeasurementStreamFragment = subBuilder;
             break;
           }
         }
@@ -404,33 +573,64 @@ namespace LoRa {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            Command = (global::LoRa.CommandType) input.ReadEnum();
+            IsMulticast = input.ReadBool();
             break;
           }
           case 16: {
-            SequenceNumber = input.ReadUInt32();
+            DeviceId = input.ReadUInt32();
             break;
           }
-          case 26: {
-            global::LoRa.SpreadingFactorConfig subBuilder = new global::LoRa.SpreadingFactorConfig();
-            if (bodyCase_ == BodyOneofCase.SpreadingFactorConfig) {
-              subBuilder.MergeFrom(SpreadingFactorConfig);
-            }
-            input.ReadMessage(subBuilder);
-            SpreadingFactorConfig = subBuilder;
+          case 24: {
+            CorrelationCode = input.ReadUInt32();
             break;
           }
           case 34: {
-            global::LoRa.SequenceRequestConfig subBuilder = new global::LoRa.SequenceRequestConfig();
-            if (bodyCase_ == BodyOneofCase.SequenceRequestConfig) {
-              subBuilder.MergeFrom(SequenceRequestConfig);
-            }
-            input.ReadMessage(subBuilder);
-            SequenceRequestConfig = subBuilder;
+            Payload = input.ReadBytes();
             break;
           }
           case 42: {
-            Payload = input.ReadBytes();
+            global::LoRa.ForwardSequenceConfig subBuilder = new global::LoRa.ForwardSequenceConfig();
+            if (bodyCase_ == BodyOneofCase.SequenceConfig) {
+              subBuilder.MergeFrom(SequenceConfig);
+            }
+            input.ReadMessage(subBuilder);
+            SequenceConfig = subBuilder;
+            break;
+          }
+          case 50: {
+            global::LoRa.ForwardRadioConfigUpdate subBuilder = new global::LoRa.ForwardRadioConfigUpdate();
+            if (bodyCase_ == BodyOneofCase.ForwardRadioConfigUpdate) {
+              subBuilder.MergeFrom(ForwardRadioConfigUpdate);
+            }
+            input.ReadMessage(subBuilder);
+            ForwardRadioConfigUpdate = subBuilder;
+            break;
+          }
+          case 58: {
+            global::LoRa.ForwardExperimentCommand subBuilder = new global::LoRa.ForwardExperimentCommand();
+            if (bodyCase_ == BodyOneofCase.ForwardExperimentCommand) {
+              subBuilder.MergeFrom(ForwardExperimentCommand);
+            }
+            input.ReadMessage(subBuilder);
+            ForwardExperimentCommand = subBuilder;
+            break;
+          }
+          case 66: {
+            global::LoRa.MeasurementStreamRequest subBuilder = new global::LoRa.MeasurementStreamRequest();
+            if (bodyCase_ == BodyOneofCase.MeasurementStreamRequest) {
+              subBuilder.MergeFrom(MeasurementStreamRequest);
+            }
+            input.ReadMessage(subBuilder);
+            MeasurementStreamRequest = subBuilder;
+            break;
+          }
+          case 74: {
+            global::LoRa.MeasurementStreamFragment subBuilder = new global::LoRa.MeasurementStreamFragment();
+            if (bodyCase_ == BodyOneofCase.MeasurementStreamFragment) {
+              subBuilder.MergeFrom(MeasurementStreamFragment);
+            }
+            input.ReadMessage(subBuilder);
+            MeasurementStreamFragment = subBuilder;
             break;
           }
         }
