@@ -43,7 +43,7 @@ public class SerialCommandHandler
             () =>
             {
                 var selectedPortName = _selectedDeviceService.SelectedPortName;
-                _logger.LogInformation("Clearing device measurements {port}", selectedPortName);
+                _logger.LogInformation("Clearing device measurements {Port}", selectedPortName);
                 _serialProcessorService.SendClearMeasurementsCommands();
             });
         return command;
@@ -59,7 +59,7 @@ public class SerialCommandHandler
             (bool enableAlwaysSend, uint alwaysSendPeriod) =>
             {
                 var selectedPortName = _selectedDeviceService.SelectedPortName;
-                _logger.LogInformation("Device config {port}", selectedPortName);
+                _logger.LogInformation("Device config {Port}", selectedPortName);
                 _serialProcessorService.SendDeviceConfiguration(enableAlwaysSend, alwaysSendPeriod);
             });
         return command;
@@ -73,7 +73,7 @@ public class SerialCommandHandler
             () =>
             {
                 var selectedPortName = _selectedDeviceService.SelectedPortName;
-                _logger.LogInformation("Unicast command {port}", selectedPortName);
+                _logger.LogInformation("Unicast command {Port}", selectedPortName);
                 _serialProcessorService.SendUnicastTransmitCommand(new byte[]
                 {
                     0xFF, 0xFE, 0xFD
@@ -96,8 +96,8 @@ public class SerialCommandHandler
             {
                 _measurementsService.SetLocation(x, y);
                 var selectedPortName = _selectedDeviceService.SelectedPortName;
-                _logger.LogInformation("Periodic command {port}", selectedPortName);
-                _serialProcessorService.SendPeriodicTransmitCommand(period, count, new byte[]
+                _logger.LogInformation("Periodic command {Port}", selectedPortName);
+                _serialProcessorService.SendPeriodicTransmitCommand(period, false, count, new byte[]
                 {
                     0xFF, 0xFE, 0xFD
                 });
@@ -113,7 +113,7 @@ public class SerialCommandHandler
         command.Handler = CommandHandler.Create(() =>
         {
             var selectedPortName = _selectedDeviceService.SelectedPortName;
-            _logger.LogInformation("Boot sent {port}", selectedPortName);
+            _logger.LogInformation("Boot sent {Port}", selectedPortName);
             _serialProcessorService.SendBootCommand();
         });
 
