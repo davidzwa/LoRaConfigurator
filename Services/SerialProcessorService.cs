@@ -224,7 +224,7 @@ public class SerialProcessorService
         catch (InvalidProtocolBufferException e)
         {
             _logger.LogInformation(SerialUtil.ByteArrayToString(decodedBuffer));
-            _logger.LogError("Protobuf decoding error {Error}. Skipping packet.", e.Message);
+            _logger.LogError("Protobuf decoding error {Error} - skipping packet", e.Message);
             return;
         }
 

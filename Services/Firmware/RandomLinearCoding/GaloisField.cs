@@ -18,8 +18,8 @@ public class GField
         };
     }
 
+    // https://www.partow.net/programming/polynomials/index.html#deg16
     // Irreducible polynomial used : x^8 + x^4 + x^3 + x^2 + 1 (0x11D)
-    // TODO make sure it matches the degree (primality check?)
     public const int Polynomial = 0x11D;
 
     // Generator to be used in Exp & Log table generation
