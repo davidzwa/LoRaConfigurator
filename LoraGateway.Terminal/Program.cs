@@ -1,15 +1,10 @@
-﻿using LoraGateway.BackgroundServices;
-using LoraGateway.Services;
-using LoraGateway.Services.CommandLine;
-using LoraGateway.Services.Firmware.RandomLinearCoding;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+﻿using LoraGateway.Services.Firmware.RandomLinearCoding;
 using Serilog;
 using Serilog.Events;
 
 namespace LoraGateway;
 
-public static class PortChat
+public static class LoraGateway
 {
     public static async Task Main(string[] args)
     {
@@ -27,16 +22,12 @@ public static class PortChat
             )
             .CreateLogger();
 
-        var field = new GField();
-        // var fieldPoly = field.GetIrreduciblePolynomial();
-        // Console.WriteLine($"Constant GF-256 {0}",
-        //     IrreduciblePolynomial.CheckIrreducibility(fieldPoly, fieldPoly.Length));
-        //
-        // int[] testPoly = {4, 7, 21, 28};
-        // Console.WriteLine("Test {0}", IrreduciblePolynomial.CheckIrreducibility(testPoly, testPoly.Length));
+        ushort seed = 0x1234;
+        var generator = new LinearFeedbackShiftRegister(seed);
 
-        int[] testPoly2 = {1, 3, 1};
-        Console.WriteLine("Test2 {0}", IrreduciblePolynomial.CheckIrreducibility(testPoly2, testPoly2.Length));
+
+        var field = new GField();
+
         // await Host.CreateDefaultBuilder(args)
         //     .UseSerilog()
         //     .ConfigureServices((hostContext, services) =>

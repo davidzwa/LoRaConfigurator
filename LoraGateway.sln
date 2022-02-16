@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoraGateway", "LoraGateway.csproj", "{FDB85D68-8EFC-4D87-B1FD-52ECC625000A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoraGateway.Terminal", "LoraGateway.Terminal/LoraGateway.csproj", "{FDB85D68-8EFC-4D87-B1FD-52ECC625000A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoraGateway.Tests", "LoraGateway.Tests\LoraGateway.Tests.csproj", "{0DD930D7-013F-4E5F-9890-95C670A30712}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoraGateway.Tests", "LoraGateway.Tests\LoraGateway.Tests.csproj", "{4344E7C8-5067-4447-B572-444A77D45AD9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,9 +14,9 @@ Global
 		{FDB85D68-8EFC-4D87-B1FD-52ECC625000A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDB85D68-8EFC-4D87-B1FD-52ECC625000A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDB85D68-8EFC-4D87-B1FD-52ECC625000A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0DD930D7-013F-4E5F-9890-95C670A30712}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0DD930D7-013F-4E5F-9890-95C670A30712}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0DD930D7-013F-4E5F-9890-95C670A30712}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0DD930D7-013F-4E5F-9890-95C670A30712}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4344E7C8-5067-4447-B572-444A77D45AD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4344E7C8-5067-4447-B572-444A77D45AD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4344E7C8-5067-4447-B572-444A77D45AD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4344E7C8-5067-4447-B572-444A77D45AD9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
