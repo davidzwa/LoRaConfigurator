@@ -28,12 +28,15 @@ public static class PortChat
             .CreateLogger();
 
         var field = new GField();
-        var fieldPoly = field.GetIrreduciblePolynomial();
-        Console.WriteLine($"Constant GF-256 {0}", IrreduciblePolynomial.CheckIrreducibility(fieldPoly, fieldPoly.Length));
-        
-        int[] testPoly = {4, 7, 21, 28};
-        Console.WriteLine("Test {0}", IrreduciblePolynomial.CheckIrreducibility(testPoly, testPoly.Length));
+        // var fieldPoly = field.GetIrreduciblePolynomial();
+        // Console.WriteLine($"Constant GF-256 {0}",
+        //     IrreduciblePolynomial.CheckIrreducibility(fieldPoly, fieldPoly.Length));
+        //
+        // int[] testPoly = {4, 7, 21, 28};
+        // Console.WriteLine("Test {0}", IrreduciblePolynomial.CheckIrreducibility(testPoly, testPoly.Length));
 
+        int[] testPoly2 = {1, 3, 1};
+        Console.WriteLine("Test2 {0}", IrreduciblePolynomial.CheckIrreducibility(testPoly2, testPoly2.Length));
         // await Host.CreateDefaultBuilder(args)
         //     .UseSerilog()
         //     .ConfigureServices((hostContext, services) =>

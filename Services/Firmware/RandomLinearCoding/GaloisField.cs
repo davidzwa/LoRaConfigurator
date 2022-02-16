@@ -6,13 +6,14 @@
 /// </summary>
 public class GField
 {
-    public const int Order = 256;
+    public const int Degree = 8; // 8 bits encoding vector
+    public const int Order = 256; // 2 ^ Degree;
 
     public int[] GetIrreduciblePolynomial()
     {
         return new[]
-        {
-            //8        //4      //1 //0
+        { 
+        //  8  7  6  5  4  3  2  1  0
             1, 0, 0, 0, 1, 1, 1, 0, 1
         };
     }
@@ -54,7 +55,7 @@ public class GField
         this._value = _value;
     }
 
-    //getters and setters
+    // getters and setters
     public byte GetValue()
     {
         return _value;
@@ -62,7 +63,7 @@ public class GField
 
     public void SetValue(byte value)
     {
-        this._value = value;
+        _value = value;
     }
 
     //operators

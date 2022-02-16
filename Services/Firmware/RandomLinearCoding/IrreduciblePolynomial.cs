@@ -13,10 +13,10 @@ public static class IrreduciblePolynomial
     /// <returns></returns>
     public static int CheckIrreducibility(int[] poly, int n)
     {
-        // Stores the largest element in A
+        // Stores the largest element in poly
         var max = -1;
 
-        // Find the maximum element in A
+        // Find the maximum element in poly
         for (var i = 0; i < n; i++) max = Math.Max(max, poly[i]);
 
         // Stores all the prime numbers
