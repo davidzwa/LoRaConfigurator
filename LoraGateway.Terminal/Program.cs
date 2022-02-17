@@ -23,27 +23,6 @@ public static class LoraGateway
             )
             .CreateLogger();
 
-        byte seed = 0x12;
-        var generator = new LinearFeedbackShiftRegister(seed);
-
-        var values = new List<byte>();
-        values.Add(generator.Generate());
-        Console.WriteLine("First reference {0} Count {1}", values.First(), values.Count);
-        
-        values.Add(generator.Generate());
-        Console.WriteLine("Val {0} Count {1}", values.Last(), values.Count);
-        byte? comparisonValue = values.Last();
-        while (comparisonValue != values.First())
-        {
-            values.Add(generator.Generate());
-            comparisonValue = values.Last();
-            Console.WriteLine("Val {0} Count {1}", comparisonValue, values.Count);
-        }
-
-        var service = new BlobFragmentationService();
-        service.LoadFirmware();
-        return;
-        
         var field = new GField();
 
         // await Host.CreateDefaultBuilder(args)
