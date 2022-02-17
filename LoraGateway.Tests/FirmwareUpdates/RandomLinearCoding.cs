@@ -10,19 +10,15 @@ public class RandomLinearCoding
     [Fact]
     public void RandomNumberGeneration()
     {
-        // Test the LFSR implementation for 16-bits with cycle 65535
-        var generator = new LinearFeedbackShiftRegister(0x1234);
+        // Test the LFSR implementation for 8-bits with cycle 255
+        var generator = new LinearFeedbackShiftRegister(0x12);
 
-        // 091a
-        // 848d
-        // c246
-        // e123
-        // 7091
-        generator.Generate().ToString("X").ShouldBe("91A");
+        generator.Generate().ShouldBe((byte)137);
+        generator.Generate().ShouldBe((byte)68);
         var rngList = generator.GenerateMany(4).ToList();
-        rngList[0].ToString("X").ShouldBe("848D");
-        rngList[1].ToString("X").ShouldBe("C246");
-        rngList[2].ToString("X").ShouldBe("E123");
-        rngList[3].ToString("X").ShouldBe("7091");
+        rngList[0].ShouldBe((byte)162);
+        rngList[1].ShouldBe((byte)81);
+        rngList[2].ShouldBe((byte)168);
+        rngList[3].ShouldBe((byte)212);
     }
 }
