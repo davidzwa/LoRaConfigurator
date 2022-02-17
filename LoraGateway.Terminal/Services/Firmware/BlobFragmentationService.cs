@@ -20,7 +20,6 @@ public class BlobFragmentationService
         [FieldOffset(3)] public byte Byte3;
     }
 
-    // List<List<byte>> 
     public BlobFragmentationService()
     {
     }
