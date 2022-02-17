@@ -6,8 +6,7 @@
 /// </summary>
 public class GField
 {
-    public const int Degree = 8; // 8 bits encoding vector
-    public const int Order = 256; // 2 ^ Degree;
+    public const int Order = 256; // 2 ^ 8;
 
     public int[] GetIrreduciblePolynomial()
     {
@@ -156,7 +155,7 @@ public class GField
         return _value.ToString();
     }
 
-    // multiplication method which is only used in Exp & Log table generation
+    // Multiplication method which is only used in Exp & Log table generation
     // implemented with Russian Peasant Multiplication algorithm
     private static byte Multiply(byte a, byte b)
     {

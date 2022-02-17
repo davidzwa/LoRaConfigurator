@@ -2,5 +2,8 @@
 
 public class EncodedPacket : UnencodedPacket
 {
-    public byte[] EncodingVector { get; set; } = new byte[] { };
+    /// <summary>
+    /// The binary encoding vector represented by the GF(256) degree 8 or byte
+    /// </summary>
+    public byte EncodingVector { get; set; }
 }
