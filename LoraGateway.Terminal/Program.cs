@@ -1,4 +1,5 @@
-﻿using LoraGateway.Services.Firmware.RandomLinearCoding;
+﻿using LoraGateway.Services.Firmware;
+using LoraGateway.Services.Firmware.RandomLinearCoding;
 using Serilog;
 using Serilog.Events;
 
@@ -38,7 +39,9 @@ public static class LoraGateway
             comparisonValue = values.Last();
             Console.WriteLine("Val {0} Count {1}", comparisonValue, values.Count);
         }
-        
+
+        var service = new BlobFragmentationService();
+        service.LoadFirmware();
         return;
         
         var field = new GField();

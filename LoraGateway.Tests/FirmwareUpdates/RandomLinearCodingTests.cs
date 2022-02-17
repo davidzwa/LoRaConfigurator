@@ -5,7 +5,7 @@ using Xunit;
 
 namespace LoraGateway.Tests.FirmwareUpdates;
 
-public class RandomLinearCoding
+public class RandomLinearCodingTests
 {
     [Fact]
     public void RandomNumberGeneration()
