@@ -11,7 +11,9 @@ public class RlncEncodingService
 {
     private EncodingConfiguration? _settings;
     private List<UnencodedPacket>? _unencodedPackets;
+    // Encoding vectors using implicit mode (regeneration on receiving side)
     private List<Generation>? _generations;
+    readonly LinearFeedbackShiftRegister _generator = new LinearFeedbackShiftRegister(0x08);
     
     public int PacketSymbols { get; private set; }
 
@@ -21,7 +23,7 @@ public class RlncEncodingService
         {
             Seed = 0x08,
             FieldOrder = 8,
-            GenerationSize = 16,
+            GenerationSize = 12,
             CurrentGeneration = 0
         }, new List<UnencodedPacket>());
     }
@@ -72,8 +74,12 @@ public class RlncEncodingService
             GenerationIndex = index
         }).ToList();
         
-        // Packet encoding loop limit
-        PacketSymbols = _generations.First().OriginalPackets.First().Payload.Length);
+        // Packet length (bytes) / symbol length (=1-byte)
+        PacketSymbols = _generations.First().OriginalPackets.First().Payload.Length; // divide by encoding symbol size
+        if (PacketSymbols == 0)
+        {
+            throw new ValidationException("PacketSymbols was 0, unencoded packet list was empty");
+        }
     }
 
     public void EncodeNextGeneration()
@@ -83,15 +89,9 @@ public class RlncEncodingService
         ValidateGenerationsState();
 
         // GF l-value of degree 8, ensuring static log-table allocation is done beforehand
-        // (Note: 16-bit or lower degree only advised! The LUTs can grow in size very quickly with 2^degree)
         var lField = new GField();
-
-        // Encoding vectors using implicit mode (regeneration on receiving side)
-        var generator = new LinearFeedbackShiftRegister(0x08);
-        var encodingVectors = generator.GenerateMany(_unencodedPackets.Count);
-
-        Enumerable.Range(0, packetSize).Select()
-        encodingVectors.Select((encVector, index) =>
+        
+        _unencodedPackets.Select((encVector, index) =>
         {
             var encodedPacket = new List<byte>();
             _unencodedPackets.Select((fragment, index) =>
@@ -108,5 +108,14 @@ public class RlncEncodingService
                 PacketIndex = index,
             };
         });
+    }
+
+    private EncodedPacket GenerateNextPacket()
+    {
+        var encodingCoeffs = _generator.GenerateMany(_unencodedPackets!.Count);
+        // Array of coeffs used to loop over all symbols and packets
+        
+        // Per symbol (or column) in each packet we iterate
+        Enumerable.Range(0, PacketSymbols).Select();
     }
 }

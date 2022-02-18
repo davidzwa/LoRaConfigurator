@@ -3,6 +3,7 @@
 public class LinearFeedbackShiftRegister
 {
     // https://stackoverflow.com/questions/61024861/random-number-using-lfsr
+    public byte Seed { get; private set; }
     public byte State { get; private set; }
     public uint Taps { get; }
 
@@ -16,16 +17,16 @@ public class LinearFeedbackShiftRegister
     /// <param name="seed"></param>
     public LinearFeedbackShiftRegister(byte seed)
     {
-        // if (taps > 8)
-        // {
-        //     throw new ValidationException(
-        //         "More than 8 taps is not supported (yet). Please verify if your cycle must exceed 0-255");
-        // }
-
+        Seed = seed;
         State = seed;
         // Taps = taps;
         Taps = 8; // Hard-coded
         GenerationCount = 0;
+    }
+
+    public void Reset()
+    {
+        State = Seed;
     }
 
     public IEnumerable<byte> GenerateMany(int count)
