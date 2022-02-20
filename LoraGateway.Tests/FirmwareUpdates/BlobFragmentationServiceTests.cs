@@ -27,4 +27,12 @@ public class BlobFragmentationServiceTests
         fragmentationCollection.Last().Payload[2].ShouldBe((byte)0x13);
         fragmentationCollection.Last().Payload[3].ShouldBe((byte)0x87);
     }
+    
+    [Fact]
+    public void AlternativeShortFakeFirmwareTest()
+    {
+        // Tests the small input criteria for random firmware
+        var firmware = new BlobFragmentationService().GenerateFakeFirmware(100, 20);
+        firmware.Count.ShouldBe(100 / 20);
+    }
 }

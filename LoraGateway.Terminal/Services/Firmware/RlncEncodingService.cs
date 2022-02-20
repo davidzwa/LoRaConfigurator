@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Text;
 using LoraGateway.Services.Firmware.RandomLinearCoding;
 
@@ -14,13 +15,13 @@ public class RlncEncodingService
 
     // Encoding vectors using implicit mode (regeneration on receiving side)
     private List<Generation>? _generations;
-    public int CurrentGenerationIndex { get; private set; };
+    public int CurrentGenerationIndex { get; private set; }
     readonly LinearFeedbackShiftRegister _generator = new LinearFeedbackShiftRegister(0x08);
 
     public int PacketSymbols { get; private set; }
     public const int SymbolSize = 1;
 
-    public RlncEncodingService()
+    public RlncEncodingService(int generationSize)
     {
         ConfigureEncoding(new EncodingConfiguration()
         {
@@ -29,6 +30,8 @@ public class RlncEncodingService
             GenerationSize = 12,
             CurrentGeneration = 0
         }, new List<UnencodedPacket>());
+
+        ValidateEncodingConfig();
     }
 
     private void ConfigureEncoding(EncodingConfiguration settings, List<UnencodedPacket> unencodedPackets)
@@ -45,6 +48,16 @@ public class RlncEncodingService
         if (_settings == null)
         {
             throw new ValidationException("Encoding settings were not provided");
+        }
+
+        if (_settings.GenerationSize > 16)
+        {
+            throw new ValidationException("Generation size greater than 16 is prohibited");
+        }
+
+        if (_settings.GenerationSize == 0)
+        {
+            throw new ValidationException("Generation size 0 is prohibited");
         }
     }
 
@@ -85,53 +98,64 @@ public class RlncEncodingService
         {
             throw new ValidationException("PacketSymbols was 0, unencoded packet list was empty");
         }
+
+        _unencodedPackets = unencodedPackets;
     }
 
-    public void EncodeNextGeneration()
+    public Generation EncodeNextGeneration()
     {
         ValidateEncodingConfig();
         ValidateUnencodedPackets();
         ValidateGenerationsState();
-        
-        var currentGeneration = new Generation(); 
+
+        var currentGeneration = new Generation();
         currentGeneration.GenerationIndex = CurrentGenerationIndex; // Increment state after
 
         foreach (var unused in _unencodedPackets!)
         {
             // Array of coeffs used to loop over all symbols and packets
-            var encodingCoeffs = _generator.GenerateMany(_unencodedPackets!.Count).ToList();
+            var encodingCoeffs = _generator
+                .GenerateMany(_unencodedPackets!.Count)
+                .Select(b => new GField(b))
+                .ToList();
 
             // Generate packet using coefficients
             var encodedPacket = StoreNextGeneratedPacket(encodingCoeffs, currentGeneration.EncodedPackets.Count);
-            
+
             // Increments the current encoded packet count automatically - its zero based
             currentGeneration.EncodedPackets.Add(encodedPacket);
         }
 
         CurrentGenerationIndex++;
+        currentGeneration.OriginalPackets = _unencodedPackets;
         _generations!.Add(currentGeneration);
+        return currentGeneration;
     }
 
-    private EncodedPacket StoreNextGeneratedPacket(List<byte> encodingCoefficients, int currentEncodedPacketIndex)
+    private EncodedPacket StoreNextGeneratedPacket(List<GField> encodingCoefficients, int currentEncodedPacketIndex)
     {
-        var outputPacket = new EncodedPacket()
-        {
-            EncodingVector = encodingCoefficients,
-            PacketIndex = currentEncodedPacketIndex,
-        };
-        
         // Initiate the output packet vector with capacity equal to known amount of symbols
-        var outputElements = new List<GField>(PacketSymbols);
+        var outputElements = Enumerable.Range(0, PacketSymbols).Select((_) => new GField()).ToList();
+        var currentPacketIndex = 0;
         foreach (var unencodedPacket in _unencodedPackets!.AsEnumerable())
         {
             // Loop over symbols of U-packet, multiply each with E-symbol, add to outputElements
-            
-        }
-        
-        // Result should make sense? Decode now?
+            foreach (var symbolIndex in Enumerable.Range(0, unencodedPacket.Payload.Length))
+            {
+                var packetSymbolGalois256 = new GField(unencodedPacket.Payload[symbolIndex]);
+                packetSymbolGalois256 *= encodingCoefficients[currentPacketIndex];
+                outputElements[symbolIndex] += packetSymbolGalois256;
+            }
 
-        outputPacket.
-        
-        return outputPacket;
+            currentPacketIndex++;
+        }
+
+        // Result should make sense? Decode now?
+        return new EncodedPacket()
+        {
+            EncodingVector = encodingCoefficients,
+            PacketIndex = currentEncodedPacketIndex,
+            Payload = outputElements.Select(g => g.GetValue()).ToArray()
+        };
     }
 }

@@ -134,7 +134,7 @@ public class GField
     {
         return fieldA._value != fieldB._value;
     }
-
+    
     public override bool Equals(object? obj)
     {
         if (obj == null) return false;
