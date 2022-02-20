@@ -19,15 +19,18 @@ public class RlncEncodingService
     readonly LinearFeedbackShiftRegister _generator = new LinearFeedbackShiftRegister(0x08);
 
     public int PacketSymbols { get; private set; }
+    /// <summary>
+    /// TODO apply custom size symbol 2,4,8 bits
+    /// </summary>
     public const int SymbolSize = 1;
 
-    public RlncEncodingService(int generationSize)
+    public RlncEncodingService(uint generationSize)
     {
         ConfigureEncoding(new EncodingConfiguration()
         {
             Seed = 0x08,
             FieldOrder = 8,
-            GenerationSize = 12,
+            GenerationSize = generationSize,
             CurrentGeneration = 0
         }, new List<UnencodedPacket>());
 
@@ -77,6 +80,8 @@ public class RlncEncodingService
             throw new ValidationException(
                 "No generations were prepared, please preprocess these with PreprocessGenerations(.)");
         }
+        
+        // No need to do exhaustion check
     }
 
     public void PreprocessGenerations(List<UnencodedPacket> unencodedPackets)
@@ -91,15 +96,17 @@ public class RlncEncodingService
             GenerationIndex = index
         }).ToList();
 
+        _unencodedPackets = unencodedPackets;
+        ValidateUnencodedPackets();
+
         // Packet length (bytes) / symbol length (=1-byte)
-        PacketSymbols = _generations.First().OriginalPackets.First().Payload.Length; // divide by encoding symbol size
+        PacketSymbols =
+            _generations.First().OriginalPackets.First().Payload.Length; // divide by encoding symbol size
         CurrentGenerationIndex = 0;
         if (PacketSymbols == 0)
         {
             throw new ValidationException("PacketSymbols was 0, unencoded packet list was empty");
         }
-
-        _unencodedPackets = unencodedPackets;
     }
 
     public Generation EncodeNextGeneration()
@@ -137,6 +144,8 @@ public class RlncEncodingService
         // Initiate the output packet vector with capacity equal to known amount of symbols
         var outputElements = Enumerable.Range(0, PacketSymbols).Select((_) => new GField()).ToList();
         var currentPacketIndex = 0;
+
+        // This performs the core encoding procedure
         foreach (var unencodedPacket in _unencodedPackets!.AsEnumerable())
         {
             // Loop over symbols of U-packet, multiply each with E-symbol, add to outputElements
