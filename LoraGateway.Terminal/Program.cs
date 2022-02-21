@@ -1,5 +1,6 @@
 ﻿using LoraGateway.Services.Firmware;
 using LoraGateway.Services.Firmware.RandomLinearCoding;
+using LoraGateway.Services.Firmware.Utils;
 using Serilog;
 using Serilog.Events;
 
@@ -23,7 +24,8 @@ public static class LoraGateway
             )
             .CreateLogger();
 
-        var field = new GField();
+        var unencodedPackets = new BlobFragmentationService().GenerateFakeFirmware(103, 12);
+        unencodedPackets.First().PrintPacket();
 
         // await Host.CreateDefaultBuilder(args)
         //     .UseSerilog()
@@ -34,6 +36,8 @@ public static class LoraGateway
         //         services.AddSingleton<SelectedDeviceService>();
         //         services.AddSingleton<SerialWatcher>();
         //         services.AddSingleton<MeasurementsService>();
+        //         services.AddSingleton<BlobFragmentationService>();
+        //         services.AddSingleton<RlncEncodingService>();
         //         services.AddHostedService<SerialHostedService>();
         //         services.AddTransient<SerialCommandHandler>();
         //         services.AddTransient<SelectDeviceCommandHandler>();

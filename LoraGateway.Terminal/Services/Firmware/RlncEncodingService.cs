@@ -16,7 +16,7 @@ public class RlncEncodingService
     // Encoding vectors using implicit mode (regeneration on receiving side)
     private List<Generation>? _generations;
     public int CurrentGenerationIndex { get; private set; }
-    readonly LinearFeedbackShiftRegister _generator = new LinearFeedbackShiftRegister(0x08);
+    readonly LinearFeedbackShiftRegister _generator = new(0x08);
 
     public int PacketSymbols { get; private set; }
 
