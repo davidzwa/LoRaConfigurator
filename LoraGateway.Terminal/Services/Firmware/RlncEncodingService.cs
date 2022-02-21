@@ -19,6 +19,7 @@ public class RlncEncodingService
     readonly LinearFeedbackShiftRegister _generator = new LinearFeedbackShiftRegister(0x08);
 
     public int PacketSymbols { get; private set; }
+
     /// <summary>
     /// TODO apply custom size symbol 2,4,8 bits
     /// </summary>
@@ -71,6 +72,15 @@ public class RlncEncodingService
             throw new ValidationException(
                 "No unencoded packets were stored, please store these with StoreUnencodedPackets(.)");
         }
+
+        var biggestPacket = _unencodedPackets.Max(p => p.Payload.Length);
+        var smallestPacket = _unencodedPackets.Min(p => p.Payload.Length);
+
+        if (biggestPacket != smallestPacket)
+        {
+            throw new ValidationException(
+                $"Inconsistent packet length detected across packets. Please pad the packets first. Biggest: {biggestPacket} smallest: {smallestPacket}");
+        }
     }
 
     private void ValidateGenerationsState()
@@ -80,7 +90,7 @@ public class RlncEncodingService
             throw new ValidationException(
                 "No generations were prepared, please preprocess these with PreprocessGenerations(.)");
         }
-        
+
         // No need to do exhaustion check
     }
 
@@ -89,7 +99,7 @@ public class RlncEncodingService
         ValidateEncodingConfig();
         _generations = null;
 
-        var generationChunks = unencodedPackets.Chunk((int)_settings!.GenerationSize);
+        var generationChunks = unencodedPackets.Chunk((int) _settings!.GenerationSize);
         _generations = generationChunks.Select((val, index) => new Generation()
         {
             OriginalPackets = val.ToList(),

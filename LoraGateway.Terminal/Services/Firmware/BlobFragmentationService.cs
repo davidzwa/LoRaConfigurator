@@ -76,7 +76,7 @@ public class BlobFragmentationService
                 if (payloadBytes.Length > 1) payloadBytes[1] = splitInt.Byte2;
                 if (payloadBytes.Length > 2) payloadBytes[2] = splitInt.Byte1;
                 if (payloadBytes.Length > 3) payloadBytes[3] = splitInt.Byte0;
-                return new UnencodedPacket() { PacketIndex = index, Payload = payloadBytes };
+                return new UnencodedPacket() { Payload = payloadBytes };
             })
             .ToList();
     }
