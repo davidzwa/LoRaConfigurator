@@ -5,7 +5,7 @@ namespace LoraGateway.Services.Firmware.Utils;
 
 public static class PacketUtils
 {
-    public static void PrintPacket(this UnencodedPacket packet)
+    public static void PrintPacket(this IPacket packet)
     {
         if (packet.Payload.Length == 0) return;
 
@@ -30,7 +30,7 @@ public static class PacketUtils
         Console.WriteLine("Packet [{0}] {1} {2}", packet.Payload.Length, hex, chars);
     }
 
-    public static void PrintPackets(this List<UnencodedPacket> packets)
+    public static void PrintPackets(this List<IPacket> packets)
     {
         foreach (var packet in packets)
         {

@@ -11,7 +11,7 @@ namespace LoraGateway.Services.Firmware;
 public class RlncEncodingService
 {
     private EncodingConfiguration? _settings;
-    private List<UnencodedPacket>? _unencodedPackets;
+    private List<IPacket>? _unencodedPackets;
 
     // Encoding vectors using implicit mode (regeneration on receiving side)
     private List<Generation>? _generations;
@@ -33,12 +33,12 @@ public class RlncEncodingService
             FieldOrder = 8,
             GenerationSize = generationSize,
             CurrentGeneration = 0
-        }, new List<UnencodedPacket>());
+        }, new List<IPacket>());
 
         ValidateEncodingConfig();
     }
 
-    private void ConfigureEncoding(EncodingConfiguration settings, List<UnencodedPacket> unencodedPackets)
+    private void ConfigureEncoding(EncodingConfiguration settings, List<IPacket> unencodedPackets)
     {
         _unencodedPackets = unencodedPackets;
         _settings = settings;
@@ -94,7 +94,7 @@ public class RlncEncodingService
         // No need to do exhaustion check
     }
 
-    public void PreprocessGenerations(List<UnencodedPacket> unencodedPackets)
+    public void PreprocessGenerations(List<IPacket> unencodedPackets)
     {
         ValidateEncodingConfig();
         _generations = null;
