@@ -119,6 +119,7 @@ public class RlncEncodingService
         _settings!.GenerationSize = generationSize;
         ValidateEncodingConfig();
 
+        // Collect the payloads in generation chunks
         _generations = null;
         var generationChunks = unencodedPackets.Chunk((int) _settings!.GenerationSize);
 
@@ -132,6 +133,9 @@ public class RlncEncodingService
         // Packet length (bytes) / symbol length (=1-byte)
         PacketSymbols =
             _generations.First().OriginalPackets.First().Payload.Length; // divide by encoding symbol size
+        
+        // Reset state
+        _generator.Reset();
         CurrentGenerationIndex = 0;
         if (PacketSymbols == 0)
         {
@@ -173,23 +177,36 @@ public class RlncEncodingService
 
         var sourcePackets = currentGeneration.OriginalPackets;
         var encodedPackets = sourcePackets.Count + precodeExtra;
-        PrecodeNumberOfPackets((uint) encodedPackets);
+        PrecodeNumberOfPackets((uint) encodedPackets, true);
 
         CurrentGenerationIndex++;
         return currentGeneration;
     }
 
-    public List<IPacket> PrecodeNumberOfPackets(uint packetCount)
+    public List<IPacket> PrecodeNumberOfPackets(uint packetCount, bool resetGenerationPackets = false)
     {
         ValidateGenerationsState();
 
         var currentGeneration = _generations![CurrentGenerationIndex];
+
+        if (resetGenerationPackets)
+        {
+            currentGeneration.EncodedPackets = new List<IPacket>();
+        }
+        
         var packetsGenerated = new List<IPacket>();
+        long generatorSamplesTaken = 0;
         foreach (var unused in Enumerable.Range(1, (int) packetCount))
         {
+            generatorSamplesTaken += currentGeneration.OriginalPackets.Count;
+            if (generatorSamplesTaken >= 256)
+            {
+                throw new Exception("Aaah");
+            }
+            
             // Array of coeffs used to loop over all symbols and packets
             var encodingCoeffs = _generator
-                .GenerateMany((int) packetCount)
+                .GenerateMany(currentGeneration.OriginalPackets.Count)
                 .Select(b => new GField(b))
                 .ToList();
 

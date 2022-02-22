@@ -26,6 +26,7 @@ public class LinearFeedbackShiftRegister
 
     public void Reset()
     {
+        GenerationCount = 0;
         State = Seed;
     }
 
