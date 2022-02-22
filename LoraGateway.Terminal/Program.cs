@@ -1,5 +1,4 @@
 ﻿using LoraGateway.Services.Firmware;
-using LoraGateway.Services.Firmware.RandomLinearCoding;
 using LoraGateway.Services.Firmware.Utils;
 using Serilog;
 using Serilog.Events;
@@ -25,7 +24,7 @@ public static class LoraGateway
             .CreateLogger();
 
         var unencodedPackets = new BlobFragmentationService().GenerateFakeFirmware(103, 12);
-        unencodedPackets.First().PrintPacket();
+        unencodedPackets.PrintPackets();
 
         // await Host.CreateDefaultBuilder(args)
         //     .UseSerilog()
