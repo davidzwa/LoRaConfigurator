@@ -5,9 +5,9 @@ namespace LoraGateway.Services.Firmware.Utils;
 
 public static class PacketUtils
 {
-    public static void PrintPacket(this IPacket packet)
+    public static string SerializePacket(this IPacket packet, string prefix = "")
     {
-        if (packet.Payload.Length == 0) return;
+        if (packet.Payload.Length == 0) return "EMPTY";
 
         StringBuilder hex = new StringBuilder(packet.Payload.Length * 2);
         StringBuilder chars = new StringBuilder(packet.Payload.Length);
@@ -27,14 +27,21 @@ public static class PacketUtils
             }
         }
 
-        Console.WriteLine("Packet [{0}] {1} {2}", packet.Payload.Length, hex, chars);
+        return $"{prefix} [{packet.Payload.Length}b] {hex} {""}\n";
     }
 
     public static void PrintPackets(this List<IPacket> packets)
     {
+        int count = 0;
+        StringBuilder packetsSerializedDebug = new StringBuilder();
         foreach (var packet in packets)
         {
-            packet.PrintPacket();
+            packetsSerializedDebug.Append(packet.SerializePacket($"Packet {count}"));
+            count++;
         }
+        
+        // Logging to console is inconsistent with newlines
+        Console.Write(packetsSerializedDebug);
+        Console.WriteLine("-- End of packets --");
     }
 }
