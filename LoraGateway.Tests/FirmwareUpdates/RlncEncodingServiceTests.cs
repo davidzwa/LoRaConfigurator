@@ -68,7 +68,7 @@ public class RlncEncodingServiceTests
     [Fact]
     public void InconsistentPacketLengthsTest()
     {
-        var unencodedPackets = new List<UnencodedPacket>().Append(new UnencodedPacket()
+        var unencodedPackets = new List<IPacket>().Append(new UnencodedPacket()
         {
             Payload = new[] {(byte) 0x00}
         }).Append(new UnencodedPacket()
