@@ -5,6 +5,46 @@ namespace LoraGateway.Services.Firmware.Utils;
 
 public static class PacketUtils
 {
+    public static GField[,] ToEncodingMatrix(this IList<EncodedPacket> source)
+    {
+        if (source == null)
+        {
+            throw new ArgumentNullException("source");
+        }
+
+        int max = source.Select(l => l.EncodingVector).Max(l => l.Count());
+        var result = new GField[source.Count, max];
+        for (int i = 0; i < source.Count; i++)
+        {
+            for (int j = 0; j < source[i].EncodingVector.Count(); j++)
+            {
+                result[i, j] = source[i].EncodingVector[j];
+            }
+        }
+
+        return result;
+    }
+
+    public static GField[,] ToPayloadMatrix(this IList<EncodedPacket> source)
+    {
+        if (source == null)
+        {
+            throw new ArgumentNullException("source");
+        }
+
+        int max = source.Select(l => l.Payload).Max(l => l.Count());
+        var result = new GField[source.Count, max];
+        for (int i = 0; i < source.Count; i++)
+        {
+            for (int j = 0; j < source[i].Payload.Count(); j++)
+            {
+                result[i, j] = new GField(source[i].Payload[j]);
+            }
+        }
+
+        return result;
+    }
+
     public static string SerializePacket(this IPacket packet, string prefix = "")
     {
         if (packet.Payload.Length == 0) return "EMPTY";
@@ -17,12 +57,13 @@ public static class PacketUtils
             if (b == 0)
             {
                 chars.Append('0');
-            } 
+            }
             else if (b == 255)
             {
                 chars.Append('.');
             }
-            else {
+            else
+            {
                 chars.Append(Convert.ToChar(b));
             }
         }
@@ -30,7 +71,7 @@ public static class PacketUtils
         return $"{prefix} [{packet.Payload.Length}b] {hex} {""}\n";
     }
 
-    public static void PrintPackets(this List<IPacket> packets)
+    public static void PrintPackets<T>(this List<T> packets) where T : IPacket
     {
         int count = 0;
         StringBuilder packetsSerializedDebug = new StringBuilder();
@@ -39,7 +80,7 @@ public static class PacketUtils
             packetsSerializedDebug.Append(packet.SerializePacket($"Packet {count}"));
             count++;
         }
-        
+
         // Logging to console is inconsistent with newlines
         Console.Write(packetsSerializedDebug);
         Console.WriteLine("-- End of packets --");

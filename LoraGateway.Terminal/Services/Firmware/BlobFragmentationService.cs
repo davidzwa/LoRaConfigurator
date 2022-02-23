@@ -35,7 +35,7 @@ public class BlobFragmentationService
     /// </summary>
     /// <param name="firmwareSize"></param>
     /// <param name="frameSize"></param>
-    public List<IPacket> GenerateFakeFirmware(long firmwareSize, int frameSize)
+    public List<UnencodedPacket> GenerateFakeFirmware(long firmwareSize, int frameSize)
     {
         var fragmentCount = ValidateGenerationSize(firmwareSize, frameSize);
 
@@ -49,7 +49,7 @@ public class BlobFragmentationService
                 if (payloadBytes.Length > 1) payloadBytes[1] = splitInt.Byte2;
                 if (payloadBytes.Length > 2) payloadBytes[2] = splitInt.Byte1;
                 if (payloadBytes.Length > 3) payloadBytes[3] = splitInt.Byte0;
-                return new UnencodedPacket {Payload = payloadBytes} as IPacket;
+                return new UnencodedPacket {Payload = payloadBytes};
             })
             .ToList();
     }

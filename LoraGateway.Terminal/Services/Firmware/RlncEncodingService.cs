@@ -11,7 +11,7 @@ namespace LoraGateway.Services.Firmware;
 public class RlncEncodingService
 {
     private EncodingConfiguration? _settings;
-    private List<IPacket>? _unencodedPackets;
+    private List<UnencodedPacket>? _unencodedPackets;
 
     // Encoding vectors using implicit mode (regeneration on receiving side)
     private List<Generation>? _generations;
@@ -33,17 +33,17 @@ public class RlncEncodingService
             FieldOrder = 8,
             GenerationSize = 0,
             CurrentGeneration = 0
-        }, new List<IPacket>());
-        
+        }, new List<UnencodedPacket>());
+
         _generator.Reset();
     }
 
     public byte GetGeneratorState()
     {
         return _generator.State;
-    } 
+    }
 
-    private void ConfigureEncoding(EncodingConfiguration settings, List<IPacket> unencodedPackets)
+    private void ConfigureEncoding(EncodingConfiguration settings, List<UnencodedPacket> unencodedPackets)
     {
         _unencodedPackets = unencodedPackets;
         _settings = settings;
@@ -111,7 +111,7 @@ public class RlncEncodingService
     /// <param name="unencodedPackets"></param>
     /// <param name="generationSize"></param>
     /// <exception cref="ValidationException"></exception>
-    public void PreprocessGenerations(List<IPacket> unencodedPackets, uint generationSize)
+    public void PreprocessGenerations(List<UnencodedPacket> unencodedPackets, uint generationSize)
     {
         _unencodedPackets = unencodedPackets;
         ValidateUnencodedPackets();
@@ -121,7 +121,7 @@ public class RlncEncodingService
 
         // Collect the payloads in generation chunks
         _generations = null;
-        var generationChunks = unencodedPackets.Chunk((int) _settings!.GenerationSize);
+        var generationChunks = unencodedPackets.Chunk((int)_settings!.GenerationSize);
 
         // This deals with underrun generation size well (f.e. when less packets were chunked than gen size)
         _generations = generationChunks.Select((packetChunk, index) => new Generation()
@@ -133,7 +133,7 @@ public class RlncEncodingService
         // Packet length (bytes) / symbol length (=1-byte)
         PacketSymbols =
             _generations.First().OriginalPackets.First().Payload.Length; // divide by encoding symbol size
-        
+
         // Reset state
         _generator.Reset();
         CurrentGenerationIndex = 0;
@@ -162,7 +162,7 @@ public class RlncEncodingService
     /// Encoding of exactly the amount of unencoded packets
     /// </summary>
     /// <returns></returns>
-    public Generation PrecodeNextGeneration(int precodeExtra)
+    public Generation PrecodeNextGeneration(uint precodeExtra)
     {
         ValidateEncodingConfig();
         ValidateUnencodedPackets();
@@ -177,7 +177,7 @@ public class RlncEncodingService
 
         var sourcePackets = currentGeneration.OriginalPackets;
         var encodedPackets = sourcePackets.Count + precodeExtra;
-        PrecodeNumberOfPackets((uint) encodedPackets, true);
+        PrecodeNumberOfPackets((uint)encodedPackets, true);
 
         CurrentGenerationIndex++;
         return currentGeneration;
@@ -191,19 +191,19 @@ public class RlncEncodingService
 
         if (resetGenerationPackets)
         {
-            currentGeneration.EncodedPackets = new List<IPacket>();
+            currentGeneration.EncodedPackets = new List<EncodedPacket>();
         }
-        
+
         var packetsGenerated = new List<IPacket>();
         long generatorSamplesTaken = 0;
-        foreach (var unused in Enumerable.Range(1, (int) packetCount))
+        foreach (var unused in Enumerable.Range(1, (int)packetCount))
         {
             generatorSamplesTaken += currentGeneration.OriginalPackets.Count;
             if (generatorSamplesTaken >= 256)
             {
-                throw new Exception("Aaah");
+                throw new Exception("LFSR overrun");
             }
-            
+
             // Array of coeffs used to loop over all symbols and packets
             var encodingCoeffs = _generator
                 .GenerateMany(currentGeneration.OriginalPackets.Count)
@@ -217,7 +217,9 @@ public class RlncEncodingService
             // Increments the current encoded packet count automatically - its zero based
             packetsGenerated.Add(encodedPacket);
             currentGeneration.EncodedPackets.Add(encodedPacket);
-            Console.WriteLine("Encoded packet index {0}", currentGeneration.EncodedPackets.Count - 1);
+            
+            // TODO convert to serilog
+            // Console.WriteLine("Encoded packet index {0}", currentGeneration.EncodedPackets.Count - 1);
         }
 
         return packetsGenerated;
