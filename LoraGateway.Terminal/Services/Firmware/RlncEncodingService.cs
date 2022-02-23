@@ -11,7 +11,6 @@ namespace LoraGateway.Services.Firmware;
 public class RlncEncodingService
 {
     private EncodingConfiguration? _settings;
-    private List<UnencodedPacket>? _unencodedPackets;
 
     // Encoding vectors using implicit mode (regeneration on receiving side)
     private List<Generation>? _generations;
@@ -33,7 +32,7 @@ public class RlncEncodingService
             FieldOrder = 8,
             GenerationSize = 0,
             CurrentGeneration = 0
-        }, new List<UnencodedPacket>());
+        });
 
         _generator.Reset();
     }
@@ -43,9 +42,8 @@ public class RlncEncodingService
         return _generator.State;
     }
 
-    private void ConfigureEncoding(EncodingConfiguration settings, List<UnencodedPacket> unencodedPackets)
+    private void ConfigureEncoding(EncodingConfiguration settings)
     {
-        _unencodedPackets = unencodedPackets;
         _settings = settings;
         _generations = null;
         PacketSymbols = 0;
@@ -70,16 +68,16 @@ public class RlncEncodingService
         }
     }
 
-    private void ValidateUnencodedPackets()
+    private void ValidateUnencodedPackets(List<UnencodedPacket> unencodedPackets)
     {
-        if (_unencodedPackets == null || !_unencodedPackets.Any())
+        if (unencodedPackets == null || !unencodedPackets.Any())
         {
             throw new ValidationException(
                 "No unencoded packets were stored, please store these with StoreUnencodedPackets(.)");
         }
 
-        var biggestPacket = _unencodedPackets.Max(p => p.Payload.Length);
-        var smallestPacket = _unencodedPackets.Min(p => p.Payload.Length);
+        var biggestPacket = unencodedPackets.Max(p => p.Payload.Length);
+        var smallestPacket = unencodedPackets.Min(p => p.Payload.Length);
 
         if (biggestPacket != smallestPacket)
         {
@@ -113,8 +111,7 @@ public class RlncEncodingService
     /// <exception cref="ValidationException"></exception>
     public void PreprocessGenerations(List<UnencodedPacket> unencodedPackets, uint generationSize)
     {
-        _unencodedPackets = unencodedPackets;
-        ValidateUnencodedPackets();
+        ValidateUnencodedPackets(unencodedPackets);
 
         _settings!.GenerationSize = generationSize;
         ValidateEncodingConfig();
@@ -165,7 +162,6 @@ public class RlncEncodingService
     public Generation PrecodeNextGeneration(uint precodeExtra)
     {
         ValidateEncodingConfig();
-        ValidateUnencodedPackets();
         ValidateGenerationsState();
 
         var currentGeneration = _generations![CurrentGenerationIndex];
@@ -232,7 +228,7 @@ public class RlncEncodingService
         var currentPacketIndex = 0;
 
         // This performs the core encoding procedure
-        foreach (var unencodedPacket in _unencodedPackets!.AsEnumerable())
+        foreach (var unencodedPacket in _generations![CurrentGenerationIndex].OriginalPackets!.AsEnumerable())
         {
             // Loop over symbols of U-packet, multiply each with E-symbol, add to outputElements
             foreach (var symbolIndex in Enumerable.Range(0, unencodedPacket.Payload.Length))
