@@ -23,9 +23,9 @@ public static class LoraGateway
             )
             .CreateLogger();
 
-        var unencodedPackets = new BlobFragmentationService().GenerateFakeFirmware(103, 12);
-        // unencodedPackets.PrintPackets();
-        
+        var unencodedPackets = new BlobFragmentationService()
+            .GenerateFakeFirmware(103, 12);
+
         var service = new RlncEncodingService();
         service.PreprocessGenerations(unencodedPackets, 12);
         var result = service.PrecodeNextGeneration(20);
