@@ -3,7 +3,7 @@ using LoraGateway.Services.Firmware.RandomLinearCoding;
 using Shouldly;
 using Xunit;
 
-namespace LoraGateway.Tests.FirmwareUpdates;
+namespace LoraGateway.Tests.FirmwareUpdates.RandomLinearNetworkCoding;
 
 public class RandomLinearCodingTests
 {
@@ -12,9 +12,9 @@ public class RandomLinearCodingTests
     {
         // Test the LFSR implementation for 8-bits with cycle 255
         var generator = new LinearFeedbackShiftRegister(0x12);
-
         generator.Generate().ShouldBe((byte)137);
         generator.Generate().ShouldBe((byte)68);
+        
         var rngList = generator.GenerateMany(4).ToList();
         rngList[0].ShouldBe((byte)162);
         rngList[1].ShouldBe((byte)81);

@@ -11,33 +11,39 @@ namespace LoraGateway.Services.Firmware;
 public class RlncEncodingService
 {
     private EncodingConfiguration? _settings;
-    private List<UnencodedPacket>? _unencodedPackets;
+    private List<IPacket>? _unencodedPackets;
 
     // Encoding vectors using implicit mode (regeneration on receiving side)
     private List<Generation>? _generations;
     public int CurrentGenerationIndex { get; private set; }
-    readonly LinearFeedbackShiftRegister _generator = new LinearFeedbackShiftRegister(0x08);
+    readonly LinearFeedbackShiftRegister _generator = new(0x08);
 
     public int PacketSymbols { get; private set; }
+
     /// <summary>
     /// TODO apply custom size symbol 2,4,8 bits
     /// </summary>
     public const int SymbolSize = 1;
 
-    public RlncEncodingService(uint generationSize)
+    public RlncEncodingService()
     {
         ConfigureEncoding(new EncodingConfiguration()
         {
             Seed = 0x08,
             FieldOrder = 8,
-            GenerationSize = generationSize,
+            GenerationSize = 0,
             CurrentGeneration = 0
-        }, new List<UnencodedPacket>());
-
-        ValidateEncodingConfig();
+        }, new List<IPacket>());
+        
+        _generator.Reset();
     }
 
-    private void ConfigureEncoding(EncodingConfiguration settings, List<UnencodedPacket> unencodedPackets)
+    public byte GetGeneratorState()
+    {
+        return _generator.State;
+    } 
+
+    private void ConfigureEncoding(EncodingConfiguration settings, List<IPacket> unencodedPackets)
     {
         _unencodedPackets = unencodedPackets;
         _settings = settings;
@@ -71,6 +77,15 @@ public class RlncEncodingService
             throw new ValidationException(
                 "No unencoded packets were stored, please store these with StoreUnencodedPackets(.)");
         }
+
+        var biggestPacket = _unencodedPackets.Max(p => p.Payload.Length);
+        var smallestPacket = _unencodedPackets.Min(p => p.Payload.Length);
+
+        if (biggestPacket != smallestPacket)
+        {
+            throw new ValidationException(
+                $"Inconsistent packet length detected across packets. Please pad the packets first. Biggest: {biggestPacket} smallest: {smallestPacket}");
+        }
     }
 
     private void ValidateGenerationsState()
@@ -80,28 +95,47 @@ public class RlncEncodingService
             throw new ValidationException(
                 "No generations were prepared, please preprocess these with PreprocessGenerations(.)");
         }
-        
+
+        if (_generations.Count <= CurrentGenerationIndex)
+        {
+            throw new ValidationException(
+                "An error occurred: CurrentGenerationIndex exceeded generations available.");
+        }
+
         // No need to do exhaustion check
     }
 
-    public void PreprocessGenerations(List<UnencodedPacket> unencodedPackets)
+    /// <summary>
+    /// Provide all packets to be chunked up in generations, effectively resetting the encoding process
+    /// </summary>
+    /// <param name="unencodedPackets"></param>
+    /// <param name="generationSize"></param>
+    /// <exception cref="ValidationException"></exception>
+    public void PreprocessGenerations(List<IPacket> unencodedPackets, uint generationSize)
     {
-        ValidateEncodingConfig();
-        _generations = null;
-
-        var generationChunks = unencodedPackets.Chunk((int)_settings!.GenerationSize);
-        _generations = generationChunks.Select((val, index) => new Generation()
-        {
-            OriginalPackets = val.ToList(),
-            GenerationIndex = index
-        }).ToList();
-
         _unencodedPackets = unencodedPackets;
         ValidateUnencodedPackets();
+
+        _settings!.GenerationSize = generationSize;
+        ValidateEncodingConfig();
+
+        // Collect the payloads in generation chunks
+        _generations = null;
+        var generationChunks = unencodedPackets.Chunk((int) _settings!.GenerationSize);
+
+        // This deals with underrun generation size well (f.e. when less packets were chunked than gen size)
+        _generations = generationChunks.Select((packetChunk, index) => new Generation()
+        {
+            OriginalPackets = packetChunk.ToList(),
+            GenerationIndex = index
+        }).ToList();
 
         // Packet length (bytes) / symbol length (=1-byte)
         PacketSymbols =
             _generations.First().OriginalPackets.First().Payload.Length; // divide by encoding symbol size
+        
+        // Reset state
+        _generator.Reset();
         CurrentGenerationIndex = 0;
         if (PacketSymbols == 0)
         {
@@ -109,37 +143,87 @@ public class RlncEncodingService
         }
     }
 
-    public Generation EncodeNextGeneration()
+    public bool HasNextGeneration()
+    {
+        return _generations != null && (_generations.Count - 1) > CurrentGenerationIndex;
+    }
+
+    public void MoveNextGeneration()
+    {
+        if (HasNextGeneration())
+        {
+            CurrentGenerationIndex++;
+        }
+
+        ValidateGenerationsState();
+    }
+
+    /// <summary>
+    /// Encoding of exactly the amount of unencoded packets
+    /// </summary>
+    /// <returns></returns>
+    public Generation PrecodeNextGeneration(int precodeExtra)
     {
         ValidateEncodingConfig();
         ValidateUnencodedPackets();
         ValidateGenerationsState();
 
-        var currentGeneration = new Generation();
-        currentGeneration.GenerationIndex = CurrentGenerationIndex; // Increment state after
-
-        foreach (var unused in _unencodedPackets!)
+        var currentGeneration = _generations![CurrentGenerationIndex];
+        if (currentGeneration.EncodedPackets.Count > 0)
         {
+            throw new ValidationException(
+                "Generation already contained encoded packets. In order to prevent inconsistent behaviour please use PrecodeNumberOfPackets with care to not overrun the random number generator");
+        }
+
+        var sourcePackets = currentGeneration.OriginalPackets;
+        var encodedPackets = sourcePackets.Count + precodeExtra;
+        PrecodeNumberOfPackets((uint) encodedPackets, true);
+
+        CurrentGenerationIndex++;
+        return currentGeneration;
+    }
+
+    public List<IPacket> PrecodeNumberOfPackets(uint packetCount, bool resetGenerationPackets = false)
+    {
+        ValidateGenerationsState();
+
+        var currentGeneration = _generations![CurrentGenerationIndex];
+
+        if (resetGenerationPackets)
+        {
+            currentGeneration.EncodedPackets = new List<IPacket>();
+        }
+        
+        var packetsGenerated = new List<IPacket>();
+        long generatorSamplesTaken = 0;
+        foreach (var unused in Enumerable.Range(1, (int) packetCount))
+        {
+            generatorSamplesTaken += currentGeneration.OriginalPackets.Count;
+            if (generatorSamplesTaken >= 256)
+            {
+                throw new Exception("Aaah");
+            }
+            
             // Array of coeffs used to loop over all symbols and packets
             var encodingCoeffs = _generator
-                .GenerateMany(_unencodedPackets!.Count)
+                .GenerateMany(currentGeneration.OriginalPackets.Count)
                 .Select(b => new GField(b))
                 .ToList();
 
             // Generate packet using coefficients
-            var encodedPacket = StoreNextGeneratedPacket(encodingCoeffs, currentGeneration.EncodedPackets.Count);
+            var nextEncodedPacketIndex = currentGeneration.EncodedPackets.Count;
+            var encodedPacket = EncodeNextPacket(encodingCoeffs, nextEncodedPacketIndex);
 
             // Increments the current encoded packet count automatically - its zero based
+            packetsGenerated.Add(encodedPacket);
             currentGeneration.EncodedPackets.Add(encodedPacket);
+            Console.WriteLine("Encoded packet index {0}", currentGeneration.EncodedPackets.Count - 1);
         }
 
-        CurrentGenerationIndex++;
-        currentGeneration.OriginalPackets = _unencodedPackets;
-        _generations!.Add(currentGeneration);
-        return currentGeneration;
+        return packetsGenerated;
     }
 
-    private EncodedPacket StoreNextGeneratedPacket(List<GField> encodingCoefficients, int currentEncodedPacketIndex)
+    public EncodedPacket EncodeNextPacket(List<GField> encodingCoefficients, int currentEncodedPacketIndex)
     {
         // Initiate the output packet vector with capacity equal to known amount of symbols
         var outputElements = Enumerable.Range(0, PacketSymbols).Select((_) => new GField()).ToList();
@@ -159,7 +243,7 @@ public class RlncEncodingService
             currentPacketIndex++;
         }
 
-        // Result should make sense? Decode now?
+        // Result should make sense - decode now?
         return new EncodedPacket()
         {
             EncodingVector = encodingCoefficients,
