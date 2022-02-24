@@ -3,20 +3,47 @@ using LoraGateway.Services.Firmware.Utils;
 
 namespace LoraGateway.Services.Firmware;
 
-public class RlncDecodingService
+public static class RlncDecodingService
 {
     // https://github.com/elsheimy/Elsheimy.Components.Linears/tree/main/Matrix
-    public uint FindNextReducibleRow(List<EncodedPacket> packets, uint rowRedProgression)
+    public static List<DecodedPacket> DecodePackets(List<EncodedPacket> encodedPackets)
     {
-        var encodingMatrix = packets.ToEncodingMatrix();
-        // rowRedProgression indicates which column we need to aim for in looking for a best 
-        return (uint)packets.FindIndex(p => p.Payload[rowRedProgression] != 0x00);
+        var generationSize = encodedPackets.First().EncodingVector.Count;
+        var frameSize = encodedPackets.First().Payload.Count;
+        var encodingMatrix = encodedPackets.ToAugmentedMatrix();
+
+        var result = MatrixFunctions.Reduce(encodingMatrix);
+
+        return result.ToDecodedPackets(generationSize, frameSize);
     }
 
-    public uint DetermineEncodingMatrixRank(List<EncodedPacket> packets)
+    private static List<DecodedPacket> FilterInnovativePackets(List<DecodedPacket> decodedPackets)
     {
-        // Rows should at least exceed col counts
+        List<DecodedPacket> innovativePackets = new();
 
-        return 0;
+        foreach (var index in Enumerable.Range(0, decodedPackets.Count))
+        {
+            var packet = decodedPackets[index];
+            if (packet.DecodingSuccess && packet.IsRedundant == false)
+            {
+                innovativePackets.Add(packet);
+            }
+        }
+
+        return innovativePackets;
+    }
+
+    public static List<DecodedPacket> DecodeGeneration(List<EncodedPacket> generationPackets)
+    {
+        var result = DecodePackets(generationPackets);
+
+        return FilterInnovativePackets(result);
+    }
+
+    public static byte[] SerializePacketsToBinary(this List<DecodedPacket> innovativePackets)
+    {
+        return innovativePackets
+            .SelectMany(p => p.Payload.Select(p => p.GetValue()))
+            .ToArray();
     }
 }

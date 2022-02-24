@@ -1,88 +1,76 @@
-﻿using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text;
 using LoraGateway.Services.Firmware.RandomLinearCoding;
 
 namespace LoraGateway.Services.Firmware.Utils;
 
 public static class PacketUtils
 {
-    public static GField[,] ToEncodingMatrix(this IList<EncodedPacket> source)
+    public static string SerializePacketDebug(this IPacket packet, string prefix = "")
     {
-        if (source == null)
-        {
-            throw new ArgumentNullException("source");
-        }
+        if (packet.Payload.Count == 0) return "EMPTY";
 
-        int max = source.Select(l => l.EncodingVector).Max(l => l.Count());
-        var result = new GField[source.Count, max];
-        for (int i = 0; i < source.Count; i++)
-        {
-            for (int j = 0; j < source[i].EncodingVector.Count(); j++)
-            {
-                result[i, j] = source[i].EncodingVector[j];
-            }
-        }
-
-        return result;
-    }
-
-    public static GField[,] ToPayloadMatrix(this IList<EncodedPacket> source)
-    {
-        if (source == null)
-        {
-            throw new ArgumentNullException("source");
-        }
-
-        int max = source.Select(l => l.Payload).Max(l => l.Count());
-        var result = new GField[source.Count, max];
-        for (int i = 0; i < source.Count; i++)
-        {
-            for (int j = 0; j < source[i].Payload.Count(); j++)
-            {
-                result[i, j] = new GField(source[i].Payload[j]);
-            }
-        }
-
-        return result;
-    }
-
-    public static string SerializePacket(this IPacket packet, string prefix = "")
-    {
-        if (packet.Payload.Length == 0) return "EMPTY";
-
-        StringBuilder hex = new StringBuilder(packet.Payload.Length * 2);
-        StringBuilder chars = new StringBuilder(packet.Payload.Length);
+        var hex = new StringBuilder(packet.Payload.Count * 2);
+        var chars = new StringBuilder(packet.Payload.Count);
         foreach (byte b in packet.Payload)
         {
             hex.AppendFormat("{0:x2}", b);
             if (b == 0)
-            {
                 chars.Append('0');
-            }
             else if (b == 255)
-            {
                 chars.Append('.');
-            }
             else
-            {
                 chars.Append(Convert.ToChar(b));
-            }
         }
 
-        return $"{prefix} [{packet.Payload.Length}b] {hex} {""}\n";
+        return $"{prefix} [{packet.Payload.Count}b] {hex} {""}\n";
     }
 
     public static void PrintPackets<T>(this List<T> packets) where T : IPacket
     {
-        int count = 0;
-        StringBuilder packetsSerializedDebug = new StringBuilder();
+        var count = 0;
+        var packetsSerializedDebug = new StringBuilder();
         foreach (var packet in packets)
         {
-            packetsSerializedDebug.Append(packet.SerializePacket($"Packet {count}"));
+            packetsSerializedDebug.Append(packet.SerializePacketDebug($"Packet {count}"));
             count++;
         }
 
         // Logging to console is inconsistent with newlines
         Console.Write(packetsSerializedDebug);
         Console.WriteLine("-- End of packets --");
+    }
+
+    public static DecodedPacket ToDecodedPacket(this GField[,] matrix, int packetRow, int encodingVectorSize,
+        int payloadSize)
+    {
+        if (matrix.GetLength(1) < encodingVectorSize + payloadSize)
+            throw new ValidationException("Cant unwrap matrix which does not have this many cols");
+
+        var decodedPacket = new DecodedPacket();
+        var i = packetRow;
+        for (var j = 0; j < encodingVectorSize + payloadSize; j++)
+            if (j < encodingVectorSize)
+                decodedPacket.EncodingVector.Add(matrix[i, j]);
+            else
+                decodedPacket.Payload.Add(matrix[i, j]);
+
+        if (decodedPacket.EncodingVector.Count > packetRow &&
+            decodedPacket.EncodingVector[packetRow] == new GField(0x01) &&
+            decodedPacket.EncodingVector.All(v => v == new GField(0x00) || v == new GField(0x01)))
+            decodedPacket.DecodingSuccess = true;
+
+        if (decodedPacket.EncodingVector.All(v => v == new GField(0x00))) decodedPacket.IsRedundant = true;
+
+        return decodedPacket;
+    }
+
+    public static List<DecodedPacket> ToDecodedPackets(this GField[,] matrix, int encodingVectorSize, int payloadSize)
+    {
+        var decodedPackets = new List<DecodedPacket>();
+        foreach (var index in Enumerable.Range(0, matrix.GetLength(0)))
+            decodedPackets.Add(ToDecodedPacket(matrix, index, encodingVectorSize, payloadSize));
+
+        return decodedPackets;
     }
 }

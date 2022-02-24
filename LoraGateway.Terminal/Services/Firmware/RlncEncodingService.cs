@@ -76,8 +76,8 @@ public class RlncEncodingService
                 "No unencoded packets were stored, please store these with StoreUnencodedPackets(.)");
         }
 
-        var biggestPacket = unencodedPackets.Max(p => p.Payload.Length);
-        var smallestPacket = unencodedPackets.Min(p => p.Payload.Length);
+        var biggestPacket = unencodedPackets.Max(p => p.Payload.Count);
+        var smallestPacket = unencodedPackets.Min(p => p.Payload.Count);
 
         if (biggestPacket != smallestPacket)
         {
@@ -129,7 +129,7 @@ public class RlncEncodingService
 
         // Packet length (bytes) / symbol length (=1-byte)
         PacketSymbols =
-            _generations.First().OriginalPackets.First().Payload.Length; // divide by encoding symbol size
+            _generations.First().OriginalPackets.First().Payload.Count; // divide by encoding symbol size
 
         // Reset state
         _generator.Reset();
@@ -179,7 +179,7 @@ public class RlncEncodingService
         return currentGeneration;
     }
 
-    public List<IPacket> PrecodeNumberOfPackets(uint packetCount, bool resetGenerationPackets = false)
+    public List<EncodedPacket> PrecodeNumberOfPackets(uint packetCount, bool resetGenerationPackets = false)
     {
         ValidateGenerationsState();
 
@@ -190,7 +190,7 @@ public class RlncEncodingService
             currentGeneration.EncodedPackets = new List<EncodedPacket>();
         }
 
-        var packetsGenerated = new List<IPacket>();
+        var packetsGenerated = new List<EncodedPacket>();
         long generatorSamplesTaken = 0;
         foreach (var unused in Enumerable.Range(1, (int)packetCount))
         {
@@ -221,7 +221,7 @@ public class RlncEncodingService
         return packetsGenerated;
     }
 
-    public EncodedPacket EncodeNextPacket(List<GField> encodingCoefficients, int currentEncodedPacketIndex)
+    private EncodedPacket EncodeNextPacket(List<GField> encodingCoefficients, int currentEncodedPacketIndex)
     {
         // Initiate the output packet vector with capacity equal to known amount of symbols
         var outputElements = Enumerable.Range(0, PacketSymbols).Select((_) => new GField()).ToList();
@@ -231,9 +231,9 @@ public class RlncEncodingService
         foreach (var unencodedPacket in _generations![CurrentGenerationIndex].OriginalPackets!.AsEnumerable())
         {
             // Loop over symbols of U-packet, multiply each with E-symbol, add to outputElements
-            foreach (var symbolIndex in Enumerable.Range(0, unencodedPacket.Payload.Length))
+            foreach (var symbolIndex in Enumerable.Range(0, unencodedPacket.Payload.Count))
             {
-                var packetSymbolGalois256 = new GField(unencodedPacket.Payload[symbolIndex]);
+                var packetSymbolGalois256 = unencodedPacket.Payload[symbolIndex];
                 packetSymbolGalois256 *= encodingCoefficients[currentPacketIndex];
                 outputElements[symbolIndex] += packetSymbolGalois256;
             }
@@ -246,7 +246,7 @@ public class RlncEncodingService
         {
             EncodingVector = encodingCoefficients,
             PacketIndex = currentEncodedPacketIndex,
-            Payload = outputElements.Select(g => g.GetValue()).ToArray()
+            Payload = outputElements.Select(g => g).ToList()
         };
     }
 }
