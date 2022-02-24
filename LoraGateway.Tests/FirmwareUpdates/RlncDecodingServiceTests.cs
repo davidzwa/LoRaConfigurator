@@ -90,7 +90,7 @@ public class RlncDecodingServiceTests
         var encodedPackets = service.PrecodeNextGeneration(generationExtra).EncodedPackets;
 
         var decodedPackets = RlncDecodingService.DecodePackets(encodedPackets);
-        decodedPackets.Count.ShouldBe(5);
+        decodedPackets.Count.ShouldBe((int)totalPacketsOutput);
         decodedPackets.Last().DecodingSuccess.ShouldBeTrue();
         decodedPackets.ShouldAllBe(p => p.IsRedundant == false);
         decodedPackets.FindAll(p => p.DecodingSuccess).Count.ShouldBe((int)generationSize);
@@ -115,7 +115,7 @@ public class RlncDecodingServiceTests
         var encodedPackets = service.PrecodeNextGeneration(generationExtra).EncodedPackets;
 
         var decodedPackets = RlncDecodingService.DecodePackets(encodedPackets);
-        decodedPackets.Count.ShouldBe(6);
+        decodedPackets.Count.ShouldBe((int)totalPacketsOutput);
         decodedPackets.Last().DecodingSuccess.ShouldBeFalse();
         decodedPackets.ShouldAllBe(p => p.DecodingSuccess == true || p.IsRedundant == true);
         decodedPackets.FindAll(p => p.DecodingSuccess).Count.ShouldBe((int)generationSize);
