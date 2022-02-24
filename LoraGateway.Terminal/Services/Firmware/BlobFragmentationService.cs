@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices;
 using LoraGateway.Services.Firmware.LoRaPhy;
 using LoraGateway.Services.Firmware.RandomLinearCoding;

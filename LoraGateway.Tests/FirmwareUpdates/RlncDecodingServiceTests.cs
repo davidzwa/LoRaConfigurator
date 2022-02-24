@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using LoraGateway.Services.Firmware;
 using LoraGateway.Services.Firmware.RandomLinearCoding;
 using LoraGateway.Services.Firmware.Utils;
@@ -47,26 +48,32 @@ public class RlncDecodingServiceTests
         var encodedPackets = encodingService.PrecodeNextGeneration(generationExtra).EncodedPackets;
 
         // Simulate a dropped packet
-        encodedPackets.RemoveAt(0);
+        var lossyChannelPackets = new List<EncodedPacket>(encodedPackets);
+        lossyChannelPackets.RemoveAt(0);
+        lossyChannelPackets.Count.ShouldBe((int)totalPacketsOutput - 1);
 
         // Failure in decoding
-        var decodedPackets = RlncDecodingService.DecodePackets(encodedPackets);
+        var decodedPackets = RlncDecodingService.DecodePackets(lossyChannelPackets);
         decodedPackets.Count.ShouldBe(4);
         decodedPackets.ShouldAllBe(p => !p.IsRedundant && !p.DecodingSuccess);
         decodedPackets.FindAll(p => p.DecodingSuccess).Count.ShouldBe(0);
 
         // Add a new one
-        encodedPackets.AddRange(encodingService.PrecodeNumberOfPackets(1));
+        var fixingPacketCount = 1;
+        var fixingPackets = encodingService.PrecodeNumberOfPackets((uint)fixingPacketCount);
+        fixingPackets.Count.ShouldBe(fixingPacketCount);
+        lossyChannelPackets.AddRange(fixingPackets);
+        lossyChannelPackets.Count.ShouldBe((int)totalPacketsOutput);
 
         // We can fix it
-        var decodedPacketsRetry = RlncDecodingService.DecodePackets(encodedPackets);
+        var decodedPacketsRetry = RlncDecodingService.DecodePackets(lossyChannelPackets);
         decodedPacketsRetry.Count.ShouldBe(5);
         decodedPacketsRetry.ShouldAllBe(p => !p.IsRedundant && p.DecodingSuccess);
         decodedPacketsRetry.FindAll(p => p.DecodingSuccess).Count.ShouldBe(5);
         var byteArray = decodedPacketsRetry.SerializePacketsToBinary();
 
         // Filtering on innovative packets should not do weird stuff 
-        decodedPacketsRetry = RlncDecodingService.DecodeGeneration(encodedPackets);
+        decodedPacketsRetry = RlncDecodingService.DecodeGeneration(lossyChannelPackets);
         decodedPacketsRetry.Count.ShouldBe(5);
         var byteArray2 = decodedPacketsRetry.SerializePacketsToBinary();
         
@@ -118,6 +125,30 @@ public class RlncDecodingServiceTests
         decodedPackets.Count.ShouldBe((int)totalPacketsOutput);
         decodedPackets.Last().DecodingSuccess.ShouldBeFalse();
         decodedPackets.ShouldAllBe(p => p.DecodingSuccess == true || p.IsRedundant == true);
+        decodedPackets.FindAll(p => p.DecodingSuccess).Count.ShouldBe((int)generationSize);
+    }
+    
+    [Fact]
+    public void SkipGenerationOverheadDecodePacketsTest()
+    {
+        // A test ab absurdum where a whole generation is dropped to check for proper state management
+        
+        var firmwareSize = 100;
+        var frameSize = 10; // 10 symbols per packet
+        var generationSize = (uint)5; // 5 packets (= 5 enc vectors)
+        var generationExtra = (uint)5; // 1 packet overhead
+        var totalPacketsOutput = generationExtra + generationSize;
+
+        var unencodedPackets = new BlobFragmentationService().GenerateFakeFirmware(firmwareSize, frameSize);
+        var service = new RlncEncodingService();
+        service.PreprocessGenerations(unencodedPackets, generationSize);
+        var encodedPackets = service.PrecodeNextGeneration(generationExtra).EncodedPackets;
+        var chunkedPacketSets = encodedPackets.Chunk(5).ToList();
+
+        var decodedPackets = RlncDecodingService.DecodePackets(chunkedPacketSets.Last().ToList());
+        decodedPackets.Count.ShouldBe((int)generationExtra);
+        decodedPackets.Last().DecodingSuccess.ShouldBeTrue();
+        decodedPackets.ShouldAllBe(p => p.DecodingSuccess && p.IsRedundant == false);
         decodedPackets.FindAll(p => p.DecodingSuccess).Count.ShouldBe((int)generationSize);
     }
 

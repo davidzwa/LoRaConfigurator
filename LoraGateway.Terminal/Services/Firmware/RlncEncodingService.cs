@@ -174,8 +174,7 @@ public class RlncEncodingService
         var sourcePackets = currentGeneration.OriginalPackets;
         var encodedPackets = sourcePackets.Count + precodeExtra;
         PrecodeNumberOfPackets((uint)encodedPackets, true);
-
-        CurrentGenerationIndex++;
+        
         return currentGeneration;
     }
 
