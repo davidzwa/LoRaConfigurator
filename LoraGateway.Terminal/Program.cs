@@ -1,4 +1,5 @@
 ﻿using LoraGateway.Services.Firmware;
+using LoraGateway.Services.Firmware.RandomLinearCoding;
 using LoraGateway.Services.Firmware.Utils;
 using Serilog;
 using Serilog.Events;
@@ -22,14 +23,20 @@ public static class LoraGateway
                 "[{Timestamp:HH:mm:ss} {Level:u3}] ({SourceContext:l}) {Message:lj}{NewLine}{Exception}"
             )
             .CreateLogger();
-
-        var unencodedPackets = new BlobFragmentationService()
-            .GenerateFakeFirmware(103, 12);
-
+        
+        var unencodedPackets = new BlobFragmentationService().GenerateFakeFirmware(103, 12);
         var service = new RlncEncodingService();
         service.PreprocessGenerations(unencodedPackets, 12);
-        var result = service.PrecodeNextGeneration(20);
-        result.EncodedPackets.PrintPackets();
+        var generation = service.PrecodeNextGeneration(28-9);
+        var encMatrix = generation.EncodedPackets.ToEncodingMatrix();
+
+        // GField[,] encMatrix = {
+        //     { new(0x01), new(0x01), new(0x02) },
+        //     { new(0x00), new(0x01), new(0x01) },
+        //     { new(0x00), new(0x00), new(0x01) },
+        //     { new(0x00), new(0x00), new(0x01) }
+        // };
+        Console.WriteLine(encMatrix.Rank);
 
         // await Host.CreateDefaultBuilder(args)
         //     .UseSerilog()

@@ -2,5 +2,5 @@
 
 public interface IPacket
 {
-    public byte[] Payload { get; set; }
+    public List<GField> Payload { get; set; }
 }
