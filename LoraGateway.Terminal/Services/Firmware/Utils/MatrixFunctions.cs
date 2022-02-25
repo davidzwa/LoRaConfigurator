@@ -35,10 +35,7 @@ public static class MatrixFunctions
 
         var output = input.Clone() as GField[,];
 
-        if (output == null)
-        {
-            throw new Exception("Cloned matrix was null");
-        }
+        if (output == null) throw new Exception("Cloned matrix was null");
 
         // number of pivots found
         var numPivots = 0;

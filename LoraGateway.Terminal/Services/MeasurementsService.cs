@@ -14,8 +14,8 @@ public class MeasurementDto
 public class MeasurementsService : IDisposable
 {
     private readonly ILogger<MeasurementsService> _logger;
-    private string _location = "";
     private readonly List<MeasurementDto> _measurementDtos = new();
+    private string _location = "";
 
     private FileStream? _measurementFile;
 
@@ -84,10 +84,8 @@ public class MeasurementsService : IDisposable
     public async Task<bool> AddMeasurement(uint seq, int snr, int rssi)
     {
         if (string.IsNullOrEmpty(_location))
-        {
             // _logger.LogInformation("Skipped measurement as location was unset. SeqNr:{Seq}", seq);
             return false;
-        }
 
         _measurementDtos.Add(new MeasurementDto
         {
@@ -97,12 +95,12 @@ public class MeasurementsService : IDisposable
             SequenceNumber = seq
         });
 
-        var jsonBlob = JsonSerializer.Serialize(_measurementDtos, new JsonSerializerOptions { WriteIndented = true });
+        var jsonBlob = JsonSerializer.Serialize(_measurementDtos, new JsonSerializerOptions {WriteIndented = true});
         var blob = Encoding.UTF8.GetBytes(jsonBlob);
         if (_measurementFile == null) OpenFile(GetMeasurementFile());
 
         await _measurementFile.WriteAsync(blob);
-        
+
         return true;
     }
 }

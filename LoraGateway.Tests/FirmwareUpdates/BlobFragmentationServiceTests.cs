@@ -45,13 +45,13 @@ public class BlobFragmentationServiceTests
         Should.Throw<ValidationException>(() =>
             new BlobFragmentationService().GenerateFakeFirmware(firmwareSize, frameSize)
         );
-        
+
         frameSize = 0;
         Should.Throw<ValidationException>(() =>
             new BlobFragmentationService().GenerateFakeFirmware(firmwareSize, frameSize)
         );
     }
-    
+
     [Fact]
     public void TooManyFragmentsTest()
     {
@@ -59,8 +59,9 @@ public class BlobFragmentationServiceTests
         var frameSize = 1;
         Should.Throw<ValidationException>(() =>
             new BlobFragmentationService().GenerateFakeFirmware(firmwareSize, frameSize)
-        ); }
-    
+        );
+    }
+
     [Fact]
     public void RoundedFakeFragmentationTest()
     {
@@ -69,13 +70,13 @@ public class BlobFragmentationServiceTests
         var frameSize = 20;
         var fakeFirmware = new BlobFragmentationService().GenerateFakeFirmware(firmwareSize, frameSize);
         fakeFirmware.Count.ShouldBe(1);
-        
+
         // This firmware size should not be problematic for our fake firmware generator - ceil used
         firmwareSize = 20;
         frameSize = 20;
         var fakeFirmware2 = new BlobFragmentationService().GenerateFakeFirmware(firmwareSize, frameSize);
         fakeFirmware2.Count.ShouldBe(1);
-        
+
         // This firmware size should not be problematic for our fake firmware generator - ceil used
         firmwareSize = 21;
         frameSize = 20;

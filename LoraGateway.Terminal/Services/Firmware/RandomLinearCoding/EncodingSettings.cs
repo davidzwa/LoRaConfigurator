@@ -7,7 +7,7 @@ public class EncodingConfiguration
     public uint GenerationSize { get; set; } = 16;
 
     /// <summary>
-    /// 0-indexed generation index
+    ///     0-indexed generation index
     /// </summary>
     public uint CurrentGeneration { get; set; } = 0;
 }

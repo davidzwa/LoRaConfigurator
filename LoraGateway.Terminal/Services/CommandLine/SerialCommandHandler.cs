@@ -7,8 +7,8 @@ namespace LoraGateway.Services.CommandLine;
 public class SerialCommandHandler
 {
     private readonly ILogger _logger;
-    private readonly SelectedDeviceService _selectedDeviceService;
     private readonly MeasurementsService _measurementsService;
+    private readonly SelectedDeviceService _selectedDeviceService;
     private readonly SerialProcessorService _serialProcessorService;
 
     public SerialCommandHandler(
@@ -48,7 +48,7 @@ public class SerialCommandHandler
             });
         return command;
     }
-    
+
     public Command GetDeviceConfigurationCommand()
     {
         var command = new Command("device");
@@ -64,7 +64,7 @@ public class SerialCommandHandler
             });
         return command;
     }
-    
+
     public Command GetUnicastSendCommand()
     {
         var command = new Command("unicast");
@@ -82,7 +82,7 @@ public class SerialCommandHandler
 
         return command;
     }
-    
+
     public Command GetPeriodicSendCommand()
     {
         var command = new Command("period");

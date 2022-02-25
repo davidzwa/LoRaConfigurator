@@ -6,8 +6,8 @@ namespace LoraGateway.Services.CommandLine;
 public class ListDeviceCommandHandler
 {
     private readonly DeviceDataStore _deviceStore;
-    private readonly SelectedDeviceService _selectedDeviceService;
     private readonly ILogger _logger;
+    private readonly SelectedDeviceService _selectedDeviceService;
     private readonly SerialProcessorService _serialProcessorService;
 
     public ListDeviceCommandHandler(
@@ -35,13 +35,15 @@ public class ListDeviceCommandHandler
             {
                 var device = _deviceStore.GetDeviceByPort(port.PortName);
                 if (device == null)
+                {
                     _logger.LogInformation("Untracked device on port {port}", port.PortName);
+                }
                 else
                 {
                     var isSelected = port.PortName == _selectedDeviceService.SelectedPortName;
-                    _logger.LogInformation("{IsSelectedMarker} Device {device} on port {port}", isSelected ? "SELECTED >" : "", device.NickName, port.PortName);
+                    _logger.LogInformation("{IsSelectedMarker} Device {device} on port {port}",
+                        isSelected ? "SELECTED >" : "", device.NickName, port.PortName);
                 }
-                    
             }
         });
 

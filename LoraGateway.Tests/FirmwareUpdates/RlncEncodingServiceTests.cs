@@ -18,7 +18,7 @@ public class RlncEncodingServiceTests
         var frameSize = 20;
         var fakeFirmware = new BlobFragmentationService().GenerateFakeFirmware(firmwareSize, frameSize);
         var serviceUnderTest = new RlncEncodingService();
-        serviceUnderTest.PreprocessGenerations(fakeFirmware, (uint)fakeFirmware.Count);
+        serviceUnderTest.PreprocessGenerations(fakeFirmware, (uint) fakeFirmware.Count);
 
         var generation = serviceUnderTest.PrecodeNextGeneration(0);
 
@@ -51,14 +51,14 @@ public class RlncEncodingServiceTests
         var service = new RlncEncodingService();
         service.PreprocessGenerations(unencodedPackets, 12);
         // Check that the generator is in deterministic state
-        service.GetGeneratorState().ShouldBe((byte)0x08);
+        service.GetGeneratorState().ShouldBe((byte) 0x08);
         // Generates 9 original packets (103/12 => 9) with extra prematurely
         // 255 / 9 = 29 max => 20 extra at most
         Should.Throw<Exception>(() => service.PrecodeNextGeneration(29 - 9));
 
         service.PreprocessGenerations(unencodedPackets, 12);
         // Check that the generator has been reset
-        service.GetGeneratorState().ShouldBe((byte)0x08);
+        service.GetGeneratorState().ShouldBe((byte) 0x08);
         service.PrecodeNextGeneration(28 - 9);
     }
 
@@ -70,7 +70,7 @@ public class RlncEncodingServiceTests
         var service = new RlncEncodingService();
         service.PreprocessGenerations(unencodedPackets, 12);
         // Check that the generator is in deterministic state
-        service.GetGeneratorState().ShouldBe((byte)0x08);
+        service.GetGeneratorState().ShouldBe((byte) 0x08);
         // Generates 9 original packets (103/12 => 9) with extra prematurely
         // 255 / 9 = 29 max => 20 extra at most
         service.PrecodeNextGeneration(28 - 9);
@@ -84,7 +84,7 @@ public class RlncEncodingServiceTests
         var fakeFirmware = new BlobFragmentationService().GenerateFakeFirmware(firmwareSize, frameSize);
         var serviceUnderTest = new RlncEncodingService();
 
-        serviceUnderTest.PreprocessGenerations(fakeFirmware, (uint)fakeFirmware.Count);
+        serviceUnderTest.PreprocessGenerations(fakeFirmware, (uint) fakeFirmware.Count);
         var nextGeneration = serviceUnderTest.PrecodeNextGeneration(0);
         nextGeneration.EncodedPackets.Count.ShouldBe(1);
     }
@@ -97,7 +97,7 @@ public class RlncEncodingServiceTests
         var fakeFirmware = new BlobFragmentationService().GenerateFakeFirmware(firmwareSize, frameSize);
         fakeFirmware.Count.ShouldBe(firmwareSize);
 
-        var generationSize = (uint)fakeFirmware.Count;
+        var generationSize = (uint) fakeFirmware.Count;
         var serviceUnderTest = new RlncEncodingService();
 
         serviceUnderTest.PreprocessGenerations(fakeFirmware, generationSize);
@@ -112,9 +112,9 @@ public class RlncEncodingServiceTests
         var fakeFirmware = new BlobFragmentationService().GenerateFakeFirmware(firmwareSize, frameSize);
         fakeFirmware.Count.ShouldBe(firmwareSize);
 
-        var generationSize = (uint)fakeFirmware.Count;
+        var generationSize = (uint) fakeFirmware.Count;
         var service = new RlncEncodingService();
-        
+
         // Generation is not low enough - should be kept within bounds to prevent high memory usage (embedded...)
         Should.Throw<ValidationException>(() => service.PreprocessGenerations(fakeFirmware, generationSize));
     }
@@ -122,17 +122,17 @@ public class RlncEncodingServiceTests
     [Fact]
     public void InconsistentPacketLengthsTest()
     {
-        var unencodedPackets = new List<UnencodedPacket>().Append(new UnencodedPacket()
+        var unencodedPackets = new List<UnencodedPacket>().Append(new UnencodedPacket
         {
-            Payload = new List<GField>() { new(0x00) }
-        }).Append(new UnencodedPacket()
+            Payload = new List<GField> {new(0x00)}
+        }).Append(new UnencodedPacket
         {
-            Payload = new List<GField>() { new(0x00), new(0x01) },
+            Payload = new List<GField> {new(0x00), new(0x01)}
         }).ToList();
 
-        var generationSize = (uint)2;
+        var generationSize = (uint) 2;
         var service = new RlncEncodingService();
-        
+
         // Packets are not padded correctly - encoding should not be allowed
         Should.Throw<ValidationException>(() => service.PreprocessGenerations(unencodedPackets, generationSize));
     }

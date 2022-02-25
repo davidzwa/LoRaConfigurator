@@ -1,21 +1,12 @@
 ﻿namespace LoraGateway.Services.Firmware.RandomLinearCoding;
 
 /// <summary>
-/// Finite field arithmetic using Galois Field
-/// https://github.com/fauzanhilmi/GaloisField/tree/master/FiniteField
+///     Finite field arithmetic using Galois Field
+///     https://github.com/fauzanhilmi/GaloisField/tree/master/FiniteField
 /// </summary>
 public class GField
 {
     public const int Order = 256; // 2 ^ 8;
-
-    public int[] GetIrreduciblePolynomial()
-    {
-        return new[]
-        { 
-        //  8  7  6  5  4  3  2  1  0
-            1, 0, 0, 0, 1, 1, 1, 0, 1
-        };
-    }
 
     // https://www.partow.net/programming/polynomials/index.html#deg16
     // Irreducible polynomial used : x^8 + x^4 + x^3 + x^2 + 1 (0x11D)
@@ -52,6 +43,15 @@ public class GField
     public GField(byte _value)
     {
         this._value = _value;
+    }
+
+    public int[] GetIrreduciblePolynomial()
+    {
+        return new[]
+        {
+            //  8  7  6  5  4  3  2  1  0
+            1, 0, 0, 0, 1, 1, 1, 0, 1
+        };
     }
 
     // getters and setters
@@ -134,7 +134,7 @@ public class GField
     {
         return fieldA._value != fieldB._value;
     }
-    
+
     public override bool Equals(object? obj)
     {
         if (obj == null) return false;

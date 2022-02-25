@@ -10,8 +10,8 @@ namespace LoraGateway.Services;
 public class SerialProcessorService
 {
     private readonly ILogger<SerialProcessorService> _logger;
-    private readonly SelectedDeviceService _selectedDeviceService;
     private readonly MeasurementsService _measurementsService;
+    private readonly SelectedDeviceService _selectedDeviceService;
     private readonly DeviceDataStore _store;
     private readonly byte endByte = 0x00;
     private readonly byte startByte = 0xFF;
@@ -60,8 +60,8 @@ public class SerialProcessorService
         port.ReadTimeout = 10000;
         port.WriteTimeout = 500;
 
-        port.ErrorReceived += ((sender, args) => OnPortError((SerialPort)sender, args));
-        port.DataReceived += (async (sender, args) => await OnPortData((SerialPort)sender, args));
+        port.ErrorReceived += (sender, args) => OnPortError((SerialPort) sender, args);
+        port.DataReceived += async (sender, args) => await OnPortData((SerialPort) sender, args);
         try
         {
             port.Open();
@@ -102,13 +102,13 @@ public class SerialProcessorService
             return;
         }
 
-        List<byte> buffer = new List<byte>();
-        bool packetWaitingBytes = true;
+        var buffer = new List<byte>();
+        var packetWaitingBytes = true;
         try
         {
             while (packetWaitingBytes)
             {
-                var newByte = (byte)port.ReadByte();
+                var newByte = (byte) port.ReadByte();
                 buffer.Add(newByte);
                 packetWaitingBytes = newByte != 0x00;
             }
@@ -156,15 +156,14 @@ public class SerialProcessorService
             return;
         }
 
-        if (startByteIndex > 0) {
-            // Clear unknown bytes
+        if (startByteIndex > 0) // Clear unknown bytes
             listBuffer.RemoveRange(0, startByteIndex);
-        }
         listBuffer.RemoveAt(0);
         listBuffer.RemoveAt(1);
         listBuffer.RemoveAt(listBuffer.Count - 1);
 
-        _logger.LogDebug("Data [{Port}] Bytes [{Bytes}] Expected [{dataLength}] Start [{Start}] End [{End}] LeftOver [{LeftOver}]",
+        _logger.LogDebug(
+            "Data [{Port}] Bytes [{Bytes}] Expected [{dataLength}] Start [{Start}] End [{End}] LeftOver [{LeftOver}]",
             port.PortName, listBuffer.Count, dataLength, startByteIndex, hasEnd, port.BytesToRead);
         _logger.LogDebug(SerialUtil.ByteArrayToString(listBuffer.ToArray()));
 
@@ -181,13 +180,13 @@ public class SerialProcessorService
         }
 
         var payload = message.ToByteArray();
-        var protoMessageBuffer = (new[] { (byte)payload.Length }).Concat(payload);
+        var protoMessageBuffer = new[] {(byte) payload.Length}.Concat(payload);
         var messageBuffer = Cobs.Encode(protoMessageBuffer).ToArray();
-        var len = new[] { (byte)messageBuffer.Length };
-        byte[] transmitBuffer = new[] { startByte }
+        var len = new[] {(byte) messageBuffer.Length};
+        var transmitBuffer = new[] {startByte}
             .Concat(len)
             .Concat(messageBuffer)
-            .Concat(new[] { endByte })
+            .Concat(new[] {endByte})
             .ToArray();
 
         _logger.LogInformation("TX {Message}", SerialUtil.ByteArrayToString(transmitBuffer));
@@ -243,7 +242,8 @@ public class SerialProcessorService
                 LastPortName = portName
             });
 
-            _logger.LogInformation("[{Name}, MC:{Count}, MD:{Disabled}] heart beat {DeviceId}", device?.NickName, measurementCount, measurementDisabled, deviceId);
+            _logger.LogInformation("[{Name}, MC:{Count}, MD:{Disabled}] heart beat {DeviceId}", device?.NickName,
+                measurementCount, measurementDisabled, deviceId);
         }
         else if (bodyCase.Equals(UartResponse.BodyOneofCase.AckMessage))
         {
@@ -254,7 +254,7 @@ public class SerialProcessorService
         {
             var payload = response.DebugMessage.Payload;
             var code = response.DebugMessage.Code;
-                    
+
             _logger.LogInformation("[{Name}, Debug] {Payload} Code:{Code}", portName, payload.ToStringUtf8(), code);
         }
         else if (bodyCase.Equals(UartResponse.BodyOneofCase.LoraMeasurement))
@@ -271,12 +271,10 @@ public class SerialProcessorService
             var isMeasurement = response.LoraMeasurement.IsMeasurementFragment;
 
             var result = await _measurementsService.AddMeasurement(sequenceNumber, snr, rssi);
-            if (sequenceNumber > 60000)
-            {
-                _measurementsService.SetLocationText("");
-            }
-                  
-            _logger.LogInformation("[{Name}] LoRa RX snr: {SNR} rssi: {RSSI} sequence-id:{Index} is-measurement:{IsMeasurement}, skipped:{Skipped}", 
+            if (sequenceNumber > 60000) _measurementsService.SetLocationText("");
+
+            _logger.LogInformation(
+                "[{Name}] LoRa RX snr: {SNR} rssi: {RSSI} sequence-id:{Index} is-measurement:{IsMeasurement}, skipped:{Skipped}",
                 portName,
                 snr, rssi, sequenceNumber, isMeasurement, result);
         }

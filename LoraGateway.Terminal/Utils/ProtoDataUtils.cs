@@ -1,6 +1,7 @@
-﻿namespace LoraGateway.Utils;
+﻿using LoRa;
+using Version = LoRa.Version;
 
-using LoRa;
+namespace LoraGateway.Utils;
 
 public static class ProtoDataUtils
 {
@@ -9,12 +10,12 @@ public static class ProtoDataUtils
         if (version == null) return "";
         return $"{version.Major}.{version.Minor}.{version.Patch}.{version.Revision}";
     }
-    
+
     public static string GetFirmwareAsString(this BootMessage response)
     {
         return ConvertFirmwareVersion(response.FirmwareVersion);
-    } 
-    
+    }
+
     public static string DeviceIdAsString(this DeviceId spec)
     {
         if (spec == null) return "";

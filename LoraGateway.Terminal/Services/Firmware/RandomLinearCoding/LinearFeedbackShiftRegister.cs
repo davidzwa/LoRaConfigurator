@@ -2,17 +2,8 @@
 
 public class LinearFeedbackShiftRegister
 {
-    // https://stackoverflow.com/questions/61024861/random-number-using-lfsr
-    public byte Seed { get; private set; }
-    public byte State { get; private set; }
-    public uint Taps { get; }
-
-    public byte Bit { get; private set; }
-
-    public int GenerationCount { get; set; }
-
     /// <summary>
-    /// 8-bit fixated LFSR with 8-bit seed as point of entry 
+    ///     8-bit fixated LFSR with 8-bit seed as point of entry
     /// </summary>
     /// <param name="seed"></param>
     public LinearFeedbackShiftRegister(byte seed)
@@ -24,6 +15,15 @@ public class LinearFeedbackShiftRegister
         GenerationCount = 0;
     }
 
+    // https://stackoverflow.com/questions/61024861/random-number-using-lfsr
+    public byte Seed { get; }
+    public byte State { get; private set; }
+    public uint Taps { get; }
+
+    public byte Bit { get; private set; }
+
+    public int GenerationCount { get; set; }
+
     public void Reset()
     {
         GenerationCount = 0;
@@ -32,15 +32,13 @@ public class LinearFeedbackShiftRegister
 
     public IEnumerable<byte> GenerateMany(int count)
     {
-        return Enumerable.Range(1, count).Select((_) => Generate());
+        return Enumerable.Range(1, count).Select(_ => Generate());
     }
 
     public byte Generate()
     {
-        if (GenerationCount > (Math.Pow(2, Taps) - 1))
-        {
+        if (GenerationCount > Math.Pow(2, Taps) - 1)
             throw new Exception("LFSR cycle limit reached (255), duplicates generated");
-        }
 
         /* Must be 16-bit to allow bit<<15 later in the code */
         /* taps: 16 14 13 11; feedback polynomial: x^16 + x^14 + x^13 + x^11 + 1 */

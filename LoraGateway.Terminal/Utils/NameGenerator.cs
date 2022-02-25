@@ -10,7 +10,7 @@ public class NameGenerator
             "b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "l", "n", "p", "q", "r", "s", "sh", "zh", "t", "v", "w",
             "x"
         };
-        string[] vowels = { "a", "e", "i", "o", "u", "ae", "y" };
+        string[] vowels = {"a", "e", "i", "o", "u", "ae", "y"};
         var name = "";
         name += consonants[r.Next(consonants.Length)].ToUpper();
         name += vowels[r.Next(vowels.Length)];

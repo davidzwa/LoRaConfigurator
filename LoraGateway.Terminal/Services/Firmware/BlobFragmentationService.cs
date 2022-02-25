@@ -49,7 +49,7 @@ public class BlobFragmentationService
                 if (payloadBytes.Count > 1) payloadBytes[1] = new GField(splitInt.Byte2);
                 if (payloadBytes.Count > 2) payloadBytes[2] = new GField(splitInt.Byte1);
                 if (payloadBytes.Count > 3) payloadBytes[3] = new GField(splitInt.Byte0);
-                
+
                 return new UnencodedPacket {Payload = payloadBytes};
             })
             .ToList();
@@ -66,7 +66,7 @@ public class BlobFragmentationService
     }
 
     // public void FragmentFirmwareBinFile() {
-        // Function to fragment a realistic firmware file, padding the last inconsistent packet
+    // Function to fragment a realistic firmware file, padding the last inconsistent packet
     // }
 
     // public bool CompareFragmentSequences(List<UnencodedPacket> a, List<UnencodedPacket> b) { }

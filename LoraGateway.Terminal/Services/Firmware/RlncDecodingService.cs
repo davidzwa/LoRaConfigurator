@@ -24,10 +24,7 @@ public static class RlncDecodingService
         foreach (var index in Enumerable.Range(0, decodedPackets.Count))
         {
             var packet = decodedPackets[index];
-            if (packet.DecodingSuccess && packet.IsRedundant == false)
-            {
-                innovativePackets.Add(packet);
-            }
+            if (packet.DecodingSuccess && packet.IsRedundant == false) innovativePackets.Add(packet);
         }
 
         return innovativePackets;

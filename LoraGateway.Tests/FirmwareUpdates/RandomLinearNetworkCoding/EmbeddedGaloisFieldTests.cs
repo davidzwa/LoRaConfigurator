@@ -2,7 +2,7 @@
 using Shouldly;
 using Xunit;
 
-namespace LoraGateway.Tests.FirmwareUpdates;
+namespace LoraGateway.Tests.FirmwareUpdates.RandomLinearNetworkCoding;
 
 public class EmbeddedGaloisFieldTests
 {
@@ -11,7 +11,7 @@ public class EmbeddedGaloisFieldTests
     {
         var fieldA = new GField(3);
         var fieldB = new GField(14);
-        
-        (fieldA * fieldB).GetValue().ShouldBe((byte)18);
+
+        (fieldA * fieldB).GetValue().ShouldBe((byte) 18);
     }
 }
