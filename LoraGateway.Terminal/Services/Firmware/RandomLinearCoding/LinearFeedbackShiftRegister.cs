@@ -2,17 +2,20 @@
 
 public class LinearFeedbackShiftRegister
 {
+    public static byte DefaultSeed = 0x08;
     /// <summary>
     ///     8-bit fixated LFSR with 8-bit seed as point of entry
     /// </summary>
     /// <param name="seed"></param>
-    public LinearFeedbackShiftRegister(byte seed)
+    public LinearFeedbackShiftRegister(byte? seed)
     {
-        Seed = seed;
-        State = seed;
-        // Taps = taps;
-        Taps = 8; // Hard-coded
-        GenerationCount = 0;
+        Seed = seed ?? DefaultSeed;
+        State = Seed;
+        
+        // Taps = taps;  // Hard-coded
+        Taps = 8;
+        // Overrun tracker
+        GeneratedValuesCount = 0;
     }
 
     // https://stackoverflow.com/questions/61024861/random-number-using-lfsr
@@ -22,11 +25,11 @@ public class LinearFeedbackShiftRegister
 
     public byte Bit { get; private set; }
 
-    public int GenerationCount { get; set; }
+    public int GeneratedValuesCount { get; set; }
 
     public void Reset()
     {
-        GenerationCount = 0;
+        GeneratedValuesCount = 0;
         State = Seed;
     }
 
@@ -37,7 +40,7 @@ public class LinearFeedbackShiftRegister
 
     public byte Generate()
     {
-        if (GenerationCount > Math.Pow(2, Taps) - 1)
+        if (GeneratedValuesCount > Math.Pow(2, Taps) - 1)
             throw new Exception("LFSR cycle limit reached (255), duplicates generated");
 
         /* Must be 16-bit to allow bit<<15 later in the code */
@@ -53,7 +56,7 @@ public class LinearFeedbackShiftRegister
         Bit = (byte) ((State >> p[0]) ^ (State >> p[1]) ^ (State >> p[2]) ^ (State >> p[3])); /* & 1u */
         State = (byte) ((State >> 1) | (Bit << (int) (Taps - 1))); // Shift the output and cap off
 
-        GenerationCount++;
+        GeneratedValuesCount++;
         return State;
     }
 }

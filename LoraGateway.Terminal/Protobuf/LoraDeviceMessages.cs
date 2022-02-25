@@ -25,20 +25,26 @@ namespace LoRa {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Chpsb3JhX2RldmljZV9tZXNzYWdlcy5wcm90bxoec2hhcmVkL2V4cGVyaW1l",
-            "bnRfY29uZmlnLnByb3RvIpYDCgtMb1JhTWVzc2FnZRITCgtJc011bHRpY2Fz",
-            "dBgBIAEoCBIQCghEZXZpY2VJZBgCIAEoDRIXCg9Db3JyZWxhdGlvbkNvZGUY",
-            "AyABKA0SDwoHUGF5bG9hZBgEIAEoDBIwCg5zZXF1ZW5jZUNvbmZpZxgFIAEo",
-            "CzIWLkZvcndhcmRTZXF1ZW5jZUNvbmZpZ0gAEj0KGGZvcndhcmRSYWRpb0Nv",
-            "bmZpZ1VwZGF0ZRgGIAEoCzIZLkZvcndhcmRSYWRpb0NvbmZpZ1VwZGF0ZUgA",
-            "Ej0KGGZvcndhcmRFeHBlcmltZW50Q29tbWFuZBgHIAEoCzIZLkZvcndhcmRF",
-            "eHBlcmltZW50Q29tbWFuZEgAEj0KGG1lYXN1cmVtZW50U3RyZWFtUmVxdWVz",
-            "dBgIIAEoCzIZLk1lYXN1cmVtZW50U3RyZWFtUmVxdWVzdEgAEj8KGW1lYXN1",
-            "cmVtZW50U3RyZWFtRnJhZ21lbnQYCSABKAsyGi5NZWFzdXJlbWVudFN0cmVh",
-            "bUZyYWdtZW50SABCBgoEQm9keUIHqgIETG9SYWIGcHJvdG8z"));
+            "bnRfY29uZmlnLnByb3RvGhVzaGFyZWQvZmlybXdhcmUucHJvdG8igAUKC0xv",
+            "UmFNZXNzYWdlEhMKC0lzTXVsdGljYXN0GAEgASgIEhAKCERldmljZUlkGAIg",
+            "ASgNEhcKD0NvcnJlbGF0aW9uQ29kZRgDIAEoDRIPCgdQYXlsb2FkGAQgASgM",
+            "EjAKDnNlcXVlbmNlQ29uZmlnGAUgASgLMhYuRm9yd2FyZFNlcXVlbmNlQ29u",
+            "ZmlnSAASPQoYZm9yd2FyZFJhZGlvQ29uZmlnVXBkYXRlGAYgASgLMhkuRm9y",
+            "d2FyZFJhZGlvQ29uZmlnVXBkYXRlSAASPQoYZm9yd2FyZEV4cGVyaW1lbnRD",
+            "b21tYW5kGAcgASgLMhkuRm9yd2FyZEV4cGVyaW1lbnRDb21tYW5kSAASPQoY",
+            "bWVhc3VyZW1lbnRTdHJlYW1SZXF1ZXN0GAggASgLMhkuTWVhc3VyZW1lbnRT",
+            "dHJlYW1SZXF1ZXN0SAASPwoZbWVhc3VyZW1lbnRTdHJlYW1GcmFnbWVudBgJ",
+            "IAEoCzIaLk1lYXN1cmVtZW50U3RyZWFtRnJhZ21lbnRIABI5ChZybG5jSW5p",
+            "dENvbmZpZ0ZyYWdtZW50GAogASgLMhcuUmxuY0luaXRDb25maWdGcmFnbWVu",
+            "dEgAEjMKE3JsbmNFbmNvZGVkRnJhZ21lbnQYCyABKAsyFC5SbG5jRW5jb2Rl",
+            "ZEZyYWdtZW50SAASOwoXcmxuY1N0YXRlVXBkYXRlRnJhZ21lbnQYDCABKAsy",
+            "GC5SbG5jU3RhdGVVcGRhdGVGcmFnbWVudEgAEjsKF3JsbmNUZXJtaW5hdGlv",
+            "bkZyYWdtZW50GA0gASgLMhguUmxuY1Rlcm1pbmF0aW9uRnJhZ21lbnRIAEIG",
+            "CgRCb2R5QgeqAgRMb1JhYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::LoRa.ExperimentConfigReflection.Descriptor, },
+          new pbr::FileDescriptor[] { global::LoRa.ExperimentConfigReflection.Descriptor, global::LoRa.FirmwareReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.LoRaMessage), global::LoRa.LoRaMessage.Parser, new[]{ "IsMulticast", "DeviceId", "CorrelationCode", "Payload", "SequenceConfig", "ForwardRadioConfigUpdate", "ForwardExperimentCommand", "MeasurementStreamRequest", "MeasurementStreamFragment" }, new[]{ "Body" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.LoRaMessage), global::LoRa.LoRaMessage.Parser, new[]{ "IsMulticast", "DeviceId", "CorrelationCode", "Payload", "SequenceConfig", "ForwardRadioConfigUpdate", "ForwardExperimentCommand", "MeasurementStreamRequest", "MeasurementStreamFragment", "RlncInitConfigFragment", "RlncEncodedFragment", "RlncStateUpdateFragment", "RlncTerminationFragment" }, new[]{ "Body" }, null, null, null)
           }));
     }
     #endregion
@@ -98,6 +104,18 @@ namespace LoRa {
           break;
         case BodyOneofCase.MeasurementStreamFragment:
           MeasurementStreamFragment = other.MeasurementStreamFragment.Clone();
+          break;
+        case BodyOneofCase.RlncInitConfigFragment:
+          RlncInitConfigFragment = other.RlncInitConfigFragment.Clone();
+          break;
+        case BodyOneofCase.RlncEncodedFragment:
+          RlncEncodedFragment = other.RlncEncodedFragment.Clone();
+          break;
+        case BodyOneofCase.RlncStateUpdateFragment:
+          RlncStateUpdateFragment = other.RlncStateUpdateFragment.Clone();
+          break;
+        case BodyOneofCase.RlncTerminationFragment:
+          RlncTerminationFragment = other.RlncTerminationFragment.Clone();
           break;
       }
 
@@ -221,6 +239,54 @@ namespace LoRa {
       }
     }
 
+    /// <summary>Field number for the "rlncInitConfigFragment" field.</summary>
+    public const int RlncInitConfigFragmentFieldNumber = 10;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LoRa.RlncInitConfigFragment RlncInitConfigFragment {
+      get { return bodyCase_ == BodyOneofCase.RlncInitConfigFragment ? (global::LoRa.RlncInitConfigFragment) body_ : null; }
+      set {
+        body_ = value;
+        bodyCase_ = value == null ? BodyOneofCase.None : BodyOneofCase.RlncInitConfigFragment;
+      }
+    }
+
+    /// <summary>Field number for the "rlncEncodedFragment" field.</summary>
+    public const int RlncEncodedFragmentFieldNumber = 11;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LoRa.RlncEncodedFragment RlncEncodedFragment {
+      get { return bodyCase_ == BodyOneofCase.RlncEncodedFragment ? (global::LoRa.RlncEncodedFragment) body_ : null; }
+      set {
+        body_ = value;
+        bodyCase_ = value == null ? BodyOneofCase.None : BodyOneofCase.RlncEncodedFragment;
+      }
+    }
+
+    /// <summary>Field number for the "rlncStateUpdateFragment" field.</summary>
+    public const int RlncStateUpdateFragmentFieldNumber = 12;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LoRa.RlncStateUpdateFragment RlncStateUpdateFragment {
+      get { return bodyCase_ == BodyOneofCase.RlncStateUpdateFragment ? (global::LoRa.RlncStateUpdateFragment) body_ : null; }
+      set {
+        body_ = value;
+        bodyCase_ = value == null ? BodyOneofCase.None : BodyOneofCase.RlncStateUpdateFragment;
+      }
+    }
+
+    /// <summary>Field number for the "rlncTerminationFragment" field.</summary>
+    public const int RlncTerminationFragmentFieldNumber = 13;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LoRa.RlncTerminationFragment RlncTerminationFragment {
+      get { return bodyCase_ == BodyOneofCase.RlncTerminationFragment ? (global::LoRa.RlncTerminationFragment) body_ : null; }
+      set {
+        body_ = value;
+        bodyCase_ = value == null ? BodyOneofCase.None : BodyOneofCase.RlncTerminationFragment;
+      }
+    }
+
     private object body_;
     /// <summary>Enum of possible cases for the "Body" oneof.</summary>
     public enum BodyOneofCase {
@@ -230,6 +296,10 @@ namespace LoRa {
       ForwardExperimentCommand = 7,
       MeasurementStreamRequest = 8,
       MeasurementStreamFragment = 9,
+      RlncInitConfigFragment = 10,
+      RlncEncodedFragment = 11,
+      RlncStateUpdateFragment = 12,
+      RlncTerminationFragment = 13,
     }
     private BodyOneofCase bodyCase_ = BodyOneofCase.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -269,6 +339,10 @@ namespace LoRa {
       if (!object.Equals(ForwardExperimentCommand, other.ForwardExperimentCommand)) return false;
       if (!object.Equals(MeasurementStreamRequest, other.MeasurementStreamRequest)) return false;
       if (!object.Equals(MeasurementStreamFragment, other.MeasurementStreamFragment)) return false;
+      if (!object.Equals(RlncInitConfigFragment, other.RlncInitConfigFragment)) return false;
+      if (!object.Equals(RlncEncodedFragment, other.RlncEncodedFragment)) return false;
+      if (!object.Equals(RlncStateUpdateFragment, other.RlncStateUpdateFragment)) return false;
+      if (!object.Equals(RlncTerminationFragment, other.RlncTerminationFragment)) return false;
       if (BodyCase != other.BodyCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -286,6 +360,10 @@ namespace LoRa {
       if (bodyCase_ == BodyOneofCase.ForwardExperimentCommand) hash ^= ForwardExperimentCommand.GetHashCode();
       if (bodyCase_ == BodyOneofCase.MeasurementStreamRequest) hash ^= MeasurementStreamRequest.GetHashCode();
       if (bodyCase_ == BodyOneofCase.MeasurementStreamFragment) hash ^= MeasurementStreamFragment.GetHashCode();
+      if (bodyCase_ == BodyOneofCase.RlncInitConfigFragment) hash ^= RlncInitConfigFragment.GetHashCode();
+      if (bodyCase_ == BodyOneofCase.RlncEncodedFragment) hash ^= RlncEncodedFragment.GetHashCode();
+      if (bodyCase_ == BodyOneofCase.RlncStateUpdateFragment) hash ^= RlncStateUpdateFragment.GetHashCode();
+      if (bodyCase_ == BodyOneofCase.RlncTerminationFragment) hash ^= RlncTerminationFragment.GetHashCode();
       hash ^= (int) bodyCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -341,6 +419,22 @@ namespace LoRa {
         output.WriteRawTag(74);
         output.WriteMessage(MeasurementStreamFragment);
       }
+      if (bodyCase_ == BodyOneofCase.RlncInitConfigFragment) {
+        output.WriteRawTag(82);
+        output.WriteMessage(RlncInitConfigFragment);
+      }
+      if (bodyCase_ == BodyOneofCase.RlncEncodedFragment) {
+        output.WriteRawTag(90);
+        output.WriteMessage(RlncEncodedFragment);
+      }
+      if (bodyCase_ == BodyOneofCase.RlncStateUpdateFragment) {
+        output.WriteRawTag(98);
+        output.WriteMessage(RlncStateUpdateFragment);
+      }
+      if (bodyCase_ == BodyOneofCase.RlncTerminationFragment) {
+        output.WriteRawTag(106);
+        output.WriteMessage(RlncTerminationFragment);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -387,6 +481,22 @@ namespace LoRa {
         output.WriteRawTag(74);
         output.WriteMessage(MeasurementStreamFragment);
       }
+      if (bodyCase_ == BodyOneofCase.RlncInitConfigFragment) {
+        output.WriteRawTag(82);
+        output.WriteMessage(RlncInitConfigFragment);
+      }
+      if (bodyCase_ == BodyOneofCase.RlncEncodedFragment) {
+        output.WriteRawTag(90);
+        output.WriteMessage(RlncEncodedFragment);
+      }
+      if (bodyCase_ == BodyOneofCase.RlncStateUpdateFragment) {
+        output.WriteRawTag(98);
+        output.WriteMessage(RlncStateUpdateFragment);
+      }
+      if (bodyCase_ == BodyOneofCase.RlncTerminationFragment) {
+        output.WriteRawTag(106);
+        output.WriteMessage(RlncTerminationFragment);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -423,6 +533,18 @@ namespace LoRa {
       }
       if (bodyCase_ == BodyOneofCase.MeasurementStreamFragment) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(MeasurementStreamFragment);
+      }
+      if (bodyCase_ == BodyOneofCase.RlncInitConfigFragment) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(RlncInitConfigFragment);
+      }
+      if (bodyCase_ == BodyOneofCase.RlncEncodedFragment) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(RlncEncodedFragment);
+      }
+      if (bodyCase_ == BodyOneofCase.RlncStateUpdateFragment) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(RlncStateUpdateFragment);
+      }
+      if (bodyCase_ == BodyOneofCase.RlncTerminationFragment) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(RlncTerminationFragment);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -478,6 +600,30 @@ namespace LoRa {
             MeasurementStreamFragment = new global::LoRa.MeasurementStreamFragment();
           }
           MeasurementStreamFragment.MergeFrom(other.MeasurementStreamFragment);
+          break;
+        case BodyOneofCase.RlncInitConfigFragment:
+          if (RlncInitConfigFragment == null) {
+            RlncInitConfigFragment = new global::LoRa.RlncInitConfigFragment();
+          }
+          RlncInitConfigFragment.MergeFrom(other.RlncInitConfigFragment);
+          break;
+        case BodyOneofCase.RlncEncodedFragment:
+          if (RlncEncodedFragment == null) {
+            RlncEncodedFragment = new global::LoRa.RlncEncodedFragment();
+          }
+          RlncEncodedFragment.MergeFrom(other.RlncEncodedFragment);
+          break;
+        case BodyOneofCase.RlncStateUpdateFragment:
+          if (RlncStateUpdateFragment == null) {
+            RlncStateUpdateFragment = new global::LoRa.RlncStateUpdateFragment();
+          }
+          RlncStateUpdateFragment.MergeFrom(other.RlncStateUpdateFragment);
+          break;
+        case BodyOneofCase.RlncTerminationFragment:
+          if (RlncTerminationFragment == null) {
+            RlncTerminationFragment = new global::LoRa.RlncTerminationFragment();
+          }
+          RlncTerminationFragment.MergeFrom(other.RlncTerminationFragment);
           break;
       }
 
@@ -557,6 +703,42 @@ namespace LoRa {
             MeasurementStreamFragment = subBuilder;
             break;
           }
+          case 82: {
+            global::LoRa.RlncInitConfigFragment subBuilder = new global::LoRa.RlncInitConfigFragment();
+            if (bodyCase_ == BodyOneofCase.RlncInitConfigFragment) {
+              subBuilder.MergeFrom(RlncInitConfigFragment);
+            }
+            input.ReadMessage(subBuilder);
+            RlncInitConfigFragment = subBuilder;
+            break;
+          }
+          case 90: {
+            global::LoRa.RlncEncodedFragment subBuilder = new global::LoRa.RlncEncodedFragment();
+            if (bodyCase_ == BodyOneofCase.RlncEncodedFragment) {
+              subBuilder.MergeFrom(RlncEncodedFragment);
+            }
+            input.ReadMessage(subBuilder);
+            RlncEncodedFragment = subBuilder;
+            break;
+          }
+          case 98: {
+            global::LoRa.RlncStateUpdateFragment subBuilder = new global::LoRa.RlncStateUpdateFragment();
+            if (bodyCase_ == BodyOneofCase.RlncStateUpdateFragment) {
+              subBuilder.MergeFrom(RlncStateUpdateFragment);
+            }
+            input.ReadMessage(subBuilder);
+            RlncStateUpdateFragment = subBuilder;
+            break;
+          }
+          case 106: {
+            global::LoRa.RlncTerminationFragment subBuilder = new global::LoRa.RlncTerminationFragment();
+            if (bodyCase_ == BodyOneofCase.RlncTerminationFragment) {
+              subBuilder.MergeFrom(RlncTerminationFragment);
+            }
+            input.ReadMessage(subBuilder);
+            RlncTerminationFragment = subBuilder;
+            break;
+          }
         }
       }
     #endif
@@ -631,6 +813,42 @@ namespace LoRa {
             }
             input.ReadMessage(subBuilder);
             MeasurementStreamFragment = subBuilder;
+            break;
+          }
+          case 82: {
+            global::LoRa.RlncInitConfigFragment subBuilder = new global::LoRa.RlncInitConfigFragment();
+            if (bodyCase_ == BodyOneofCase.RlncInitConfigFragment) {
+              subBuilder.MergeFrom(RlncInitConfigFragment);
+            }
+            input.ReadMessage(subBuilder);
+            RlncInitConfigFragment = subBuilder;
+            break;
+          }
+          case 90: {
+            global::LoRa.RlncEncodedFragment subBuilder = new global::LoRa.RlncEncodedFragment();
+            if (bodyCase_ == BodyOneofCase.RlncEncodedFragment) {
+              subBuilder.MergeFrom(RlncEncodedFragment);
+            }
+            input.ReadMessage(subBuilder);
+            RlncEncodedFragment = subBuilder;
+            break;
+          }
+          case 98: {
+            global::LoRa.RlncStateUpdateFragment subBuilder = new global::LoRa.RlncStateUpdateFragment();
+            if (bodyCase_ == BodyOneofCase.RlncStateUpdateFragment) {
+              subBuilder.MergeFrom(RlncStateUpdateFragment);
+            }
+            input.ReadMessage(subBuilder);
+            RlncStateUpdateFragment = subBuilder;
+            break;
+          }
+          case 106: {
+            global::LoRa.RlncTerminationFragment subBuilder = new global::LoRa.RlncTerminationFragment();
+            if (bodyCase_ == BodyOneofCase.RlncTerminationFragment) {
+              subBuilder.MergeFrom(RlncTerminationFragment);
+            }
+            input.ReadMessage(subBuilder);
+            RlncTerminationFragment = subBuilder;
             break;
           }
         }

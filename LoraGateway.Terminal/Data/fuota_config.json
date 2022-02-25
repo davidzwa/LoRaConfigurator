@@ -1,0 +1,8 @@
+{
+  "FakeFirmware": true,
+  "FakeFragmentCount": 10,
+  "FakeFragmentSize": 10,
+  "GenerationSize": 5,
+  "FieldDegree": 8,
+  "LfsrSeed": 8
+}

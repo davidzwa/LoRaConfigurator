@@ -32,6 +32,7 @@ public static class LoraGateway
             .ConfigureServices((_, services) =>
             {
                 services.AddSingleton<DeviceDataStore>();
+                services.AddSingleton<FuotaManagerService>();
                 services.AddSingleton<SerialProcessorService>();
                 services.AddSingleton<SelectedDeviceService>();
                 services.AddSingleton<SerialWatcher>();

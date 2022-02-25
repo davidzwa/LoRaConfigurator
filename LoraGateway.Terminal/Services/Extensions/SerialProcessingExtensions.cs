@@ -1,5 +1,6 @@
 ﻿using Google.Protobuf;
 using LoRa;
+using LoraGateway.Services.Firmware.RandomLinearCoding;
 
 namespace LoraGateway.Services.Extensions;
 

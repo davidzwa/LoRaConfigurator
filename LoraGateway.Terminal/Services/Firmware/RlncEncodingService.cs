@@ -25,7 +25,7 @@ public class RlncEncodingService
         ConfigureEncoding(new EncodingConfiguration
         {
             Seed = 0x08,
-            FieldOrder = 8,
+            FieldDegree = 8,
             GenerationSize = 0,
             CurrentGeneration = 0
         });
@@ -42,7 +42,7 @@ public class RlncEncodingService
         return _generator.State;
     }
 
-    private void ConfigureEncoding(EncodingConfiguration settings)
+    public void ConfigureEncoding(EncodingConfiguration settings)
     {
         _settings = settings;
         _generations = null;
@@ -93,7 +93,7 @@ public class RlncEncodingService
     /// <param name="unencodedPackets"></param>
     /// <param name="generationSize"></param>
     /// <exception cref="ValidationException"></exception>
-    public void PreprocessGenerations(List<UnencodedPacket> unencodedPackets, uint generationSize)
+    public int PreprocessGenerations(List<UnencodedPacket> unencodedPackets, uint generationSize)
     {
         ValidateUnencodedPackets(unencodedPackets);
 
@@ -119,6 +119,8 @@ public class RlncEncodingService
         _generator.Reset();
         CurrentGenerationIndex = 0;
         if (PacketSymbols == 0) throw new ValidationException("PacketSymbols was 0, unencoded packet list was empty");
+
+        return _generations.Count;
     }
 
     public bool HasNextGeneration()

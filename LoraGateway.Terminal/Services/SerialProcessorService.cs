@@ -1,8 +1,10 @@
 using System.IO.Ports;
 using System.Text;
 using Google.Protobuf;
+using System.Text.Json;
 using LoRa;
 using LoraGateway.Models;
+using LoraGateway.Services.Firmware.RandomLinearCoding;
 using LoraGateway.Utils;
 
 namespace LoraGateway.Services;
@@ -13,17 +15,20 @@ public class SerialProcessorService
     private readonly MeasurementsService _measurementsService;
     private readonly SelectedDeviceService _selectedDeviceService;
     private readonly DeviceDataStore _store;
+    private readonly FuotaManagerService _fuotaManagerService;
     private readonly byte endByte = 0x00;
     private readonly byte startByte = 0xFF;
 
     public SerialProcessorService(
         DeviceDataStore store,
+        FuotaManagerService fuotaManagerService,
         SelectedDeviceService selectedDeviceService,
         MeasurementsService measurementsService,
         ILogger<SerialProcessorService> logger
     )
     {
         _store = store;
+        _fuotaManagerService = fuotaManagerService;
         _selectedDeviceService = selectedDeviceService;
         _measurementsService = measurementsService;
         _logger = logger;
@@ -284,6 +289,42 @@ public class SerialProcessorService
         }
     }
 
+    public async Task SendRlncInitConfigCommand()
+    {
+        var config = await _fuotaManagerService.LoadStore();
+        if (config == null)
+        {
+            return;
+        }
+
+        var fuotaSession = await _fuotaManagerService.PrepareFuotaSession();
+        
+        var command = new UartCommand
+        {
+            TransmitCommand = new LoRaMessage()
+            {
+                CorrelationCode = 0,
+                DeviceId = 0,
+                IsMulticast = true,
+                RlncInitConfigFragment = new RlncInitConfigFragment()
+                {
+                    FieldPoly = GField.Polynomial,
+                    FieldDegree = config.FieldDegree,
+                    FrameCount = config.FakeFragmentCount,
+                    FrameSize = config.FakeFragmentSize,
+                    // Calculated value from config store
+                    GenerationCount = fuotaSession.GenerationCount,
+                    GenerationSize = config.GenerationSize,
+                    // Wont send poly as its highly static
+                    // LfsrPoly = ,
+                    LfsrSeed = config.LfsrSeed
+                }
+            }
+        };
+        
+        WriteMessage(command);
+    }
+    
     public void DisposePort(string portName)
     {
         var port = GetPort(portName);

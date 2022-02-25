@@ -31,10 +31,25 @@ public class SerialCommandHandler
         rootCommand.Add(GetUnicastSendCommand());
         rootCommand.Add(GetDeviceConfigurationCommand());
         rootCommand.Add(GetClearMeasurementsCommand());
+        rootCommand.Add(GetRlncInitConfigCommand());
 
+        // Fluent structure
         return rootCommand;
     }
 
+    public Command GetRlncInitConfigCommand()
+    {
+        var command = new Command("rlnc-init");
+        command.AddAlias("rlnc");
+        command.Handler = CommandHandler.Create(
+            async () =>
+            {
+                var selectedPortName = _selectedDeviceService.SelectedPortName;
+                _logger.LogInformation("Init RLNC configuration ProxyPort:{Port}", selectedPortName);
+                await _serialProcessorService.SendRlncInitConfigCommand();
+            });
+        return command;
+    }
     public Command GetClearMeasurementsCommand()
     {
         var command = new Command("clear-measurements");
