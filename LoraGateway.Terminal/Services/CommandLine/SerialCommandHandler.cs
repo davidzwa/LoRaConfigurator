@@ -50,6 +50,7 @@ public class SerialCommandHandler
             });
         return command;
     }
+
     public Command GetClearMeasurementsCommand()
     {
         var command = new Command("clear-measurements");

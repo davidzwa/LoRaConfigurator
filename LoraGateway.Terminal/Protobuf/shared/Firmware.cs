@@ -27,23 +27,23 @@ namespace LoRa {
             "ChVzaGFyZWQvZmlybXdhcmUucHJvdG8iSAoHVmVyc2lvbhINCgVNYWpvchgB",
             "IAEoDRINCgVNaW5vchgCIAEoDRINCgVQYXRjaBgDIAEoDRIQCghSZXZpc2lv",
             "bhgEIAEoDSIxCghEZXZpY2VJZBILCgNJZDAYASABKA0SCwoDSWQxGAIgASgN",
-            "EgsKA0lkMhgDIAEoDSK8AQoWUmxuY0luaXRDb25maWdGcmFnbWVudBIWCg5H",
-            "ZW5lcmF0aW9uU2l6ZRgBIAEoDRIXCg9HZW5lcmF0aW9uQ291bnQYAiABKA0S",
-            "EQoJRnJhbWVTaXplGAMgASgNEhIKCkZyYW1lQ291bnQYBCABKA0SEwoLRmll",
-            "bGREZWdyZWUYBSABKA0SEQoJRmllbGRQb2x5GAYgASgNEhAKCExmc3JTZWVk",
-            "GAcgASgNEhAKCExmc3JQb2x5GAggASgNIhUKE1JsbmNFbmNvZGVkRnJhZ21l",
-            "bnQiRQoXUmxuY1N0YXRlVXBkYXRlRnJhZ21lbnQSFwoPR2VuZXJhdGlvbklu",
-            "ZGV4GAEgASgNEhEKCUxmc3JTdGF0ZRgCIAEoDSIZChdSbG5jVGVybWluYXRp",
-            "b25GcmFnbWVudEIHqgIETG9SYWIGcHJvdG8z"));
+            "EgsKA0lkMhgDIAEoDSK7AQoVUmxuY0luaXRDb25maWdDb21tYW5kEhYKDkdl",
+            "bmVyYXRpb25TaXplGAEgASgNEhcKD0dlbmVyYXRpb25Db3VudBgCIAEoDRIR",
+            "CglGcmFtZVNpemUYAyABKA0SEgoKRnJhbWVDb3VudBgEIAEoDRITCgtGaWVs",
+            "ZERlZ3JlZRgFIAEoDRIRCglGaWVsZFBvbHkYBiABKA0SEAoITGZzclNlZWQY",
+            "ByABKA0SEAoITGZzclBvbHkYCCABKA0iFQoTUmxuY0VuY29kZWRGcmFnbWVu",
+            "dCI9Cg9SbG5jU3RhdGVVcGRhdGUSFwoPR2VuZXJhdGlvbkluZGV4GAEgASgN",
+            "EhEKCUxmc3JTdGF0ZRgCIAEoDSIYChZSbG5jVGVybWluYXRpb25Db21tYW5k",
+            "QgeqAgRMb1JhYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.Version), global::LoRa.Version.Parser, new[]{ "Major", "Minor", "Patch", "Revision" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DeviceId), global::LoRa.DeviceId.Parser, new[]{ "Id0", "Id1", "Id2" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncInitConfigFragment), global::LoRa.RlncInitConfigFragment.Parser, new[]{ "GenerationSize", "GenerationCount", "FrameSize", "FrameCount", "FieldDegree", "FieldPoly", "LfsrSeed", "LfsrPoly" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncInitConfigCommand), global::LoRa.RlncInitConfigCommand.Parser, new[]{ "GenerationSize", "GenerationCount", "FrameSize", "FrameCount", "FieldDegree", "FieldPoly", "LfsrSeed", "LfsrPoly" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncEncodedFragment), global::LoRa.RlncEncodedFragment.Parser, null, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncStateUpdateFragment), global::LoRa.RlncStateUpdateFragment.Parser, new[]{ "GenerationIndex", "LfsrState" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncTerminationFragment), global::LoRa.RlncTerminationFragment.Parser, null, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncStateUpdate), global::LoRa.RlncStateUpdate.Parser, new[]{ "GenerationIndex", "LfsrState" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncTerminationCommand), global::LoRa.RlncTerminationCommand.Parser, null, null, null, null, null)
           }));
     }
     #endregion
@@ -613,16 +613,16 @@ namespace LoRa {
 
   }
 
-  public sealed partial class RlncInitConfigFragment : pb::IMessage<RlncInitConfigFragment>
+  public sealed partial class RlncInitConfigCommand : pb::IMessage<RlncInitConfigCommand>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<RlncInitConfigFragment> _parser = new pb::MessageParser<RlncInitConfigFragment>(() => new RlncInitConfigFragment());
+    private static readonly pb::MessageParser<RlncInitConfigCommand> _parser = new pb::MessageParser<RlncInitConfigCommand>(() => new RlncInitConfigCommand());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<RlncInitConfigFragment> Parser { get { return _parser; } }
+    public static pb::MessageParser<RlncInitConfigCommand> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -638,7 +638,7 @@ namespace LoRa {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public RlncInitConfigFragment() {
+    public RlncInitConfigCommand() {
       OnConstruction();
     }
 
@@ -646,7 +646,7 @@ namespace LoRa {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public RlncInitConfigFragment(RlncInitConfigFragment other) : this() {
+    public RlncInitConfigCommand(RlncInitConfigCommand other) : this() {
       generationSize_ = other.generationSize_;
       generationCount_ = other.generationCount_;
       frameSize_ = other.frameSize_;
@@ -660,8 +660,8 @@ namespace LoRa {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public RlncInitConfigFragment Clone() {
-      return new RlncInitConfigFragment(this);
+    public RlncInitConfigCommand Clone() {
+      return new RlncInitConfigCommand(this);
     }
 
     /// <summary>Field number for the "GenerationSize" field.</summary>
@@ -763,12 +763,12 @@ namespace LoRa {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as RlncInitConfigFragment);
+      return Equals(other as RlncInitConfigCommand);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(RlncInitConfigFragment other) {
+    public bool Equals(RlncInitConfigCommand other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -932,7 +932,7 @@ namespace LoRa {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(RlncInitConfigFragment other) {
+    public void MergeFrom(RlncInitConfigCommand other) {
       if (other == null) {
         return;
       }
@@ -1216,16 +1216,16 @@ namespace LoRa {
 
   }
 
-  public sealed partial class RlncStateUpdateFragment : pb::IMessage<RlncStateUpdateFragment>
+  public sealed partial class RlncStateUpdate : pb::IMessage<RlncStateUpdate>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<RlncStateUpdateFragment> _parser = new pb::MessageParser<RlncStateUpdateFragment>(() => new RlncStateUpdateFragment());
+    private static readonly pb::MessageParser<RlncStateUpdate> _parser = new pb::MessageParser<RlncStateUpdate>(() => new RlncStateUpdate());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<RlncStateUpdateFragment> Parser { get { return _parser; } }
+    public static pb::MessageParser<RlncStateUpdate> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1241,7 +1241,7 @@ namespace LoRa {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public RlncStateUpdateFragment() {
+    public RlncStateUpdate() {
       OnConstruction();
     }
 
@@ -1249,7 +1249,7 @@ namespace LoRa {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public RlncStateUpdateFragment(RlncStateUpdateFragment other) : this() {
+    public RlncStateUpdate(RlncStateUpdate other) : this() {
       generationIndex_ = other.generationIndex_;
       lfsrState_ = other.lfsrState_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -1257,8 +1257,8 @@ namespace LoRa {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public RlncStateUpdateFragment Clone() {
-      return new RlncStateUpdateFragment(this);
+    public RlncStateUpdate Clone() {
+      return new RlncStateUpdate(this);
     }
 
     /// <summary>Field number for the "GenerationIndex" field.</summary>
@@ -1288,12 +1288,12 @@ namespace LoRa {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as RlncStateUpdateFragment);
+      return Equals(other as RlncStateUpdate);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(RlncStateUpdateFragment other) {
+    public bool Equals(RlncStateUpdate other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -1379,7 +1379,7 @@ namespace LoRa {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(RlncStateUpdateFragment other) {
+    public void MergeFrom(RlncStateUpdate other) {
       if (other == null) {
         return;
       }
@@ -1446,16 +1446,16 @@ namespace LoRa {
   /// This is a marker field - for now
   /// Might add debugging flags
   /// </summary>
-  public sealed partial class RlncTerminationFragment : pb::IMessage<RlncTerminationFragment>
+  public sealed partial class RlncTerminationCommand : pb::IMessage<RlncTerminationCommand>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<RlncTerminationFragment> _parser = new pb::MessageParser<RlncTerminationFragment>(() => new RlncTerminationFragment());
+    private static readonly pb::MessageParser<RlncTerminationCommand> _parser = new pb::MessageParser<RlncTerminationCommand>(() => new RlncTerminationCommand());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<RlncTerminationFragment> Parser { get { return _parser; } }
+    public static pb::MessageParser<RlncTerminationCommand> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1471,7 +1471,7 @@ namespace LoRa {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public RlncTerminationFragment() {
+    public RlncTerminationCommand() {
       OnConstruction();
     }
 
@@ -1479,25 +1479,25 @@ namespace LoRa {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public RlncTerminationFragment(RlncTerminationFragment other) : this() {
+    public RlncTerminationCommand(RlncTerminationCommand other) : this() {
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public RlncTerminationFragment Clone() {
-      return new RlncTerminationFragment(this);
+    public RlncTerminationCommand Clone() {
+      return new RlncTerminationCommand(this);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as RlncTerminationFragment);
+      return Equals(other as RlncTerminationCommand);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(RlncTerminationFragment other) {
+    public bool Equals(RlncTerminationCommand other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -1557,7 +1557,7 @@ namespace LoRa {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(RlncTerminationFragment other) {
+    public void MergeFrom(RlncTerminationCommand other) {
       if (other == null) {
         return;
       }

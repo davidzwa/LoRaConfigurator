@@ -306,7 +306,7 @@ public class SerialProcessorService
                 CorrelationCode = 0,
                 DeviceId = 0,
                 IsMulticast = true,
-                RlncInitConfigFragment = new RlncInitConfigFragment()
+                RlncInitConfigCommand = new RlncInitConfigCommand()
                 {
                     FieldPoly = GField.Polynomial,
                     FieldDegree = config.FieldDegree,
