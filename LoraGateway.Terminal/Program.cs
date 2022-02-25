@@ -1,6 +1,9 @@
-﻿using LoraGateway.Services.Firmware;
-using LoraGateway.Services.Firmware.RandomLinearCoding;
-using LoraGateway.Services.Firmware.Utils;
+﻿using LoraGateway.BackgroundServices;
+using LoraGateway.Services;
+using LoraGateway.Services.CommandLine;
+using LoraGateway.Services.Firmware;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 
@@ -23,39 +26,25 @@ public static class LoraGateway
                 "[{Timestamp:HH:mm:ss} {Level:u3}] ({SourceContext:l}) {Message:lj}{NewLine}{Exception}"
             )
             .CreateLogger();
-        
-        var unencodedPackets = new BlobFragmentationService().GenerateFakeFirmware(103, 12);
-        var service = new RlncEncodingService();
-        service.PreprocessGenerations(unencodedPackets, 12);
-        var generation = service.PrecodeNextGeneration(28-9);
-        var encMatrix = generation.EncodedPackets.ToEncodingMatrix();
 
-        // GField[,] encMatrix = {
-        //     { new(0x01), new(0x01), new(0x02) },
-        //     { new(0x00), new(0x01), new(0x01) },
-        //     { new(0x00), new(0x00), new(0x01) },
-        //     { new(0x00), new(0x00), new(0x01) }
-        // };
-        Console.WriteLine(encMatrix.Rank);
-
-        // await Host.CreateDefaultBuilder(args)
-        //     .UseSerilog()
-        //     .ConfigureServices((hostContext, services) =>
-        //     {
-        //         services.AddSingleton<DeviceDataStore>();
-        //         services.AddSingleton<SerialProcessorService>();
-        //         services.AddSingleton<SelectedDeviceService>();
-        //         services.AddSingleton<SerialWatcher>();
-        //         services.AddSingleton<MeasurementsService>();
-        //         services.AddSingleton<BlobFragmentationService>();
-        //         services.AddSingleton<RlncEncodingService>();
-        //         services.AddHostedService<SerialHostedService>();
-        //         services.AddTransient<SerialCommandHandler>();
-        //         services.AddTransient<SelectDeviceCommandHandler>();
-        //         services.AddTransient<ListDeviceCommandHandler>();
-        //         services.AddSingleton<ConsoleProcessorService>();
-        //         services.AddHostedService<ConsoleHostedService>();
-        //     })
-        //     .RunConsoleAsync();
+        await Host.CreateDefaultBuilder(args)
+            .UseSerilog()
+            .ConfigureServices((_, services) =>
+            {
+                services.AddSingleton<DeviceDataStore>();
+                services.AddSingleton<SerialProcessorService>();
+                services.AddSingleton<SelectedDeviceService>();
+                services.AddSingleton<SerialWatcher>();
+                services.AddSingleton<MeasurementsService>();
+                services.AddSingleton<BlobFragmentationService>();
+                services.AddSingleton<RlncEncodingService>();
+                services.AddHostedService<SerialHostedService>();
+                services.AddTransient<SerialCommandHandler>();
+                services.AddTransient<SelectDeviceCommandHandler>();
+                services.AddTransient<ListDeviceCommandHandler>();
+                services.AddSingleton<ConsoleProcessorService>();
+                services.AddHostedService<ConsoleHostedService>();
+            })
+            .RunConsoleAsync();
     }
 }
