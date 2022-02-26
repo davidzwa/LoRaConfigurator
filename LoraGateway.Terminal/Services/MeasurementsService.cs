@@ -1,15 +1,9 @@
 ﻿using System.Text;
 using System.Text.Json;
+using LoraGateway.Models;
+using LoraGateway.Services.Contracts;
 
 namespace LoraGateway.Services;
-
-public class MeasurementDto
-{
-    public long TimeStamp { get; set; }
-    public uint SequenceNumber { get; set; }
-    public int Snr { get; set; }
-    public int Rssi { get; set; }
-}
 
 public class MeasurementsService : IDisposable
 {
@@ -31,7 +25,8 @@ public class MeasurementsService : IDisposable
 
     public string GetMeasurementFile()
     {
-        return Path.GetFullPath($"../../../Data/measurements{_location}.json", Directory.GetCurrentDirectory());
+        var rootPath = JsonDataStoreExtensions.BasePath;
+        return Path.GetFullPath($"{rootPath}/measurements{_location}.json", Directory.GetCurrentDirectory());
     }
 
     private void EnsureSourceExists()
@@ -95,7 +90,7 @@ public class MeasurementsService : IDisposable
             SequenceNumber = seq
         });
 
-        var jsonBlob = JsonSerializer.Serialize(_measurementDtos, new JsonSerializerOptions {WriteIndented = true});
+        var jsonBlob = JsonSerializer.Serialize(_measurementDtos, new JsonSerializerOptions { WriteIndented = true });
         var blob = Encoding.UTF8.GetBytes(jsonBlob);
         if (_measurementFile == null) OpenFile(GetMeasurementFile());
 
