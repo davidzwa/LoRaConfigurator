@@ -20,6 +20,13 @@ public class RandomLinearCodingTests
         rngList[1].ShouldBe((byte) 81);
         rngList[2].ShouldBe((byte) 168);
         rngList[3].ShouldBe((byte) 212);
+        
+        var generator2 = new LinearFeedbackShiftRegister(0x08);
+        var rngList2 = generator2.GenerateMany(4).ToList();
+        rngList2[0].ShouldBe((byte) 4);
+        rngList2[1].ShouldBe((byte) 130);
+        rngList2[2].ShouldBe((byte) 65);
+        rngList2[3].ShouldBe((byte) 160);
     }
 
     // Nice way to test cycle length
