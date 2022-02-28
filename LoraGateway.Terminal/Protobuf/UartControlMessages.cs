@@ -29,21 +29,21 @@ namespace LoRa {
             "dEJvb3RJbmZvEg8KB1JlcXVlc3QYASABKAgiSQoTRGV2aWNlQ29uZmlndXJh",
             "dGlvbhIYChBFbmFibGVBbHdheXNTZW5kGAEgASgIEhgKEEFsd2F5c1NlbmRQ",
             "ZXJpb2QYAiABKA0iMQoYQ2xlYXJNZWFzdXJlbWVudHNDb21tYW5kEhUKDVNl",
-            "bmRCb290QWZ0ZXIYASABKAgipwIKC1VhcnRDb21tYW5kEiIKCHJ4Q29uZmln",
+            "bmRCb290QWZ0ZXIYASABKAgiwgIKC1VhcnRDb21tYW5kEiIKCHJ4Q29uZmln",
             "GAEgASgLMg4uUmFkaW9SeENvbmZpZ0gAEiIKCHR4Q29uZmlnGAIgASgLMg4u",
             "UmFkaW9UeENvbmZpZ0gAEjMKE2RldmljZUNvbmZpZ3VyYXRpb24YAyABKAsy",
             "FC5EZXZpY2VDb25maWd1cmF0aW9uSAASKwoPcmVxdWVzdEJvb3RJbmZvGAQg",
             "ASgLMhAuUmVxdWVzdEJvb3RJbmZvSAASPQoYY2xlYXJNZWFzdXJlbWVudHND",
             "b21tYW5kGAUgASgLMhkuQ2xlYXJNZWFzdXJlbWVudHNDb21tYW5kSAASJwoP",
-            "dHJhbnNtaXRDb21tYW5kGAYgASgLMgwuTG9SYU1lc3NhZ2VIAEIGCgRCb2R5",
-            "QgeqAgRMb1JhYgZwcm90bzM="));
+            "dHJhbnNtaXRDb21tYW5kGAYgASgLMgwuTG9SYU1lc3NhZ2VIABIZChFkb05v",
+            "dFByb3h5Q29tbWFuZBgHIAEoCEIGCgRCb2R5QgeqAgRMb1JhYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LoRa.LoraDeviceMessagesReflection.Descriptor, global::LoRa.LoraPhyReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RequestBootInfo), global::LoRa.RequestBootInfo.Parser, new[]{ "Request" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DeviceConfiguration), global::LoRa.DeviceConfiguration.Parser, new[]{ "EnableAlwaysSend", "AlwaysSendPeriod" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.ClearMeasurementsCommand), global::LoRa.ClearMeasurementsCommand.Parser, new[]{ "SendBootAfter" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.UartCommand), global::LoRa.UartCommand.Parser, new[]{ "RxConfig", "TxConfig", "DeviceConfiguration", "RequestBootInfo", "ClearMeasurementsCommand", "TransmitCommand" }, new[]{ "Body" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.UartCommand), global::LoRa.UartCommand.Parser, new[]{ "RxConfig", "TxConfig", "DeviceConfiguration", "RequestBootInfo", "ClearMeasurementsCommand", "TransmitCommand", "DoNotProxyCommand" }, new[]{ "Body" }, null, null, null)
           }));
     }
     #endregion
@@ -691,6 +691,7 @@ namespace LoRa {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public UartCommand(UartCommand other) : this() {
+      doNotProxyCommand_ = other.doNotProxyCommand_;
       switch (other.BodyCase) {
         case BodyOneofCase.RxConfig:
           RxConfig = other.RxConfig.Clone();
@@ -802,6 +803,21 @@ namespace LoRa {
       }
     }
 
+    /// <summary>Field number for the "doNotProxyCommand" field.</summary>
+    public const int DoNotProxyCommandFieldNumber = 7;
+    private bool doNotProxyCommand_;
+    /// <summary>
+    /// Do not proxy the LoRa command - for debugging purposes
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool DoNotProxyCommand {
+      get { return doNotProxyCommand_; }
+      set {
+        doNotProxyCommand_ = value;
+      }
+    }
+
     private object body_;
     /// <summary>Enum of possible cases for the "Body" oneof.</summary>
     public enum BodyOneofCase {
@@ -848,6 +864,7 @@ namespace LoRa {
       if (!object.Equals(RequestBootInfo, other.RequestBootInfo)) return false;
       if (!object.Equals(ClearMeasurementsCommand, other.ClearMeasurementsCommand)) return false;
       if (!object.Equals(TransmitCommand, other.TransmitCommand)) return false;
+      if (DoNotProxyCommand != other.DoNotProxyCommand) return false;
       if (BodyCase != other.BodyCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -862,6 +879,7 @@ namespace LoRa {
       if (bodyCase_ == BodyOneofCase.RequestBootInfo) hash ^= RequestBootInfo.GetHashCode();
       if (bodyCase_ == BodyOneofCase.ClearMeasurementsCommand) hash ^= ClearMeasurementsCommand.GetHashCode();
       if (bodyCase_ == BodyOneofCase.TransmitCommand) hash ^= TransmitCommand.GetHashCode();
+      if (DoNotProxyCommand != false) hash ^= DoNotProxyCommand.GetHashCode();
       hash ^= (int) bodyCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -905,6 +923,10 @@ namespace LoRa {
         output.WriteRawTag(50);
         output.WriteMessage(TransmitCommand);
       }
+      if (DoNotProxyCommand != false) {
+        output.WriteRawTag(56);
+        output.WriteBool(DoNotProxyCommand);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -939,6 +961,10 @@ namespace LoRa {
         output.WriteRawTag(50);
         output.WriteMessage(TransmitCommand);
       }
+      if (DoNotProxyCommand != false) {
+        output.WriteRawTag(56);
+        output.WriteBool(DoNotProxyCommand);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -967,6 +993,9 @@ namespace LoRa {
       if (bodyCase_ == BodyOneofCase.TransmitCommand) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(TransmitCommand);
       }
+      if (DoNotProxyCommand != false) {
+        size += 1 + 1;
+      }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -978,6 +1007,9 @@ namespace LoRa {
     public void MergeFrom(UartCommand other) {
       if (other == null) {
         return;
+      }
+      if (other.DoNotProxyCommand != false) {
+        DoNotProxyCommand = other.DoNotProxyCommand;
       }
       switch (other.BodyCase) {
         case BodyOneofCase.RxConfig:
@@ -1087,6 +1119,10 @@ namespace LoRa {
             TransmitCommand = subBuilder;
             break;
           }
+          case 56: {
+            DoNotProxyCommand = input.ReadBool();
+            break;
+          }
         }
       }
     #endif
@@ -1154,6 +1190,10 @@ namespace LoRa {
             }
             input.ReadMessage(subBuilder);
             TransmitCommand = subBuilder;
+            break;
+          }
+          case 56: {
+            DoNotProxyCommand = input.ReadBool();
             break;
           }
         }

@@ -301,6 +301,7 @@ public class SerialProcessorService
         
         var command = new UartCommand
         {
+            DoNotProxyCommand = fuotaSession.UartFakeLoRaRXMode,
             TransmitCommand = new LoRaMessage()
             {
                 CorrelationCode = 0,

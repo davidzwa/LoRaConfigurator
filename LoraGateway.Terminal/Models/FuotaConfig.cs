@@ -4,6 +4,8 @@ namespace LoraGateway.Models;
 
 public class FuotaConfig
 {
+    // Enabling this makes sure the UART packet are treated are LoRa RX packets instead of forwarding them
+    public bool UartFakeLoRaRXMode { get; set; } = true;
     // Not checked
     public bool FakeFirmware { get; set; } = true;
     // Not implemented

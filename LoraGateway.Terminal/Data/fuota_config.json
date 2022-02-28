@@ -1,4 +1,5 @@
 {
+  "UartFakeLoRaRXMode": true,
   "FakeFirmware": true,
   "FakeFragmentCount": 10,
   "FakeFragmentSize": 10,

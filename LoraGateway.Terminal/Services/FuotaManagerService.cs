@@ -4,6 +4,7 @@ using LoraGateway.Models;
 using LoraGateway.Services.Contracts;
 using LoraGateway.Services.Firmware;
 using LoraGateway.Services.Firmware.RandomLinearCoding;
+using Serilog;
 
 namespace LoraGateway.Services;
 
@@ -41,6 +42,11 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
                 "A new fuota session was started, while a previous one was already requested");
         }
 
+        if (Store.UartFakeLoRaRXMode)
+        {
+            Log.Information("UartFakeLoRaRXMode enabled. Disabling LoRa UART proxy");
+        }
+        
         if (Store.FakeFirmware)
         {
             var frameSize = (int) Store.FakeFragmentSize;
@@ -59,7 +65,7 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         var generationCount =
             (uint) _rlncEncodingService.PreprocessGenerations(_firmwarePackets, Store.GenerationSize);
 
-        _currentFuotaSession = new FuotaSession(generationCount);
+        _currentFuotaSession = new FuotaSession(generationCount, Store.UartFakeLoRaRXMode);
 
         return _currentFuotaSession;
     }
