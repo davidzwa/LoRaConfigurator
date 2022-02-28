@@ -2,14 +2,14 @@
 
 public class FuotaSession
 {
-    public FuotaSession(uint generationCount, bool uartFakeLoRaRXMode)
+    public FuotaSession(uint generationCount, bool uartFakeLoRaRxMode)
     {
         TimeStarted = DateTime.Now;
-        UartFakeLoRaRXMode = uartFakeLoRaRXMode;
+        UartFakeLoRaRxMode = uartFakeLoRaRxMode;
         GenerationCount = generationCount;
     }
 
-    public bool UartFakeLoRaRXMode { get; }
+    public bool UartFakeLoRaRxMode { get; }
     public DateTime TimeStarted { get; }
     public uint GenerationCount { get; }
 }
