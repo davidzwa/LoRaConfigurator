@@ -5,10 +5,10 @@ namespace LoraGateway.Services;
 
 public class ConsoleProcessorService
 {
-    private readonly SerialCommandHandler _serialCommandHandler;
     private readonly ListDeviceCommandHandler _listDeviceCommandHandler;
     private readonly ILogger _logger;
     private readonly SelectDeviceCommandHandler _selectDeviceCommandHandler;
+    private readonly SerialCommandHandler _serialCommandHandler;
 
 
     public ConsoleProcessorService(

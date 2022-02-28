@@ -1,5 +1,6 @@
 ﻿using Google.Protobuf;
 using LoRa;
+using LoraGateway.Services.Firmware.RandomLinearCoding;
 
 namespace LoraGateway.Services.Extensions;
 
@@ -22,7 +23,7 @@ public static class SerialProcessingExtensions
 
         processorService.WriteMessage(command);
     }
-    
+
     public static void SendPeriodicTransmitCommand(
         this SerialProcessorService processorService,
         uint period,
@@ -37,11 +38,11 @@ public static class SerialProcessingExtensions
                 new LoRaMessage
                 {
                     IsMulticast = false,
-                    SequenceConfig = new ()
+                    SequenceConfig = new ForwardSequenceConfig
                     {
                         Period = period,
                         Indefinite = infinite,
-                        SequenceCountLimit = repetitions 
+                        SequenceCountLimit = repetitions
                     },
                     Payload = ByteString.CopyFrom(payload)
                 }
@@ -58,8 +59,8 @@ public static class SerialProcessingExtensions
     {
         var command = new UartCommand
         {
-            DeviceConfiguration = 
-                new ()
+            DeviceConfiguration =
+                new DeviceConfiguration
                 {
                     AlwaysSendPeriod = alwaysSendPeriod,
                     EnableAlwaysSend = enableAlwaysSend
@@ -68,13 +69,13 @@ public static class SerialProcessingExtensions
 
         processorService.WriteMessage(command);
     }
-    
+
     public static void SendBootCommand(
         this SerialProcessorService processorService)
     {
         var command = new UartCommand
         {
-            RequestBootInfo = new RequestBootInfo { Request = true }
+            RequestBootInfo = new RequestBootInfo {Request = true}
         };
         processorService.WriteMessage(command);
     }
@@ -82,11 +83,10 @@ public static class SerialProcessingExtensions
     public static void SendClearMeasurementsCommands(
         this SerialProcessorService processorService)
     {
-        
         var command = new UartCommand
         {
-            ClearMeasurementsCommand = new ClearMeasurementsCommand(){ SendBootAfter = true }
+            ClearMeasurementsCommand = new ClearMeasurementsCommand {SendBootAfter = true}
         };
         processorService.WriteMessage(command);
-    } 
+    }
 }

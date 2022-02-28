@@ -1,19 +1,18 @@
 ﻿using System.Text.Json;
 using LoraGateway.Models;
+using LoraGateway.Services.Contracts;
 using LoraGateway.Utils;
 
 namespace LoraGateway.Services;
 
-public class DeviceDataStore
+public class DeviceDataStore : JsonDataStore<DeviceCollection>
 {
-    private DeviceCollection? _store;
-
-    public string GetJsonFilePath()
+    public override string GetJsonFileName()
     {
-        return Path.GetFullPath("../../../Data/devices.json", Directory.GetCurrentDirectory());
+        return "devices.json";
     }
 
-    private DeviceCollection GetDefaultJson()
+    public override DeviceCollection GetDefaultJson()
     {
         var jsonStore = new DeviceCollection();
         jsonStore.Gateway.Receive.DataRate = 7;
@@ -21,32 +20,9 @@ public class DeviceDataStore
         return jsonStore;
     }
 
-    private async Task EnsureSourceExists()
-    {
-        var path = GetJsonFilePath();
-        var dirName = Path.GetDirectoryName(path);
-        if (dirName == null) return;
-
-        if (!Directory.Exists(dirName)) Directory.CreateDirectory(dirName);
-
-        if (!File.Exists(path)) await WriteStore();
-    }
-
-    public async Task WriteStore()
-    {
-        var path = GetJsonFilePath();
-        var jsonStore = _store ?? GetDefaultJson();
-        var serializedBlob = JsonSerializer.SerializeToUtf8Bytes(jsonStore, new JsonSerializerOptions
-        {
-            WriteIndented = true
-        });
-
-        await File.WriteAllBytesAsync(path, serializedBlob);
-    }
-
     public Device? GetDevice(string deviceId, bool throwIfNotFound = false)
     {
-        var existingDevice = _store?.Devices?.Find(d => d.Id == deviceId);
+        var existingDevice = Store?.Devices?.Find(d => d.Id == deviceId);
         if (existingDevice == null && throwIfNotFound)
             throw new InvalidOperationException("Cant update device which isnt registered");
         return existingDevice;
@@ -54,7 +30,7 @@ public class DeviceDataStore
 
     public Device? GetDeviceByPort(string portName)
     {
-        return _store?.Devices?.Find(d => d?.LastPortName == portName);
+        return Store?.Devices?.Find(d => d?.LastPortName == portName);
     }
 
     public async Task<Device?> MarkDeviceGateway(string deviceId)
@@ -62,7 +38,7 @@ public class DeviceDataStore
         var gatewayDevice = GetDevice(deviceId, true);
         gatewayDevice!.IsGateway = true;
 
-        _store?.Devices.ForEach(d =>
+        Store?.Devices.ForEach(d =>
         {
             if (!gatewayDevice.Id.Equals(deviceId)) d.IsGateway = false;
         });
@@ -86,7 +62,7 @@ public class DeviceDataStore
 
     public async Task<Device?> GetOrAddDevice(Device device)
     {
-        if (_store == null) await LoadStore();
+        if (Store == null) await LoadStore();
 
         // Ensure device doesnt already exist
         var existingDevice = GetDevice(device.Id);
@@ -94,22 +70,10 @@ public class DeviceDataStore
 
         device.NickName = NameGenerator.GenerateName(10);
         device.RegisteredAt = DateTime.Now.ToFileTimeUtc().ToString();
-        _store?.Devices.Add(device);
+        Store?.Devices.Add(device);
 
         await WriteStore();
 
         return device;
-    }
-
-    public async Task LoadStore()
-    {
-        await EnsureSourceExists();
-
-        var path = GetJsonFilePath();
-        var blob = await File.ReadAllTextAsync(path);
-        _store = JsonSerializer.Deserialize<DeviceCollection>(blob, new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = true
-        });
     }
 }

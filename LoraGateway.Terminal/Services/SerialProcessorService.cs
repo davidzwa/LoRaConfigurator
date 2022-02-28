@@ -1,8 +1,10 @@
 using System.IO.Ports;
 using System.Text;
 using Google.Protobuf;
+using System.Text.Json;
 using LoRa;
 using LoraGateway.Models;
+using LoraGateway.Services.Firmware.RandomLinearCoding;
 using LoraGateway.Utils;
 
 namespace LoraGateway.Services;
@@ -10,20 +12,23 @@ namespace LoraGateway.Services;
 public class SerialProcessorService
 {
     private readonly ILogger<SerialProcessorService> _logger;
-    private readonly SelectedDeviceService _selectedDeviceService;
     private readonly MeasurementsService _measurementsService;
+    private readonly SelectedDeviceService _selectedDeviceService;
     private readonly DeviceDataStore _store;
+    private readonly FuotaManagerService _fuotaManagerService;
     private readonly byte endByte = 0x00;
     private readonly byte startByte = 0xFF;
 
     public SerialProcessorService(
         DeviceDataStore store,
+        FuotaManagerService fuotaManagerService,
         SelectedDeviceService selectedDeviceService,
         MeasurementsService measurementsService,
         ILogger<SerialProcessorService> logger
     )
     {
         _store = store;
+        _fuotaManagerService = fuotaManagerService;
         _selectedDeviceService = selectedDeviceService;
         _measurementsService = measurementsService;
         _logger = logger;
@@ -60,8 +65,8 @@ public class SerialProcessorService
         port.ReadTimeout = 10000;
         port.WriteTimeout = 500;
 
-        port.ErrorReceived += ((sender, args) => OnPortError((SerialPort)sender, args));
-        port.DataReceived += (async (sender, args) => await OnPortData((SerialPort)sender, args));
+        port.ErrorReceived += (sender, args) => OnPortError((SerialPort) sender, args);
+        port.DataReceived += async (sender, args) => await OnPortData((SerialPort) sender, args);
         try
         {
             port.Open();
@@ -89,6 +94,36 @@ public class SerialProcessorService
         return SerialPorts.Find(p => p.PortName.Equals(portName));
     }
 
+    public void WriteMessage(UartCommand message)
+    {
+        var selectedPortName = _selectedDeviceService.SelectedPortName;
+        if (selectedPortName == null)
+        {
+            _logger.LogWarning("Cant send as multiple devices are connected and 1 is not selected");
+            return;
+        }
+
+        var payload = message.ToByteArray();
+        var protoMessageBuffer = new[] {(byte) payload.Length}.Concat(payload);
+        var messageBuffer = Cobs.Encode(protoMessageBuffer).ToArray();
+        var len = new[] {(byte) messageBuffer.Length};
+        var transmitBuffer = new[] {startByte}
+            .Concat(len)
+            .Concat(messageBuffer)
+            .Concat(new[] {endByte})
+            .ToArray();
+
+        _logger.LogInformation("TX {Message}", SerialUtil.ByteArrayToString(transmitBuffer));
+        var port = GetPort(selectedPortName);
+        if (port == null)
+        {
+            _logger.LogWarning("Port was null. Cant send to {Port}", selectedPortName);
+            return;
+        }
+
+        port.Write(transmitBuffer, 0, transmitBuffer.Length);
+    }
+    
     public void OnPortError(SerialPort subject, SerialErrorReceivedEventArgs e)
     {
         _logger.LogWarning("Serial error {ErrorType}", e.EventType);
@@ -102,13 +137,21 @@ public class SerialProcessorService
             return;
         }
 
-        List<byte> buffer = new List<byte>();
-        bool packetWaitingBytes = true;
+        while (port.BytesToRead > 0)
+        {
+            await ProcessMessagePreamble(port);
+        }
+    }
+
+    private async Task ProcessMessagePreamble(SerialPort port)
+    {
+        var buffer = new List<byte>();
+        var packetWaitingBytes = true;
         try
         {
             while (packetWaitingBytes)
             {
-                var newByte = (byte)port.ReadByte();
+                var newByte = (byte) port.ReadByte();
                 buffer.Add(newByte);
                 packetWaitingBytes = newByte != 0x00;
             }
@@ -156,49 +199,18 @@ public class SerialProcessorService
             return;
         }
 
-        if (startByteIndex > 0) {
-            // Clear unknown bytes
+        if (startByteIndex > 0) // Clear unknown bytes
             listBuffer.RemoveRange(0, startByteIndex);
-        }
         listBuffer.RemoveAt(0);
         listBuffer.RemoveAt(1);
         listBuffer.RemoveAt(listBuffer.Count - 1);
 
-        _logger.LogDebug("Data [{Port}] Bytes [{Bytes}] Expected [{dataLength}] Start [{Start}] End [{End}] LeftOver [{LeftOver}]",
+        _logger.LogDebug(
+            "Data [{Port}] Bytes [{Bytes}] Expected [{dataLength}] Start [{Start}] End [{End}] LeftOver [{LeftOver}]",
             port.PortName, listBuffer.Count, dataLength, startByteIndex, hasEnd, port.BytesToRead);
         _logger.LogDebug(SerialUtil.ByteArrayToString(listBuffer.ToArray()));
 
         await ProcessMessage(port.PortName, listBuffer.ToArray());
-    }
-
-    public void WriteMessage(UartCommand message)
-    {
-        var selectedPortName = _selectedDeviceService.SelectedPortName;
-        if (selectedPortName == null)
-        {
-            _logger.LogWarning("Cant send as multiple devices are connected and 1 is not selected");
-            return;
-        }
-
-        var payload = message.ToByteArray();
-        var protoMessageBuffer = (new[] { (byte)payload.Length }).Concat(payload);
-        var messageBuffer = Cobs.Encode(protoMessageBuffer).ToArray();
-        var len = new[] { (byte)messageBuffer.Length };
-        byte[] transmitBuffer = new[] { startByte }
-            .Concat(len)
-            .Concat(messageBuffer)
-            .Concat(new[] { endByte })
-            .ToArray();
-
-        _logger.LogInformation("TX {Message}", SerialUtil.ByteArrayToString(transmitBuffer));
-        var port = GetPort(selectedPortName);
-        if (port == null)
-        {
-            _logger.LogWarning("Port was null. Cant send to {Port}", selectedPortName);
-            return;
-        }
-
-        port.Write(transmitBuffer, 0, transmitBuffer.Length);
     }
 
     private async Task ProcessMessage(string portName, byte[] buffer)
@@ -243,7 +255,8 @@ public class SerialProcessorService
                 LastPortName = portName
             });
 
-            _logger.LogInformation("[{Name}, MC:{Count}, MD:{Disabled}] heart beat {DeviceId}", device?.NickName, measurementCount, measurementDisabled, deviceId);
+            _logger.LogInformation("[{Name}, MC:{Count}, MD:{Disabled}] heart beat {DeviceId}", device?.NickName,
+                measurementCount, measurementDisabled, deviceId);
         }
         else if (bodyCase.Equals(UartResponse.BodyOneofCase.AckMessage))
         {
@@ -254,7 +267,7 @@ public class SerialProcessorService
         {
             var payload = response.DebugMessage.Payload;
             var code = response.DebugMessage.Code;
-                    
+
             _logger.LogInformation("[{Name}, Debug] {Payload} Code:{Code}", portName, payload.ToStringUtf8(), code);
         }
         else if (bodyCase.Equals(UartResponse.BodyOneofCase.LoraMeasurement))
@@ -271,12 +284,10 @@ public class SerialProcessorService
             var isMeasurement = response.LoraMeasurement.IsMeasurementFragment;
 
             var result = await _measurementsService.AddMeasurement(sequenceNumber, snr, rssi);
-            if (sequenceNumber > 60000)
-            {
-                _measurementsService.SetLocationText("");
-            }
-                  
-            _logger.LogInformation("[{Name}] LoRa RX snr: {SNR} rssi: {RSSI} sequence-id:{Index} is-measurement:{IsMeasurement}, skipped:{Skipped}", 
+            if (sequenceNumber > 60000) _measurementsService.SetLocationText("");
+
+            _logger.LogInformation(
+                "[{Name}] LoRa RX snr: {SNR} rssi: {RSSI} sequence-id:{Index} is-measurement:{IsMeasurement}, skipped:{Skipped}",
                 portName,
                 snr, rssi, sequenceNumber, isMeasurement, result);
         }
@@ -286,6 +297,44 @@ public class SerialProcessorService
         }
     }
 
+    public async Task SendRlncInitConfigCommand()
+    {
+        var config = await _fuotaManagerService.LoadStore();
+        if (config == null)
+        {
+            _logger.LogWarning("FUOTA config store returned null - cant send RLNC generation frame");
+            return;
+        }
+
+        var fuotaSession = await _fuotaManagerService.PrepareFuotaSession();
+        
+        var command = new UartCommand
+        {
+            DoNotProxyCommand = fuotaSession.UartFakeLoRaRxMode,
+            TransmitCommand = new LoRaMessage()
+            {
+                CorrelationCode = 0,
+                DeviceId = 0,
+                IsMulticast = true,
+                RlncInitConfigCommand = new RlncInitConfigCommand()
+                {
+                    FieldPoly = GField.Polynomial,
+                    FieldDegree = config.FieldDegree,
+                    FrameCount = config.FakeFragmentCount,
+                    FrameSize = config.FakeFragmentSize,
+                    // Calculated value from config store
+                    GenerationCount = fuotaSession.GenerationCount,
+                    GenerationSize = config.GenerationSize,
+                    // Wont send poly as its highly static
+                    // LfsrPoly = ,
+                    LfsrSeed = config.LfsrSeed
+                }
+            }
+        };
+        
+        WriteMessage(command);
+    }
+    
     public void DisposePort(string portName)
     {
         var port = GetPort(portName);

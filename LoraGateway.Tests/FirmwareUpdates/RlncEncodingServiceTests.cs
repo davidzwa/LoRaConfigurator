@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading.Tasks;
 using LoraGateway.Services.Firmware;
 using LoraGateway.Services.Firmware.RandomLinearCoding;
 using Shouldly;
@@ -12,13 +13,13 @@ namespace LoraGateway.Tests.FirmwareUpdates;
 public class RlncEncodingServiceTests
 {
     [Fact]
-    public void EncodeOneGenerationTest()
+    public async Task EncodeOneGenerationTest()
     {
         var firmwareSize = 100;
         var frameSize = 20;
-        var fakeFirmware = new BlobFragmentationService().GenerateFakeFirmware(firmwareSize, frameSize);
+        var fakeFirmware = await new BlobFragmentationService().GenerateFakeFirmwareAsync(firmwareSize, frameSize);
         var serviceUnderTest = new RlncEncodingService();
-        serviceUnderTest.PreprocessGenerations(fakeFirmware, (uint)fakeFirmware.Count);
+        serviceUnderTest.PreprocessGenerations(fakeFirmware, (uint) fakeFirmware.Count);
 
         var generation = serviceUnderTest.PrecodeNextGeneration(0);
 
@@ -28,10 +29,10 @@ public class RlncEncodingServiceTests
     }
 
     [Fact]
-    public void EncodeOneGenerationWithExtraTest()
+    public async Task EncodeOneGenerationWithExtraTest()
     {
         // 103 / 12 -> 9 packets which is less than generation size 12 (on purpose)
-        var unencodedPackets = new BlobFragmentationService().GenerateFakeFirmware(103, 12);
+        var unencodedPackets = await new BlobFragmentationService().GenerateFakeFirmwareAsync(103, 12);
 
         var service = new RlncEncodingService();
         service.PreprocessGenerations(unencodedPackets, 12);
@@ -40,10 +41,10 @@ public class RlncEncodingServiceTests
     }
 
     [Fact]
-    public void EncodeOneGenerationLfsrOverrunTests()
+    public async Task EncodeOneGenerationLfsrOverrunTests()
     {
         // Generate 9 packets of size 12
-        var unencodedPackets = new BlobFragmentationService().GenerateFakeFirmware(103, 12);
+        var unencodedPackets = await new BlobFragmentationService().GenerateFakeFirmwareAsync(103, 12);
         unencodedPackets.Count.ShouldBe(9);
         // Check that the 103/12 division resulted in whole packets
         unencodedPackets[unencodedPackets.Count - 1].Payload.Count.ShouldBe(12);
@@ -51,53 +52,53 @@ public class RlncEncodingServiceTests
         var service = new RlncEncodingService();
         service.PreprocessGenerations(unencodedPackets, 12);
         // Check that the generator is in deterministic state
-        service.GetGeneratorState().ShouldBe((byte)0x08);
+        service.GetGeneratorState().ShouldBe((byte) 0x08);
         // Generates 9 original packets (103/12 => 9) with extra prematurely
         // 255 / 9 = 29 max => 20 extra at most
         Should.Throw<Exception>(() => service.PrecodeNextGeneration(29 - 9));
 
         service.PreprocessGenerations(unencodedPackets, 12);
         // Check that the generator has been reset
-        service.GetGeneratorState().ShouldBe((byte)0x08);
+        service.GetGeneratorState().ShouldBe((byte) 0x08);
         service.PrecodeNextGeneration(28 - 9);
     }
 
     [Fact]
-    public void EncodeOneGenerationLfsrNoOverrunTests()
+    public async Task EncodeOneGenerationLfsrNoOverrunTests()
     {
         // Generate 9 packets of size 12
-        var unencodedPackets = new BlobFragmentationService().GenerateFakeFirmware(103, 12);
+        var unencodedPackets = await new BlobFragmentationService().GenerateFakeFirmwareAsync(103, 12);
         var service = new RlncEncodingService();
         service.PreprocessGenerations(unencodedPackets, 12);
         // Check that the generator is in deterministic state
-        service.GetGeneratorState().ShouldBe((byte)0x08);
+        service.GetGeneratorState().ShouldBe((byte) 0x08);
         // Generates 9 original packets (103/12 => 9) with extra prematurely
         // 255 / 9 = 29 max => 20 extra at most
         service.PrecodeNextGeneration(28 - 9);
     }
 
     [Fact]
-    public void RoundedGenerationSizeTest()
+    public async Task RoundedGenerationSizeTest()
     {
         var firmwareSize = 1; // This firmware size should not be problematic for our fake firmware generator
         var frameSize = 20;
-        var fakeFirmware = new BlobFragmentationService().GenerateFakeFirmware(firmwareSize, frameSize);
+        var fakeFirmware = await new BlobFragmentationService().GenerateFakeFirmwareAsync(firmwareSize, frameSize);
         var serviceUnderTest = new RlncEncodingService();
 
-        serviceUnderTest.PreprocessGenerations(fakeFirmware, (uint)fakeFirmware.Count);
+        serviceUnderTest.PreprocessGenerations(fakeFirmware, (uint) fakeFirmware.Count);
         var nextGeneration = serviceUnderTest.PrecodeNextGeneration(0);
         nextGeneration.EncodedPackets.Count.ShouldBe(1);
     }
 
     [Fact]
-    public void GoodGenerationSizeTest()
+    public async Task GoodGenerationSizeTest()
     {
         var firmwareSize = 15;
         var frameSize = 1;
-        var fakeFirmware = new BlobFragmentationService().GenerateFakeFirmware(firmwareSize, frameSize);
+        var fakeFirmware = await new BlobFragmentationService().GenerateFakeFirmwareAsync(firmwareSize, frameSize);
         fakeFirmware.Count.ShouldBe(firmwareSize);
 
-        var generationSize = (uint)fakeFirmware.Count;
+        var generationSize = (uint) fakeFirmware.Count;
         var serviceUnderTest = new RlncEncodingService();
 
         serviceUnderTest.PreprocessGenerations(fakeFirmware, generationSize);
@@ -105,16 +106,16 @@ public class RlncEncodingServiceTests
     }
 
     [Fact]
-    public void BadGenerationSizeTest()
+    public async Task BadGenerationSizeTest()
     {
         var firmwareSize = 20;
         var frameSize = 1;
-        var fakeFirmware = new BlobFragmentationService().GenerateFakeFirmware(firmwareSize, frameSize);
+        var fakeFirmware = await new BlobFragmentationService().GenerateFakeFirmwareAsync(firmwareSize, frameSize);
         fakeFirmware.Count.ShouldBe(firmwareSize);
 
-        var generationSize = (uint)fakeFirmware.Count;
+        var generationSize = (uint) fakeFirmware.Count;
         var service = new RlncEncodingService();
-        
+
         // Generation is not low enough - should be kept within bounds to prevent high memory usage (embedded...)
         Should.Throw<ValidationException>(() => service.PreprocessGenerations(fakeFirmware, generationSize));
     }
@@ -122,17 +123,17 @@ public class RlncEncodingServiceTests
     [Fact]
     public void InconsistentPacketLengthsTest()
     {
-        var unencodedPackets = new List<UnencodedPacket>().Append(new UnencodedPacket()
+        var unencodedPackets = new List<UnencodedPacket>().Append(new UnencodedPacket
         {
-            Payload = new List<GField>() { new(0x00) }
-        }).Append(new UnencodedPacket()
+            Payload = new List<GField> {new(0x00)}
+        }).Append(new UnencodedPacket
         {
-            Payload = new List<GField>() { new(0x00), new(0x01) },
+            Payload = new List<GField> {new(0x00), new(0x01)}
         }).ToList();
 
-        var generationSize = (uint)2;
+        var generationSize = (uint) 2;
         var service = new RlncEncodingService();
-        
+
         // Packets are not padded correctly - encoding should not be allowed
         Should.Throw<ValidationException>(() => service.PreprocessGenerations(unencodedPackets, generationSize));
     }

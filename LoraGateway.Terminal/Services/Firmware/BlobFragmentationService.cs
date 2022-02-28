@@ -10,6 +10,11 @@ namespace LoraGateway.Services.Firmware;
 /// </summary>
 public class BlobFragmentationService
 {
+    public BlobFragmentationService()
+    {
+        
+    }
+    
     private int ValidateGenerationSize(long firmwareSize, int frameSize)
     {
         if (frameSize < 1) throw new ValidationException("Illegal frameSize of 0 specified");
@@ -35,7 +40,7 @@ public class BlobFragmentationService
     /// </summary>
     /// <param name="firmwareSize"></param>
     /// <param name="frameSize"></param>
-    public List<UnencodedPacket> GenerateFakeFirmware(long firmwareSize, int frameSize)
+    public async Task<List<UnencodedPacket>> GenerateFakeFirmwareAsync(long firmwareSize, int frameSize)
     {
         var fragmentCount = ValidateGenerationSize(firmwareSize, frameSize);
 
@@ -49,7 +54,7 @@ public class BlobFragmentationService
                 if (payloadBytes.Count > 1) payloadBytes[1] = new GField(splitInt.Byte2);
                 if (payloadBytes.Count > 2) payloadBytes[2] = new GField(splitInt.Byte1);
                 if (payloadBytes.Count > 3) payloadBytes[3] = new GField(splitInt.Byte0);
-                
+
                 return new UnencodedPacket {Payload = payloadBytes};
             })
             .ToList();
@@ -66,7 +71,7 @@ public class BlobFragmentationService
     }
 
     // public void FragmentFirmwareBinFile() {
-        // Function to fragment a realistic firmware file, padding the last inconsistent packet
+    // Function to fragment a realistic firmware file, padding the last inconsistent packet
     // }
 
     // public bool CompareFragmentSequences(List<UnencodedPacket> a, List<UnencodedPacket> b) { }

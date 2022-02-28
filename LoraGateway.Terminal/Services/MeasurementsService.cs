@@ -1,21 +1,15 @@
 ﻿using System.Text;
 using System.Text.Json;
+using LoraGateway.Models;
+using LoraGateway.Services.Contracts;
 
 namespace LoraGateway.Services;
-
-public class MeasurementDto
-{
-    public long TimeStamp { get; set; }
-    public uint SequenceNumber { get; set; }
-    public int Snr { get; set; }
-    public int Rssi { get; set; }
-}
 
 public class MeasurementsService : IDisposable
 {
     private readonly ILogger<MeasurementsService> _logger;
-    private string _location = "";
     private readonly List<MeasurementDto> _measurementDtos = new();
+    private string _location = "";
 
     private FileStream? _measurementFile;
 
@@ -31,7 +25,8 @@ public class MeasurementsService : IDisposable
 
     public string GetMeasurementFile()
     {
-        return Path.GetFullPath($"../../../Data/measurements{_location}.json", Directory.GetCurrentDirectory());
+        var rootPath = JsonDataStoreExtensions.BasePath;
+        return Path.GetFullPath($"{rootPath}/measurements{_location}.json", Directory.GetCurrentDirectory());
     }
 
     private void EnsureSourceExists()
@@ -84,10 +79,8 @@ public class MeasurementsService : IDisposable
     public async Task<bool> AddMeasurement(uint seq, int snr, int rssi)
     {
         if (string.IsNullOrEmpty(_location))
-        {
             // _logger.LogInformation("Skipped measurement as location was unset. SeqNr:{Seq}", seq);
             return false;
-        }
 
         _measurementDtos.Add(new MeasurementDto
         {
@@ -102,7 +95,7 @@ public class MeasurementsService : IDisposable
         if (_measurementFile == null) OpenFile(GetMeasurementFile());
 
         await _measurementFile.WriteAsync(blob);
-        
+
         return true;
     }
 }

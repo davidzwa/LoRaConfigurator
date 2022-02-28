@@ -7,8 +7,8 @@ namespace LoraGateway.Services.CommandLine;
 public class SerialCommandHandler
 {
     private readonly ILogger _logger;
-    private readonly SelectedDeviceService _selectedDeviceService;
     private readonly MeasurementsService _measurementsService;
+    private readonly SelectedDeviceService _selectedDeviceService;
     private readonly SerialProcessorService _serialProcessorService;
 
     public SerialCommandHandler(
@@ -31,8 +31,24 @@ public class SerialCommandHandler
         rootCommand.Add(GetUnicastSendCommand());
         rootCommand.Add(GetDeviceConfigurationCommand());
         rootCommand.Add(GetClearMeasurementsCommand());
+        rootCommand.Add(GetRlncInitConfigCommand());
 
+        // Fluent structure
         return rootCommand;
+    }
+
+    public Command GetRlncInitConfigCommand()
+    {
+        var command = new Command("rlnc-init");
+        command.AddAlias("rlnc");
+        command.Handler = CommandHandler.Create(
+            async () =>
+            {
+                var selectedPortName = _selectedDeviceService.SelectedPortName;
+                _logger.LogInformation("Init RLNC configuration ProxyPort:{Port}", selectedPortName);
+                await _serialProcessorService.SendRlncInitConfigCommand();
+            });
+        return command;
     }
 
     public Command GetClearMeasurementsCommand()
@@ -48,7 +64,7 @@ public class SerialCommandHandler
             });
         return command;
     }
-    
+
     public Command GetDeviceConfigurationCommand()
     {
         var command = new Command("device");
@@ -64,7 +80,7 @@ public class SerialCommandHandler
             });
         return command;
     }
-    
+
     public Command GetUnicastSendCommand()
     {
         var command = new Command("unicast");
@@ -82,7 +98,7 @@ public class SerialCommandHandler
 
         return command;
     }
-    
+
     public Command GetPeriodicSendCommand()
     {
         var command = new Command("period");

@@ -7,8 +7,8 @@ public class SelectDeviceCommandHandler
 {
     private readonly ILogger _logger;
     private readonly SelectedDeviceService _selectedDeviceService;
-    private readonly DeviceDataStore _store;
     private readonly SerialProcessorService _serialProcessorService;
+    private readonly DeviceDataStore _store;
 
     public SelectDeviceCommandHandler(
         ILogger<SelectDeviceCommandHandler> logger,

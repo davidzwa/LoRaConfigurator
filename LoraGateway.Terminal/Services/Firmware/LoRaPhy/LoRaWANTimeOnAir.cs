@@ -23,8 +23,8 @@ public class LoRaTimeOnAirSpecs
 }
 
 /// <summary>
-/// Nice Time-on-air calculation
-/// https://www.rfwireless-world.com/calculators/LoRaWAN-Airtime-calculator.html
+///     Nice Time-on-air calculation
+///     https://www.rfwireless-world.com/calculators/LoRaWAN-Airtime-calculator.html
 /// </summary>
 public static class LoRaWanTimeOnAir
 {
@@ -40,7 +40,7 @@ public static class LoRaWanTimeOnAir
         var tSymb = Math.Pow(2, SF) / BW;
         var tPreamble = (PreSymb + 4.25) * tSymb;
 
-        var numerator = (8 * pSize - 4 * SF + 28 + 16 - 20 * Convert.ToUInt16(implHdr));
+        var numerator = 8 * pSize - 4 * SF + 28 + 16 - 20 * Convert.ToUInt16(implHdr);
         var denominator = 4 * (SF - 2 * Convert.ToUInt16(lowDr));
         var payloadSymb = (long) Math.Ceiling((double) numerator / denominator) * (CR + 4);
         var payloadSymbNb = 8 + Math.Max(payloadSymb, 0);
@@ -48,7 +48,7 @@ public static class LoRaWanTimeOnAir
         var tPayload = payloadSymbNb * tSymb;
         var tPacket = tPreamble + tPayload;
 
-        return new()
+        return new LoRaTimeOnAirSpecs
         {
             BW = BW,
             CR = CR,
@@ -67,9 +67,9 @@ public static class LoRaWanTimeOnAir
             TimePacket = tPacket,
             TimePayload = tPayload,
             TimeOverhead = tPacket - tPayload,
-            OverheadRatio = (tPacket - tPayload) / (tPacket),
+            OverheadRatio = (tPacket - tPayload) / tPacket,
             TimePhyOverhead = tPreamble + tPacket - tPayload,
-            PhyOverheadRatio = (tPreamble + tPacket - tPayload) / (tPacket)
+            PhyOverheadRatio = (tPreamble + tPacket - tPayload) / tPacket
         };
     }
 }
