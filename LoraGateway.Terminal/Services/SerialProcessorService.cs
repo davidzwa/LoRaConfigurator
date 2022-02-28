@@ -94,6 +94,36 @@ public class SerialProcessorService
         return SerialPorts.Find(p => p.PortName.Equals(portName));
     }
 
+    public void WriteMessage(UartCommand message)
+    {
+        var selectedPortName = _selectedDeviceService.SelectedPortName;
+        if (selectedPortName == null)
+        {
+            _logger.LogWarning("Cant send as multiple devices are connected and 1 is not selected");
+            return;
+        }
+
+        var payload = message.ToByteArray();
+        var protoMessageBuffer = new[] {(byte) payload.Length}.Concat(payload);
+        var messageBuffer = Cobs.Encode(protoMessageBuffer).ToArray();
+        var len = new[] {(byte) messageBuffer.Length};
+        var transmitBuffer = new[] {startByte}
+            .Concat(len)
+            .Concat(messageBuffer)
+            .Concat(new[] {endByte})
+            .ToArray();
+
+        _logger.LogInformation("TX {Message}", SerialUtil.ByteArrayToString(transmitBuffer));
+        var port = GetPort(selectedPortName);
+        if (port == null)
+        {
+            _logger.LogWarning("Port was null. Cant send to {Port}", selectedPortName);
+            return;
+        }
+
+        port.Write(transmitBuffer, 0, transmitBuffer.Length);
+    }
+    
     public void OnPortError(SerialPort subject, SerialErrorReceivedEventArgs e)
     {
         _logger.LogWarning("Serial error {ErrorType}", e.EventType);
@@ -107,6 +137,14 @@ public class SerialProcessorService
             return;
         }
 
+        while (port.BytesToRead > 0)
+        {
+            await ProcessMessagePreamble(port);
+        }
+    }
+
+    private async Task ProcessMessagePreamble(SerialPort port)
+    {
         var buffer = new List<byte>();
         var packetWaitingBytes = true;
         try
@@ -173,36 +211,6 @@ public class SerialProcessorService
         _logger.LogDebug(SerialUtil.ByteArrayToString(listBuffer.ToArray()));
 
         await ProcessMessage(port.PortName, listBuffer.ToArray());
-    }
-
-    public void WriteMessage(UartCommand message)
-    {
-        var selectedPortName = _selectedDeviceService.SelectedPortName;
-        if (selectedPortName == null)
-        {
-            _logger.LogWarning("Cant send as multiple devices are connected and 1 is not selected");
-            return;
-        }
-
-        var payload = message.ToByteArray();
-        var protoMessageBuffer = new[] {(byte) payload.Length}.Concat(payload);
-        var messageBuffer = Cobs.Encode(protoMessageBuffer).ToArray();
-        var len = new[] {(byte) messageBuffer.Length};
-        var transmitBuffer = new[] {startByte}
-            .Concat(len)
-            .Concat(messageBuffer)
-            .Concat(new[] {endByte})
-            .ToArray();
-
-        _logger.LogInformation("TX {Message}", SerialUtil.ByteArrayToString(transmitBuffer));
-        var port = GetPort(selectedPortName);
-        if (port == null)
-        {
-            _logger.LogWarning("Port was null. Cant send to {Port}", selectedPortName);
-            return;
-        }
-
-        port.Write(transmitBuffer, 0, transmitBuffer.Length);
     }
 
     private async Task ProcessMessage(string portName, byte[] buffer)
@@ -294,6 +302,7 @@ public class SerialProcessorService
         var config = await _fuotaManagerService.LoadStore();
         if (config == null)
         {
+            _logger.LogWarning("FUOTA config store returned null - cant send RLNC generation frame");
             return;
         }
 

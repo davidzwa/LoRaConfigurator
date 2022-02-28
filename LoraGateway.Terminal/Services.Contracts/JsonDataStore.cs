@@ -40,7 +40,7 @@ public abstract class JsonDataStore<T> : IDataStore<T>
         await File.WriteAllBytesAsync(path, serializedBlob);
     }
 
-    public async Task<T> LoadStore()
+    public async Task<T?> LoadStore()
     {
         await EnsureSourceExists();
 
@@ -51,6 +51,6 @@ public abstract class JsonDataStore<T> : IDataStore<T>
             PropertyNameCaseInsensitive = true
         });
 
-        return Store!;
+        return Store;
     }
 }
