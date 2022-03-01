@@ -31,7 +31,7 @@ public class ConsoleProcessorService
             var message = Console.ReadLine();
             if (message == null) return;
 
-            var rootCommand = new RootCommand("Converts an image file from one format to another.");
+            var rootCommand = new RootCommand("Processes UART terminal commands for the LoRa proxy gateway device.");
             rootCommand.Add(_selectDeviceCommandHandler.GetSelectCommand());
             rootCommand.Add(_selectDeviceCommandHandler.GetCurrentSelectedCommand());
             _serialCommandHandler.ApplyCommands(rootCommand);

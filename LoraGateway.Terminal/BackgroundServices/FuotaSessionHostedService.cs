@@ -43,8 +43,6 @@ public class FuotaSessionHostedService : IHostedService
                 
                 while (!cancellationToken.IsCancellationRequested)
                 {
-                    _logger.LogInformation("Sending next FUOTA packet");
-                    
                     await Process();
 
                     await Task.Delay((int)fuotaConfig.UpdateIntervalSeconds * 1000, cancellationToken);
@@ -64,8 +62,6 @@ public class FuotaSessionHostedService : IHostedService
             _fuotaManagerService.LogSessionProgress();
             
             await _serialProcessorService.SendNextRlncFragment();
-            
-            _logger.LogInformation("Do nothing. No end condition");
         }
         catch (Exception e)
         {
@@ -75,7 +71,7 @@ public class FuotaSessionHostedService : IHostedService
     
     public Task StopAsync(CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Stopping FUOTA background service");
+        _logger.LogInformation("FUOTA background service stopping");
         return Task.CompletedTask;
     }
 }

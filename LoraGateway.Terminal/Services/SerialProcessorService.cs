@@ -101,7 +101,7 @@ public partial class SerialProcessorService
         var selectedPortName = _selectedDeviceService.SelectedPortName;
         if (selectedPortName == null)
         {
-            _logger.LogWarning("Cant send as multiple devices are connected and 1 is not selected");
+            _logger.LogWarning("Selected port [selected gateway] was not set - check USB connection");
             return;
         }
 

@@ -6,14 +6,19 @@ namespace LoraGateway.Services;
 
 public partial class SerialProcessorService
 {
+    private readonly CancellationTokenSource _fuotaCancellationSource = new();
     public async Task SendRlncInitConfigCommand()
     {
+        var token = _fuotaCancellationSource.Token;
+        
         await _fuotaManagerService.LoadStore();
 
         if (_fuotaManagerService.IsFuotaSessionEnabled())
         {
-            await _eventPublisher.PublishEventAsync(new StopFuotaSession() {Message = "Stopping"});
+            _fuotaCancellationSource.Cancel();
             
+            await _eventPublisher.PublishEventAsync(new StopFuotaSession(token) {Message = "Stopping"});
+
             _fuotaManagerService.ClearFuotaSession();
             
             return;
@@ -46,7 +51,8 @@ public partial class SerialProcessorService
             }
         };
 
-        await _eventPublisher.PublishEventAsync(new InitFuotaSession() {Message = "Starting"});
+        _fuotaCancellationSource.TryReset();
+        await _eventPublisher.PublishEventAsync(new InitFuotaSession(token) {Message = "Starting"});
 
         WriteMessage(command);
     }

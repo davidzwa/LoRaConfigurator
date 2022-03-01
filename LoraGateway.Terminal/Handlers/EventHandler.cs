@@ -5,11 +5,23 @@ namespace LoraGateway.Handlers;
 
 public class InitFuotaSession
 {
+    public InitFuotaSession(CancellationToken token)
+    {
+        Token = token;
+    }
+    
+    public CancellationToken Token { get; }
     public string Message { get; set; }
 }
 
 public class StopFuotaSession
 {
+    public StopFuotaSession(CancellationToken token)
+    {
+        Token = token;
+    }
+    
+    public CancellationToken Token { get; }
     public string Message { get; set; }
 }
 
@@ -26,11 +38,11 @@ public class FuotaEventHandler : IEventHandler<InitFuotaSession>, IEventHandler<
     
     public async Task HandleEventAsync(InitFuotaSession @event)
     {
-        await _fuotaSessionHostedService.StartAsync(CancellationToken.None);
+        await _fuotaSessionHostedService.StartAsync(@event.Token);
     }
     
     public async Task HandleEventAsync(StopFuotaSession @event)
     {
-        await _fuotaSessionHostedService.StopAsync(CancellationToken.None);
+        await _fuotaSessionHostedService.StopAsync(@event.Token);
     }
 }

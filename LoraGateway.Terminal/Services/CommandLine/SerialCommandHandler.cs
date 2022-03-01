@@ -44,8 +44,8 @@ public class SerialCommandHandler
         command.Handler = CommandHandler.Create(
             async () =>
             {
-                var selectedPortName = _selectedDeviceService.SelectedPortName;
-                _logger.LogInformation("Init RLNC configuration ProxyPort:{Port}", selectedPortName);
+                // var selectedPortName = _selectedDeviceService.SelectedPortName;
+                // _logger.LogInformation("Init RLNC configuration ProxyPort:{Port}", selectedPortName);
                 await _serialProcessorService.SendRlncInitConfigCommand();
             });
         return command;

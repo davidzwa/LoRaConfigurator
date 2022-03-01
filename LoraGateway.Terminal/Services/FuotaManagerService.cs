@@ -53,7 +53,10 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
             throw new ValidationException(
                 "A new fuota session was started, while a previous one was already requested");
 
-        if (Store.UartFakeLoRaRxMode) Log.Information("UartFakeLoRaRXMode enabled. Disabling LoRa UART proxy");
+        if (Store.UartFakeLoRaRxMode)
+        {
+            _logger.LogWarning("UartFakeLoRaRxMode enabled");
+        }
 
         if (Store.FakeFirmware)
         {
@@ -104,6 +107,7 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
             throw new ValidationException("Cant stop FUOTA session when none is enabled");
         }
 
+        _firmwarePackets = new List<UnencodedPacket>();
         _currentFuotaSession = null;
         _rlncEncodingService.ResetEncoding();
     }
