@@ -2,10 +2,12 @@
 
 namespace LoraGateway.Models;
 
-public class FuotaConfig
+public class FuotaConfig : ICloneable
 {
     // Enabling this makes sure the UART packet are treated are LoRa RX packets instead of forwarding them
-    public bool UartFakeLoRaRXMode { get; set; } = true;
+    public bool UartFakeLoRaRxMode { get; set; } = true;
+
+    public uint UpdateIntervalSeconds { get; set; } = 5;
     // Not checked
     public bool FakeFirmware { get; set; } = true;
     // Not implemented
@@ -27,4 +29,9 @@ public class FuotaConfig
     // public int LfsrPoly { get; set; }
     // Static seed might change to dynamic later
     public uint LfsrSeed { get; set; } = LinearFeedbackShiftRegister.DefaultSeed;
+
+    public object Clone()
+    {
+        return MemberwiseClone();
+    }
 }

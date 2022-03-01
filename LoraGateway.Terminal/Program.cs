@@ -1,4 +1,5 @@
 ﻿using LoraGateway.BackgroundServices;
+using LoraGateway.Handlers;
 using LoraGateway.Services;
 using LoraGateway.Services.CommandLine;
 using LoraGateway.Services.Firmware;
@@ -39,12 +40,23 @@ public static class LoraGateway
                 services.AddSingleton<MeasurementsService>();
                 services.AddSingleton<BlobFragmentationService>();
                 services.AddSingleton<RlncEncodingService>();
+                services.AddSingleton<FuotaSessionHostedService>();
+                services.AddHostedService<FuotaSessionHostedService>(p => p.GetService<FuotaSessionHostedService>());
                 services.AddHostedService<SerialHostedService>();
                 services.AddTransient<SerialCommandHandler>();
                 services.AddTransient<SelectDeviceCommandHandler>();
                 services.AddTransient<ListDeviceCommandHandler>();
                 services.AddSingleton<ConsoleProcessorService>();
                 services.AddHostedService<ConsoleHostedService>();
+                
+                services.AddEventBus(builder =>
+                {
+                    builder.AddInMemoryEventBus(subscriber =>
+                    {
+                        subscriber.Subscribe<InitFuotaSession, MyEventHandler>();
+                        //subscriber.SubscribeAllHandledEvents<MyEventHandler>(); // other way
+                    });
+                });
             })
             .RunConsoleAsync();
     }

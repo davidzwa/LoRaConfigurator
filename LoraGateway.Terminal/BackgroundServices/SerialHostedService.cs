@@ -10,21 +10,18 @@ public sealed class SerialHostedService : IHostedService
     private readonly ILogger _logger;
     private readonly MeasurementsService _measurementsService;
     private readonly SerialWatcher _serialPortWatcher;
-    private readonly SerialProcessorService _serialService;
     private readonly DeviceDataStore _store;
 
     public SerialHostedService(
         ILogger<SerialHostedService> logger,
         DeviceDataStore store,
         SerialWatcher serialPortWatcher,
-        SerialProcessorService serialService,
         MeasurementsService measurementsService,
         IHostApplicationLifetime appLifetime)
     {
         _logger = logger;
         _store = store;
         _serialPortWatcher = serialPortWatcher;
-        _serialService = serialService;
         _measurementsService = measurementsService;
         _appLifetime = appLifetime;
     }

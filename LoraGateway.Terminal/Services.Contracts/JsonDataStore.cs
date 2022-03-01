@@ -2,21 +2,21 @@
 
 namespace LoraGateway.Services.Contracts;
 
-public abstract class JsonDataStore<T> : IDataStore<T>
+public abstract class JsonDataStore<T> : IDataStore<T> where T : class, ICloneable
 {
     protected T? Store;
-    
+
     public abstract T GetDefaultJson();
 
     public abstract string GetJsonFileName();
-    
+
     public string GetJsonFilePath()
     {
         var fileName = GetJsonFileName();
         var fullJsonStorePath = Path.Join(JsonDataStoreExtensions.BasePath, fileName);
         return Path.GetFullPath(fullJsonStorePath, Directory.GetCurrentDirectory());
     }
-    
+
     protected async Task EnsureSourceExists()
     {
         var path = GetJsonFilePath();
@@ -38,6 +38,13 @@ public abstract class JsonDataStore<T> : IDataStore<T>
         });
 
         await File.WriteAllBytesAsync(path, serializedBlob);
+    }
+
+    public T? GetStore()
+    {
+        if (Store != null) return Store.Clone() as T;
+
+        return null;
     }
 
     public async Task<T?> LoadStore()
