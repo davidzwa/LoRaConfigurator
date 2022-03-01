@@ -82,6 +82,11 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
 
     public List<byte>? FetchNextRlncPayload()
     {
+        if (_currentFuotaSession == null)
+        {
+            throw new ValidationException("Cant fetch RLNC payload when session is null");
+        }
+        
         var config = _currentFuotaSession.Config;
         var maxGenerationFragments = config.GenerationSize + config.GenerationSizeRedundancy;
         var fragmentCount = _currentFuotaSession.CurrentFragmentIndex + 1;
@@ -117,9 +122,9 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         var session = GetCurrentSession();
         var currentGen = session.CurrentGenerationIndex + 1;
         var maxGen = session.GenerationCount;
-        var fragment = (session.Config.GenerationSize * (currentGen-1)) + (session.CurrentFragmentIndex);
-        var fragmentMax = session.TotalFragmentCount;
-        var progress = 100.0 * fragment / fragmentMax;
+        var fragment = (session.Config.GenerationSize * (currentGen-1)) + (session.CurrentFragmentIndex + 1);
+        var fragmentMax = session.TotalFragmentCount + maxGen * session.Config.GenerationSizeRedundancy;
+        var progress = Math.Round(100.0 * fragment / fragmentMax, 1);
         
         _logger.LogInformation("Progress {Progress}% Gen {Gen}/{MaxGen} Fragment {Frag}/{MaxFrag}",
             progress, currentGen, maxGen, fragment, fragmentMax);

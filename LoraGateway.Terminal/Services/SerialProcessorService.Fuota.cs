@@ -61,9 +61,6 @@ public partial class SerialProcessorService
 
     public async Task SendNextRlncFragment()
     {
-        var fuotaSession = _fuotaManagerService.GetCurrentSession();
-        var config = fuotaSession.Config;
-
         var payload = _fuotaManagerService.FetchNextRlncPayload();
         if (payload == null)
         {
@@ -76,6 +73,9 @@ public partial class SerialProcessorService
             _fuotaManagerService.ClearFuotaSession();
             return;
         }
+        
+        var fuotaSession = _fuotaManagerService.GetCurrentSession();
+        var config = fuotaSession.Config;
 
         var byteString = ByteString.CopyFrom(payload.ToArray());
         var command = new UartCommand
