@@ -23,7 +23,7 @@ public class RlncDecodingServiceTests
         var unencodedPackets = await new BlobFragmentationService().GenerateFakeFirmwareAsync(firmwareSize, frameSize);
         var service = new RlncEncodingService();
         service.PreprocessGenerations(unencodedPackets, generationSize);
-        var encodedPackets = service.PrecodeNextGeneration(generationExtra).EncodedPackets;
+        var encodedPackets = service.PrecodeCurrentGeneration(generationExtra).EncodedPackets;
 
         // Simulate a dropped packet
         encodedPackets.RemoveAt(0);
@@ -46,7 +46,7 @@ public class RlncDecodingServiceTests
         var unencodedPackets = await new BlobFragmentationService().GenerateFakeFirmwareAsync(firmwareSize, frameSize);
         var encodingService = new RlncEncodingService();
         encodingService.PreprocessGenerations(unencodedPackets, generationSize);
-        var encodedPackets = encodingService.PrecodeNextGeneration(generationExtra).EncodedPackets;
+        var encodedPackets = encodingService.PrecodeCurrentGeneration(generationExtra).EncodedPackets;
 
         // Simulate a dropped packet
         var lossyChannelPackets = new List<EncodedPacket>(encodedPackets);
@@ -95,7 +95,7 @@ public class RlncDecodingServiceTests
         var unencodedPackets = await new BlobFragmentationService().GenerateFakeFirmwareAsync(firmwareSize, frameSize);
         var service = new RlncEncodingService();
         service.PreprocessGenerations(unencodedPackets, generationSize);
-        var encodedPackets = service.PrecodeNextGeneration(generationExtra).EncodedPackets;
+        var encodedPackets = service.PrecodeCurrentGeneration(generationExtra).EncodedPackets;
 
         var decodedPackets = RlncDecodingService.DecodePackets(encodedPackets);
         decodedPackets.Count.ShouldBe((int) totalPacketsOutput);
@@ -120,7 +120,7 @@ public class RlncDecodingServiceTests
         var unencodedPackets = await new BlobFragmentationService().GenerateFakeFirmwareAsync(firmwareSize, frameSize);
         var service = new RlncEncodingService();
         service.PreprocessGenerations(unencodedPackets, generationSize);
-        var encodedPackets = service.PrecodeNextGeneration(generationExtra).EncodedPackets;
+        var encodedPackets = service.PrecodeCurrentGeneration(generationExtra).EncodedPackets;
 
         var decodedPackets = RlncDecodingService.DecodePackets(encodedPackets);
         decodedPackets.Count.ShouldBe((int) totalPacketsOutput);
@@ -143,7 +143,7 @@ public class RlncDecodingServiceTests
         var unencodedPackets = await new BlobFragmentationService().GenerateFakeFirmwareAsync(firmwareSize, frameSize);
         var service = new RlncEncodingService();
         service.PreprocessGenerations(unencodedPackets, generationSize);
-        var encodedPackets = service.PrecodeNextGeneration(generationExtra).EncodedPackets;
+        var encodedPackets = service.PrecodeCurrentGeneration(generationExtra).EncodedPackets;
         var chunkedPacketSets = encodedPackets.Chunk(5).ToList();
 
         var decodedPackets = RlncDecodingService.DecodePackets(chunkedPacketSets.Last().ToList());
@@ -165,7 +165,7 @@ public class RlncDecodingServiceTests
         var unencodedPackets = await new BlobFragmentationService().GenerateFakeFirmwareAsync(firmwareSize, frameSize);
         var service = new RlncEncodingService();
         service.PreprocessGenerations(unencodedPackets, generationSize);
-        var generation = service.PrecodeNextGeneration(generationExtra);
+        var generation = service.PrecodeCurrentGeneration(generationExtra);
 
         var fullAugmentedMatrix = generation.EncodedPackets.ToAugmentedMatrix();
         // 6 * (5+10) = 30
@@ -212,7 +212,7 @@ public class RlncDecodingServiceTests
         var unencodedPackets = await new BlobFragmentationService().GenerateFakeFirmwareAsync(firmwareSize, frameSize);
         var service = new RlncEncodingService();
         service.PreprocessGenerations(unencodedPackets, generationSize);
-        var generation = service.PrecodeNextGeneration(generationExtra);
+        var generation = service.PrecodeCurrentGeneration(generationExtra);
 
         var encodingMatrix = generation.EncodedPackets.ToEncodingMatrix();
         // 6 * 5 = 30

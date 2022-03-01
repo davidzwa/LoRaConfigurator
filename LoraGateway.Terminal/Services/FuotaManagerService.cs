@@ -3,7 +3,6 @@ using LoraGateway.Models;
 using LoraGateway.Services.Contracts;
 using LoraGateway.Services.Firmware;
 using LoraGateway.Services.Firmware.RandomLinearCoding;
-using Serilog;
 
 namespace LoraGateway.Services;
 
@@ -79,6 +78,32 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         _currentFuotaSession = new FuotaSession(Store, generationCount);
         _currentFuotaSession.TotalFragmentCount = (uint) _firmwarePackets.Count;
         return _currentFuotaSession;
+    }
+
+    public List<byte>? FetchNextRlncPayload()
+    {
+        var config = _currentFuotaSession.Config;
+        var maxGenerationFragments = config.GenerationSize + config.GenerationSizeRedundancy;
+        var fragmentCount = _currentFuotaSession.CurrentFragmentIndex + 1;
+        if (fragmentCount >= maxGenerationFragments)
+        {
+            if (!_rlncEncodingService.HasNextGeneration())
+            {
+                return null;
+            }
+            
+            // Increment generation, reset fragment index
+            _currentFuotaSession.IncrementGenerationIndex();
+            
+            _rlncEncodingService.MoveNextGeneration();
+        }
+        
+        var encodedPacket = _rlncEncodingService.PrecodeNumberOfPackets(1, false).First();
+        var fragmentBytes = encodedPacket.Payload.Select(p => p.GetValue());
+        
+        _currentFuotaSession.IncrementFragmentIndex();
+
+        return fragmentBytes.ToList();
     }
 
     public void LogSessionProgress()

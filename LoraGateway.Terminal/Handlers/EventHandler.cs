@@ -20,7 +20,6 @@ public class StopFuotaSession
     {
         Token = token;
     }
-    
     public CancellationToken Token { get; }
     public string Message { get; set; }
 }

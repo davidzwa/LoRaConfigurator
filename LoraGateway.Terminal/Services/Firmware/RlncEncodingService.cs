@@ -145,7 +145,7 @@ public class RlncEncodingService
     ///     Encoding of exactly the amount of unencoded packets
     /// </summary>
     /// <returns></returns>
-    public Generation PrecodeNextGeneration(uint precodeExtra)
+    public Generation PrecodeCurrentGeneration(uint precodeExtra)
     {
         ValidateEncodingConfig();
         ValidateGenerationsState();

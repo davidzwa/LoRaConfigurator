@@ -18,6 +18,7 @@ public class FuotaConfig : ICloneable
     public uint FakeFragmentSize { get; set; } = 10;
     // With all other params will result in GenerationCount
     public uint GenerationSize { get; set; } = 5;
+    public uint GenerationSizeRedundancy { get; set; } = 2;
     
     // Encoding related
     // Changing poly of Field is not implemented

@@ -1,4 +1,5 @@
-﻿using LoRa;
+﻿using Google.Protobuf;
+using LoRa;
 using LoraGateway.Handlers;
 using LoraGateway.Services.Firmware.RandomLinearCoding;
 
@@ -7,23 +8,24 @@ namespace LoraGateway.Services;
 public partial class SerialProcessorService
 {
     private readonly CancellationTokenSource _fuotaCancellationSource = new();
+
     public async Task SendRlncInitConfigCommand()
     {
         var token = _fuotaCancellationSource.Token;
-        
+
         await _fuotaManagerService.LoadStore();
 
         if (_fuotaManagerService.IsFuotaSessionEnabled())
         {
             _fuotaCancellationSource.Cancel();
-            
+
             await _eventPublisher.PublishEventAsync(new StopFuotaSession(token) {Message = "Stopping"});
 
             _fuotaManagerService.ClearFuotaSession();
-            
+
             return;
         }
-        
+
         var fuotaSession = await _fuotaManagerService.PrepareFuotaSession();
         var config = fuotaSession.Config;
 
@@ -60,5 +62,36 @@ public partial class SerialProcessorService
     public async Task SendNextRlncFragment()
     {
         var fuotaSession = _fuotaManagerService.GetCurrentSession();
+        var config = fuotaSession.Config;
+
+        var payload = _fuotaManagerService.FetchNextRlncPayload();
+        if (payload == null)
+        {
+            // Termination imminent - clear the session and terminate the hosted service
+            await _eventPublisher.PublishEventAsync(
+                new StopFuotaSession(_fuotaCancellationSource.Token)
+                    {Message = "Terminated"}
+            );
+
+            _fuotaManagerService.ClearFuotaSession();
+            return;
+        }
+
+        var byteString = ByteString.CopyFrom(payload.ToArray());
+        var command = new UartCommand
+        {
+            DoNotProxyCommand = config.UartFakeLoRaRxMode,
+            TransmitCommand = new LoRaMessage
+            {
+                CorrelationCode = 0,
+                DeviceId = 0,
+                IsMulticast = true,
+                Payload = byteString,
+                RlncEncodedFragment = new RlncEncodedFragment()
+            }
+        };
+
+        _fuotaCancellationSource.TryReset();
+        WriteMessage(command);
     }
 }

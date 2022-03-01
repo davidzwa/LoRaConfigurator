@@ -7,7 +7,6 @@ public class FuotaSession
         Config = config.Clone() as FuotaConfig;
         GenerationCount = generationCount;
         TimeStarted = DateTime.Now;
-        
     }
 
     public void IncrementGenerationIndex()
