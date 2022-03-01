@@ -70,12 +70,22 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         var generationCount =
             (uint) _rlncEncodingService.PreprocessGenerations(_firmwarePackets, Store.GenerationSize);
 
-        // await _fuotaSessionHostedService.StartAsync(CancellationToken.None);
-
         _currentFuotaSession = new FuotaSession(Store, generationCount);
+        
         return _currentFuotaSession;
     }
 
+    public void ClearFuotaSession()
+    {
+        if (!IsFuotaSessionEnabled())
+        {
+            throw new ValidationException("Cant stop FUOTA session when none is enabled");
+        }
+        
+        _currentFuotaSession = null;
+        _rlncEncodingService.ResetEncoding();
+    }
+    
     public override FuotaConfig GetDefaultJson()
     {
         var jsonStore = new FuotaConfig();

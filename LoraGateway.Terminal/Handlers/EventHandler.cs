@@ -8,11 +8,16 @@ public class InitFuotaSession
     public string Message { get; set; }
 }
 
-public class MyEventHandler : IEventHandler<InitFuotaSession>
+public class StopFuotaSession
+{
+    public string Message { get; set; }
+}
+
+public class FuotaEventHandler : IEventHandler<InitFuotaSession>, IEventHandler<StopFuotaSession>
 {
     private readonly FuotaSessionHostedService _fuotaSessionHostedService;
 
-    public MyEventHandler(
+    public FuotaEventHandler(
         FuotaSessionHostedService fuotaSessionHostedService    
     )
     {
@@ -22,5 +27,10 @@ public class MyEventHandler : IEventHandler<InitFuotaSession>
     public async Task HandleEventAsync(InitFuotaSession @event)
     {
         await _fuotaSessionHostedService.StartAsync(CancellationToken.None);
+    }
+    
+    public async Task HandleEventAsync(StopFuotaSession @event)
+    {
+        await _fuotaSessionHostedService.StopAsync(CancellationToken.None);
     }
 }

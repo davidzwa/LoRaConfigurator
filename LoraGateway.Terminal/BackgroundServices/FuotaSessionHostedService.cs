@@ -72,6 +72,7 @@ public class FuotaSessionHostedService : IHostedService
     
     public Task StopAsync(CancellationToken cancellationToken)
     {
+        _logger.LogInformation("Stopping FUOTA background service");
         return Task.CompletedTask;
     }
 }

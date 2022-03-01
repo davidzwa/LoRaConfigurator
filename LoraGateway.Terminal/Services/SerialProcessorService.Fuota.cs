@@ -10,6 +10,15 @@ public partial class SerialProcessorService
     {
         await _fuotaManagerService.LoadStore();
 
+        if (_fuotaManagerService.IsFuotaSessionEnabled())
+        {
+            await _eventPublisher.PublishEventAsync(new StopFuotaSession() {Message = "Stopping"});
+            
+            _fuotaManagerService.ClearFuotaSession();
+            
+            return;
+        }
+        
         var fuotaSession = await _fuotaManagerService.PrepareFuotaSession();
         var config = fuotaSession.Config;
 
@@ -37,7 +46,7 @@ public partial class SerialProcessorService
             }
         };
 
-        await _eventPublisher.PublishEventAsync(new InitFuotaSession() {Message = "yes"});
+        await _eventPublisher.PublishEventAsync(new InitFuotaSession() {Message = "Starting"});
 
         WriteMessage(command);
     }

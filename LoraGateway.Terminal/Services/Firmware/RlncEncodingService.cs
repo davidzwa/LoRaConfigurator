@@ -22,15 +22,7 @@ public class RlncEncodingService
 
     public RlncEncodingService()
     {
-        ConfigureEncoding(new EncodingConfiguration
-        {
-            Seed = 0x08,
-            FieldDegree = 8,
-            GenerationSize = 0,
-            CurrentGeneration = 0
-        });
-
-        _generator.Reset();
+        ResetEncoding();
     }
 
     public int CurrentGenerationIndex { get; private set; }
@@ -123,6 +115,20 @@ public class RlncEncodingService
         return _generations.Count;
     }
 
+    public void ResetEncoding()
+    {
+        ConfigureEncoding(new EncodingConfiguration
+        {
+            Seed = 0x08,
+            FieldDegree = 8,
+            GenerationSize = 0,
+            CurrentGeneration = 0
+        });
+
+        _generations?.Clear();
+        _generator.Reset();
+    }
+    
     public bool HasNextGeneration()
     {
         return _generations != null && _generations.Count - 1 > CurrentGenerationIndex;

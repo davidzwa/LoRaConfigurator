@@ -53,7 +53,8 @@ public static class LoraGateway
                 {
                     builder.AddInMemoryEventBus(subscriber =>
                     {
-                        subscriber.Subscribe<InitFuotaSession, MyEventHandler>();
+                        subscriber.Subscribe<InitFuotaSession, FuotaEventHandler>();
+                        subscriber.Subscribe<StopFuotaSession, FuotaEventHandler>();
                         //subscriber.SubscribeAllHandledEvents<MyEventHandler>(); // other way
                     });
                 });
