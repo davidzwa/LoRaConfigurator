@@ -9,16 +9,19 @@ namespace LoraGateway.Services;
 
 public class FuotaManagerService : JsonDataStore<FuotaConfig>
 {
+    private readonly ILogger<FuotaManagerService> _logger;
     private readonly BlobFragmentationService _blobFragmentationService;
     private readonly RlncEncodingService _rlncEncodingService;
     private FuotaSession? _currentFuotaSession;
     private List<UnencodedPacket> _firmwarePackets = new();
 
     public FuotaManagerService(
+        ILogger<FuotaManagerService> logger,
         BlobFragmentationService blobFragmentationService,
         RlncEncodingService rlncEncodingService
     )
     {
+        _logger = logger;
         _blobFragmentationService = blobFragmentationService;
         _rlncEncodingService = rlncEncodingService;
     }
@@ -71,8 +74,27 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
             (uint) _rlncEncodingService.PreprocessGenerations(_firmwarePackets, Store.GenerationSize);
 
         _currentFuotaSession = new FuotaSession(Store, generationCount);
-        
+        _currentFuotaSession.TotalFragmentCount = (uint) _firmwarePackets.Count;
         return _currentFuotaSession;
+    }
+
+    public void LogSessionProgress()
+    {
+        if (!IsFuotaSessionEnabled())
+        {
+            _logger.LogInformation("Fuota session stopped - no progress");
+            return;
+        }
+
+        var session = GetCurrentSession();
+        var currentGen = session.CurrentGenerationIndex + 1;
+        var maxGen = session.GenerationCount;
+        var fragment = (session.Config.GenerationSize * (currentGen-1)) + (session.CurrentFragmentIndex);
+        var fragmentMax = session.TotalFragmentCount;
+        var progress = 100.0 * fragment / fragmentMax;
+        
+        _logger.LogInformation("Progress {Progress}% Gen {Gen}/{MaxGen} Fragment {Frag}/{MaxFrag}",
+            progress, currentGen, maxGen, fragment, fragmentMax);
     }
 
     public void ClearFuotaSession()
@@ -81,11 +103,11 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         {
             throw new ValidationException("Cant stop FUOTA session when none is enabled");
         }
-        
+
         _currentFuotaSession = null;
         _rlncEncodingService.ResetEncoding();
     }
-    
+
     public override FuotaConfig GetDefaultJson()
     {
         var jsonStore = new FuotaConfig();

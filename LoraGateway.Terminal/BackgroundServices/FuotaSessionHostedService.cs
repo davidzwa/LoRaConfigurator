@@ -61,7 +61,10 @@ public class FuotaSessionHostedService : IHostedService
         try
         {
             // perform UART FUOTA session operations
+            _fuotaManagerService.LogSessionProgress();
+            
             await _serialProcessorService.SendNextRlncFragment();
+            
             _logger.LogInformation("Do nothing. No end condition");
         }
         catch (Exception e)
