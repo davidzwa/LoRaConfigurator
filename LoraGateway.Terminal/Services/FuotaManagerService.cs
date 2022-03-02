@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using JKang.EventBus;
+using LoraGateway.Handlers;
 using LoraGateway.Models;
 using LoraGateway.Services.Contracts;
 using LoraGateway.Services.Firmware;
@@ -9,22 +11,44 @@ namespace LoraGateway.Services;
 public class FuotaManagerService : JsonDataStore<FuotaConfig>
 {
     private readonly ILogger<FuotaManagerService> _logger;
+    private readonly IEventPublisher _eventPublisher;
     private readonly BlobFragmentationService _blobFragmentationService;
     private readonly RlncEncodingService _rlncEncodingService;
     private FuotaSession? _currentFuotaSession;
     private List<UnencodedPacket> _firmwarePackets = new();
+    
+    private CancellationTokenSource _cancellation = new();
 
     public FuotaManagerService(
         ILogger<FuotaManagerService> logger,
+        IEventPublisher eventPublisher,
         BlobFragmentationService blobFragmentationService,
         RlncEncodingService rlncEncodingService
     )
     {
         _logger = logger;
+        _eventPublisher = eventPublisher;
         _blobFragmentationService = blobFragmentationService;
         _rlncEncodingService = rlncEncodingService;
     }
 
+    public async Task HandleRlncConsoleCommand()
+    {
+        if (Store == null)
+        {
+            await LoadStore();
+        }
+        
+        if (!IsFuotaSessionEnabled())
+        {
+            await StartFuotaSession();
+        }
+        else
+        {
+            await StopFuotaSession();
+        }
+    }
+    
     public override string GetJsonFileName()
     {
         return "fuota_config.json";
@@ -35,14 +59,67 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         return _currentFuotaSession != null;
     }
 
+    public bool IsLastGeneration()
+    {
+        if (_currentFuotaSession == null) return true;
+        
+        var currentGen = _currentFuotaSession.CurrentGenerationIndex + 1;
+        var maxGen = _currentFuotaSession.GenerationCount;
+
+        return currentGen == maxGen;
+    }
+
+    public bool IsCurrentGenerationComplete()
+    {
+        if (_currentFuotaSession == null) return true;
+
+        var config = _currentFuotaSession.Config;
+        
+        var maxGenerationFragments = config.GenerationSize + config.GenerationSizeRedundancy;
+        var fragmentIndex = _currentFuotaSession.CurrentFragmentIndex;
+
+        return fragmentIndex >= maxGenerationFragments;
+    }
+    
+    public bool IsFuotaSessionDone()
+    {
+        return IsCurrentGenerationComplete() && IsLastGeneration();
+    }
+
     public FuotaSession GetCurrentSession()
     {
         if (_currentFuotaSession == null) throw new ValidationException("Cant provide fuota session as its unset");
 
         return _currentFuotaSession;
     }
+    
+    public async Task StartFuotaSession()
+    {
+        _logger.LogInformation("Starting FUOTA session");
+        
+        await PrepareFuotaSession();
 
-    public async Task<FuotaSession> PrepareFuotaSession()
+        var result = _cancellation.TryReset();
+        if (!result)
+        {
+            _logger.LogWarning("Resetting of FUOTA cancellation source failed. Continuing anyway");
+        }
+        
+        await _eventPublisher.PublishEventAsync(new InitFuotaSession() { Message = "Initiating" });
+    }
+    
+    public async Task StopFuotaSession()
+    {
+        _logger.LogInformation("Stopping FUOTA session");
+        _cancellation.Cancel();
+        
+        // Termination imminent - clear the session and terminate the hosted service
+        await _eventPublisher.PublishEventAsync(new StopFuotaSession { Message = "Stopping" });
+
+        ClearFuotaSession();
+    }
+
+    private async Task PrepareFuotaSession()
     {
         if (Store == null)
             throw new ValidationException(
@@ -59,7 +136,7 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
 
         if (Store.FakeFirmware)
         {
-            var frameSize = (int) Store.FakeFragmentSize;
+            var frameSize = (int)Store.FakeFragmentSize;
             var firmwareSize = Store.FakeFragmentCount * frameSize;
             _firmwarePackets = await _blobFragmentationService.GenerateFakeFirmwareAsync(firmwareSize, frameSize);
         }
@@ -67,70 +144,71 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         // Prepare 
         _rlncEncodingService.ConfigureEncoding(new EncodingConfiguration
         {
-            Seed = (byte) Store.LfsrSeed,
+            Seed = (byte)Store.LfsrSeed,
             CurrentGeneration = 0,
             FieldDegree = Store.FieldDegree,
             GenerationSize = Store.GenerationSize
         });
-        var generationCount =
-            (uint) _rlncEncodingService.PreprocessGenerations(_firmwarePackets, Store.GenerationSize);
+        var genCountResult =
+            (uint)_rlncEncodingService.PreprocessGenerations(_firmwarePackets, Store.GenerationSize);
 
-        _currentFuotaSession = new FuotaSession(Store, generationCount);
-        _currentFuotaSession.TotalFragmentCount = (uint) _firmwarePackets.Count;
-        return _currentFuotaSession;
-    }
-
-    public List<byte>? FetchNextRlncPayload()
-    {
-        if (_currentFuotaSession == null)
+        _currentFuotaSession = new FuotaSession(Store, genCountResult)
         {
-            throw new ValidationException("Cant fetch RLNC payload when session is null");
-        }
-        
-        var config = _currentFuotaSession.Config;
-        var maxGenerationFragments = config.GenerationSize + config.GenerationSizeRedundancy;
-        var fragmentCount = _currentFuotaSession.CurrentFragmentIndex + 1;
-        if (fragmentCount >= maxGenerationFragments)
-        {
-            if (!_rlncEncodingService.HasNextGeneration())
-            {
-                return null;
-            }
-            
-            // Increment generation, reset fragment index
-            _currentFuotaSession.IncrementGenerationIndex();
-            
-            _rlncEncodingService.MoveNextGeneration();
-        }
-        
-        var encodedPacket = _rlncEncodingService.PrecodeNumberOfPackets(1, false).First();
-        var fragmentBytes = encodedPacket.Payload.Select(p => p.GetValue());
-        
-        _currentFuotaSession.IncrementFragmentIndex();
-
-        return fragmentBytes.ToList();
+            TotalFragmentCount = (uint)_firmwarePackets.Count
+        };
     }
 
     public void LogSessionProgress()
     {
         if (!IsFuotaSessionEnabled())
         {
-            _logger.LogInformation("Fuota session stopped - no progress");
+            _logger.LogInformation("Fuota session stopped - no progress to log");
             return;
         }
 
         var session = GetCurrentSession();
         var currentGen = session.CurrentGenerationIndex + 1;
         var maxGen = session.GenerationCount;
-        var fragment = (session.Config.GenerationSize * (currentGen-1)) + (session.CurrentFragmentIndex + 1);
+        var genTotal = session.Config.GenerationSize + session.Config.GenerationSizeRedundancy;
+        var fragment = (genTotal * (currentGen - 1)) + session.CurrentFragmentIndex + 1;
         var fragmentMax = session.TotalFragmentCount + maxGen * session.Config.GenerationSizeRedundancy;
         var progress = Math.Round(100.0 * fragment / fragmentMax, 1);
-        
+
         _logger.LogInformation("Progress {Progress}% Gen {Gen}/{MaxGen} Fragment {Frag}/{MaxFrag}",
             progress, currentGen, maxGen, fragment, fragmentMax);
     }
+    
+    public List<byte> FetchNextRlncPayload()
+    {
+        if (_currentFuotaSession == null)
+        {
+            throw new ValidationException("Cant fetch RLNC payload when session is null");
+        }
+        
+        if (IsCurrentGenerationComplete())
+        {
+            if (!_rlncEncodingService.HasNextGeneration())
+            {
+                throw new ValidationException("Cant fetch RLNC payload when no generation is left");
+            }
 
-    public void ClearFuotaSession()
+            // Increment generation, reset fragment index
+            _currentFuotaSession.IncrementGenerationIndex();
+
+            // Increase the encoder generation as well
+            _rlncEncodingService.MoveNextGeneration();
+        }
+
+        var encodedPacket = _rlncEncodingService.PrecodeNumberOfPackets(1, false).First();
+        var fragmentBytes = encodedPacket.Payload.Select(p => p.GetValue());
+
+        // Next fragment index to be sent is 1 higher
+        _currentFuotaSession.IncrementFragmentIndex();
+        
+        return fragmentBytes.ToList();
+    }
+
+    private void ClearFuotaSession()
     {
         if (!IsFuotaSessionEnabled())
         {

@@ -5,22 +5,13 @@ namespace LoraGateway.Handlers;
 
 public class InitFuotaSession
 {
-    public InitFuotaSession(CancellationToken token)
-    {
-        Token = token;
-    }
-    
-    public CancellationToken Token { get; }
+    public CancellationToken Token { get; set; }
     public string Message { get; set; }
 }
 
 public class StopFuotaSession
 {
-    public StopFuotaSession(CancellationToken token)
-    {
-        Token = token;
-    }
-    public CancellationToken Token { get; }
+    public CancellationToken Token { get; set; }
     public string Message { get; set; }
 }
 

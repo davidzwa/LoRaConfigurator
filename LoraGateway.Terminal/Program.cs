@@ -28,7 +28,11 @@ public static class LoraGateway
             )
             .CreateLogger();
 
-        await Host.CreateDefaultBuilder(args)
+        await CreateHostBuilder(args).RunConsoleAsync();
+    }
+
+    public static IHostBuilder CreateHostBuilder(string[] args) =>
+        Host.CreateDefaultBuilder(args)
             .UseSerilog()
             .ConfigureServices((_, services) =>
             {
@@ -48,17 +52,14 @@ public static class LoraGateway
                 services.AddTransient<ListDeviceCommandHandler>();
                 services.AddSingleton<ConsoleProcessorService>();
                 services.AddHostedService<ConsoleHostedService>();
-                
+
                 services.AddEventBus(builder =>
                 {
                     builder.AddInMemoryEventBus(subscriber =>
                     {
                         subscriber.Subscribe<InitFuotaSession, FuotaEventHandler>();
                         subscriber.Subscribe<StopFuotaSession, FuotaEventHandler>();
-                        //subscriber.SubscribeAllHandledEvents<MyEventHandler>(); // other way
                     });
                 });
-            })
-            .RunConsoleAsync();
-    }
+            });
 }

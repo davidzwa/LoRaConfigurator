@@ -1,7 +1,6 @@
 using System.IO.Ports;
 using System.Text;
 using Google.Protobuf;
-using JKang.EventBus;
 using LoRa;
 using LoraGateway.Models;
 using LoraGateway.Utils;
@@ -10,27 +9,21 @@ namespace LoraGateway.Services;
 
 public partial class SerialProcessorService
 {
-    private readonly FuotaManagerService _fuotaManagerService;
     private readonly ILogger<SerialProcessorService> _logger;
     private readonly MeasurementsService _measurementsService;
     private readonly SelectedDeviceService _selectedDeviceService;
     private readonly DeviceDataStore _store;
-    private readonly IEventPublisher _eventPublisher;
     private readonly byte endByte = 0x00;
     private readonly byte startByte = 0xFF;
 
     public SerialProcessorService(
         DeviceDataStore store,
-        IEventPublisher eventPublisher,
-        FuotaManagerService fuotaManagerService,
         SelectedDeviceService selectedDeviceService,
         MeasurementsService measurementsService,
         ILogger<SerialProcessorService> logger
     )
     {
         _store = store;
-        _eventPublisher = eventPublisher;
-        _fuotaManagerService = fuotaManagerService;
         _selectedDeviceService = selectedDeviceService;
         _measurementsService = measurementsService;
         _logger = logger;
