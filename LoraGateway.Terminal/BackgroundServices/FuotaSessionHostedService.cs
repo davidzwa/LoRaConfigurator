@@ -30,8 +30,7 @@ public class FuotaSessionHostedService : IHostedService
     public Task StartAsync(CancellationToken cancellationToken)
     {
         StopFired = false;
-        _logger.LogInformation("CancellationTokenId {Id}", cancellationToken.GetHashCode());
-        
+
         _appLifetime.ApplicationStarted.Register(() =>
         {
             taskSingleton = Task.Run(async () =>
@@ -46,11 +45,22 @@ public class FuotaSessionHostedService : IHostedService
                 if (fuotaConfig == null)
                 {
                     throw new ValidationException("FUOTA session was started when no config was loaded or stored");
-                };
+                }
 
                 var session = _fuotaManagerService.GetCurrentSession();
-                _serialProcessorService.SendRlncInitConfigCommand(session);
-                
+                try
+                {
+                    _serialProcessorService.SendRlncInitConfigCommand(session);
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e, e.Message);
+                    
+                    await _fuotaManagerService.StopFuotaSession();
+
+                    return;
+                }
+
                 while (!cancellationToken.IsCancellationRequested)
                 {
                     if (StopFired || cancellationToken.IsCancellationRequested)
@@ -58,21 +68,22 @@ public class FuotaSessionHostedService : IHostedService
                         StopFired = false;
                         return;
                     }
-                    
+
                     await Process();
 
-                    var cappedPeriod = Math.Max((int) fuotaConfig.UpdateIntervalMilliSeconds, 100);
+                    var cappedPeriod = Math.Max((int)fuotaConfig.UpdateIntervalMilliSeconds, 100);
                     await Task.Delay(cappedPeriod, cancellationToken);
                 }
-                
-                Log.Information("STOPPED - Cancellation {Cancel} Stoppage {Stop}", cancellationToken.IsCancellationRequested, StopFired);
+
+                Log.Information("STOPPED - Cancellation {Cancel} Stoppage {Stop}",
+                    cancellationToken.IsCancellationRequested, StopFired);
             });
         });
 
         return Task.CompletedTask;
     }
-    
-    
+
+
     private async Task Process()
     {
         try
@@ -81,13 +92,13 @@ public class FuotaSessionHostedService : IHostedService
             {
                 _logger.LogDebug("FuotaManager indicated stoppage - Stop Fired: {Stopped}", StopFired);
                 await _fuotaManagerService.StopFuotaSession();
-                
+
                 return;
             }
 
             // perform UART FUOTA session operations
             _fuotaManagerService.LogSessionProgress();
-            
+
             var payload = _fuotaManagerService.FetchNextRlncPayload();
             var fuotaSession = _fuotaManagerService.GetCurrentSession();
 
@@ -99,13 +110,14 @@ public class FuotaSessionHostedService : IHostedService
             await _fuotaManagerService.StopFuotaSession();
         }
     }
-    
+
     public Task StopAsync(CancellationToken cancellationToken)
     {
-        _logger.LogInformation("FUOTA background service stopping - CanceledByToken: {Canceled}", cancellationToken.IsCancellationRequested);
-        
+        _logger.LogInformation("FUOTA background service stopping - CanceledByToken: {Canceled}",
+            cancellationToken.IsCancellationRequested);
+
         StopFired = true;
-        
+
         return Task.CompletedTask;
     }
 }
