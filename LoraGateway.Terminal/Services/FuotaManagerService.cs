@@ -166,6 +166,12 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
             return;
         }
 
+        if (IsCurrentGenerationComplete())
+        {
+            _logger.LogInformation("Generation {GenIndex} complete - switching to next generation", _currentFuotaSession!.CurrentGenerationIndex + 1);
+            return;
+        }
+
         var session = GetCurrentSession();
         var currentGen = session.CurrentGenerationIndex + 1;
         var maxGen = session.GenerationCount;
@@ -176,6 +182,20 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
 
         _logger.LogInformation("Progress {Progress}% Gen {Gen}/{MaxGen} Fragment {Frag}/{MaxFrag}",
             progress, currentGen, maxGen, fragment, fragmentMax);
+    }
+
+    public void MoveNextRlncGeneration()
+    {
+        if (_currentFuotaSession == null)
+        {
+            throw new ValidationException("Cant fetch RLNC payload when session is null");
+        }
+        
+        // Increment generation, reset fragment index
+        _currentFuotaSession.IncrementGenerationIndex();
+
+        // Increase the encoder generation as well
+        _rlncEncodingService.MoveNextGeneration();
     }
     
     public List<byte> FetchNextRlncPayload()
@@ -191,12 +211,8 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
             {
                 throw new ValidationException("Cant fetch RLNC payload when no generation is left");
             }
-
-            // Increment generation, reset fragment index
-            _currentFuotaSession.IncrementGenerationIndex();
-
-            // Increase the encoder generation as well
-            _rlncEncodingService.MoveNextGeneration();
+            
+            throw new ValidationException("Generation packets have run out");
         }
 
         var encodedPacket = _rlncEncodingService.PrecodeNumberOfPackets(1, false).First();

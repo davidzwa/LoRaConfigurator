@@ -12,8 +12,7 @@ public class FuotaSessionHostedService : IHostedService
     private readonly SerialProcessorService _serialProcessorService;
     private readonly FuotaManagerService _fuotaManagerService;
 
-    private bool StopFired = false;
-    private Task taskSingleton;
+    private bool _stopFired = false;
 
     public FuotaSessionHostedService(
         ILogger<FuotaSessionHostedService> logger,
@@ -29,11 +28,11 @@ public class FuotaSessionHostedService : IHostedService
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
-        StopFired = false;
+        _stopFired = false;
 
         _appLifetime.ApplicationStarted.Register(() =>
         {
-            taskSingleton = Task.Run(async () =>
+            Task.Run(async () =>
             {
                 if (!_fuotaManagerService.IsFuotaSessionEnabled())
                 {
@@ -63,9 +62,9 @@ public class FuotaSessionHostedService : IHostedService
 
                 while (!cancellationToken.IsCancellationRequested)
                 {
-                    if (StopFired || cancellationToken.IsCancellationRequested)
+                    if (_stopFired || cancellationToken.IsCancellationRequested)
                     {
-                        StopFired = false;
+                        _stopFired = false;
                         return;
                     }
 
@@ -76,7 +75,7 @@ public class FuotaSessionHostedService : IHostedService
                 }
 
                 Log.Information("STOPPED - Cancellation {Cancel} Stoppage {Stop}",
-                    cancellationToken.IsCancellationRequested, StopFired);
+                    cancellationToken.IsCancellationRequested, _stopFired);
             });
         });
 
@@ -90,7 +89,7 @@ public class FuotaSessionHostedService : IHostedService
         {
             if (_fuotaManagerService.IsFuotaSessionDone())
             {
-                _logger.LogDebug("FuotaManager indicated stoppage - Stop Fired: {Stopped}", StopFired);
+                _logger.LogDebug("FuotaManager indicated stoppage - Stop Fired: {Stopped}", _stopFired);
                 await _fuotaManagerService.StopFuotaSession();
 
                 return;
@@ -99,10 +98,18 @@ public class FuotaSessionHostedService : IHostedService
             // perform UART FUOTA session operations
             _fuotaManagerService.LogSessionProgress();
 
+            if (_fuotaManagerService.IsCurrentGenerationComplete())
+            {
+                _fuotaManagerService.MoveNextRlncGeneration();
+                
+                var fuotaSession = _fuotaManagerService.GetCurrentSession();
+                _serialProcessorService.SendRlncUpdate(fuotaSession);
+                
+                return;
+            }
+            
             var payload = _fuotaManagerService.FetchNextRlncPayload();
-            var fuotaSession = _fuotaManagerService.GetCurrentSession();
-
-            _serialProcessorService.SendNextRlncFragment(fuotaSession, payload);
+            _serialProcessorService.SendNextRlncFragment(_fuotaManagerService.GetCurrentSession(), payload);
         }
         catch (Exception e)
         {
@@ -116,7 +123,7 @@ public class FuotaSessionHostedService : IHostedService
         _logger.LogInformation("FUOTA background service stopping - CanceledByToken: {Canceled}",
             cancellationToken.IsCancellationRequested);
 
-        StopFired = true;
+        _stopFired = true;
 
         return Task.CompletedTask;
     }

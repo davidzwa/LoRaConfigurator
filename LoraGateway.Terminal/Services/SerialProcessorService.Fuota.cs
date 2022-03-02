@@ -42,7 +42,7 @@ public partial class SerialProcessorService
     {
         var config = fuotaSession.Config;
         var byteString = ByteString.CopyFrom(payload.ToArray());
-        
+
         var command = new UartCommand
         {
             DoNotProxyCommand = config.UartFakeLoRaRxMode,
@@ -53,6 +53,29 @@ public partial class SerialProcessorService
                 IsMulticast = true,
                 Payload = byteString,
                 RlncEncodedFragment = new RlncEncodedFragment()
+                {
+                }
+            }
+        };
+
+        WriteMessage(command);
+    }
+
+    public void SendRlncUpdate(FuotaSession fuotaSession)
+    {
+        var config = fuotaSession.Config;
+        var command = new UartCommand
+        {
+            DoNotProxyCommand = config.UartFakeLoRaRxMode,
+            TransmitCommand = new LoRaMessage
+            {
+                CorrelationCode = 0,
+                DeviceId = 0,
+                IsMulticast = true,
+                RlncStateUpdate = new RlncStateUpdate()
+                {
+                    GenerationIndex = fuotaSession.CurrentGenerationIndex
+                }
             }
         };
 
