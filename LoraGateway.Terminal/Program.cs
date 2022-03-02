@@ -1,4 +1,5 @@
 ﻿using LoraGateway.BackgroundServices;
+using LoraGateway.Handlers;
 using LoraGateway.Services;
 using LoraGateway.Services.CommandLine;
 using LoraGateway.Services.Firmware;
@@ -27,7 +28,11 @@ public static class LoraGateway
             )
             .CreateLogger();
 
-        await Host.CreateDefaultBuilder(args)
+        await CreateHostBuilder(args).RunConsoleAsync();
+    }
+
+    public static IHostBuilder CreateHostBuilder(string[] args) =>
+        Host.CreateDefaultBuilder(args)
             .UseSerilog()
             .ConfigureServices((_, services) =>
             {
@@ -39,13 +44,22 @@ public static class LoraGateway
                 services.AddSingleton<MeasurementsService>();
                 services.AddSingleton<BlobFragmentationService>();
                 services.AddSingleton<RlncEncodingService>();
+                services.AddSingleton<FuotaSessionHostedService>();
+                services.AddHostedService<FuotaSessionHostedService>(p => p.GetService<FuotaSessionHostedService>());
                 services.AddHostedService<SerialHostedService>();
                 services.AddTransient<SerialCommandHandler>();
                 services.AddTransient<SelectDeviceCommandHandler>();
                 services.AddTransient<ListDeviceCommandHandler>();
                 services.AddSingleton<ConsoleProcessorService>();
                 services.AddHostedService<ConsoleHostedService>();
-            })
-            .RunConsoleAsync();
-    }
+
+                services.AddEventBus(builder =>
+                {
+                    builder.AddInMemoryEventBus(subscriber =>
+                    {
+                        subscriber.Subscribe<InitFuotaSession, FuotaEventHandler>();
+                        subscriber.Subscribe<StopFuotaSession, FuotaEventHandler>();
+                    });
+                });
+            });
 }

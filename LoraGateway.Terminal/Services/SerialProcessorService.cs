@@ -1,34 +1,29 @@
 using System.IO.Ports;
 using System.Text;
 using Google.Protobuf;
-using System.Text.Json;
 using LoRa;
 using LoraGateway.Models;
-using LoraGateway.Services.Firmware.RandomLinearCoding;
 using LoraGateway.Utils;
 
 namespace LoraGateway.Services;
 
-public class SerialProcessorService
+public partial class SerialProcessorService
 {
     private readonly ILogger<SerialProcessorService> _logger;
     private readonly MeasurementsService _measurementsService;
     private readonly SelectedDeviceService _selectedDeviceService;
     private readonly DeviceDataStore _store;
-    private readonly FuotaManagerService _fuotaManagerService;
     private readonly byte endByte = 0x00;
     private readonly byte startByte = 0xFF;
 
     public SerialProcessorService(
         DeviceDataStore store,
-        FuotaManagerService fuotaManagerService,
         SelectedDeviceService selectedDeviceService,
         MeasurementsService measurementsService,
         ILogger<SerialProcessorService> logger
     )
     {
         _store = store;
-        _fuotaManagerService = fuotaManagerService;
         _selectedDeviceService = selectedDeviceService;
         _measurementsService = measurementsService;
         _logger = logger;
@@ -99,7 +94,7 @@ public class SerialProcessorService
         var selectedPortName = _selectedDeviceService.SelectedPortName;
         if (selectedPortName == null)
         {
-            _logger.LogWarning("Cant send as multiple devices are connected and 1 is not selected");
+            throw new InvalidOperationException("Selected port [selected gateway] was not set - check USB connection");
             return;
         }
 
@@ -123,7 +118,7 @@ public class SerialProcessorService
 
         port.Write(transmitBuffer, 0, transmitBuffer.Length);
     }
-    
+
     public void OnPortError(SerialPort subject, SerialErrorReceivedEventArgs e)
     {
         _logger.LogWarning("Serial error {ErrorType}", e.EventType);
@@ -137,10 +132,7 @@ public class SerialProcessorService
             return;
         }
 
-        while (port.BytesToRead > 0)
-        {
-            await ProcessMessagePreamble(port);
-        }
+        while (port.BytesToRead > 0) await ProcessMessagePreamble(port);
     }
 
     private async Task ProcessMessagePreamble(SerialPort port)
@@ -297,44 +289,6 @@ public class SerialProcessorService
         }
     }
 
-    public async Task SendRlncInitConfigCommand()
-    {
-        var config = await _fuotaManagerService.LoadStore();
-        if (config == null)
-        {
-            _logger.LogWarning("FUOTA config store returned null - cant send RLNC generation frame");
-            return;
-        }
-
-        var fuotaSession = await _fuotaManagerService.PrepareFuotaSession();
-        
-        var command = new UartCommand
-        {
-            DoNotProxyCommand = fuotaSession.UartFakeLoRaRxMode,
-            TransmitCommand = new LoRaMessage()
-            {
-                CorrelationCode = 0,
-                DeviceId = 0,
-                IsMulticast = true,
-                RlncInitConfigCommand = new RlncInitConfigCommand()
-                {
-                    FieldPoly = GField.Polynomial,
-                    FieldDegree = config.FieldDegree,
-                    FrameCount = config.FakeFragmentCount,
-                    FrameSize = config.FakeFragmentSize,
-                    // Calculated value from config store
-                    GenerationCount = fuotaSession.GenerationCount,
-                    GenerationSize = config.GenerationSize,
-                    // Wont send poly as its highly static
-                    // LfsrPoly = ,
-                    LfsrSeed = config.LfsrSeed
-                }
-            }
-        };
-        
-        WriteMessage(command);
-    }
-    
     public void DisposePort(string portName)
     {
         var port = GetPort(portName);

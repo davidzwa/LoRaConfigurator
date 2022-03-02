@@ -1,5 +1,7 @@
 using System.CommandLine;
 using System.CommandLine.Invocation;
+using JKang.EventBus;
+using LoraGateway.Handlers;
 using LoraGateway.Services.Extensions;
 
 namespace LoraGateway.Services.CommandLine;
@@ -8,6 +10,8 @@ public class SerialCommandHandler
 {
     private readonly ILogger _logger;
     private readonly MeasurementsService _measurementsService;
+    private readonly IEventPublisher _eventPublisher;
+    private readonly FuotaManagerService _fuotaManagerService;
     private readonly SelectedDeviceService _selectedDeviceService;
     private readonly SerialProcessorService _serialProcessorService;
 
@@ -15,12 +19,16 @@ public class SerialCommandHandler
         ILogger<SerialCommandHandler> logger,
         SelectedDeviceService selectedDeviceService,
         MeasurementsService measurementsService,
+        IEventPublisher eventPublisher,
+        FuotaManagerService fuotaManagerService,
         SerialProcessorService serialProcessorService
     )
     {
         _logger = logger;
         _selectedDeviceService = selectedDeviceService;
         _measurementsService = measurementsService;
+        _eventPublisher = eventPublisher;
+        _fuotaManagerService = fuotaManagerService;
         _serialProcessorService = serialProcessorService;
     }
 
@@ -31,22 +39,20 @@ public class SerialCommandHandler
         rootCommand.Add(GetUnicastSendCommand());
         rootCommand.Add(GetDeviceConfigurationCommand());
         rootCommand.Add(GetClearMeasurementsCommand());
-        rootCommand.Add(GetRlncInitConfigCommand());
+        rootCommand.Add(GetRlncCommand());
 
         // Fluent structure
         return rootCommand;
     }
 
-    public Command GetRlncInitConfigCommand()
+    public Command GetRlncCommand()
     {
         var command = new Command("rlnc-init");
         command.AddAlias("rlnc");
         command.Handler = CommandHandler.Create(
             async () =>
             {
-                var selectedPortName = _selectedDeviceService.SelectedPortName;
-                _logger.LogInformation("Init RLNC configuration ProxyPort:{Port}", selectedPortName);
-                await _serialProcessorService.SendRlncInitConfigCommand();
+                await _fuotaManagerService.HandleRlncConsoleCommand();
             });
         return command;
     }

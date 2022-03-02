@@ -1,6 +1,6 @@
 ﻿namespace LoraGateway.Models;
 
-public class DeviceCollection
+public class DeviceCollection : ICloneable
 {
     public GatewayModel Gateway { get; set; } = new()
     {
@@ -9,4 +9,9 @@ public class DeviceCollection
     };
 
     public List<Device?> Devices { get; set; } = new();
+    
+    public object Clone()
+    {
+        return MemberwiseClone();
+    }
 }

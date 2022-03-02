@@ -21,7 +21,7 @@ public class RlncEncodingServiceTests
         var serviceUnderTest = new RlncEncodingService();
         serviceUnderTest.PreprocessGenerations(fakeFirmware, (uint) fakeFirmware.Count);
 
-        var generation = serviceUnderTest.PrecodeNextGeneration(0);
+        var generation = serviceUnderTest.PrecodeCurrentGeneration(0);
 
         generation.EncodedPackets.Count.ShouldBe(fakeFirmware.Count);
         generation.GenerationIndex.ShouldBe(0);
@@ -36,7 +36,7 @@ public class RlncEncodingServiceTests
 
         var service = new RlncEncodingService();
         service.PreprocessGenerations(unencodedPackets, 12);
-        var result = service.PrecodeNextGeneration(1);
+        var result = service.PrecodeCurrentGeneration(1);
         result.EncodedPackets.Count.ShouldBe(10);
     }
 
@@ -55,12 +55,12 @@ public class RlncEncodingServiceTests
         service.GetGeneratorState().ShouldBe((byte) 0x08);
         // Generates 9 original packets (103/12 => 9) with extra prematurely
         // 255 / 9 = 29 max => 20 extra at most
-        Should.Throw<Exception>(() => service.PrecodeNextGeneration(29 - 9));
+        Should.Throw<Exception>(() => service.PrecodeCurrentGeneration(29 - 9));
 
         service.PreprocessGenerations(unencodedPackets, 12);
         // Check that the generator has been reset
         service.GetGeneratorState().ShouldBe((byte) 0x08);
-        service.PrecodeNextGeneration(28 - 9);
+        service.PrecodeCurrentGeneration(28 - 9);
     }
 
     [Fact]
@@ -74,7 +74,7 @@ public class RlncEncodingServiceTests
         service.GetGeneratorState().ShouldBe((byte) 0x08);
         // Generates 9 original packets (103/12 => 9) with extra prematurely
         // 255 / 9 = 29 max => 20 extra at most
-        service.PrecodeNextGeneration(28 - 9);
+        service.PrecodeCurrentGeneration(28 - 9);
     }
 
     [Fact]
@@ -86,7 +86,7 @@ public class RlncEncodingServiceTests
         var serviceUnderTest = new RlncEncodingService();
 
         serviceUnderTest.PreprocessGenerations(fakeFirmware, (uint) fakeFirmware.Count);
-        var nextGeneration = serviceUnderTest.PrecodeNextGeneration(0);
+        var nextGeneration = serviceUnderTest.PrecodeCurrentGeneration(0);
         nextGeneration.EncodedPackets.Count.ShouldBe(1);
     }
 
@@ -102,7 +102,7 @@ public class RlncEncodingServiceTests
         var serviceUnderTest = new RlncEncodingService();
 
         serviceUnderTest.PreprocessGenerations(fakeFirmware, generationSize);
-        serviceUnderTest.PrecodeNextGeneration(0);
+        serviceUnderTest.PrecodeCurrentGeneration(0);
     }
 
     [Fact]
