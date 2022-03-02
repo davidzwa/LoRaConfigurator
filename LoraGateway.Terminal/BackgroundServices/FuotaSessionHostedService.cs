@@ -49,6 +49,7 @@ public class FuotaSessionHostedService : IHostedService
                 var session = _fuotaManagerService.GetCurrentSession();
                 try
                 {
+                    _logger.LogInformation("Sending RLNC init command");
                     _serialProcessorService.SendRlncInitConfigCommand(session);
                 }
                 catch (Exception e)
