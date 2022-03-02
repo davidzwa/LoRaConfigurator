@@ -1,11 +1,11 @@
 {
   "UartFakeLoRaRXMode": true,
-  "UpdateIntervalMilliSeconds": 500,
+  "UpdateIntervalMilliSeconds": 5000,
   "FakeFirmware": true,
-  "FakeFragmentCount": 10,
-  "FakeFragmentSize": 10,
-  "GenerationSize": 5,
-  "GenerationSizeRedundancy": 2,
+  "FakeFragmentCount": 1,
+  "FakeFragmentSize": 5,
+  "GenerationSize": 1,
+  "GenerationSizeRedundancy": 0,
   "FieldDegree": 8,
   "LfsrSeed": 8
 }
