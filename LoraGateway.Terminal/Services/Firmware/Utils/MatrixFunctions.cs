@@ -11,18 +11,10 @@ public static class MatrixFunctions
     private static readonly GField nil = new(0);
 
     /// <summary>
-    ///     Reduces matrix to row-echelon (REF/Gauss) or reduced row-echelon (RREF/Gauss-Jordan) form.
-    /// </summary>
-    public static GField[,] Reduce(GField[,] input)
-    {
-        return Eliminate(input);
-    }
-
-    /// <summary>
     ///     Reduces matrix to row-echelon (REF/Gauss) or reduced row-echelon (RREF/Gauss-Jordan) form and solves for augmented
     ///     columns (if any.)
     /// </summary>
-    public static GField[,] Eliminate(GField[,] input, int augmentedCols = 0)
+    public static GField[,] Eliminate(GField[,] input, int augmentedCols)
     {
         var totalRowCount = input.GetLength(0);
         var totalColCount = input.GetLength(1);

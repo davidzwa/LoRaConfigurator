@@ -172,7 +172,7 @@ public class RlncDecodingServiceTests
         fullAugmentedMatrix.Length.ShouldBe((int) (totalPacketsOutput * (generationSize + frameSize)));
         fullAugmentedMatrix[0, 10].ShouldNotBeNull();
 
-        var result = MatrixFunctions.Reduce(fullAugmentedMatrix);
+        var result = MatrixFunctions.Eliminate(fullAugmentedMatrix, frameSize);
         result[0, 0].ShouldBe(new GField(0x01));
         result[1, 1].ShouldBe(new GField(0x01));
         result[2, 2].ShouldBe(new GField(0x01));
@@ -218,7 +218,8 @@ public class RlncDecodingServiceTests
         // 6 * 5 = 30
         encodingMatrix.Length.ShouldBe((int) (totalPacketsOutput * generationSize));
 
-        var result = MatrixFunctions.Reduce(encodingMatrix);
+        // We have not augmented the matrix - 0 augmentation
+        var result = MatrixFunctions.Eliminate(encodingMatrix, 0);
         result[0, 0].ShouldBe(new GField(0x01));
         result[1, 1].ShouldBe(new GField(0x01));
         result[2, 2].ShouldBe(new GField(0x01));

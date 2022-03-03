@@ -257,10 +257,17 @@ public partial class SerialProcessorService
         }
         else if (bodyCase.Equals(UartResponse.BodyOneofCase.DebugMessage))
         {
-            var payload = response.DebugMessage.Payload;
+            var payload = response.Payload;
             var code = response.DebugMessage.Code;
 
             _logger.LogInformation("[{Name}, Debug] {Payload} Code:{Code}", portName, payload.ToStringUtf8(), code);
+        }
+        else if (bodyCase.Equals(UartResponse.BodyOneofCase.ExceptionMessage))
+        {
+            var payload = response.Payload;
+            var code = response.DebugMessage.Code;
+
+            _logger.LogError("[{Name}, Exception] {Payload} Code:{Code}", portName, payload.ToStringUtf8(), code);
         }
         else if (bodyCase.Equals(UartResponse.BodyOneofCase.LoraMeasurement))
         {

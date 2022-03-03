@@ -70,6 +70,15 @@
       "LastPortName": "COM3",
       "IsGateway": false,
       "Meta": null
+    },
+    {
+      "Id": "6488128-876106005-825374777",
+      "NickName": "Kifybolyha",
+      "FirmwareVersion": "2.0.1.11",
+      "RegisteredAt": "132907664125525158",
+      "LastPortName": "COM10",
+      "IsGateway": false,
+      "Meta": null
     }
   ]
 }

@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using LoraGateway.Services;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -110,6 +110,7 @@ public class FuotaSessionHostedService : IHostedService
             }
             
             var payload = _fuotaManagerService.FetchNextRlncPayload();
+            _logger.LogInformation("Encoded {Message}", SerialUtil.ByteArrayToString(payload.ToArray()));
             _serialProcessorService.SendNextRlncFragment(_fuotaManagerService.GetCurrentSession(), payload);
         }
         catch (Exception e)

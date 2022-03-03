@@ -12,7 +12,7 @@ public static class RlncDecodingService
         var frameSize = encodedPackets.First().Payload.Count;
         var encodingMatrix = encodedPackets.ToAugmentedMatrix();
 
-        var result = MatrixFunctions.Reduce(encodingMatrix);
+        var result = MatrixFunctions.Eliminate(encodingMatrix, frameSize);
 
         return result.ToDecodedPackets(generationSize, frameSize);
     }
