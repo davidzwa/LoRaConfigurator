@@ -273,7 +273,7 @@ public partial class SerialProcessorService
         {
             var decodingResult = response.DecodingResult;
             var success = decodingResult.Success;
-            _logger.LogInformation("[{Name}, DecodingResult] Success: {Payload} Rank: {Matrix} FirstNumber: {FirstNumber} LastNumber: {LastNumber}", 
+            _logger.LogInformation("[{Name}, DecodingResult] Success: {Payload} Rank: {MatrixRank} FirstNumber: {FirstNumber} LastNumber: {LastNumber}", 
                 portName, 
                 success,
                 decodingResult.MatrixRank,

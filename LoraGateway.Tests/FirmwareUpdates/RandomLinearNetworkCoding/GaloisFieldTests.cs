@@ -45,4 +45,26 @@ public class GaloisFieldTests
         // Our validation should show 255 but this was wrong (embedded C++ implementation)
         ((int)result.GetValue()).ShouldBe(202);
     }
+    
+    [Fact]
+    public void GaloisFieldInversionTest_PracticalCalculation2()
+    {
+        var a = new GField(0xdb);
+        var b = new GField(0x04);
+
+        var result = a / b;
+        // Our validation should show 255 but this was wrong (embedded C++ implementation)
+        ((int)result.GetValue()).ShouldBe(255);
+    }
+    
+    [Fact]
+    public void GaloisFieldInversionTest_PracticalCalculation3()
+    {
+        var a = new GField(0x04);
+        var unity = new GField(0x01);
+
+        // Tests the ReduceRow (pivoting) function
+        var result = unity / a;
+        ((int)result.GetValue()).ShouldBe(0x8f);
+    }
 }

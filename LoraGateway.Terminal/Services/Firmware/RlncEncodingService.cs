@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using LoraGateway.Services.Firmware.RandomLinearCoding;
+using Serilog;
 
 namespace LoraGateway.Services.Firmware;
 
@@ -182,6 +183,8 @@ public class RlncEncodingService
                 .GenerateMany(currentGeneration.OriginalPackets.Count)
                 .Select(b => new GField(b))
                 .ToList();
+            
+            Log.Information("Precode resulted in LFSR state {State}", _generator.State);
 
             // Generate packet using coefficients
             var nextEncodedPacketIndex = currentGeneration.EncodedPackets.Count;
