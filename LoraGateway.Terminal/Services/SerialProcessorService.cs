@@ -269,6 +269,18 @@ public partial class SerialProcessorService
 
             _logger.LogError("[{Name}, Exception] {Payload} Code:{Code}", portName, payload.ToStringUtf8(), code);
         }
+        else if (bodyCase.Equals(UartResponse.BodyOneofCase.DecodingResult))
+        {
+            var decodingResult = response.DecodingResult;
+            var success = decodingResult.Success;
+            _logger.LogInformation("[{Name}, DecodingResult] Success: {Payload} Rank: {Matrix} FirstNumber: {FirstNumber} LastNumber: {LastNumber}", 
+                portName, 
+                success,
+                decodingResult.MatrixRank,
+                decodingResult.FirstDecodedNumber,
+                decodingResult.LastDecodedNumber
+                );
+        }
         else if (bodyCase.Equals(UartResponse.BodyOneofCase.LoraMeasurement))
         {
             if (!response.LoraMeasurement.Success)
