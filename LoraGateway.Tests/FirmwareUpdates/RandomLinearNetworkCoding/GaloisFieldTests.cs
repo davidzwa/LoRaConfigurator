@@ -34,4 +34,15 @@ public class GaloisFieldTests
         (c / b).ShouldBe(a);
         GField.Log.Length.ShouldBe(256);
     }
+    
+    [Fact]
+    public void GaloisFieldInversionTest_PracticalCalculations()
+    {
+        var a = new GField(0xb4);
+        var b = new GField(0x70);
+
+        var result = a / b;
+        // Our validation should show 255 but this was wrong (embedded C++ implementation)
+        ((int)result.GetValue()).ShouldBe(202);
+    }
 }

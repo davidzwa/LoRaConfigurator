@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using LoraGateway.Services;
+using LoraGateway.Utils;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 
@@ -51,6 +52,14 @@ public class FuotaSessionHostedService : IHostedService
                 {
                     _logger.LogInformation("Sending RLNC init command");
                     _serialProcessorService.SendRlncInitConfigCommand(session);
+
+                    // Give the devices some time to catch up
+                    await Task.Delay(1000, cancellationToken);
+
+                    // Nice debugging step to verify init step
+                    // _logger.LogInformation("Quitting RLNC init");
+                    // await _fuotaManagerService.StopFuotaSession();
+                    // return;
                 }
                 catch (Exception e)
                 {
@@ -110,6 +119,7 @@ public class FuotaSessionHostedService : IHostedService
             }
             
             var payload = _fuotaManagerService.FetchNextRlncPayload();
+            _logger.LogInformation("Encoded {Message}", SerialUtil.ByteArrayToString(payload.ToArray()));
             _serialProcessorService.SendNextRlncFragment(_fuotaManagerService.GetCurrentSession(), payload);
         }
         catch (Exception e)
