@@ -3,6 +3,7 @@ using LoraGateway.Handlers;
 using LoraGateway.Services;
 using LoraGateway.Services.CommandLine;
 using LoraGateway.Services.Firmware;
+using LoraGateway.Services.Firmware.RandomLinearCoding;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -27,6 +28,15 @@ public static class LoraGateway
                 "[{Timestamp:HH:mm:ss} {Level:u3}] ({SourceContext:l}) {Message:lj}{NewLine}{Exception}"
             )
             .CreateLogger();
+        
+        var unity = new GField(1);
+        foreach(var i in Enumerable.Range(1, 255))
+        {
+            var val = new GField((byte)i);
+            Console.WriteLine($"1/VAL {unity/val}");
+        }
+
+        return;
 
         await CreateHostBuilder(args).RunConsoleAsync();
     }
