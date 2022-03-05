@@ -108,7 +108,7 @@ public partial class SerialProcessorService
             .Concat(new[] {endByte})
             .ToArray();
 
-        _logger.LogInformation("TX {Message}", SerialUtil.ByteArrayToString(transmitBuffer));
+        _logger.LogDebug("TX {Message}", SerialUtil.ByteArrayToString(transmitBuffer));
         var port = GetPort(selectedPortName);
         if (port == null)
         {
@@ -297,7 +297,8 @@ public partial class SerialProcessorService
             var result = await _measurementsService.AddMeasurement(sequenceNumber, snr, rssi);
             if (sequenceNumber > 60000) _measurementsService.SetLocationText("");
 
-            _logger.LogInformation(
+            // Debug for now
+            _logger.LogDebug(
                 "[{Name}] LoRa RX snr: {SNR} rssi: {RSSI} sequence-id:{Index} is-measurement:{IsMeasurement}, skipped:{Skipped}",
                 portName,
                 snr, rssi, sequenceNumber, isMeasurement, result);

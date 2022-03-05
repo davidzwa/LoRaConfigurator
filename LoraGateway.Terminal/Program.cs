@@ -28,15 +28,18 @@ public static class LoraGateway
                 "[{Timestamp:HH:mm:ss} {Level:u3}] ({SourceContext:l}) {Message:lj}{NewLine}{Exception}"
             )
             .CreateLogger();
-        
-        var unity = new GFSymbol(1);
-        foreach(var i in Enumerable.Range(1, 255))
-        {
-            var val = new GFSymbol((byte)i);
-            Console.WriteLine($"1/VAL {unity/val}");
-        }
 
-        return;
+        // Debug the statically generated values
+        // foreach (var i in Enumerable.Range(1, 255))
+        // {
+        //     Console.WriteLine($"Log {GFSymbol.Log[i]}");
+        // }
+        //
+        // Console.WriteLine("--");
+        // foreach(var i in Enumerable.Range(1, 255))
+        // {
+        //     Console.WriteLine($"ALog {GFSymbol.Exp[i]}");
+        // }
 
         await CreateHostBuilder(args).RunConsoleAsync();
     }

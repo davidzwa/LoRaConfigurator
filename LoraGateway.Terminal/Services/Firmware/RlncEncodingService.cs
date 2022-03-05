@@ -184,7 +184,7 @@ public class RlncEncodingService
                 .Select(b => new GFSymbol(b))
                 .ToList();
             
-            Log.Information("Precode resulted in LFSR state {State}", _generator.State);
+            Log.Debug("Precode resulted in LFSR state {State}", _generator.State);
 
             // Generate packet using coefficients
             var nextEncodedPacketIndex = currentGeneration.EncodedPackets.Count;

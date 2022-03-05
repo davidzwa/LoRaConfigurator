@@ -33,6 +33,12 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         _rlncEncodingService = rlncEncodingService;
     }
 
+    public async Task ReloadStore()
+    {
+        await StopFuotaSession();
+        await LoadStore();
+    }
+    
     public async Task HandleRlncConsoleCommand()
     {
         if (Store == null) await LoadStore();
@@ -94,7 +100,7 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         await PrepareFuotaSession();
 
         var result = _cancellation.TryReset();
-        if (!result) _logger.LogWarning("Resetting of FUOTA cancellation source failed. Continuing anyway");
+        if (!result) _logger.LogDebug("Resetting of FUOTA cancellation source failed. Continuing anyway");
 
         await _eventPublisher.PublishEventAsync(new InitFuotaSession { Message = "Initiating" });
     }
@@ -219,7 +225,7 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
 
     private void ClearFuotaSession()
     {
-        if (!IsFuotaSessionEnabled()) throw new ValidationException("Cant stop FUOTA session when none is enabled");
+        // if (!IsFuotaSessionEnabled()) throw new ValidationException("Cant stop FUOTA session when none is enabled");
 
         _firmwarePackets = new List<UnencodedPacket>();
         _currentFuotaSession = null;

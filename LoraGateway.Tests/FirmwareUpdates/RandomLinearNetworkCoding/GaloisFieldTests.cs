@@ -65,6 +65,8 @@ public class GaloisFieldTests
 
         // Tests the ReduceRow (pivoting) function
         var result = unity / a;
-        ((int)result.GetValue()).ShouldBe(0x8f);
+        ((int)result.GetValue()).ShouldBe(0x47);
+        (a * result).ShouldBe(unity);
+        (new GFSymbol(0xdb) * result).ShouldBe(new GFSymbol(0xFF));
     }
 }
