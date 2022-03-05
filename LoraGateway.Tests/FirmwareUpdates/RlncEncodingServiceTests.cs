@@ -125,10 +125,10 @@ public class RlncEncodingServiceTests
     {
         var unencodedPackets = new List<UnencodedPacket>().Append(new UnencodedPacket
         {
-            Payload = new List<GField> {new(0x00)}
+            Payload = new List<GFSymbol> {new(0x00)}
         }).Append(new UnencodedPacket
         {
-            Payload = new List<GField> {new(0x00), new(0x01)}
+            Payload = new List<GFSymbol> {new(0x00), new(0x01)}
         }).ToList();
 
         var generationSize = (uint) 2;

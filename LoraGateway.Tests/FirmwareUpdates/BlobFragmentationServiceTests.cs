@@ -20,14 +20,14 @@ public class BlobFragmentationServiceTests
         var loraPacketSize = 20;
         var fragmentationCollection = await unitUnderTest.GenerateFakeFirmwareAsync(firmwareSize, loraPacketSize);
         fragmentationCollection.Count.ShouldBe(5000);
-        fragmentationCollection.First().Payload[0].ShouldBe(new GField(0x00));
-        fragmentationCollection.First().Payload[1].ShouldBe(new GField(0x00));
-        fragmentationCollection.First().Payload[2].ShouldBe(new GField(0x00));
-        fragmentationCollection.First().Payload[3].ShouldBe(new GField(0x00));
-        fragmentationCollection.Last().Payload[0].ShouldBe(new GField(0x00));
-        fragmentationCollection.Last().Payload[1].ShouldBe(new GField(0x00));
-        fragmentationCollection.Last().Payload[2].ShouldBe(new GField(0x13));
-        fragmentationCollection.Last().Payload[3].ShouldBe(new GField(0x87));
+        fragmentationCollection.First().Payload[0].ShouldBe(new GFSymbol(0x00));
+        fragmentationCollection.First().Payload[1].ShouldBe(new GFSymbol(0x00));
+        fragmentationCollection.First().Payload[2].ShouldBe(new GFSymbol(0x00));
+        fragmentationCollection.First().Payload[3].ShouldBe(new GFSymbol(0x00));
+        fragmentationCollection.Last().Payload[0].ShouldBe(new GFSymbol(0x00));
+        fragmentationCollection.Last().Payload[1].ShouldBe(new GFSymbol(0x00));
+        fragmentationCollection.Last().Payload[2].ShouldBe(new GFSymbol(0x13));
+        fragmentationCollection.Last().Payload[3].ShouldBe(new GFSymbol(0x87));
     }
 
     [Fact]

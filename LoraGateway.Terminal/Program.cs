@@ -29,10 +29,10 @@ public static class LoraGateway
             )
             .CreateLogger();
         
-        var unity = new GField(1);
+        var unity = new GFSymbol(1);
         foreach(var i in Enumerable.Range(1, 255))
         {
-            var val = new GField((byte)i);
+            var val = new GFSymbol((byte)i);
             Console.WriteLine($"1/VAL {unity/val}");
         }
 

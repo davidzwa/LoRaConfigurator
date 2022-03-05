@@ -49,11 +49,11 @@ public class BlobFragmentationService
             .Select(index =>
             {
                 var splitInt = new IntByte {IntVal = index};
-                var payloadBytes = Enumerable.Repeat(new GField(0xFF), frameSize).ToList();
-                if (payloadBytes.Count > 0) payloadBytes[0] = new GField(splitInt.Byte3);
-                if (payloadBytes.Count > 1) payloadBytes[1] = new GField(splitInt.Byte2);
-                if (payloadBytes.Count > 2) payloadBytes[2] = new GField(splitInt.Byte1);
-                if (payloadBytes.Count > 3) payloadBytes[3] = new GField(splitInt.Byte0);
+                var payloadBytes = Enumerable.Repeat(new GFSymbol(0xFF), frameSize).ToList();
+                if (payloadBytes.Count > 0) payloadBytes[0] = new GFSymbol(splitInt.Byte3);
+                if (payloadBytes.Count > 1) payloadBytes[1] = new GFSymbol(splitInt.Byte2);
+                if (payloadBytes.Count > 2) payloadBytes[2] = new GFSymbol(splitInt.Byte1);
+                if (payloadBytes.Count > 3) payloadBytes[3] = new GFSymbol(splitInt.Byte0);
 
                 return new UnencodedPacket {Payload = payloadBytes};
             })

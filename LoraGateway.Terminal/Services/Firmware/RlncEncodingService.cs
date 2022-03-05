@@ -181,7 +181,7 @@ public class RlncEncodingService
             // Array of coeffs used to loop over all symbols and packets
             var encodingCoeffs = _generator
                 .GenerateMany(currentGeneration.OriginalPackets.Count)
-                .Select(b => new GField(b))
+                .Select(b => new GFSymbol(b))
                 .ToList();
             
             Log.Information("Precode resulted in LFSR state {State}", _generator.State);
@@ -201,10 +201,10 @@ public class RlncEncodingService
         return packetsGenerated;
     }
 
-    private EncodedPacket EncodeNextPacket(List<GField> encodingCoefficients, int currentEncodedPacketIndex)
+    private EncodedPacket EncodeNextPacket(List<GFSymbol> encodingCoefficients, int currentEncodedPacketIndex)
     {
         // Initiate the output packet vector with capacity equal to known amount of symbols
-        var outputElements = Enumerable.Range(0, PacketSymbols).Select(_ => new GField()).ToList();
+        var outputElements = Enumerable.Range(0, PacketSymbols).Select(_ => new GFSymbol()).ToList();
         var currentPacketIndex = 0;
 
         // This performs the core encoding procedure

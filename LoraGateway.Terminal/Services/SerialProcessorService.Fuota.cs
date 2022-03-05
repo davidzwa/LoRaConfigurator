@@ -21,7 +21,7 @@ public partial class SerialProcessorService
                 IsMulticast = true,
                 RlncInitConfigCommand = new RlncInitConfigCommand
                 {
-                    FieldPoly = GField.Polynomial,
+                    FieldPoly = GFSymbol.Polynomial,
                     FieldDegree = config.FieldDegree,
                     FrameCount = config.FakeFragmentCount,
                     FrameSize = config.FakeFragmentSize,

@@ -9,8 +9,8 @@ public class EmbeddedGaloisFieldTests
     [Fact]
     public void CompareEmbeddedGFieldOutputTest()
     {
-        var fieldA = new GField(3);
-        var fieldB = new GField(14);
+        var fieldA = new GFSymbol(3);
+        var fieldB = new GFSymbol(14);
 
         (fieldA * fieldB).GetValue().ShouldBe((byte) 18);
     }

@@ -4,7 +4,7 @@
 ///     Finite field arithmetic using Galois Field
 ///     https://github.com/fauzanhilmi/GaloisField/tree/master/FiniteField
 /// </summary>
-public class GField
+public class GFSymbol
 {
     public const int Order = 256; // 2 ^ 8;
 
@@ -20,7 +20,7 @@ public class GField
     private byte _value;
 
     // Generates Exp & Log table for fast multiplication operator
-    static GField()
+    static GFSymbol()
     {
         Exp = new byte[Order];
         Log = new byte[Order];
@@ -35,14 +35,14 @@ public class GField
         }
     }
 
-    public GField()
+    public GFSymbol()
     {
         _value = 0;
     }
 
-    public GField(byte _value)
+    public GFSymbol(byte value)
     {
-        this._value = _value;
+        _value = value;
     }
 
     public int[] GetIrreduciblePolynomial()
@@ -66,32 +66,32 @@ public class GField
     }
 
     //operators
-    public static explicit operator GField(byte b)
+    public static explicit operator GFSymbol(byte b)
     {
-        var f = new GField(b);
+        var f = new GFSymbol(b);
         return f;
     }
 
-    public static explicit operator byte(GField f)
+    public static explicit operator byte(GFSymbol f)
     {
         return f._value;
     }
 
-    public static GField operator +(GField fieldA, GField fieldB)
+    public static GFSymbol operator +(GFSymbol fieldA, GFSymbol fieldB)
     {
         var bResidue = (byte) (fieldA._value ^ fieldB._value);
-        return new GField(bResidue);
+        return new GFSymbol(bResidue);
     }
 
-    public static GField operator -(GField fieldA, GField fieldB)
+    public static GFSymbol operator -(GFSymbol fieldA, GFSymbol fieldB)
     {
         var bResidue = (byte) (fieldA._value ^ fieldB._value);
-        return new GField(bResidue);
+        return new GFSymbol(bResidue);
     }
 
-    public static GField operator *(GField fieldA, GField fieldB)
+    public static GFSymbol operator *(GFSymbol fieldA, GFSymbol fieldB)
     {
-        var fieldTemp = new GField(0);
+        var fieldTemp = new GFSymbol(0);
         if (fieldA._value != 0 && fieldB._value != 0)
         {
             var fieldLog = (byte) ((Log[fieldA._value] + Log[fieldB._value]) % (Order - 1));
@@ -102,11 +102,11 @@ public class GField
         return fieldTemp;
     }
 
-    public static GField operator /(GField fieldA, GField fieldB)
+    public static GFSymbol operator /(GFSymbol fieldA, GFSymbol fieldB)
     {
         if (fieldB._value == 0) throw new ArgumentException("Divisor cannot be 0", "fieldB");
 
-        var fieldTemp = new GField(0);
+        var fieldTemp = new GFSymbol(0);
         if (fieldA._value != 0)
         {
             var fieldTempValue = (byte) ((Order - 1 + Log[fieldA._value] - Log[fieldB._value]) % (Order - 1));
@@ -117,20 +117,20 @@ public class GField
         return fieldTemp;
     }
 
-    public static GField Pow(GField f, byte exp)
+    public static GFSymbol Pow(GFSymbol f, byte exp)
     {
-        var fieldTemp = new GField(1);
+        var fieldTemp = new GFSymbol(1);
         for (byte i = 0; i < exp; i++) fieldTemp *= f;
 
         return fieldTemp;
     }
 
-    public static bool operator ==(GField fieldA, GField fieldB)
+    public static bool operator ==(GFSymbol fieldA, GFSymbol fieldB)
     {
         return fieldA._value == fieldB._value;
     }
 
-    public static bool operator !=(GField fieldA, GField fieldB)
+    public static bool operator !=(GFSymbol fieldA, GFSymbol fieldB)
     {
         return fieldA._value != fieldB._value;
     }
@@ -139,7 +139,7 @@ public class GField
     {
         if (obj == null) return false;
 
-        var field = obj as GField;
+        var field = obj as GFSymbol;
         if ((object) field == null) return false;
 
         return _value == field._value;
