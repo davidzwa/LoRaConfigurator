@@ -37,7 +37,7 @@ public class FuotaSessionHostedService : IHostedService
             {
                 if (!_fuotaManagerService.IsFuotaSessionEnabled())
                 {
-                    _logger.LogInformation("FUOTA Session Host service going to IDLE mode");
+                    _logger.LogDebug("FUOTA Session Host service going to IDLE mode");
                     return;
                 }
 
@@ -50,7 +50,7 @@ public class FuotaSessionHostedService : IHostedService
                 var session = _fuotaManagerService.GetCurrentSession();
                 try
                 {
-                    _logger.LogInformation("Sending RLNC init command");
+                    _logger.LogDebug("Sending RLNC init command");
                     _serialProcessorService.SendRlncInitConfigCommand(session);
 
                     // Give the devices some time to catch up
@@ -64,7 +64,7 @@ public class FuotaSessionHostedService : IHostedService
                 catch (Exception e)
                 {
                     _logger.LogError(e, e.Message);
-                    
+
                     await _fuotaManagerService.StopFuotaSession();
 
                     return;
@@ -111,15 +111,15 @@ public class FuotaSessionHostedService : IHostedService
             if (_fuotaManagerService.IsCurrentGenerationComplete())
             {
                 _fuotaManagerService.MoveNextRlncGeneration();
-                
+
                 var fuotaSession = _fuotaManagerService.GetCurrentSession();
                 _serialProcessorService.SendRlncUpdate(fuotaSession);
-                
+
                 return;
             }
-            
+
             var payload = _fuotaManagerService.FetchNextRlncPayload();
-            _logger.LogInformation("Encoded {Message}", SerialUtil.ByteArrayToString(payload.ToArray()));
+            
             _serialProcessorService.SendNextRlncFragment(_fuotaManagerService.GetCurrentSession(), payload);
         }
         catch (Exception e)
@@ -131,8 +131,13 @@ public class FuotaSessionHostedService : IHostedService
 
     public Task StopAsync(CancellationToken cancellationToken)
     {
-        _logger.LogInformation("FUOTA background service stopping - CanceledByToken: {Canceled}",
+        _logger.LogDebug("FUOTA background service stopping - CanceledByToken: {Canceled}",
             cancellationToken.IsCancellationRequested);
+
+        if (_fuotaManagerService.IsFuotaSessionEnabled())
+        {
+            _serialProcessorService.SendRlncTermination(_fuotaManagerService.GetCurrentSession());
+        }
 
         _stopFired = true;
 

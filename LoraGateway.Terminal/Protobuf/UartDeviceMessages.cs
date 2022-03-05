@@ -36,7 +36,7 @@ namespace LoRa {
             "aXNhYmxlZBgEIAEoCCIaCgpBY2tNZXNzYWdlEgwKBENvZGUYASABKA0iIAoQ",
             "RXhjZXB0aW9uTWVzc2FnZRIMCgRDb2RlGAEgASgNIhwKDERlYnVnTWVzc2Fn",
             "ZRIMCgRDb2RlGAEgASgNImwKDkRlY29kaW5nUmVzdWx0Eg8KB1N1Y2Nlc3MY",
-            "ASABKAgSEgoKTWF0cml4UmFuaxgCIAEoCBIaChJGaXJzdERlY29kZWROdW1i",
+            "ASABKAgSEgoKTWF0cml4UmFuaxgCIAEoDRIaChJGaXJzdERlY29kZWROdW1i",
             "ZXIYAyABKA0SGQoRTGFzdERlY29kZWROdW1iZXIYBCABKA0inQIKDFVhcnRS",
             "ZXNwb25zZRIPCgdQYXlsb2FkGAEgASgMEiMKC2Jvb3RNZXNzYWdlGAIgASgL",
             "MgwuQm9vdE1lc3NhZ2VIABIhCgphY2tNZXNzYWdlGAMgASgLMgsuQWNrTWVz",
@@ -1442,10 +1442,10 @@ namespace LoRa {
 
     /// <summary>Field number for the "MatrixRank" field.</summary>
     public const int MatrixRankFieldNumber = 2;
-    private bool matrixRank_;
+    private uint matrixRank_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool MatrixRank {
+    public uint MatrixRank {
       get { return matrixRank_; }
       set {
         matrixRank_ = value;
@@ -1506,7 +1506,7 @@ namespace LoRa {
     public override int GetHashCode() {
       int hash = 1;
       if (Success != false) hash ^= Success.GetHashCode();
-      if (MatrixRank != false) hash ^= MatrixRank.GetHashCode();
+      if (MatrixRank != 0) hash ^= MatrixRank.GetHashCode();
       if (FirstDecodedNumber != 0) hash ^= FirstDecodedNumber.GetHashCode();
       if (LastDecodedNumber != 0) hash ^= LastDecodedNumber.GetHashCode();
       if (_unknownFields != null) {
@@ -1531,9 +1531,9 @@ namespace LoRa {
         output.WriteRawTag(8);
         output.WriteBool(Success);
       }
-      if (MatrixRank != false) {
+      if (MatrixRank != 0) {
         output.WriteRawTag(16);
-        output.WriteBool(MatrixRank);
+        output.WriteUInt32(MatrixRank);
       }
       if (FirstDecodedNumber != 0) {
         output.WriteRawTag(24);
@@ -1557,9 +1557,9 @@ namespace LoRa {
         output.WriteRawTag(8);
         output.WriteBool(Success);
       }
-      if (MatrixRank != false) {
+      if (MatrixRank != 0) {
         output.WriteRawTag(16);
-        output.WriteBool(MatrixRank);
+        output.WriteUInt32(MatrixRank);
       }
       if (FirstDecodedNumber != 0) {
         output.WriteRawTag(24);
@@ -1582,8 +1582,8 @@ namespace LoRa {
       if (Success != false) {
         size += 1 + 1;
       }
-      if (MatrixRank != false) {
-        size += 1 + 1;
+      if (MatrixRank != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(MatrixRank);
       }
       if (FirstDecodedNumber != 0) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(FirstDecodedNumber);
@@ -1606,7 +1606,7 @@ namespace LoRa {
       if (other.Success != false) {
         Success = other.Success;
       }
-      if (other.MatrixRank != false) {
+      if (other.MatrixRank != 0) {
         MatrixRank = other.MatrixRank;
       }
       if (other.FirstDecodedNumber != 0) {
@@ -1635,7 +1635,7 @@ namespace LoRa {
             break;
           }
           case 16: {
-            MatrixRank = input.ReadBool();
+            MatrixRank = input.ReadUInt32();
             break;
           }
           case 24: {
@@ -1666,7 +1666,7 @@ namespace LoRa {
             break;
           }
           case 16: {
-            MatrixRank = input.ReadBool();
+            MatrixRank = input.ReadUInt32();
             break;
           }
           case 24: {

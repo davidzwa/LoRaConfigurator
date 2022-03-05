@@ -4,13 +4,13 @@ namespace LoraGateway.Services.Firmware.Utils;
 
 public static class MatrixUtils
 {
-    public static GField[,] ToAugmentedMatrix(this IList<EncodedPacket> source)
+    public static GFSymbol[,] ToAugmentedMatrix(this IList<EncodedPacket> source)
     {
         if (source == null) throw new ArgumentNullException("source");
 
         var max = source.Select(l => l.EncodingVector).Max(l => l.Count);
         var maxAugmentation = source.Select(l => l.Payload).Max(l => l.Count);
-        var result = new GField[source.Count, max + maxAugmentation];
+        var result = new GFSymbol[source.Count, max + maxAugmentation];
         for (var i = 0; i < source.Count; i++)
         {
             var systemicLength = source[i].EncodingVector.Count;
@@ -25,12 +25,12 @@ public static class MatrixUtils
         return result;
     }
 
-    public static GField[,] ToEncodingMatrix(this IList<EncodedPacket> source)
+    public static GFSymbol[,] ToEncodingMatrix(this IList<EncodedPacket> source)
     {
         if (source == null) throw new ArgumentNullException("source");
 
         var max = source.Select(l => l.EncodingVector).Max(l => l.Count());
-        var result = new GField[source.Count, max];
+        var result = new GFSymbol[source.Count, max];
         for (var i = 0; i < source.Count; i++)
         for (var j = 0; j < source[i].EncodingVector.Count(); j++)
             result[i, j] = source[i].EncodingVector[j];
@@ -38,12 +38,12 @@ public static class MatrixUtils
         return result;
     }
 
-    public static GField[,] ToPayloadMatrix(this IList<EncodedPacket> source)
+    public static GFSymbol[,] ToPayloadMatrix(this IList<EncodedPacket> source)
     {
         if (source == null) throw new ArgumentNullException("source");
 
         var max = source.Select(l => l.Payload).Max(l => l.Count());
-        var result = new GField[source.Count, max];
+        var result = new GFSymbol[source.Count, max];
         for (var i = 0; i < source.Count; i++)
         for (var j = 0; j < source[i].Payload.Count(); j++)
             result[i, j] = source[i].Payload[j];

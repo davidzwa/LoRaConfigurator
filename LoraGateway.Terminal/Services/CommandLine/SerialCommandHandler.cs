@@ -10,7 +10,6 @@ public class SerialCommandHandler
 {
     private readonly ILogger _logger;
     private readonly MeasurementsService _measurementsService;
-    private readonly IEventPublisher _eventPublisher;
     private readonly FuotaManagerService _fuotaManagerService;
     private readonly SelectedDeviceService _selectedDeviceService;
     private readonly SerialProcessorService _serialProcessorService;
@@ -19,7 +18,6 @@ public class SerialCommandHandler
         ILogger<SerialCommandHandler> logger,
         SelectedDeviceService selectedDeviceService,
         MeasurementsService measurementsService,
-        IEventPublisher eventPublisher,
         FuotaManagerService fuotaManagerService,
         SerialProcessorService serialProcessorService
     )
@@ -27,7 +25,6 @@ public class SerialCommandHandler
         _logger = logger;
         _selectedDeviceService = selectedDeviceService;
         _measurementsService = measurementsService;
-        _eventPublisher = eventPublisher;
         _fuotaManagerService = fuotaManagerService;
         _serialProcessorService = serialProcessorService;
     }
@@ -40,6 +37,7 @@ public class SerialCommandHandler
         rootCommand.Add(GetDeviceConfigurationCommand());
         rootCommand.Add(GetClearMeasurementsCommand());
         rootCommand.Add(GetRlncCommand());
+        rootCommand.Add(GetRlncStoreReloadCommand());
 
         // Fluent structure
         return rootCommand;
@@ -53,6 +51,18 @@ public class SerialCommandHandler
             async () =>
             {
                 await _fuotaManagerService.HandleRlncConsoleCommand();
+            });
+        return command;
+    }
+
+    public Command GetRlncStoreReloadCommand()
+    {
+        var command = new Command("rlnc-load");
+        command.AddAlias("rl");
+        command.Handler = CommandHandler.Create(
+            async () =>
+            {
+                await _fuotaManagerService.ReloadStore();
             });
         return command;
     }

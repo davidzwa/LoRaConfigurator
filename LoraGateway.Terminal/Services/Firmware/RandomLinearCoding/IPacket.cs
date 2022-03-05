@@ -2,5 +2,5 @@
 
 public interface IPacket
 {
-    public List<GField> Payload { get; set; }
+    public List<GFSymbol> Payload { get; set; }
 }

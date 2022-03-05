@@ -41,7 +41,7 @@ public static class PacketUtils
         Console.WriteLine("-- End of packets --");
     }
 
-    public static DecodedPacket ToDecodedPacket(this GField[,] matrix, int packetRow, int encodingVectorSize,
+    public static DecodedPacket ToDecodedPacket(this GFSymbol[,] matrix, int packetRow, int encodingVectorSize,
         int payloadSize)
     {
         if (matrix.GetLength(1) < encodingVectorSize + payloadSize)
@@ -56,16 +56,16 @@ public static class PacketUtils
                 decodedPacket.Payload.Add(matrix[i, j]);
 
         if (decodedPacket.EncodingVector.Count > packetRow &&
-            decodedPacket.EncodingVector[packetRow] == new GField(0x01) &&
-            decodedPacket.EncodingVector.All(v => v == new GField(0x00) || v == new GField(0x01)))
+            decodedPacket.EncodingVector[packetRow] == new GFSymbol(0x01) &&
+            decodedPacket.EncodingVector.All(v => v == new GFSymbol(0x00) || v == new GFSymbol(0x01)))
             decodedPacket.DecodingSuccess = true;
 
-        if (decodedPacket.EncodingVector.All(v => v == new GField(0x00))) decodedPacket.IsRedundant = true;
+        if (decodedPacket.EncodingVector.All(v => v == new GFSymbol(0x00))) decodedPacket.IsRedundant = true;
 
         return decodedPacket;
     }
 
-    public static List<DecodedPacket> ToDecodedPackets(this GField[,] matrix, int encodingVectorSize, int payloadSize)
+    public static List<DecodedPacket> ToDecodedPackets(this GFSymbol[,] matrix, int encodingVectorSize, int payloadSize)
     {
         var decodedPackets = new List<DecodedPacket>();
         foreach (var index in Enumerable.Range(0, matrix.GetLength(0)))

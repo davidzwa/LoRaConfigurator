@@ -7,14 +7,14 @@ namespace LoraGateway.Services.Firmware.Utils;
 /// </summary>
 public static class MatrixFunctions
 {
-    private static readonly GField unity = new(1);
-    private static readonly GField nil = new(0);
+    private static readonly GFSymbol unity = new(1);
+    private static readonly GFSymbol nil = new(0);
 
     /// <summary>
     ///     Reduces matrix to row-echelon (REF/Gauss) or reduced row-echelon (RREF/Gauss-Jordan) form and solves for augmented
     ///     columns (if any.)
     /// </summary>
-    public static GField[,] Eliminate(GField[,] input, int augmentedCols)
+    public static GFSymbol[,] Eliminate(GFSymbol[,] input, int augmentedCols)
     {
         var totalRowCount = input.GetLength(0);
         var totalColCount = input.GetLength(1);
@@ -25,7 +25,7 @@ public static class MatrixFunctions
         // We dont collect a result, just return the full matrix result
         // MatrixEliminationResult result = new MatrixEliminationResult();
 
-        var output = input.Clone() as GField[,];
+        var output = input.Clone() as GFSymbol[,];
 
         if (output == null) throw new Exception("Cloned matrix was null");
 
@@ -73,7 +73,7 @@ public static class MatrixFunctions
     }
 
 
-    private static int? FindPivot(GField[,] input, int startRow, int col, int rowCount)
+    private static int? FindPivot(GFSymbol[,] input, int startRow, int col, int rowCount)
     {
         for (var i = startRow; i < rowCount; i++)
             if (input[i, col] != nil)
@@ -82,7 +82,7 @@ public static class MatrixFunctions
         return null;
     }
 
-    private static void SwitchRows(GField[,] input, int row1, int row2, int colCount)
+    private static void SwitchRows(GFSymbol[,] input, int row1, int row2, int colCount)
     {
         if (row1 == row2)
             return;
@@ -91,7 +91,7 @@ public static class MatrixFunctions
             (input[row1, col], input[row2, col]) = (input[row2, col], input[row1, col]);
     }
 
-    private static void ReduceRow(GField[,] input, int row, int col, int colCount)
+    private static void ReduceRow(GFSymbol[,] input, int row, int col, int colCount)
     {
         var coefficient = unity / input[row, col];
 
@@ -105,7 +105,7 @@ public static class MatrixFunctions
     /// <summary>
     ///     Eliminates row using another pivot row.
     /// </summary>
-    private static void EliminateRow(GField[,] input, int row, int pivotRow, int pivotCol, int colCount)
+    private static void EliminateRow(GFSymbol[,] input, int row, int pivotRow, int pivotCol, int colCount)
     {
         if (pivotRow == row)
             return;

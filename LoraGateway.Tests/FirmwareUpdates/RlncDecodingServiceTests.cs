@@ -173,12 +173,12 @@ public class RlncDecodingServiceTests
         fullAugmentedMatrix[0, 10].ShouldNotBeNull();
 
         var result = MatrixFunctions.Eliminate(fullAugmentedMatrix, frameSize);
-        result[0, 0].ShouldBe(new GField(0x01));
-        result[1, 1].ShouldBe(new GField(0x01));
-        result[2, 2].ShouldBe(new GField(0x01));
-        result[3, 3].ShouldBe(new GField(0x01));
-        result[4, 4].ShouldBe(new GField(0x01));
-        result[5, 4].ShouldBe(new GField(0x00)); // Redundant packet
+        result[0, 0].ShouldBe(new GFSymbol(0x01));
+        result[1, 1].ShouldBe(new GFSymbol(0x01));
+        result[2, 2].ShouldBe(new GFSymbol(0x01));
+        result[3, 3].ShouldBe(new GFSymbol(0x01));
+        result[4, 4].ShouldBe(new GFSymbol(0x01));
+        result[5, 4].ShouldBe(new GFSymbol(0x00)); // Redundant packet
 
         var decodedPackets = result.ToDecodedPackets((int) generationSize, frameSize);
         decodedPackets.Count.ShouldBe(6);
@@ -190,7 +190,7 @@ public class RlncDecodingServiceTests
     [Fact]
     public void MatrixRankTest()
     {
-        GField[,] encMatrix =
+        GFSymbol[,] encMatrix =
         {
             {new(0x01), new(0x01)},
             {new(0x00), new(0x01)}
@@ -220,11 +220,11 @@ public class RlncDecodingServiceTests
 
         // We have not augmented the matrix - 0 augmentation
         var result = MatrixFunctions.Eliminate(encodingMatrix, 0);
-        result[0, 0].ShouldBe(new GField(0x01));
-        result[1, 1].ShouldBe(new GField(0x01));
-        result[2, 2].ShouldBe(new GField(0x01));
-        result[3, 3].ShouldBe(new GField(0x01));
-        result[4, 4].ShouldBe(new GField(0x01));
-        result[5, 4].ShouldBe(new GField(0x00)); // Redundant packet
+        result[0, 0].ShouldBe(new GFSymbol(0x01));
+        result[1, 1].ShouldBe(new GFSymbol(0x01));
+        result[2, 2].ShouldBe(new GFSymbol(0x01));
+        result[3, 3].ShouldBe(new GFSymbol(0x01));
+        result[4, 4].ShouldBe(new GFSymbol(0x01));
+        result[5, 4].ShouldBe(new GFSymbol(0x00)); // Redundant packet
     }
 }

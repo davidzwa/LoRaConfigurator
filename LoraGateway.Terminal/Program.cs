@@ -3,6 +3,7 @@ using LoraGateway.Handlers;
 using LoraGateway.Services;
 using LoraGateway.Services.CommandLine;
 using LoraGateway.Services.Firmware;
+using LoraGateway.Services.Firmware.RandomLinearCoding;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -27,6 +28,18 @@ public static class LoraGateway
                 "[{Timestamp:HH:mm:ss} {Level:u3}] ({SourceContext:l}) {Message:lj}{NewLine}{Exception}"
             )
             .CreateLogger();
+
+        // Debug the statically generated values
+        // foreach (var i in Enumerable.Range(1, 255))
+        // {
+        //     Console.WriteLine($"Log {GFSymbol.Log[i]}");
+        // }
+        //
+        // Console.WriteLine("--");
+        // foreach(var i in Enumerable.Range(1, 255))
+        // {
+        //     Console.WriteLine($"ALog {GFSymbol.Exp[i]}");
+        // }
 
         await CreateHostBuilder(args).RunConsoleAsync();
     }

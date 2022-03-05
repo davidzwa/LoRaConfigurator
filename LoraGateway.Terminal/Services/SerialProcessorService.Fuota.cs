@@ -21,7 +21,7 @@ public partial class SerialProcessorService
                 IsMulticast = true,
                 RlncInitConfigCommand = new RlncInitConfigCommand
                 {
-                    FieldPoly = GField.Polynomial,
+                    FieldPoly = GFSymbol.Polynomial,
                     FieldDegree = config.FieldDegree,
                     FrameCount = config.FakeFragmentCount,
                     FrameSize = config.FakeFragmentSize,
@@ -76,6 +76,24 @@ public partial class SerialProcessorService
                 {
                     GenerationIndex = fuotaSession.CurrentGenerationIndex
                 }
+            }
+        };
+
+        WriteMessage(command);
+    }
+    
+    public void SendRlncTermination(FuotaSession fuotaSession)
+    {
+        var config = fuotaSession.Config;
+        var command = new UartCommand
+        {
+            DoNotProxyCommand = config.UartFakeLoRaRxMode,
+            TransmitCommand = new LoRaMessage
+            {
+                CorrelationCode = 0,
+                DeviceId = 0,
+                IsMulticast = true,
+                RlncTerminationCommand = new RlncTerminationCommand()
             }
         };
 
