@@ -79,6 +79,15 @@
       "LastPortName": "COM10",
       "IsGateway": false,
       "Meta": null
+    },
+    {
+      "Id": "5832774-876106005-825374777",
+      "NickName": "Pegaeshaedezhu",
+      "FirmwareVersion": "2.0.1.11",
+      "RegisteredAt": "132911431153208074",
+      "LastPortName": "COM11",
+      "IsGateway": false,
+      "Meta": null
     }
   ]
 }

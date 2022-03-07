@@ -43,6 +43,14 @@ public class SerialCommandHandler
         return rootCommand;
     }
 
+    bool GetDoNotProxyConfig()
+    {
+        var store = _fuotaManagerService.GetStore();
+        if (store == null) return false;
+        
+        return store.UartFakeLoRaRxMode;
+    }
+    
     public Command GetRlncCommand()
     {
         var command = new Command("rlnc-init");
@@ -76,7 +84,7 @@ public class SerialCommandHandler
             {
                 var selectedPortName = _selectedDeviceService.SelectedPortName;
                 _logger.LogInformation("Clearing device measurements {Port}", selectedPortName);
-                _serialProcessorService.SendClearMeasurementsCommands();
+                _serialProcessorService.SendClearMeasurementsCommands(GetDoNotProxyConfig());
             });
         return command;
     }
@@ -92,7 +100,7 @@ public class SerialCommandHandler
             {
                 var selectedPortName = _selectedDeviceService.SelectedPortName;
                 _logger.LogInformation("Device config {Port}", selectedPortName);
-                _serialProcessorService.SendDeviceConfiguration(enableAlwaysSend, alwaysSendPeriod);
+                _serialProcessorService.SendDeviceConfiguration(enableAlwaysSend, alwaysSendPeriod, GetDoNotProxyConfig());
             });
         return command;
     }
@@ -109,7 +117,7 @@ public class SerialCommandHandler
                 _serialProcessorService.SendUnicastTransmitCommand(new byte[]
                 {
                     0xFF, 0xFE, 0xFD
-                });
+                },GetDoNotProxyConfig());
             });
 
         return command;
@@ -132,7 +140,7 @@ public class SerialCommandHandler
                 _serialProcessorService.SendPeriodicTransmitCommand(period, false, count, new byte[]
                 {
                     0xFF, 0xFE, 0xFD
-                });
+                },GetDoNotProxyConfig());
             });
 
         return command;
@@ -146,7 +154,7 @@ public class SerialCommandHandler
         {
             var selectedPortName = _selectedDeviceService.SelectedPortName;
             _logger.LogInformation("Boot sent {Port}", selectedPortName);
-            _serialProcessorService.SendBootCommand();
+            _serialProcessorService.SendBootCommand(GetDoNotProxyConfig());
         });
 
         return command;

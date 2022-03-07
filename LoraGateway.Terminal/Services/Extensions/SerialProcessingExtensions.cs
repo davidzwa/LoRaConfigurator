@@ -1,6 +1,5 @@
 ﻿using Google.Protobuf;
 using LoRa;
-using LoraGateway.Services.Firmware.RandomLinearCoding;
 
 namespace LoraGateway.Services.Extensions;
 
@@ -8,14 +7,17 @@ public static class SerialProcessingExtensions
 {
     public static void SendUnicastTransmitCommand(
         this SerialProcessorService processorService,
-        byte[] payload
+        byte[] payload,
+        bool doNotProxy
     )
     {
         var command = new UartCommand
         {
+            DoNotProxyCommand = doNotProxy,
             TransmitCommand =
                 new LoRaMessage
                 {
+                    DeviceId = 5832774, // TODO replace with something
                     IsMulticast = false,
                     Payload = ByteString.CopyFrom(payload)
                 }
@@ -29,11 +31,13 @@ public static class SerialProcessingExtensions
         uint period,
         bool infinite,
         uint repetitions,
-        byte[] payload
+        byte[] payload,
+        bool doNotProxy
     )
     {
         var command = new UartCommand
         {
+            DoNotProxyCommand = doNotProxy,
             TransmitCommand =
                 new LoRaMessage
                 {
@@ -54,11 +58,13 @@ public static class SerialProcessingExtensions
     public static void SendDeviceConfiguration(
         this SerialProcessorService processorService,
         bool enableAlwaysSend,
-        uint alwaysSendPeriod
+        uint alwaysSendPeriod,
+        bool doNotProxy
     )
     {
         var command = new UartCommand
         {
+            DoNotProxyCommand = doNotProxy,
             DeviceConfiguration =
                 new DeviceConfiguration
                 {
@@ -71,20 +77,22 @@ public static class SerialProcessingExtensions
     }
 
     public static void SendBootCommand(
-        this SerialProcessorService processorService)
+        this SerialProcessorService processorService, bool doNotProxy)
     {
         var command = new UartCommand
         {
+            DoNotProxyCommand = doNotProxy,
             RequestBootInfo = new RequestBootInfo {Request = true}
         };
         processorService.WriteMessage(command);
     }
 
     public static void SendClearMeasurementsCommands(
-        this SerialProcessorService processorService)
+        this SerialProcessorService processorService, bool doNotProxy)
     {
         var command = new UartCommand
         {
+            DoNotProxyCommand = doNotProxy,
             ClearMeasurementsCommand = new ClearMeasurementsCommand {SendBootAfter = true}
         };
         processorService.WriteMessage(command);

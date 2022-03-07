@@ -35,6 +35,8 @@ public class FuotaSessionHostedService : IHostedService
         {
             Task.Run(async () =>
             {
+                await _fuotaManagerService.LoadStore();
+                
                 if (!_fuotaManagerService.IsFuotaSessionEnabled())
                 {
                     _logger.LogDebug("FUOTA Session Host service going to IDLE mode");

@@ -279,7 +279,7 @@ public partial class SerialProcessorService
                 decodingResult.MatrixRank,
                 decodingResult.FirstDecodedNumber,
                 decodingResult.LastDecodedNumber
-                );
+            );
         }
         else if (bodyCase.Equals(UartResponse.BodyOneofCase.LoraMeasurement))
         {
