@@ -31,7 +31,6 @@ public class SerialCommandHandler
 
     public RootCommand ApplyCommands(RootCommand rootCommand)
     {
-        rootCommand.Add(GetPeriodicSendCommand());
         rootCommand.Add(GetBootCommand());
         rootCommand.Add(GetUnicastSendCommand());
         rootCommand.Add(GetDeviceConfigurationCommand());
@@ -47,19 +46,16 @@ public class SerialCommandHandler
     {
         var store = _fuotaManagerService.GetStore();
         if (store == null) return false;
-        
+
         return store.UartFakeLoRaRxMode;
     }
-    
+
     public Command GetRlncCommand()
     {
         var command = new Command("rlnc-init");
         command.AddAlias("rlnc");
         command.Handler = CommandHandler.Create(
-            async () =>
-            {
-                await _fuotaManagerService.HandleRlncConsoleCommand();
-            });
+            async () => { await _fuotaManagerService.HandleRlncConsoleCommand(); });
         return command;
     }
 
@@ -68,10 +64,7 @@ public class SerialCommandHandler
         var command = new Command("rlnc-load");
         command.AddAlias("rl");
         command.Handler = CommandHandler.Create(
-            async () =>
-            {
-                await _fuotaManagerService.ReloadStore();
-            });
+            async () => { await _fuotaManagerService.ReloadStore(); });
         return command;
     }
 
@@ -94,13 +87,20 @@ public class SerialCommandHandler
         var command = new Command("device");
         command.AddAlias("d");
         command.AddArgument(new Argument<bool>("enableAlwaysSend"));
-        command.AddArgument(new Argument<uint>("alwaysSendPeriod"));
+        command.AddOption(new Option<uint>("t", () => 1000));
+        command.AddOption(new Option<uint>("n", () => 0)); // if 0 disable it 
+        command.AddOption(new Option<string>("loc", () => ""));
         command.Handler = CommandHandler.Create(
-            (bool enableAlwaysSend, uint alwaysSendPeriod) =>
+            (bool enableAlwaysSend, uint t, uint n, string loc) =>
             {
+                if (loc.Length != 0)
+                {
+                    _measurementsService.SetLocationText(loc);
+                }
+
                 var selectedPortName = _selectedDeviceService.SelectedPortName;
                 _logger.LogInformation("Device config {Port}", selectedPortName);
-                _serialProcessorService.SendDeviceConfiguration(enableAlwaysSend, alwaysSendPeriod, GetDoNotProxyConfig());
+                _serialProcessorService.SendDeviceConfiguration(enableAlwaysSend, t, n, GetDoNotProxyConfig());
             });
         return command;
     }
@@ -117,30 +117,7 @@ public class SerialCommandHandler
                 _serialProcessorService.SendUnicastTransmitCommand(new byte[]
                 {
                     0xFF, 0xFE, 0xFD
-                },GetDoNotProxyConfig());
-            });
-
-        return command;
-    }
-
-    public Command GetPeriodicSendCommand()
-    {
-        var command = new Command("period");
-        command.AddAlias("p");
-        command.AddArgument(new Argument<uint>("period"));
-        command.AddArgument(new Argument<uint>("count"));
-        command.AddArgument(new Argument<int>("x"));
-        command.AddArgument(new Argument<int>("y"));
-        command.Handler = CommandHandler.Create(
-            (uint period, uint count, int x, int y) =>
-            {
-                _measurementsService.SetLocation(x, y);
-                var selectedPortName = _selectedDeviceService.SelectedPortName;
-                _logger.LogInformation("Periodic command {Port}", selectedPortName);
-                _serialProcessorService.SendPeriodicTransmitCommand(period, false, count, new byte[]
-                {
-                    0xFF, 0xFE, 0xFD
-                },GetDoNotProxyConfig());
+                }, GetDoNotProxyConfig());
             });
 
         return command;

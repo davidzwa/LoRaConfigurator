@@ -26,39 +26,11 @@ public static class SerialProcessingExtensions
         processorService.WriteMessage(command);
     }
 
-    public static void SendPeriodicTransmitCommand(
-        this SerialProcessorService processorService,
-        uint period,
-        bool infinite,
-        uint repetitions,
-        byte[] payload,
-        bool doNotProxy
-    )
-    {
-        var command = new UartCommand
-        {
-            DoNotProxyCommand = doNotProxy,
-            TransmitCommand =
-                new LoRaMessage
-                {
-                    IsMulticast = false,
-                    SequenceConfig = new ForwardSequenceConfig
-                    {
-                        Period = period,
-                        Indefinite = infinite,
-                        SequenceCountLimit = repetitions
-                    },
-                    Payload = ByteString.CopyFrom(payload)
-                }
-        };
-
-        processorService.WriteMessage(command);
-    }
-
     public static void SendDeviceConfiguration(
         this SerialProcessorService processorService,
         bool enableAlwaysSend,
         uint alwaysSendPeriod,
+        uint limitedPacketCount,
         bool doNotProxy
     )
     {
@@ -69,7 +41,8 @@ public static class SerialProcessingExtensions
                 new DeviceConfiguration
                 {
                     AlwaysSendPeriod = alwaysSendPeriod,
-                    EnableAlwaysSend = enableAlwaysSend
+                    EnableAlwaysSend = enableAlwaysSend,
+                    LimitedSendCount = limitedPacketCount
                 }
         };
 

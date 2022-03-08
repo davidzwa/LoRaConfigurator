@@ -13,7 +13,7 @@
       "NickName": "MotherShip",
       "FirmwareVersion": null,
       "RegisteredAt": "132835343136590640",
-      "LastPortName": "COM3",
+      "LastPortName": null,
       "IsGateway": false,
       "Meta": null
     },
@@ -65,7 +65,7 @@
     {
       "Id": "5570643-859328791-892940854",
       "NickName": "Humatameha",
-      "FirmwareVersion": "2.0.1.11",
+      "FirmwareVersion": "2.0.1.12",
       "RegisteredAt": "132848144244789782",
       "LastPortName": "COM3",
       "IsGateway": false,
@@ -83,7 +83,7 @@
     {
       "Id": "5832774-876106005-825374777",
       "NickName": "Pegaeshaedezhu",
-      "FirmwareVersion": "2.0.1.11",
+      "FirmwareVersion": "2.0.1.12",
       "RegisteredAt": "132911431153208074",
       "LastPortName": "COM11",
       "IsGateway": false,

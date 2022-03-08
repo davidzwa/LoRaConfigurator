@@ -59,7 +59,7 @@ public partial class SerialProcessorService
         // Set the read/write timeouts
         port.ReadTimeout = 10000;
         port.WriteTimeout = 500;
-
+        
         port.ErrorReceived += (sender, args) => OnPortError((SerialPort) sender, args);
         port.DataReceived += async (sender, args) => await OnPortData((SerialPort) sender, args);
         try
@@ -79,7 +79,7 @@ public partial class SerialProcessorService
         {
             return;
         }
-
+        
         _logger.LogInformation("Connected to device {PortName}", portName);
         SerialPorts.Add(port);
     }
@@ -298,7 +298,7 @@ public partial class SerialProcessorService
             if (sequenceNumber > 60000) _measurementsService.SetLocationText("");
 
             // Debug for now
-            _logger.LogDebug(
+            _logger.LogInformation(
                 "[{Name}] LoRa RX snr: {SNR} rssi: {RSSI} sequence-id:{Index} is-measurement:{IsMeasurement}, skipped:{Skipped}",
                 portName,
                 snr, rssi, sequenceNumber, isMeasurement, result);

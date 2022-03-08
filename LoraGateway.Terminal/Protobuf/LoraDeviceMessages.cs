@@ -25,26 +25,24 @@ namespace LoRa {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Chpsb3JhX2RldmljZV9tZXNzYWdlcy5wcm90bxoec2hhcmVkL2V4cGVyaW1l",
-            "bnRfY29uZmlnLnByb3RvGhVzaGFyZWQvZmlybXdhcmUucHJvdG8i7AQKC0xv",
+            "bnRfY29uZmlnLnByb3RvGhVzaGFyZWQvZmlybXdhcmUucHJvdG8iugQKC0xv",
             "UmFNZXNzYWdlEhMKC0lzTXVsdGljYXN0GAEgASgIEhAKCERldmljZUlkGAIg",
             "ASgNEhcKD0NvcnJlbGF0aW9uQ29kZRgDIAEoDRIPCgdQYXlsb2FkGAQgASgM",
-            "EjAKDnNlcXVlbmNlQ29uZmlnGAUgASgLMhYuRm9yd2FyZFNlcXVlbmNlQ29u",
-            "ZmlnSAASPQoYZm9yd2FyZFJhZGlvQ29uZmlnVXBkYXRlGAYgASgLMhkuRm9y",
-            "d2FyZFJhZGlvQ29uZmlnVXBkYXRlSAASPQoYZm9yd2FyZEV4cGVyaW1lbnRD",
-            "b21tYW5kGAcgASgLMhkuRm9yd2FyZEV4cGVyaW1lbnRDb21tYW5kSAASPQoY",
-            "bWVhc3VyZW1lbnRTdHJlYW1SZXF1ZXN0GAggASgLMhkuTWVhc3VyZW1lbnRT",
-            "dHJlYW1SZXF1ZXN0SAASPwoZbWVhc3VyZW1lbnRTdHJlYW1GcmFnbWVudBgJ",
-            "IAEoCzIaLk1lYXN1cmVtZW50U3RyZWFtRnJhZ21lbnRIABI3ChVybG5jSW5p",
-            "dENvbmZpZ0NvbW1hbmQYCiABKAsyFi5SbG5jSW5pdENvbmZpZ0NvbW1hbmRI",
-            "ABIzChNybG5jRW5jb2RlZEZyYWdtZW50GAsgASgLMhQuUmxuY0VuY29kZWRG",
-            "cmFnbWVudEgAEisKD3JsbmNTdGF0ZVVwZGF0ZRgMIAEoCzIQLlJsbmNTdGF0",
-            "ZVVwZGF0ZUgAEjkKFnJsbmNUZXJtaW5hdGlvbkNvbW1hbmQYDSABKAsyFy5S",
-            "bG5jVGVybWluYXRpb25Db21tYW5kSABCBgoEQm9keUIHqgIETG9SYWIGcHJv",
-            "dG8z"));
+            "Ej0KGGZvcndhcmRSYWRpb0NvbmZpZ1VwZGF0ZRgGIAEoCzIZLkZvcndhcmRS",
+            "YWRpb0NvbmZpZ1VwZGF0ZUgAEj0KGGZvcndhcmRFeHBlcmltZW50Q29tbWFu",
+            "ZBgHIAEoCzIZLkZvcndhcmRFeHBlcmltZW50Q29tbWFuZEgAEj0KGG1lYXN1",
+            "cmVtZW50U3RyZWFtUmVxdWVzdBgIIAEoCzIZLk1lYXN1cmVtZW50U3RyZWFt",
+            "UmVxdWVzdEgAEj8KGW1lYXN1cmVtZW50U3RyZWFtRnJhZ21lbnQYCSABKAsy",
+            "Gi5NZWFzdXJlbWVudFN0cmVhbUZyYWdtZW50SAASNwoVcmxuY0luaXRDb25m",
+            "aWdDb21tYW5kGAogASgLMhYuUmxuY0luaXRDb25maWdDb21tYW5kSAASMwoT",
+            "cmxuY0VuY29kZWRGcmFnbWVudBgLIAEoCzIULlJsbmNFbmNvZGVkRnJhZ21l",
+            "bnRIABIrCg9ybG5jU3RhdGVVcGRhdGUYDCABKAsyEC5SbG5jU3RhdGVVcGRh",
+            "dGVIABI5ChZybG5jVGVybWluYXRpb25Db21tYW5kGA0gASgLMhcuUmxuY1Rl",
+            "cm1pbmF0aW9uQ29tbWFuZEgAQgYKBEJvZHlCB6oCBExvUmFiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LoRa.ExperimentConfigReflection.Descriptor, global::LoRa.FirmwareReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.LoRaMessage), global::LoRa.LoRaMessage.Parser, new[]{ "IsMulticast", "DeviceId", "CorrelationCode", "Payload", "SequenceConfig", "ForwardRadioConfigUpdate", "ForwardExperimentCommand", "MeasurementStreamRequest", "MeasurementStreamFragment", "RlncInitConfigCommand", "RlncEncodedFragment", "RlncStateUpdate", "RlncTerminationCommand" }, new[]{ "Body" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.LoRaMessage), global::LoRa.LoRaMessage.Parser, new[]{ "IsMulticast", "DeviceId", "CorrelationCode", "Payload", "ForwardRadioConfigUpdate", "ForwardExperimentCommand", "MeasurementStreamRequest", "MeasurementStreamFragment", "RlncInitConfigCommand", "RlncEncodedFragment", "RlncStateUpdate", "RlncTerminationCommand" }, new[]{ "Body" }, null, null, null)
           }));
     }
     #endregion
@@ -90,9 +88,6 @@ namespace LoRa {
       correlationCode_ = other.correlationCode_;
       payload_ = other.payload_;
       switch (other.BodyCase) {
-        case BodyOneofCase.SequenceConfig:
-          SequenceConfig = other.SequenceConfig.Clone();
-          break;
         case BodyOneofCase.ForwardRadioConfigUpdate:
           ForwardRadioConfigUpdate = other.ForwardRadioConfigUpdate.Clone();
           break;
@@ -176,20 +171,11 @@ namespace LoRa {
       }
     }
 
-    /// <summary>Field number for the "sequenceConfig" field.</summary>
-    public const int SequenceConfigFieldNumber = 5;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LoRa.ForwardSequenceConfig SequenceConfig {
-      get { return bodyCase_ == BodyOneofCase.SequenceConfig ? (global::LoRa.ForwardSequenceConfig) body_ : null; }
-      set {
-        body_ = value;
-        bodyCase_ = value == null ? BodyOneofCase.None : BodyOneofCase.SequenceConfig;
-      }
-    }
-
     /// <summary>Field number for the "forwardRadioConfigUpdate" field.</summary>
     public const int ForwardRadioConfigUpdateFieldNumber = 6;
+    /// <summary>
+    /// ForwardSequenceConfig sequenceConfig = 5;
+    /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LoRa.ForwardRadioConfigUpdate ForwardRadioConfigUpdate {
@@ -291,7 +277,6 @@ namespace LoRa {
     /// <summary>Enum of possible cases for the "Body" oneof.</summary>
     public enum BodyOneofCase {
       None = 0,
-      SequenceConfig = 5,
       ForwardRadioConfigUpdate = 6,
       ForwardExperimentCommand = 7,
       MeasurementStreamRequest = 8,
@@ -334,7 +319,6 @@ namespace LoRa {
       if (DeviceId != other.DeviceId) return false;
       if (CorrelationCode != other.CorrelationCode) return false;
       if (Payload != other.Payload) return false;
-      if (!object.Equals(SequenceConfig, other.SequenceConfig)) return false;
       if (!object.Equals(ForwardRadioConfigUpdate, other.ForwardRadioConfigUpdate)) return false;
       if (!object.Equals(ForwardExperimentCommand, other.ForwardExperimentCommand)) return false;
       if (!object.Equals(MeasurementStreamRequest, other.MeasurementStreamRequest)) return false;
@@ -355,7 +339,6 @@ namespace LoRa {
       if (DeviceId != 0) hash ^= DeviceId.GetHashCode();
       if (CorrelationCode != 0) hash ^= CorrelationCode.GetHashCode();
       if (Payload.Length != 0) hash ^= Payload.GetHashCode();
-      if (bodyCase_ == BodyOneofCase.SequenceConfig) hash ^= SequenceConfig.GetHashCode();
       if (bodyCase_ == BodyOneofCase.ForwardRadioConfigUpdate) hash ^= ForwardRadioConfigUpdate.GetHashCode();
       if (bodyCase_ == BodyOneofCase.ForwardExperimentCommand) hash ^= ForwardExperimentCommand.GetHashCode();
       if (bodyCase_ == BodyOneofCase.MeasurementStreamRequest) hash ^= MeasurementStreamRequest.GetHashCode();
@@ -398,10 +381,6 @@ namespace LoRa {
       if (Payload.Length != 0) {
         output.WriteRawTag(34);
         output.WriteBytes(Payload);
-      }
-      if (bodyCase_ == BodyOneofCase.SequenceConfig) {
-        output.WriteRawTag(42);
-        output.WriteMessage(SequenceConfig);
       }
       if (bodyCase_ == BodyOneofCase.ForwardRadioConfigUpdate) {
         output.WriteRawTag(50);
@@ -461,10 +440,6 @@ namespace LoRa {
         output.WriteRawTag(34);
         output.WriteBytes(Payload);
       }
-      if (bodyCase_ == BodyOneofCase.SequenceConfig) {
-        output.WriteRawTag(42);
-        output.WriteMessage(SequenceConfig);
-      }
       if (bodyCase_ == BodyOneofCase.ForwardRadioConfigUpdate) {
         output.WriteRawTag(50);
         output.WriteMessage(ForwardRadioConfigUpdate);
@@ -519,9 +494,6 @@ namespace LoRa {
       if (Payload.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeBytesSize(Payload);
       }
-      if (bodyCase_ == BodyOneofCase.SequenceConfig) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(SequenceConfig);
-      }
       if (bodyCase_ == BodyOneofCase.ForwardRadioConfigUpdate) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(ForwardRadioConfigUpdate);
       }
@@ -571,12 +543,6 @@ namespace LoRa {
         Payload = other.Payload;
       }
       switch (other.BodyCase) {
-        case BodyOneofCase.SequenceConfig:
-          if (SequenceConfig == null) {
-            SequenceConfig = new global::LoRa.ForwardSequenceConfig();
-          }
-          SequenceConfig.MergeFrom(other.SequenceConfig);
-          break;
         case BodyOneofCase.ForwardRadioConfigUpdate:
           if (ForwardRadioConfigUpdate == null) {
             ForwardRadioConfigUpdate = new global::LoRa.ForwardRadioConfigUpdate();
@@ -656,15 +622,6 @@ namespace LoRa {
           }
           case 34: {
             Payload = input.ReadBytes();
-            break;
-          }
-          case 42: {
-            global::LoRa.ForwardSequenceConfig subBuilder = new global::LoRa.ForwardSequenceConfig();
-            if (bodyCase_ == BodyOneofCase.SequenceConfig) {
-              subBuilder.MergeFrom(SequenceConfig);
-            }
-            input.ReadMessage(subBuilder);
-            SequenceConfig = subBuilder;
             break;
           }
           case 50: {
@@ -768,15 +725,6 @@ namespace LoRa {
           }
           case 34: {
             Payload = input.ReadBytes();
-            break;
-          }
-          case 42: {
-            global::LoRa.ForwardSequenceConfig subBuilder = new global::LoRa.ForwardSequenceConfig();
-            if (bodyCase_ == BodyOneofCase.SequenceConfig) {
-              subBuilder.MergeFrom(SequenceConfig);
-            }
-            input.ReadMessage(subBuilder);
-            SequenceConfig = subBuilder;
             break;
           }
           case 50: {

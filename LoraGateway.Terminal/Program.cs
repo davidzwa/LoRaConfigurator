@@ -3,7 +3,6 @@ using LoraGateway.Handlers;
 using LoraGateway.Services;
 using LoraGateway.Services.CommandLine;
 using LoraGateway.Services.Firmware;
-using LoraGateway.Services.Firmware.RandomLinearCoding;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -25,7 +24,7 @@ public static class LoraGateway
             .Enrich.FromLogContext()
             .WriteTo.Console(
                 outputTemplate:
-                "[{Timestamp:HH:mm:ss} {Level:u3}] ({SourceContext:l}) {Message:lj}{NewLine}{Exception}"
+                "[{Timestamp:HH:mm:ss} {Level:u3}] ({SourceContext}) {Message:lj}{NewLine}{Exception}"
             )
             .CreateLogger();
 
