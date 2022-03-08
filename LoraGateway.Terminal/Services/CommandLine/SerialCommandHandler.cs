@@ -89,7 +89,7 @@ public class SerialCommandHandler
         command.AddArgument(new Argument<bool>("enableAlwaysSend"));
         command.AddOption(new Option<uint>("t", () => 1000));
         command.AddOption(new Option<uint>("n", () => 0)); // if 0 disable it 
-        command.AddOption(new Option<string>("loc", () => ""));
+        command.AddOption(new Option<string>("--loc", () => ""));
         command.Handler = CommandHandler.Create(
             (bool enableAlwaysSend, uint t, uint n, string loc) =>
             {
