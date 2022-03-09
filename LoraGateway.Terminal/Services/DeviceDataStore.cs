@@ -22,9 +22,17 @@ public class DeviceDataStore : JsonDataStore<DeviceCollection>
 
     public Device? GetDevice(string deviceId, bool throwIfNotFound = false)
     {
-        var existingDevice = Store?.Devices?.Find(d => d.Id == deviceId);
+        var existingDevice = Store?.Devices?.Find(d => d.HardwareId == deviceId);
         if (existingDevice == null && throwIfNotFound)
             throw new InvalidOperationException("Cant update device which isnt registered");
+        return existingDevice;
+    }
+
+    public Device GetDeviceByNick(string nickName)
+    {
+        var existingDevice = Store?.Devices?.Find(d => d.NickName.Equals(nickName, StringComparison.InvariantCultureIgnoreCase));
+        if (existingDevice == null)
+            throw new InvalidOperationException($"Could not find device by nickname '{nickName}'");
         return existingDevice;
     }
 
@@ -65,8 +73,8 @@ public class DeviceDataStore : JsonDataStore<DeviceCollection>
         if (Store == null) await LoadStore();
 
         // Ensure device doesnt already exist
-        var existingDevice = GetDevice(device.Id);
-        if (existingDevice != null) return await UpdateDevice(device.Id, device);
+        var existingDevice = GetDevice(device.HardwareId);
+        if (existingDevice != null) return await UpdateDevice(device.HardwareId, device);
 
         device.NickName = NameGenerator.GenerateName(10);
         device.RegisteredAt = DateTime.Now.ToFileTimeUtc().ToString();

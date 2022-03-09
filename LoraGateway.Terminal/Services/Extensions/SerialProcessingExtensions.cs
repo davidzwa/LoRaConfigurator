@@ -7,20 +7,14 @@ public static class SerialProcessingExtensions
 {
     public static void SendUnicastTransmitCommand(
         this SerialProcessorService processorService,
-        byte[] payload,
+        LoRaMessage loRaMessage,
         bool doNotProxy
     )
     {
         var command = new UartCommand
         {
             DoNotProxyCommand = doNotProxy,
-            TransmitCommand =
-                new LoRaMessage
-                {
-                    DeviceId = 5832774, // TODO replace with something
-                    IsMulticast = false,
-                    Payload = ByteString.CopyFrom(payload)
-                }
+            TransmitCommand = loRaMessage
         };
 
         processorService.WriteMessage(command);

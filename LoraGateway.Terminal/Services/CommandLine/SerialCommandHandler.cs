@@ -1,6 +1,8 @@
 using System.CommandLine;
 using System.CommandLine.Invocation;
+using Google.Protobuf;
 using JKang.EventBus;
+using LoRa;
 using LoraGateway.Handlers;
 using LoraGateway.Services.Extensions;
 
@@ -11,6 +13,7 @@ public class SerialCommandHandler
     private readonly ILogger _logger;
     private readonly MeasurementsService _measurementsService;
     private readonly FuotaManagerService _fuotaManagerService;
+    private readonly DeviceDataStore _deviceDataStore;
     private readonly SelectedDeviceService _selectedDeviceService;
     private readonly SerialProcessorService _serialProcessorService;
 
@@ -19,6 +22,7 @@ public class SerialCommandHandler
         SelectedDeviceService selectedDeviceService,
         MeasurementsService measurementsService,
         FuotaManagerService fuotaManagerService,
+        DeviceDataStore deviceDataStore,
         SerialProcessorService serialProcessorService
     )
     {
@@ -26,6 +30,7 @@ public class SerialCommandHandler
         _selectedDeviceService = selectedDeviceService;
         _measurementsService = measurementsService;
         _fuotaManagerService = fuotaManagerService;
+        _deviceDataStore = deviceDataStore;
         _serialProcessorService = serialProcessorService;
     }
 
@@ -109,15 +114,30 @@ public class SerialCommandHandler
     {
         var command = new Command("unicast");
         command.AddAlias("u");
+        command.AddOption(new Option<string>("--d"));
         command.Handler = CommandHandler.Create(
-            () =>
+            (string d) =>
             {
-                var selectedPortName = _selectedDeviceService.SelectedPortName;
-                _logger.LogInformation("Unicast command {Port}", selectedPortName);
-                _serialProcessorService.SendUnicastTransmitCommand(new byte[]
+                var isMulticast = String.IsNullOrEmpty(d);
+                var loraMessage = new LoRaMessage
                 {
-                    0xFF, 0xFE, 0xFD
-                }, GetDoNotProxyConfig());
+                    // Payload = ByteString.CopyFrom(0xFF, 0xFE, 0xFD),
+                    IsMulticast = isMulticast,
+                    ForwardExperimentCommand = new ForwardExperimentCommand()
+                    {
+                        SlaveCommand = ForwardExperimentCommand.Types.SlaveCommand.QueryFlash
+                    }
+                };
+                
+                if (!isMulticast)
+                {
+                    var device = _deviceDataStore.GetDeviceByNick(d);
+                    loraMessage.DeviceId = device.Id;
+                }
+                
+                var selectedPortName = _selectedDeviceService.SelectedPortName;
+                _logger.LogInformation("Unicast command {Port} MC:{MC}", selectedPortName, isMulticast);
+                _serialProcessorService.SendUnicastTransmitCommand(loraMessage, GetDoNotProxyConfig());
             });
 
         return command;

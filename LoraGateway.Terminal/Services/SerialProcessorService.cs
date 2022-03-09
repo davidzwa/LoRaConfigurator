@@ -235,13 +235,15 @@ public partial class SerialProcessorService
         var bodyCase = response.BodyCase;
         if (bodyCase.Equals(UartResponse.BodyOneofCase.BootMessage))
         {
-            var deviceId = response.BootMessage.DeviceIdentifier.DeviceIdAsString();
+            var deviceFullId = response.BootMessage.DeviceIdentifier;
+            var deviceId = deviceFullId.DeviceIdAsString();
             var firmwareVersion = response.BootMessage.GetFirmwareAsString();
             var measurementCount = response.BootMessage.MeasurementCount;
             var measurementDisabled = response.BootMessage.MeasurementsDisabled;
             var device = await _store.GetOrAddDevice(new Device
             {
-                Id = deviceId,
+                HardwareId = deviceId,
+                Id = deviceFullId.Id0,
                 FirmwareVersion = firmwareVersion,
                 IsGateway = false,
                 LastPortName = portName

@@ -9,7 +9,8 @@
   },
   "Devices": [
     {
-      "Id": "4522035-876106006-825374777",
+      "HardwareId": null,
+      "Id": 4522035,
       "NickName": "MotherShip",
       "FirmwareVersion": null,
       "RegisteredAt": "132835343136590640",
@@ -18,7 +19,8 @@
       "Meta": null
     },
     {
-      "Id": "4456526-808997123-808661810",
+      "HardwareId": "4456526-808997123-808661810",
+      "Id": 4456526,
       "NickName": "Saeposezhijy",
       "FirmwareVersion": null,
       "RegisteredAt": "132835489004210116",
@@ -27,7 +29,8 @@
       "Meta": null
     },
     {
-      "Id": "2293795-876106005-825374777",
+      "HardwareId": "2293795-876106005-825374777",
+      "Id": 2293795,
       "NickName": "Ritaekaesaete",
       "FirmwareVersion": "2.0.1.10",
       "RegisteredAt": "132838680900489570",
@@ -36,7 +39,8 @@
       "Meta": null
     },
     {
-      "Id": "5046325-876106005-825374777",
+      "HardwareId": "5046325-876106005-825374777",
+      "Id": 5046325,
       "NickName": "Lefty",
       "FirmwareVersion": "2.0.1.11",
       "RegisteredAt": "132838798889785028",
@@ -45,7 +49,8 @@
       "Meta": null
     },
     {
-      "Id": "2818104-876106005-825374777",
+      "HardwareId": "2818104-876106005-825374777",
+      "Id": 2818104,
       "NickName": "Righty",
       "FirmwareVersion": "2.0.0.21",
       "RegisteredAt": "132838808759884393",
@@ -54,7 +59,8 @@
       "Meta": null
     },
     {
-      "Id": "4784163-808997123-808661810",
+      "HardwareId": "4784163-808997123-808661810",
+      "Id": 4784163,
       "NickName": "Qepyshavaely",
       "FirmwareVersion": "2.0.1.10",
       "RegisteredAt": "132848143947603040",
@@ -63,8 +69,9 @@
       "Meta": null
     },
     {
-      "Id": "5570643-859328791-892940854",
-      "NickName": "Humatameha",
+      "HardwareId": "5570643-859328791-892940854",
+      "Id": 5570643,
+      "NickName": "A2",
       "FirmwareVersion": "2.0.1.12",
       "RegisteredAt": "132848144244789782",
       "LastPortName": "COM3",
@@ -72,7 +79,8 @@
       "Meta": null
     },
     {
-      "Id": "6488128-876106005-825374777",
+      "HardwareId": "6488128-876106005-825374777",
+      "Id": 6488128,
       "NickName": "Kifybolyha",
       "FirmwareVersion": "2.0.1.11",
       "RegisteredAt": "132907664125525158",
@@ -81,8 +89,9 @@
       "Meta": null
     },
     {
-      "Id": "5832774-876106005-825374777",
-      "NickName": "Pegaeshaedezhu",
+      "HardwareId": "5832774-876106005-825374777",
+      "Id": 5832774,
+      "NickName": "A1",
       "FirmwareVersion": "2.0.1.12",
       "RegisteredAt": "132911431153208074",
       "LastPortName": "COM11",
