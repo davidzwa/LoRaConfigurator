@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using LoraGateway.Models;
+﻿using LoraGateway.Models;
 using LoraGateway.Services.Contracts;
 using LoraGateway.Utils;
 

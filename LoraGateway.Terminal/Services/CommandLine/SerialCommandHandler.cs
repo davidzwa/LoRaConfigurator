@@ -115,17 +115,21 @@ public class SerialCommandHandler
         var command = new Command("unicast");
         command.AddAlias("u");
         command.AddOption(new Option<string>("--d"));
+        command.AddOption(new Option("--clc"));
         command.Handler = CommandHandler.Create(
-            (string d) =>
+            (string d, bool clc) =>
             {
+                var forwardExperimentCommand =
+                    clc
+                        ? ForwardExperimentCommand.Types.SlaveCommand.ClearFlash
+                        : ForwardExperimentCommand.Types.SlaveCommand.QueryFlash;
                 var isMulticast = String.IsNullOrEmpty(d);
                 var loraMessage = new LoRaMessage
                 {
-                    // Payload = ByteString.CopyFrom(0xFF, 0xFE, 0xFD),
                     IsMulticast = isMulticast,
                     ForwardExperimentCommand = new ForwardExperimentCommand()
                     {
-                        SlaveCommand = ForwardExperimentCommand.Types.SlaveCommand.QueryFlash
+                        SlaveCommand = forwardExperimentCommand
                     }
                 };
                 
@@ -136,7 +140,7 @@ public class SerialCommandHandler
                 }
                 
                 var selectedPortName = _selectedDeviceService.SelectedPortName;
-                _logger.LogInformation("Unicast command {Port} MC:{MC}", selectedPortName, isMulticast);
+                _logger.LogInformation("Unicast command {Port} MC:{MC} ClearFlash:{Clc}", selectedPortName, isMulticast, clc);
                 _serialProcessorService.SendUnicastTransmitCommand(loraMessage, GetDoNotProxyConfig());
             });
 
