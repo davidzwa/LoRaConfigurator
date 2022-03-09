@@ -127,6 +127,16 @@
       "LastPortName": "COM15",
       "IsGateway": false,
       "Meta": null
+    },
+    {
+      "HardwareId": "4456541-808997123-808661810",
+      "Id": 4456541,
+      "NickName": "A6",
+      "FirmwareVersion": "2.0.1.12",
+      "RegisteredAt": "132913120564985102",
+      "LastPortName": "COM16",
+      "IsGateway": false,
+      "Meta": null
     }
   ]
 }
