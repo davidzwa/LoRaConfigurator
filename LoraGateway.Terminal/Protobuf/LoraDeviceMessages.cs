@@ -25,24 +25,26 @@ namespace LoRa {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Chpsb3JhX2RldmljZV9tZXNzYWdlcy5wcm90bxoec2hhcmVkL2V4cGVyaW1l",
-            "bnRfY29uZmlnLnByb3RvGhVzaGFyZWQvZmlybXdhcmUucHJvdG8iugQKC0xv",
+            "bnRfY29uZmlnLnByb3RvGhVzaGFyZWQvZmlybXdhcmUucHJvdG8i7QQKC0xv",
             "UmFNZXNzYWdlEhMKC0lzTXVsdGljYXN0GAEgASgIEhAKCERldmljZUlkGAIg",
             "ASgNEhcKD0NvcnJlbGF0aW9uQ29kZRgDIAEoDRIPCgdQYXlsb2FkGAQgASgM",
-            "Ej0KGGZvcndhcmRSYWRpb0NvbmZpZ1VwZGF0ZRgGIAEoCzIZLkZvcndhcmRS",
+            "Ej0KGGZvcndhcmRSYWRpb0NvbmZpZ1VwZGF0ZRgFIAEoCzIZLkZvcndhcmRS",
             "YWRpb0NvbmZpZ1VwZGF0ZUgAEj0KGGZvcndhcmRFeHBlcmltZW50Q29tbWFu",
-            "ZBgHIAEoCzIZLkZvcndhcmRFeHBlcmltZW50Q29tbWFuZEgAEj0KGG1lYXN1",
-            "cmVtZW50U3RyZWFtUmVxdWVzdBgIIAEoCzIZLk1lYXN1cmVtZW50U3RyZWFt",
-            "UmVxdWVzdEgAEj8KGW1lYXN1cmVtZW50U3RyZWFtRnJhZ21lbnQYCSABKAsy",
-            "Gi5NZWFzdXJlbWVudFN0cmVhbUZyYWdtZW50SAASNwoVcmxuY0luaXRDb25m",
-            "aWdDb21tYW5kGAogASgLMhYuUmxuY0luaXRDb25maWdDb21tYW5kSAASMwoT",
-            "cmxuY0VuY29kZWRGcmFnbWVudBgLIAEoCzIULlJsbmNFbmNvZGVkRnJhZ21l",
-            "bnRIABIrCg9ybG5jU3RhdGVVcGRhdGUYDCABKAsyEC5SbG5jU3RhdGVVcGRh",
-            "dGVIABI5ChZybG5jVGVybWluYXRpb25Db21tYW5kGA0gASgLMhcuUmxuY1Rl",
-            "cm1pbmF0aW9uQ29tbWFuZEgAQgYKBEJvZHlCB6oCBExvUmFiBnByb3RvMw=="));
+            "ZBgGIAEoCzIZLkZvcndhcmRFeHBlcmltZW50Q29tbWFuZEgAEjEKEmV4cGVy",
+            "aW1lbnRSZXNwb25zZRgHIAEoCzITLkV4cGVyaW1lbnRSZXNwb25zZUgAEj0K",
+            "GG1lYXN1cmVtZW50U3RyZWFtUmVxdWVzdBgIIAEoCzIZLk1lYXN1cmVtZW50",
+            "U3RyZWFtUmVxdWVzdEgAEj8KGW1lYXN1cmVtZW50U3RyZWFtRnJhZ21lbnQY",
+            "CSABKAsyGi5NZWFzdXJlbWVudFN0cmVhbUZyYWdtZW50SAASNwoVcmxuY0lu",
+            "aXRDb25maWdDb21tYW5kGAogASgLMhYuUmxuY0luaXRDb25maWdDb21tYW5k",
+            "SAASMwoTcmxuY0VuY29kZWRGcmFnbWVudBgLIAEoCzIULlJsbmNFbmNvZGVk",
+            "RnJhZ21lbnRIABIrCg9ybG5jU3RhdGVVcGRhdGUYDCABKAsyEC5SbG5jU3Rh",
+            "dGVVcGRhdGVIABI5ChZybG5jVGVybWluYXRpb25Db21tYW5kGA0gASgLMhcu",
+            "UmxuY1Rlcm1pbmF0aW9uQ29tbWFuZEgAQgYKBEJvZHlCB6oCBExvUmFiBnBy",
+            "b3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LoRa.ExperimentConfigReflection.Descriptor, global::LoRa.FirmwareReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.LoRaMessage), global::LoRa.LoRaMessage.Parser, new[]{ "IsMulticast", "DeviceId", "CorrelationCode", "Payload", "ForwardRadioConfigUpdate", "ForwardExperimentCommand", "MeasurementStreamRequest", "MeasurementStreamFragment", "RlncInitConfigCommand", "RlncEncodedFragment", "RlncStateUpdate", "RlncTerminationCommand" }, new[]{ "Body" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.LoRaMessage), global::LoRa.LoRaMessage.Parser, new[]{ "IsMulticast", "DeviceId", "CorrelationCode", "Payload", "ForwardRadioConfigUpdate", "ForwardExperimentCommand", "ExperimentResponse", "MeasurementStreamRequest", "MeasurementStreamFragment", "RlncInitConfigCommand", "RlncEncodedFragment", "RlncStateUpdate", "RlncTerminationCommand" }, new[]{ "Body" }, null, null, null)
           }));
     }
     #endregion
@@ -93,6 +95,9 @@ namespace LoRa {
           break;
         case BodyOneofCase.ForwardExperimentCommand:
           ForwardExperimentCommand = other.ForwardExperimentCommand.Clone();
+          break;
+        case BodyOneofCase.ExperimentResponse:
+          ExperimentResponse = other.ExperimentResponse.Clone();
           break;
         case BodyOneofCase.MeasurementStreamRequest:
           MeasurementStreamRequest = other.MeasurementStreamRequest.Clone();
@@ -172,10 +177,7 @@ namespace LoRa {
     }
 
     /// <summary>Field number for the "forwardRadioConfigUpdate" field.</summary>
-    public const int ForwardRadioConfigUpdateFieldNumber = 6;
-    /// <summary>
-    /// ForwardSequenceConfig sequenceConfig = 5;
-    /// </summary>
+    public const int ForwardRadioConfigUpdateFieldNumber = 5;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LoRa.ForwardRadioConfigUpdate ForwardRadioConfigUpdate {
@@ -187,7 +189,7 @@ namespace LoRa {
     }
 
     /// <summary>Field number for the "forwardExperimentCommand" field.</summary>
-    public const int ForwardExperimentCommandFieldNumber = 7;
+    public const int ForwardExperimentCommandFieldNumber = 6;
     /// <summary>
     /// Set role TX/RX, play/pause or switch to predefined experiment
     /// </summary>
@@ -198,6 +200,18 @@ namespace LoRa {
       set {
         body_ = value;
         bodyCase_ = value == null ? BodyOneofCase.None : BodyOneofCase.ForwardExperimentCommand;
+      }
+    }
+
+    /// <summary>Field number for the "experimentResponse" field.</summary>
+    public const int ExperimentResponseFieldNumber = 7;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LoRa.ExperimentResponse ExperimentResponse {
+      get { return bodyCase_ == BodyOneofCase.ExperimentResponse ? (global::LoRa.ExperimentResponse) body_ : null; }
+      set {
+        body_ = value;
+        bodyCase_ = value == null ? BodyOneofCase.None : BodyOneofCase.ExperimentResponse;
       }
     }
 
@@ -277,8 +291,9 @@ namespace LoRa {
     /// <summary>Enum of possible cases for the "Body" oneof.</summary>
     public enum BodyOneofCase {
       None = 0,
-      ForwardRadioConfigUpdate = 6,
-      ForwardExperimentCommand = 7,
+      ForwardRadioConfigUpdate = 5,
+      ForwardExperimentCommand = 6,
+      ExperimentResponse = 7,
       MeasurementStreamRequest = 8,
       MeasurementStreamFragment = 9,
       RlncInitConfigCommand = 10,
@@ -321,6 +336,7 @@ namespace LoRa {
       if (Payload != other.Payload) return false;
       if (!object.Equals(ForwardRadioConfigUpdate, other.ForwardRadioConfigUpdate)) return false;
       if (!object.Equals(ForwardExperimentCommand, other.ForwardExperimentCommand)) return false;
+      if (!object.Equals(ExperimentResponse, other.ExperimentResponse)) return false;
       if (!object.Equals(MeasurementStreamRequest, other.MeasurementStreamRequest)) return false;
       if (!object.Equals(MeasurementStreamFragment, other.MeasurementStreamFragment)) return false;
       if (!object.Equals(RlncInitConfigCommand, other.RlncInitConfigCommand)) return false;
@@ -341,6 +357,7 @@ namespace LoRa {
       if (Payload.Length != 0) hash ^= Payload.GetHashCode();
       if (bodyCase_ == BodyOneofCase.ForwardRadioConfigUpdate) hash ^= ForwardRadioConfigUpdate.GetHashCode();
       if (bodyCase_ == BodyOneofCase.ForwardExperimentCommand) hash ^= ForwardExperimentCommand.GetHashCode();
+      if (bodyCase_ == BodyOneofCase.ExperimentResponse) hash ^= ExperimentResponse.GetHashCode();
       if (bodyCase_ == BodyOneofCase.MeasurementStreamRequest) hash ^= MeasurementStreamRequest.GetHashCode();
       if (bodyCase_ == BodyOneofCase.MeasurementStreamFragment) hash ^= MeasurementStreamFragment.GetHashCode();
       if (bodyCase_ == BodyOneofCase.RlncInitConfigCommand) hash ^= RlncInitConfigCommand.GetHashCode();
@@ -383,12 +400,16 @@ namespace LoRa {
         output.WriteBytes(Payload);
       }
       if (bodyCase_ == BodyOneofCase.ForwardRadioConfigUpdate) {
-        output.WriteRawTag(50);
+        output.WriteRawTag(42);
         output.WriteMessage(ForwardRadioConfigUpdate);
       }
       if (bodyCase_ == BodyOneofCase.ForwardExperimentCommand) {
-        output.WriteRawTag(58);
+        output.WriteRawTag(50);
         output.WriteMessage(ForwardExperimentCommand);
+      }
+      if (bodyCase_ == BodyOneofCase.ExperimentResponse) {
+        output.WriteRawTag(58);
+        output.WriteMessage(ExperimentResponse);
       }
       if (bodyCase_ == BodyOneofCase.MeasurementStreamRequest) {
         output.WriteRawTag(66);
@@ -441,12 +462,16 @@ namespace LoRa {
         output.WriteBytes(Payload);
       }
       if (bodyCase_ == BodyOneofCase.ForwardRadioConfigUpdate) {
-        output.WriteRawTag(50);
+        output.WriteRawTag(42);
         output.WriteMessage(ForwardRadioConfigUpdate);
       }
       if (bodyCase_ == BodyOneofCase.ForwardExperimentCommand) {
-        output.WriteRawTag(58);
+        output.WriteRawTag(50);
         output.WriteMessage(ForwardExperimentCommand);
+      }
+      if (bodyCase_ == BodyOneofCase.ExperimentResponse) {
+        output.WriteRawTag(58);
+        output.WriteMessage(ExperimentResponse);
       }
       if (bodyCase_ == BodyOneofCase.MeasurementStreamRequest) {
         output.WriteRawTag(66);
@@ -499,6 +524,9 @@ namespace LoRa {
       }
       if (bodyCase_ == BodyOneofCase.ForwardExperimentCommand) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(ForwardExperimentCommand);
+      }
+      if (bodyCase_ == BodyOneofCase.ExperimentResponse) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(ExperimentResponse);
       }
       if (bodyCase_ == BodyOneofCase.MeasurementStreamRequest) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(MeasurementStreamRequest);
@@ -554,6 +582,12 @@ namespace LoRa {
             ForwardExperimentCommand = new global::LoRa.ForwardExperimentCommand();
           }
           ForwardExperimentCommand.MergeFrom(other.ForwardExperimentCommand);
+          break;
+        case BodyOneofCase.ExperimentResponse:
+          if (ExperimentResponse == null) {
+            ExperimentResponse = new global::LoRa.ExperimentResponse();
+          }
+          ExperimentResponse.MergeFrom(other.ExperimentResponse);
           break;
         case BodyOneofCase.MeasurementStreamRequest:
           if (MeasurementStreamRequest == null) {
@@ -624,7 +658,7 @@ namespace LoRa {
             Payload = input.ReadBytes();
             break;
           }
-          case 50: {
+          case 42: {
             global::LoRa.ForwardRadioConfigUpdate subBuilder = new global::LoRa.ForwardRadioConfigUpdate();
             if (bodyCase_ == BodyOneofCase.ForwardRadioConfigUpdate) {
               subBuilder.MergeFrom(ForwardRadioConfigUpdate);
@@ -633,13 +667,22 @@ namespace LoRa {
             ForwardRadioConfigUpdate = subBuilder;
             break;
           }
-          case 58: {
+          case 50: {
             global::LoRa.ForwardExperimentCommand subBuilder = new global::LoRa.ForwardExperimentCommand();
             if (bodyCase_ == BodyOneofCase.ForwardExperimentCommand) {
               subBuilder.MergeFrom(ForwardExperimentCommand);
             }
             input.ReadMessage(subBuilder);
             ForwardExperimentCommand = subBuilder;
+            break;
+          }
+          case 58: {
+            global::LoRa.ExperimentResponse subBuilder = new global::LoRa.ExperimentResponse();
+            if (bodyCase_ == BodyOneofCase.ExperimentResponse) {
+              subBuilder.MergeFrom(ExperimentResponse);
+            }
+            input.ReadMessage(subBuilder);
+            ExperimentResponse = subBuilder;
             break;
           }
           case 66: {
@@ -727,7 +770,7 @@ namespace LoRa {
             Payload = input.ReadBytes();
             break;
           }
-          case 50: {
+          case 42: {
             global::LoRa.ForwardRadioConfigUpdate subBuilder = new global::LoRa.ForwardRadioConfigUpdate();
             if (bodyCase_ == BodyOneofCase.ForwardRadioConfigUpdate) {
               subBuilder.MergeFrom(ForwardRadioConfigUpdate);
@@ -736,13 +779,22 @@ namespace LoRa {
             ForwardRadioConfigUpdate = subBuilder;
             break;
           }
-          case 58: {
+          case 50: {
             global::LoRa.ForwardExperimentCommand subBuilder = new global::LoRa.ForwardExperimentCommand();
             if (bodyCase_ == BodyOneofCase.ForwardExperimentCommand) {
               subBuilder.MergeFrom(ForwardExperimentCommand);
             }
             input.ReadMessage(subBuilder);
             ForwardExperimentCommand = subBuilder;
+            break;
+          }
+          case 58: {
+            global::LoRa.ExperimentResponse subBuilder = new global::LoRa.ExperimentResponse();
+            if (bodyCase_ == BodyOneofCase.ExperimentResponse) {
+              subBuilder.MergeFrom(ExperimentResponse);
+            }
+            input.ReadMessage(subBuilder);
+            ExperimentResponse = subBuilder;
             break;
           }
           case 66: {

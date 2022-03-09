@@ -124,6 +124,7 @@ public class SerialCommandHandler
                         ? ForwardExperimentCommand.Types.SlaveCommand.ClearFlash
                         : ForwardExperimentCommand.Types.SlaveCommand.QueryFlash;
                 var isMulticast = String.IsNullOrEmpty(d);
+                
                 var loraMessage = new LoRaMessage
                 {
                     IsMulticast = isMulticast,

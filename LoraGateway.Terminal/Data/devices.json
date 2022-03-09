@@ -79,6 +79,16 @@
       "Meta": null
     },
     {
+      "HardwareId": "5832774-876106005-825374777",
+      "Id": 5832774,
+      "NickName": "A1",
+      "FirmwareVersion": "2.0.1.12",
+      "RegisteredAt": "132911431153208074",
+      "LastPortName": "COM11",
+      "IsGateway": false,
+      "Meta": null
+    },
+    {
       "HardwareId": "5570643-859328791-892940854",
       "Id": 5570643,
       "NickName": "A2",
@@ -89,12 +99,12 @@
       "Meta": null
     },
     {
-      "HardwareId": "5832774-876106005-825374777",
-      "Id": 5832774,
-      "NickName": "A1",
+      "HardwareId": "5046343-876106006-825374777",
+      "Id": 5046343,
+      "NickName": "A3",
       "FirmwareVersion": "2.0.1.12",
-      "RegisteredAt": "132911431153208074",
-      "LastPortName": "COM11",
+      "RegisteredAt": "132913055127166434",
+      "LastPortName": "COM12",
       "IsGateway": false,
       "Meta": null
     }
