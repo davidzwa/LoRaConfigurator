@@ -107,6 +107,26 @@
       "LastPortName": "COM12",
       "IsGateway": false,
       "Meta": null
+    },
+    {
+      "HardwareId": "4784212-876106006-825374777",
+      "Id": 4784212,
+      "NickName": "A4",
+      "FirmwareVersion": "2.0.1.12",
+      "RegisteredAt": "132913102713712512",
+      "LastPortName": "COM13",
+      "IsGateway": false,
+      "Meta": null
+    },
+    {
+      "HardwareId": "5046319-876106006-825374777",
+      "Id": 5046319,
+      "NickName": "A5",
+      "FirmwareVersion": "2.0.1.12",
+      "RegisteredAt": "132913110564225018",
+      "LastPortName": "COM15",
+      "IsGateway": false,
+      "Meta": null
     }
   ]
 }
