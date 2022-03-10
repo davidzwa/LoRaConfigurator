@@ -36,18 +36,6 @@ public static class LoraGateway
             )
             .CreateLogger();
 
-        // Debug the statically generated values
-        // foreach (var i in Enumerable.Range(1, 255))
-        // {
-        //     Console.WriteLine($"Log {GFSymbol.Log[i]}");
-        // }
-        //
-        // Console.WriteLine("--");
-        // foreach(var i in Enumerable.Range(1, 255))
-        // {
-        //     Console.WriteLine($"ALog {GFSymbol.Exp[i]}");
-        // }
-
         await CreateHostBuilder(args).RunConsoleAsync();
     }
 

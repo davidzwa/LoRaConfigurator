@@ -13,8 +13,8 @@ public partial class SerialProcessorService
     private readonly MeasurementsService _measurementsService;
     private readonly SelectedDeviceService _selectedDeviceService;
     private readonly DeviceDataStore _store;
-    private readonly byte endByte = 0x00;
-    private readonly byte startByte = 0xFF;
+    public static readonly byte EndByte = 0x00;
+    public static readonly byte StartByte = 0xFF;
 
     public SerialProcessorService(
         DeviceDataStore store,
@@ -95,17 +95,16 @@ public partial class SerialProcessorService
         if (selectedPortName == null)
         {
             throw new InvalidOperationException("Selected port [selected gateway] was not set - check USB connection");
-            return;
         }
 
         var payload = message.ToByteArray();
         var protoMessageBuffer = new[] {(byte) payload.Length}.Concat(payload);
         var messageBuffer = Cobs.Encode(protoMessageBuffer).ToArray();
         var len = new[] {(byte) messageBuffer.Length};
-        var transmitBuffer = new[] {startByte}
+        var transmitBuffer = new[] {StartByte}
             .Concat(len)
             .Concat(messageBuffer)
-            .Concat(new[] {endByte})
+            .Concat(new[] {EndByte})
             .ToArray();
 
         _logger.LogDebug("TX {Message}", SerialUtil.ByteArrayToString(transmitBuffer));
@@ -145,6 +144,7 @@ public partial class SerialProcessorService
             {
                 var newByte = (byte) port.ReadByte();
                 buffer.Add(newByte);
+                // If End byte is spotted we break
                 packetWaitingBytes = newByte != 0x00;
             }
         }
@@ -193,9 +193,9 @@ public partial class SerialProcessorService
 
         if (startByteIndex > 0) // Clear unknown bytes
             listBuffer.RemoveRange(0, startByteIndex);
-        listBuffer.RemoveAt(0);
-        listBuffer.RemoveAt(1);
-        listBuffer.RemoveAt(listBuffer.Count - 1);
+        listBuffer.RemoveAt(0); // Start Byte
+        listBuffer.RemoveAt(0); // UART Length Byte
+        listBuffer.RemoveAt(listBuffer.Count - 1); // End Byte
 
         _logger.LogDebug(
             "Data [{Port}] Bytes [{Bytes}] Expected [{dataLength}] Start [{Start}] End [{End}] LeftOver [{LeftOver}]",
@@ -204,15 +204,15 @@ public partial class SerialProcessorService
 
         await ProcessMessage(port.PortName, listBuffer.ToArray());
     }
-
-    private async Task ProcessMessage(string portName, byte[] buffer)
+    
+    public async Task<int> ProcessMessage(string portName, byte[] buffer)
     {
         _logger.LogDebug("Serial decoding COBS buffer ({ByteLength})", buffer.Length);
         var outputBuffer = Cobs.Decode(buffer);
         if (outputBuffer.Count == 0)
         {
             _logger.LogError("COBS output empty {HexString}", SerialUtil.ByteArrayToString(buffer));
-            return;
+            return 1;
         }
 
         // Remove COBS overhead of 2
@@ -229,7 +229,7 @@ public partial class SerialProcessorService
         {
             _logger.LogInformation(SerialUtil.ByteArrayToString(decodedBuffer));
             _logger.LogError("Protobuf decoding error {Error} - skipping packet", e.Message);
-            return;
+            return 2;
         }
 
         var bodyCase = response.BodyCase;
@@ -288,7 +288,7 @@ public partial class SerialProcessorService
             if (!response.LoraMeasurement.Success)
             {
                 _logger.LogInformation("[{Name}] LoRa RX error!", portName);
-                return;
+                return 3;
             }
 
             var snr = response.LoraMeasurement.Snr;
@@ -309,6 +309,8 @@ public partial class SerialProcessorService
         {
             _logger.LogInformation("Got an unknown message");
         }
+
+        return 0;
     }
 
     public void DisposePort(string portName)
