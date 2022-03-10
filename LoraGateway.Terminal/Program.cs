@@ -12,6 +12,11 @@ namespace LoraGateway;
 
 public static class LoraGateway
 {
+    public static string GetUniqueLogFile()
+    {
+        return Path.Combine(Directory.GetCurrentDirectory(),
+            $"../../../Logs/logs-{DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}.txt");
+    }
     public static async Task Main(string[] args)
     {
         Log.Logger = new LoggerConfiguration()
@@ -25,6 +30,9 @@ public static class LoraGateway
             .WriteTo.Console(
                 outputTemplate:
                 "[{Timestamp:HH:mm:ss} {Level:u3}] ({SourceContext}) {Message:lj}{NewLine}{Exception}"
+            )
+            .WriteTo.File(
+                GetUniqueLogFile()
             )
             .CreateLogger();
 

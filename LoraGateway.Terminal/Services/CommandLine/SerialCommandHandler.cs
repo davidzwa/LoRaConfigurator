@@ -42,6 +42,7 @@ public class SerialCommandHandler
         rootCommand.Add(GetClearMeasurementsCommand());
         rootCommand.Add(GetRlncCommand());
         rootCommand.Add(GetRlncStoreReloadCommand());
+        rootCommand.Add(SetTxPowerCommand());
 
         // Fluent structure
         return rootCommand;
@@ -148,6 +149,22 @@ public class SerialCommandHandler
         return command;
     }
 
+    public Command SetTxPowerCommand()
+    {
+        var command = new Command("tx-power");
+        command.AddAlias("tx");
+        command.AddArgument(new Argument<int>("power"));
+        // command.AddOption(new Option<uint>("sf"));
+        command.Handler = CommandHandler.Create((int power) =>
+        {
+            var selectedPortName = _selectedDeviceService.SelectedPortName;
+            _logger.LogInformation("Set TX power {Power} sent {Port}", selectedPortName, power);
+            _serialProcessorService.SendTxPowerCommandd(power, GetDoNotProxyConfig());
+        });
+        
+        return command;
+    }
+    
     public Command GetBootCommand()
     {
         var command = new Command("boot");

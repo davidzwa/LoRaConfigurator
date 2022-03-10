@@ -1,5 +1,4 @@
-﻿using Google.Protobuf;
-using LoRa;
+﻿using LoRa;
 
 namespace LoraGateway.Services.Extensions;
 
@@ -43,6 +42,20 @@ public static class SerialProcessingExtensions
         processorService.WriteMessage(command);
     }
 
+    public static void SendTxPowerCommandd(
+        this SerialProcessorService processorService, int power, bool doNotProxy)
+    {
+        var command = new UartCommand
+        {
+            DoNotProxyCommand = doNotProxy,
+            TxConfig = new RadioTxConfig()
+            {
+                Power = power
+            }
+        };
+        processorService.WriteMessage(command);
+    }
+    
     public static void SendBootCommand(
         this SerialProcessorService processorService, bool doNotProxy)
     {
