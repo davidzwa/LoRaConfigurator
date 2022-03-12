@@ -1,0 +1,8 @@
+2022-03-10 15:57:40.256 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2022-03-10 15:57:40.276 +01:00 [INF] Hosting environment: Production
+2022-03-10 15:57:40.279 +01:00 [INF] Content root path: D:\Projects\LoraGateway\LoraGateway.Terminal\bin\Debug\net6.0
+2022-03-10 15:57:40.303 +01:00 [INF] Connected to device COM11
+2022-03-10 15:57:54.047 +01:00 [INF] 0a 4c 6f 52 61 4d 75 6c 74 69 63 61 73 74 12 1b 0a 11 08 c6 80 e4 02 10 95 a2 e1 a1 03 18 b9 f0 c8 89 03 12 06 08 02 18 01 20 0c 
+2022-03-10 15:57:54.049 +01:00 [ERR] Protobuf decoding error While parsing a protocol message, the input ended unexpectedly in the middle of a field.  This could mean either that the input has been truncated or that an embedded message misreported its own length. - skipping packet
+2022-03-10 15:58:01.342 +01:00 [INF] 0a 31 32 33 2a 01 
+2022-03-10 15:58:01.347 +01:00 [ERR] Protobuf decoding error While parsing a protocol message, the input ended unexpectedly in the middle of a field.  This could mean either that the input has been truncated or that an embedded message misreported its own length. - skipping packet

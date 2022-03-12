@@ -1,0 +1,13 @@
+2022-03-10 16:33:06.029 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2022-03-10 16:33:06.051 +01:00 [INF] Hosting environment: Production
+2022-03-10 16:33:06.055 +01:00 [INF] Content root path: D:\Projects\LoraGateway\LoraGateway.Terminal\bin\Debug\net6.0
+2022-03-10 16:33:06.086 +01:00 [INF] Connected to device COM11
+2022-03-10 16:33:12.603 +01:00 [INF] [A1, MC:0, MD:false] heart beat 5832774-876106005-825374777
+2022-03-10 16:34:28.287 +01:00 [INF] 0a 03 31 32 33 2a 01 
+2022-03-10 16:34:28.292 +01:00 [ERR] Protobuf decoding error While parsing a protocol message, the input ended unexpectedly in the middle of a field.  This could mean either that the input has been truncated or that an embedded message misreported its own length. - skipping packet
+2022-03-10 16:34:33.519 +01:00 [INF] [A1, MC:0, MD:false] heart beat 5832774-876106005-825374777
+2022-03-10 16:35:56.056 +01:00 [INF] 0a 03 31 32 33 2a 01 
+2022-03-10 16:35:56.061 +01:00 [ERR] Protobuf decoding error While parsing a protocol message, the input ended unexpectedly in the middle of a field.  This could mean either that the input has been truncated or that an embedded message misreported its own length. - skipping packet
+2022-03-10 16:36:56.309 +01:00 [INF] [A1, MC:0, MD:false] heart beat 5832774-876106005-825374777
+2022-03-10 16:38:02.960 +01:00 [INF] 0a 03 31 32 33 2a 01 
+2022-03-10 16:38:02.962 +01:00 [ERR] Protobuf decoding error While parsing a protocol message, the input ended unexpectedly in the middle of a field.  This could mean either that the input has been truncated or that an embedded message misreported its own length. - skipping packet

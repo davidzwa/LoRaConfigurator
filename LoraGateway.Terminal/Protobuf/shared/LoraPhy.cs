@@ -32,7 +32,7 @@ namespace LoRa {
             "Eg0KBUNyY09uGAogASgIEhEKCUZyZXFIb3BPbhgLIAEoCBIRCglIb3BQZXJp",
             "b2QYDCABKA0SEgoKSXFJbnZlcnRlZBgNIAEoCBIUCgxSeENvbnRpbnVvdXMY",
             "DiABKAgi/wEKDVJhZGlvVHhDb25maWcSGwoFTW9kZW0YASABKA4yDC5SYWRp",
-            "b01vZGVtcxINCgVQb3dlchgCIAEoDRIMCgRGZGV2GAMgASgNEhEKCUJhbmR3",
+            "b01vZGVtcxINCgVQb3dlchgCIAEoBRIMCgRGZGV2GAMgASgNEhEKCUJhbmR3",
             "aWR0aBgEIAEoDRIQCghEYXRhUmF0ZRgFIAEoDRIQCghDb2RlUmF0ZRgGIAEo",
             "DRITCgtQcmVhbWJsZUxlbhgHIAEoDRIOCgZGaXhMZW4YCCABKAgSDQoFQ3Jj",
             "T24YCSABKAgSEQoJRnJlcUhvcE9uGAogASgIEhEKCUhvcFBlcmlvZBgLIAEo",
@@ -798,10 +798,10 @@ namespace LoRa {
 
     /// <summary>Field number for the "Power" field.</summary>
     public const int PowerFieldNumber = 2;
-    private uint power_;
+    private int power_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public uint Power {
+    public int Power {
       get { return power_; }
       set {
         power_ = value;
@@ -1012,7 +1012,7 @@ namespace LoRa {
       }
       if (Power != 0) {
         output.WriteRawTag(16);
-        output.WriteUInt32(Power);
+        output.WriteInt32(Power);
       }
       if (Fdev != 0) {
         output.WriteRawTag(24);
@@ -1074,7 +1074,7 @@ namespace LoRa {
       }
       if (Power != 0) {
         output.WriteRawTag(16);
-        output.WriteUInt32(Power);
+        output.WriteInt32(Power);
       }
       if (Fdev != 0) {
         output.WriteRawTag(24);
@@ -1134,7 +1134,7 @@ namespace LoRa {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Modem);
       }
       if (Power != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Power);
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Power);
       }
       if (Fdev != 0) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Fdev);
@@ -1240,7 +1240,7 @@ namespace LoRa {
             break;
           }
           case 16: {
-            Power = input.ReadUInt32();
+            Power = input.ReadInt32();
             break;
           }
           case 24: {
@@ -1307,7 +1307,7 @@ namespace LoRa {
             break;
           }
           case 16: {
-            Power = input.ReadUInt32();
+            Power = input.ReadInt32();
             break;
           }
           case 24: {

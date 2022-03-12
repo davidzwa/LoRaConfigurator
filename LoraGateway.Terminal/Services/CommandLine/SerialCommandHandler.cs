@@ -1,6 +1,8 @@
 using System.CommandLine;
 using System.CommandLine.Invocation;
+using Google.Protobuf;
 using JKang.EventBus;
+using LoRa;
 using LoraGateway.Handlers;
 using LoraGateway.Services.Extensions;
 
@@ -11,6 +13,7 @@ public class SerialCommandHandler
     private readonly ILogger _logger;
     private readonly MeasurementsService _measurementsService;
     private readonly FuotaManagerService _fuotaManagerService;
+    private readonly DeviceDataStore _deviceDataStore;
     private readonly SelectedDeviceService _selectedDeviceService;
     private readonly SerialProcessorService _serialProcessorService;
 
@@ -19,6 +22,7 @@ public class SerialCommandHandler
         SelectedDeviceService selectedDeviceService,
         MeasurementsService measurementsService,
         FuotaManagerService fuotaManagerService,
+        DeviceDataStore deviceDataStore,
         SerialProcessorService serialProcessorService
     )
     {
@@ -26,21 +30,30 @@ public class SerialCommandHandler
         _selectedDeviceService = selectedDeviceService;
         _measurementsService = measurementsService;
         _fuotaManagerService = fuotaManagerService;
+        _deviceDataStore = deviceDataStore;
         _serialProcessorService = serialProcessorService;
     }
 
     public RootCommand ApplyCommands(RootCommand rootCommand)
     {
-        rootCommand.Add(GetPeriodicSendCommand());
         rootCommand.Add(GetBootCommand());
         rootCommand.Add(GetUnicastSendCommand());
         rootCommand.Add(GetDeviceConfigurationCommand());
         rootCommand.Add(GetClearMeasurementsCommand());
         rootCommand.Add(GetRlncCommand());
         rootCommand.Add(GetRlncStoreReloadCommand());
+        rootCommand.Add(SetTxPowerCommand());
 
         // Fluent structure
         return rootCommand;
+    }
+
+    bool GetDoNotProxyConfig()
+    {
+        var store = _fuotaManagerService.GetStore();
+        if (store == null) return false;
+
+        return store.UartFakeLoRaRxMode;
     }
 
     public Command GetRlncCommand()
@@ -48,10 +61,7 @@ public class SerialCommandHandler
         var command = new Command("rlnc-init");
         command.AddAlias("rlnc");
         command.Handler = CommandHandler.Create(
-            async () =>
-            {
-                await _fuotaManagerService.HandleRlncConsoleCommand();
-            });
+            async () => { await _fuotaManagerService.HandleRlncConsoleCommand(); });
         return command;
     }
 
@@ -60,10 +70,7 @@ public class SerialCommandHandler
         var command = new Command("rlnc-load");
         command.AddAlias("rl");
         command.Handler = CommandHandler.Create(
-            async () =>
-            {
-                await _fuotaManagerService.ReloadStore();
-            });
+            async () => { await _fuotaManagerService.ReloadStore(); });
         return command;
     }
 
@@ -76,7 +83,7 @@ public class SerialCommandHandler
             {
                 var selectedPortName = _selectedDeviceService.SelectedPortName;
                 _logger.LogInformation("Clearing device measurements {Port}", selectedPortName);
-                _serialProcessorService.SendClearMeasurementsCommands();
+                _serialProcessorService.SendClearMeasurementsCommands(GetDoNotProxyConfig());
             });
         return command;
     }
@@ -86,13 +93,20 @@ public class SerialCommandHandler
         var command = new Command("device");
         command.AddAlias("d");
         command.AddArgument(new Argument<bool>("enableAlwaysSend"));
-        command.AddArgument(new Argument<uint>("alwaysSendPeriod"));
+        command.AddOption(new Option<uint>("t", () => 1000));
+        command.AddOption(new Option<uint>("n", () => 0)); // if 0 disable it 
+        command.AddOption(new Option<string>("--loc", () => ""));
         command.Handler = CommandHandler.Create(
-            (bool enableAlwaysSend, uint alwaysSendPeriod) =>
+            (bool enableAlwaysSend, uint t, uint n, string loc) =>
             {
+                if (loc.Length != 0)
+                {
+                    _measurementsService.SetLocationText(loc);
+                }
+
                 var selectedPortName = _selectedDeviceService.SelectedPortName;
                 _logger.LogInformation("Device config {Port}", selectedPortName);
-                _serialProcessorService.SendDeviceConfiguration(enableAlwaysSend, alwaysSendPeriod);
+                _serialProcessorService.SendDeviceConfiguration(enableAlwaysSend, t, n, GetDoNotProxyConfig());
             });
         return command;
     }
@@ -101,43 +115,56 @@ public class SerialCommandHandler
     {
         var command = new Command("unicast");
         command.AddAlias("u");
+        command.AddOption(new Option<string>("--d"));
+        command.AddOption(new Option("--clc"));
         command.Handler = CommandHandler.Create(
-            () =>
+            (string d, bool clc) =>
             {
-                var selectedPortName = _selectedDeviceService.SelectedPortName;
-                _logger.LogInformation("Unicast command {Port}", selectedPortName);
-                _serialProcessorService.SendUnicastTransmitCommand(new byte[]
+                var forwardExperimentCommand =
+                    clc
+                        ? ForwardExperimentCommand.Types.SlaveCommand.ClearFlash
+                        : ForwardExperimentCommand.Types.SlaveCommand.QueryFlash;
+                var isMulticast = String.IsNullOrEmpty(d);
+                
+                var loraMessage = new LoRaMessage
                 {
-                    0xFF, 0xFE, 0xFD
-                });
+                    IsMulticast = isMulticast,
+                    ForwardExperimentCommand = new ForwardExperimentCommand()
+                    {
+                        SlaveCommand = forwardExperimentCommand
+                    }
+                };
+                
+                if (!isMulticast)
+                {
+                    var device = _deviceDataStore.GetDeviceByNick(d);
+                    loraMessage.DeviceId = device.Id;
+                }
+                
+                var selectedPortName = _selectedDeviceService.SelectedPortName;
+                _logger.LogInformation("Unicast command {Port} MC:{MC} ClearFlash:{Clc}", selectedPortName, isMulticast, clc);
+                _serialProcessorService.SendUnicastTransmitCommand(loraMessage, GetDoNotProxyConfig());
             });
 
         return command;
     }
 
-    public Command GetPeriodicSendCommand()
+    public Command SetTxPowerCommand()
     {
-        var command = new Command("period");
-        command.AddAlias("p");
-        command.AddArgument(new Argument<uint>("period"));
-        command.AddArgument(new Argument<uint>("count"));
-        command.AddArgument(new Argument<int>("x"));
-        command.AddArgument(new Argument<int>("y"));
-        command.Handler = CommandHandler.Create(
-            (uint period, uint count, int x, int y) =>
-            {
-                _measurementsService.SetLocation(x, y);
-                var selectedPortName = _selectedDeviceService.SelectedPortName;
-                _logger.LogInformation("Periodic command {Port}", selectedPortName);
-                _serialProcessorService.SendPeriodicTransmitCommand(period, false, count, new byte[]
-                {
-                    0xFF, 0xFE, 0xFD
-                });
-            });
-
+        var command = new Command("tx-power");
+        command.AddAlias("tx");
+        command.AddArgument(new Argument<int>("power"));
+        // command.AddOption(new Option<uint>("sf"));
+        command.Handler = CommandHandler.Create((int power) =>
+        {
+            var selectedPortName = _selectedDeviceService.SelectedPortName;
+            _logger.LogInformation("Set TX power {Power} sent {Port}", selectedPortName, power);
+            _serialProcessorService.SendTxPowerCommandd(power, GetDoNotProxyConfig());
+        });
+        
         return command;
     }
-
+    
     public Command GetBootCommand()
     {
         var command = new Command("boot");
@@ -146,7 +173,7 @@ public class SerialCommandHandler
         {
             var selectedPortName = _selectedDeviceService.SelectedPortName;
             _logger.LogInformation("Boot sent {Port}", selectedPortName);
-            _serialProcessorService.SendBootCommand();
+            _serialProcessorService.SendBootCommand(GetDoNotProxyConfig());
         });
 
         return command;

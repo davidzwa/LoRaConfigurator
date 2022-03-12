@@ -1,5 +1,5 @@
 {
-  "UartFakeLoRaRXMode": true,
+  "UartFakeLoRaRXMode": false,
   "UpdateIntervalMilliSeconds": 100,
   "FakeFirmware": true,
   "FakeFragmentCount": 7,

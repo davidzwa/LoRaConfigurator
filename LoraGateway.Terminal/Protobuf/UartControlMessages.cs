@@ -26,22 +26,23 @@ namespace LoRa {
           string.Concat(
             "Cht1YXJ0X2NvbnRyb2xfbWVzc2FnZXMucHJvdG8aGmxvcmFfZGV2aWNlX21l",
             "c3NhZ2VzLnByb3RvGhVzaGFyZWQvbG9yYV9waHkucHJvdG8iIgoPUmVxdWVz",
-            "dEJvb3RJbmZvEg8KB1JlcXVlc3QYASABKAgiSQoTRGV2aWNlQ29uZmlndXJh",
+            "dEJvb3RJbmZvEg8KB1JlcXVlc3QYASABKAgiYwoTRGV2aWNlQ29uZmlndXJh",
             "dGlvbhIYChBFbmFibGVBbHdheXNTZW5kGAEgASgIEhgKEEFsd2F5c1NlbmRQ",
-            "ZXJpb2QYAiABKA0iMQoYQ2xlYXJNZWFzdXJlbWVudHNDb21tYW5kEhUKDVNl",
-            "bmRCb290QWZ0ZXIYASABKAgiwgIKC1VhcnRDb21tYW5kEiIKCHJ4Q29uZmln",
-            "GAEgASgLMg4uUmFkaW9SeENvbmZpZ0gAEiIKCHR4Q29uZmlnGAIgASgLMg4u",
-            "UmFkaW9UeENvbmZpZ0gAEjMKE2RldmljZUNvbmZpZ3VyYXRpb24YAyABKAsy",
-            "FC5EZXZpY2VDb25maWd1cmF0aW9uSAASKwoPcmVxdWVzdEJvb3RJbmZvGAQg",
-            "ASgLMhAuUmVxdWVzdEJvb3RJbmZvSAASPQoYY2xlYXJNZWFzdXJlbWVudHND",
-            "b21tYW5kGAUgASgLMhkuQ2xlYXJNZWFzdXJlbWVudHNDb21tYW5kSAASJwoP",
-            "dHJhbnNtaXRDb21tYW5kGAYgASgLMgwuTG9SYU1lc3NhZ2VIABIZChFkb05v",
-            "dFByb3h5Q29tbWFuZBgHIAEoCEIGCgRCb2R5QgeqAgRMb1JhYgZwcm90bzM="));
+            "ZXJpb2QYAiABKA0SGAoQTGltaXRlZFNlbmRDb3VudBgDIAEoDSIxChhDbGVh",
+            "ck1lYXN1cmVtZW50c0NvbW1hbmQSFQoNU2VuZEJvb3RBZnRlchgBIAEoCCLC",
+            "AgoLVWFydENvbW1hbmQSIgoIcnhDb25maWcYASABKAsyDi5SYWRpb1J4Q29u",
+            "ZmlnSAASIgoIdHhDb25maWcYAiABKAsyDi5SYWRpb1R4Q29uZmlnSAASMwoT",
+            "ZGV2aWNlQ29uZmlndXJhdGlvbhgDIAEoCzIULkRldmljZUNvbmZpZ3VyYXRp",
+            "b25IABIrCg9yZXF1ZXN0Qm9vdEluZm8YBCABKAsyEC5SZXF1ZXN0Qm9vdElu",
+            "Zm9IABI9ChhjbGVhck1lYXN1cmVtZW50c0NvbW1hbmQYBSABKAsyGS5DbGVh",
+            "ck1lYXN1cmVtZW50c0NvbW1hbmRIABInCg90cmFuc21pdENvbW1hbmQYBiAB",
+            "KAsyDC5Mb1JhTWVzc2FnZUgAEhkKEWRvTm90UHJveHlDb21tYW5kGAcgASgI",
+            "QgYKBEJvZHlCB6oCBExvUmFiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LoRa.LoraDeviceMessagesReflection.Descriptor, global::LoRa.LoraPhyReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RequestBootInfo), global::LoRa.RequestBootInfo.Parser, new[]{ "Request" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DeviceConfiguration), global::LoRa.DeviceConfiguration.Parser, new[]{ "EnableAlwaysSend", "AlwaysSendPeriod" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DeviceConfiguration), global::LoRa.DeviceConfiguration.Parser, new[]{ "EnableAlwaysSend", "AlwaysSendPeriod", "LimitedSendCount" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.ClearMeasurementsCommand), global::LoRa.ClearMeasurementsCommand.Parser, new[]{ "SendBootAfter" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.UartCommand), global::LoRa.UartCommand.Parser, new[]{ "RxConfig", "TxConfig", "DeviceConfiguration", "RequestBootInfo", "ClearMeasurementsCommand", "TransmitCommand", "DoNotProxyCommand" }, new[]{ "Body" }, null, null, null)
           }));
@@ -275,6 +276,7 @@ namespace LoRa {
     public DeviceConfiguration(DeviceConfiguration other) : this() {
       enableAlwaysSend_ = other.enableAlwaysSend_;
       alwaysSendPeriod_ = other.alwaysSendPeriod_;
+      limitedSendCount_ = other.limitedSendCount_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -308,6 +310,21 @@ namespace LoRa {
       }
     }
 
+    /// <summary>Field number for the "LimitedSendCount" field.</summary>
+    public const int LimitedSendCountFieldNumber = 3;
+    private uint limitedSendCount_;
+    /// <summary>
+    /// Ignored if EnableAlwaysSend is true
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint LimitedSendCount {
+      get { return limitedSendCount_; }
+      set {
+        limitedSendCount_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -325,6 +342,7 @@ namespace LoRa {
       }
       if (EnableAlwaysSend != other.EnableAlwaysSend) return false;
       if (AlwaysSendPeriod != other.AlwaysSendPeriod) return false;
+      if (LimitedSendCount != other.LimitedSendCount) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -334,6 +352,7 @@ namespace LoRa {
       int hash = 1;
       if (EnableAlwaysSend != false) hash ^= EnableAlwaysSend.GetHashCode();
       if (AlwaysSendPeriod != 0) hash ^= AlwaysSendPeriod.GetHashCode();
+      if (LimitedSendCount != 0) hash ^= LimitedSendCount.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -360,6 +379,10 @@ namespace LoRa {
         output.WriteRawTag(16);
         output.WriteUInt32(AlwaysSendPeriod);
       }
+      if (LimitedSendCount != 0) {
+        output.WriteRawTag(24);
+        output.WriteUInt32(LimitedSendCount);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -378,6 +401,10 @@ namespace LoRa {
         output.WriteRawTag(16);
         output.WriteUInt32(AlwaysSendPeriod);
       }
+      if (LimitedSendCount != 0) {
+        output.WriteRawTag(24);
+        output.WriteUInt32(LimitedSendCount);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -393,6 +420,9 @@ namespace LoRa {
       }
       if (AlwaysSendPeriod != 0) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(AlwaysSendPeriod);
+      }
+      if (LimitedSendCount != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(LimitedSendCount);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -411,6 +441,9 @@ namespace LoRa {
       }
       if (other.AlwaysSendPeriod != 0) {
         AlwaysSendPeriod = other.AlwaysSendPeriod;
+      }
+      if (other.LimitedSendCount != 0) {
+        LimitedSendCount = other.LimitedSendCount;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -435,6 +468,10 @@ namespace LoRa {
             AlwaysSendPeriod = input.ReadUInt32();
             break;
           }
+          case 24: {
+            LimitedSendCount = input.ReadUInt32();
+            break;
+          }
         }
       }
     #endif
@@ -456,6 +493,10 @@ namespace LoRa {
           }
           case 16: {
             AlwaysSendPeriod = input.ReadUInt32();
+            break;
+          }
+          case 24: {
+            LimitedSendCount = input.ReadUInt32();
             break;
           }
         }

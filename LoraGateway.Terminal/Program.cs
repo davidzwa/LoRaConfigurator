@@ -3,7 +3,6 @@ using LoraGateway.Handlers;
 using LoraGateway.Services;
 using LoraGateway.Services.CommandLine;
 using LoraGateway.Services.Firmware;
-using LoraGateway.Services.Firmware.RandomLinearCoding;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -13,6 +12,11 @@ namespace LoraGateway;
 
 public static class LoraGateway
 {
+    public static string GetUniqueLogFile()
+    {
+        return Path.Combine(Directory.GetCurrentDirectory(),
+            $"../../../Logs/logs-{DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}.txt");
+    }
     public static async Task Main(string[] args)
     {
         Log.Logger = new LoggerConfiguration()
@@ -25,21 +29,12 @@ public static class LoraGateway
             .Enrich.FromLogContext()
             .WriteTo.Console(
                 outputTemplate:
-                "[{Timestamp:HH:mm:ss} {Level:u3}] ({SourceContext:l}) {Message:lj}{NewLine}{Exception}"
+                "[{Timestamp:HH:mm:ss} {Level:u3}] ({SourceContext}) {Message:lj}{NewLine}{Exception}"
+            )
+            .WriteTo.File(
+                GetUniqueLogFile()
             )
             .CreateLogger();
-
-        // Debug the statically generated values
-        // foreach (var i in Enumerable.Range(1, 255))
-        // {
-        //     Console.WriteLine($"Log {GFSymbol.Log[i]}");
-        // }
-        //
-        // Console.WriteLine("--");
-        // foreach(var i in Enumerable.Range(1, 255))
-        // {
-        //     Console.WriteLine($"ALog {GFSymbol.Exp[i]}");
-        // }
 
         await CreateHostBuilder(args).RunConsoleAsync();
     }

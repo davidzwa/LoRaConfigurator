@@ -31,6 +31,7 @@ public class ListDeviceCommandHandler
         commandHandler.Handler = CommandHandler.Create(() =>
         {
             var ports = _serialProcessorService.SerialPorts;
+
             foreach (var port in ports)
             {
                 var device = _deviceStore.GetDeviceByPort(port.PortName);
@@ -40,9 +41,8 @@ public class ListDeviceCommandHandler
                 }
                 else
                 {
-                    var isSelected = port.PortName == _selectedDeviceService.SelectedPortName;
-                    _logger.LogInformation("{IsSelectedMarker} Device {device} on port {port}",
-                        isSelected ? "SELECTED >" : "", device.NickName, port.PortName);
+                    // var isSelected = port.PortName == _selectedDeviceService.SelectedPortName;
+                    _logger.LogInformation("Device on port {port}", port.PortName);
                 }
             }
         });

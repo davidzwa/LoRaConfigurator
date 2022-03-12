@@ -1,0 +1,7 @@
+2022-03-10 16:39:22.325 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2022-03-10 16:39:22.345 +01:00 [INF] Hosting environment: Production
+2022-03-10 16:39:22.348 +01:00 [INF] Content root path: D:\Projects\LoraGateway\LoraGateway.Terminal\bin\Debug\net6.0
+2022-03-10 16:39:22.368 +01:00 [INF] Connected to device COM11
+2022-03-10 16:39:43.551 +01:00 [INF] [COM11, Debug] 123 Code:0
+2022-03-10 16:40:31.027 +01:00 [INF] [A1, MC:0, MD:false] heart beat 5832774-876106005-825374777
+2022-03-10 16:40:32.786 +01:00 [INF] [COM11, Debug] 123 Code:0
