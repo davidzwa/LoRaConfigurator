@@ -25,30 +25,30 @@ namespace LoRa {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Chp1YXJ0X2RldmljZV9tZXNzYWdlcy5wcm90bxoVc2hhcmVkL2Zpcm13YXJl",
-            "LnByb3RvGhpsb3JhX2RldmljZV9tZXNzYWdlcy5wcm90byLAAQoPTG9yYU1l",
+            "LnByb3RvGhpsb3JhX2RldmljZV9tZXNzYWdlcy5wcm90byLIAQoPTG9yYU1l",
             "YXN1cmVtZW50EgwKBFNpemUYASABKA0SDAoEUnNzaRgCIAEoBRILCgNTbnIY",
             "AyABKAUSFgoOU2VxdWVuY2VOdW1iZXIYBCABKA0SIgoVSXNNZWFzdXJlbWVu",
-            "dEZyYWdtZW50GAUgASgISACIAQESDwoHU3VjY2VzcxgGIAEoCBIdCgdQYXls",
-            "b2FkGAcgASgLMgwuTG9SYU1lc3NhZ2VCGAoWX0lzTWVhc3VyZW1lbnRGcmFn",
-            "bWVudCKNAQoLQm9vdE1lc3NhZ2USIwoQRGV2aWNlSWRlbnRpZmllchgBIAEo",
-            "CzIJLkRldmljZUlkEiEKD0Zpcm13YXJlVmVyc2lvbhgCIAEoCzIILlZlcnNp",
-            "b24SGAoQTWVhc3VyZW1lbnRDb3VudBgDIAEoDRIcChRNZWFzdXJlbWVudHNE",
-            "aXNhYmxlZBgEIAEoCCIaCgpBY2tNZXNzYWdlEgwKBENvZGUYASABKA0iIAoQ",
-            "RXhjZXB0aW9uTWVzc2FnZRIMCgRDb2RlGAEgASgNIhwKDERlYnVnTWVzc2Fn",
-            "ZRIMCgRDb2RlGAEgASgNImwKDkRlY29kaW5nUmVzdWx0Eg8KB1N1Y2Nlc3MY",
-            "ASABKAgSEgoKTWF0cml4UmFuaxgCIAEoDRIaChJGaXJzdERlY29kZWROdW1i",
-            "ZXIYAyABKA0SGQoRTGFzdERlY29kZWROdW1iZXIYBCABKA0inQIKDFVhcnRS",
-            "ZXNwb25zZRIPCgdQYXlsb2FkGAEgASgMEiMKC2Jvb3RNZXNzYWdlGAIgASgL",
-            "MgwuQm9vdE1lc3NhZ2VIABIhCgphY2tNZXNzYWdlGAMgASgLMgsuQWNrTWVz",
-            "c2FnZUgAEisKD2xvcmFNZWFzdXJlbWVudBgEIAEoCzIQLkxvcmFNZWFzdXJl",
-            "bWVudEgAEiUKDGRlYnVnTWVzc2FnZRgFIAEoCzINLkRlYnVnTWVzc2FnZUgA",
-            "Ei0KEGV4Y2VwdGlvbk1lc3NhZ2UYBiABKAsyES5FeGNlcHRpb25NZXNzYWdl",
-            "SAASKQoOZGVjb2RpbmdSZXN1bHQYByABKAsyDy5EZWNvZGluZ1Jlc3VsdEgA",
-            "QgYKBEJvZHlCB6oCBExvUmFiBnByb3RvMw=="));
+            "dEZyYWdtZW50GAUgASgISACIAQESDwoHU3VjY2VzcxgGIAEoCBIlCg9Eb3du",
+            "bGlua1BheWxvYWQYByABKAsyDC5Mb1JhTWVzc2FnZUIYChZfSXNNZWFzdXJl",
+            "bWVudEZyYWdtZW50Io0BCgtCb290TWVzc2FnZRIjChBEZXZpY2VJZGVudGlm",
+            "aWVyGAEgASgLMgkuRGV2aWNlSWQSIQoPRmlybXdhcmVWZXJzaW9uGAIgASgL",
+            "MgguVmVyc2lvbhIYChBNZWFzdXJlbWVudENvdW50GAMgASgNEhwKFE1lYXN1",
+            "cmVtZW50c0Rpc2FibGVkGAQgASgIIhoKCkFja01lc3NhZ2USDAoEQ29kZRgB",
+            "IAEoDSIgChBFeGNlcHRpb25NZXNzYWdlEgwKBENvZGUYASABKA0iHAoMRGVi",
+            "dWdNZXNzYWdlEgwKBENvZGUYASABKA0ibAoORGVjb2RpbmdSZXN1bHQSDwoH",
+            "U3VjY2VzcxgBIAEoCBISCgpNYXRyaXhSYW5rGAIgASgNEhoKEkZpcnN0RGVj",
+            "b2RlZE51bWJlchgDIAEoDRIZChFMYXN0RGVjb2RlZE51bWJlchgEIAEoDSKd",
+            "AgoMVWFydFJlc3BvbnNlEg8KB1BheWxvYWQYASABKAwSIwoLYm9vdE1lc3Nh",
+            "Z2UYAiABKAsyDC5Cb290TWVzc2FnZUgAEiEKCmFja01lc3NhZ2UYAyABKAsy",
+            "Cy5BY2tNZXNzYWdlSAASKwoPbG9yYU1lYXN1cmVtZW50GAQgASgLMhAuTG9y",
+            "YU1lYXN1cmVtZW50SAASJQoMZGVidWdNZXNzYWdlGAUgASgLMg0uRGVidWdN",
+            "ZXNzYWdlSAASLQoQZXhjZXB0aW9uTWVzc2FnZRgGIAEoCzIRLkV4Y2VwdGlv",
+            "bk1lc3NhZ2VIABIpCg5kZWNvZGluZ1Jlc3VsdBgHIAEoCzIPLkRlY29kaW5n",
+            "UmVzdWx0SABCBgoEQm9keUIHqgIETG9SYWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LoRa.FirmwareReflection.Descriptor, global::LoRa.LoraDeviceMessagesReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.LoraMeasurement), global::LoRa.LoraMeasurement.Parser, new[]{ "Size", "Rssi", "Snr", "SequenceNumber", "IsMeasurementFragment", "Success", "Payload" }, new[]{ "IsMeasurementFragment" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.LoraMeasurement), global::LoRa.LoraMeasurement.Parser, new[]{ "Size", "Rssi", "Snr", "SequenceNumber", "IsMeasurementFragment", "Success", "DownlinkPayload" }, new[]{ "IsMeasurementFragment" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.BootMessage), global::LoRa.BootMessage.Parser, new[]{ "DeviceIdentifier", "FirmwareVersion", "MeasurementCount", "MeasurementsDisabled" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.AckMessage), global::LoRa.AckMessage.Parser, new[]{ "Code" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.ExceptionMessage), global::LoRa.ExceptionMessage.Parser, new[]{ "Code" }, null, null, null, null),
@@ -103,7 +103,7 @@ namespace LoRa {
       sequenceNumber_ = other.sequenceNumber_;
       isMeasurementFragment_ = other.isMeasurementFragment_;
       success_ = other.success_;
-      payload_ = other.payload_ != null ? other.payload_.Clone() : null;
+      downlinkPayload_ = other.downlinkPayload_ != null ? other.downlinkPayload_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -198,15 +198,15 @@ namespace LoRa {
       }
     }
 
-    /// <summary>Field number for the "Payload" field.</summary>
-    public const int PayloadFieldNumber = 7;
-    private global::LoRa.LoRaMessage payload_;
+    /// <summary>Field number for the "DownlinkPayload" field.</summary>
+    public const int DownlinkPayloadFieldNumber = 7;
+    private global::LoRa.LoRaMessage downlinkPayload_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LoRa.LoRaMessage Payload {
-      get { return payload_; }
+    public global::LoRa.LoRaMessage DownlinkPayload {
+      get { return downlinkPayload_; }
       set {
-        payload_ = value;
+        downlinkPayload_ = value;
       }
     }
 
@@ -231,7 +231,7 @@ namespace LoRa {
       if (SequenceNumber != other.SequenceNumber) return false;
       if (IsMeasurementFragment != other.IsMeasurementFragment) return false;
       if (Success != other.Success) return false;
-      if (!object.Equals(Payload, other.Payload)) return false;
+      if (!object.Equals(DownlinkPayload, other.DownlinkPayload)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -245,7 +245,7 @@ namespace LoRa {
       if (SequenceNumber != 0) hash ^= SequenceNumber.GetHashCode();
       if (HasIsMeasurementFragment) hash ^= IsMeasurementFragment.GetHashCode();
       if (Success != false) hash ^= Success.GetHashCode();
-      if (payload_ != null) hash ^= Payload.GetHashCode();
+      if (downlinkPayload_ != null) hash ^= DownlinkPayload.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -288,9 +288,9 @@ namespace LoRa {
         output.WriteRawTag(48);
         output.WriteBool(Success);
       }
-      if (payload_ != null) {
+      if (downlinkPayload_ != null) {
         output.WriteRawTag(58);
-        output.WriteMessage(Payload);
+        output.WriteMessage(DownlinkPayload);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -326,9 +326,9 @@ namespace LoRa {
         output.WriteRawTag(48);
         output.WriteBool(Success);
       }
-      if (payload_ != null) {
+      if (downlinkPayload_ != null) {
         output.WriteRawTag(58);
-        output.WriteMessage(Payload);
+        output.WriteMessage(DownlinkPayload);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -358,8 +358,8 @@ namespace LoRa {
       if (Success != false) {
         size += 1 + 1;
       }
-      if (payload_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Payload);
+      if (downlinkPayload_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(DownlinkPayload);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -391,11 +391,11 @@ namespace LoRa {
       if (other.Success != false) {
         Success = other.Success;
       }
-      if (other.payload_ != null) {
-        if (payload_ == null) {
-          Payload = new global::LoRa.LoRaMessage();
+      if (other.downlinkPayload_ != null) {
+        if (downlinkPayload_ == null) {
+          DownlinkPayload = new global::LoRa.LoRaMessage();
         }
-        Payload.MergeFrom(other.Payload);
+        DownlinkPayload.MergeFrom(other.DownlinkPayload);
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -437,10 +437,10 @@ namespace LoRa {
             break;
           }
           case 58: {
-            if (payload_ == null) {
-              Payload = new global::LoRa.LoRaMessage();
+            if (downlinkPayload_ == null) {
+              DownlinkPayload = new global::LoRa.LoRaMessage();
             }
-            input.ReadMessage(Payload);
+            input.ReadMessage(DownlinkPayload);
             break;
           }
         }
@@ -483,10 +483,10 @@ namespace LoRa {
             break;
           }
           case 58: {
-            if (payload_ == null) {
-              Payload = new global::LoRa.LoRaMessage();
+            if (downlinkPayload_ == null) {
+              DownlinkPayload = new global::LoRa.LoRaMessage();
             }
-            input.ReadMessage(Payload);
+            input.ReadMessage(DownlinkPayload);
             break;
           }
         }

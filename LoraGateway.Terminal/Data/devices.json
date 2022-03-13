@@ -39,15 +39,24 @@
       "HardwareId": "5046325-876106005-825374777",
       "Id": 5046325,
       "NickName": "H1",
-      "FirmwareVersion": "2.0.1.14",
+      "FirmwareVersion": "2.0.2.0",
       "RegisteredAt": "132838798889785028",
       "LastPortName": "COM7",
       "Meta": null
     },
     {
+      "HardwareId": "6488128-876106005-825374777",
+      "Id": 6488128,
+      "NickName": "H2",
+      "FirmwareVersion": "2.0.1.14",
+      "RegisteredAt": "132907664125525158",
+      "LastPortName": "COM4",
+      "Meta": null
+    },
+    {
       "HardwareId": "2818104-876106005-825374777",
       "Id": 2818104,
-      "NickName": "Righty",
+      "NickName": "H3",
       "FirmwareVersion": "2.0.2.0",
       "RegisteredAt": "132838808759884393",
       "LastPortName": "COM6",
@@ -60,15 +69,6 @@
       "FirmwareVersion": "2.0.1.14",
       "RegisteredAt": "132848143947603040",
       "LastPortName": "COM5",
-      "Meta": null
-    },
-    {
-      "HardwareId": "6488128-876106005-825374777",
-      "Id": 6488128,
-      "NickName": "H2",
-      "FirmwareVersion": "2.0.1.14",
-      "RegisteredAt": "132907664125525158",
-      "LastPortName": "COM4",
       "Meta": null
     },
     {
