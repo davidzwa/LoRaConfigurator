@@ -48,7 +48,7 @@
       "HardwareId": "2818104-876106005-825374777",
       "Id": 2818104,
       "NickName": "Righty",
-      "FirmwareVersion": "2.0.0.21",
+      "FirmwareVersion": "2.0.2.0",
       "RegisteredAt": "132838808759884393",
       "LastPortName": "COM6",
       "Meta": null
@@ -57,9 +57,9 @@
       "HardwareId": "4784163-808997123-808661810",
       "Id": 4784163,
       "NickName": "Qepyshavaely",
-      "FirmwareVersion": "2.0.1.10",
+      "FirmwareVersion": "2.0.1.14",
       "RegisteredAt": "132848143947603040",
-      "LastPortName": "COM4",
+      "LastPortName": "COM5",
       "Meta": null
     },
     {

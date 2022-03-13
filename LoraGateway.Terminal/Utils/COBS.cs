@@ -37,7 +37,7 @@ public static class Cobs
                 result.Insert(distanceIndex, distance);
 
                 // Set the distance index to the latest index plus one
-                distanceIndex = (byte) result.Count;
+                distanceIndex = (byte)result.Count;
 
                 // Reset the value which indicates the distance to the next zero (the frame delimiter)
                 distance = 1;
@@ -57,7 +57,7 @@ public static class Cobs
                     result.Insert(distanceIndex, distance);
 
                     // Set the distance index to the latest index plus one
-                    distanceIndex = (byte) result.Count;
+                    distanceIndex = (byte)result.Count;
 
                     // Reset the value which indicates the distance to the next zero (the frame delimiter)
                     distance = 1;

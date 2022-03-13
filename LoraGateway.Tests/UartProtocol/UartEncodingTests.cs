@@ -104,7 +104,7 @@ public class UartEncodingTests
     }
 
     [Fact]
-    public void CobsFailureTest()
+    public void ProtoFailureTest()
     {
         var payload = new byte[]
         {
@@ -120,7 +120,7 @@ public class UartEncodingTests
     }
 
     [Fact]
-    public void CobsFailure2Test()
+    public void ProtoFailure2Test()
     {
         var payload = new byte[]
         {
@@ -131,6 +131,17 @@ public class UartEncodingTests
         var result = UartResponse.Parser.ParseFrom(payload);
         result.BodyCase.ShouldBe(UartResponse.BodyOneofCase.BootMessage);
         result.BootMessage.MeasurementsDisabled.ShouldBeTrue();
+    }
+
+    [Fact]
+    public void CobsOutputEmptyTest()
+    {
+        var cobsEncodedInput = new byte[]
+            { 0xc8, 0x89, 0x03, 0x12, 0x06, 0x08, 0x02, 0x18, 0x01, 0x20, 0x0e, 0x18, 0x04, 0x20, 0x01 };
+
+        var output = Cobs.Decode(cobsEncodedInput);
+        
+        output.Count.ShouldBeGreaterThan(0);
     }
     
 }

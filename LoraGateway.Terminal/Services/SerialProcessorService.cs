@@ -234,7 +234,7 @@ public partial class SerialProcessorService
         var outputBuffer = Cobs.Decode(buffer);
         if (outputBuffer.Count == 0)
         {
-            _logger.LogError("[{Port}] COBS output empty {HexString}", portName, SerialUtil.ByteArrayToString(buffer));
+            _logger.LogError("[{Port}] COBS output empty - input \n\t {HexString}", portName, SerialUtil.ByteArrayToString(buffer));
             return 1;
         }
 
