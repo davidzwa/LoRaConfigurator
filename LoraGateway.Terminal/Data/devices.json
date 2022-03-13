@@ -15,7 +15,6 @@
       "FirmwareVersion": null,
       "RegisteredAt": "132835343136590640",
       "LastPortName": null,
-      "IsGateway": false,
       "Meta": null
     },
     {
@@ -25,7 +24,6 @@
       "FirmwareVersion": null,
       "RegisteredAt": "132835489004210116",
       "LastPortName": null,
-      "IsGateway": false,
       "Meta": null
     },
     {
@@ -35,7 +33,6 @@
       "FirmwareVersion": "2.0.1.10",
       "RegisteredAt": "132838680900489570",
       "LastPortName": "COM6",
-      "IsGateway": false,
       "Meta": null
     },
     {
@@ -43,10 +40,8 @@
       "Id": 5046325,
       "NickName": "H1",
       "FirmwareVersion": "2.0.1.14",
-      "FirmwareVersion": "2.0.1.12",
       "RegisteredAt": "132838798889785028",
       "LastPortName": "COM7",
-      "IsGateway": false,
       "Meta": null
     },
     {
@@ -56,7 +51,6 @@
       "FirmwareVersion": "2.0.0.21",
       "RegisteredAt": "132838808759884393",
       "LastPortName": "COM6",
-      "IsGateway": false,
       "Meta": null
     },
     {
@@ -66,7 +60,6 @@
       "FirmwareVersion": "2.0.1.10",
       "RegisteredAt": "132848143947603040",
       "LastPortName": "COM4",
-      "IsGateway": false,
       "Meta": null
     },
     {
@@ -76,7 +69,6 @@
       "FirmwareVersion": "2.0.1.14",
       "RegisteredAt": "132907664125525158",
       "LastPortName": "COM4",
-      "IsGateway": false,
       "Meta": null
     },
     {
@@ -86,7 +78,6 @@
       "FirmwareVersion": "2.0.1.12",
       "RegisteredAt": "132911431153208074",
       "LastPortName": "COM11",
-      "IsGateway": false,
       "Meta": null
     },
     {
@@ -96,7 +87,6 @@
       "FirmwareVersion": "2.0.1.12",
       "RegisteredAt": "132848144244789782",
       "LastPortName": "COM3",
-      "IsGateway": false,
       "Meta": null
     },
     {
@@ -106,7 +96,6 @@
       "FirmwareVersion": "2.0.1.12",
       "RegisteredAt": "132913055127166434",
       "LastPortName": "COM12",
-      "IsGateway": false,
       "Meta": null
     },
     {
@@ -116,7 +105,6 @@
       "FirmwareVersion": "2.0.1.12",
       "RegisteredAt": "132913102713712512",
       "LastPortName": "COM13",
-      "IsGateway": false,
       "Meta": null
     },
     {
@@ -126,7 +114,6 @@
       "FirmwareVersion": "2.0.1.12",
       "RegisteredAt": "132913110564225018",
       "LastPortName": "COM15",
-      "IsGateway": false,
       "Meta": null
     },
     {
@@ -136,7 +123,6 @@
       "FirmwareVersion": "2.0.1.12",
       "RegisteredAt": "132913120564985102",
       "LastPortName": "COM16",
-      "IsGateway": false,
       "Meta": null
     }
   ]

@@ -2,10 +2,9 @@
 
 namespace LoraGateway.Services.Contracts;
 
-public abstract class JsonDataStore<T> : IDisposable, IDataStore<T> where T : class, ICloneable
+public abstract class JsonDataStore<T> : IDataStore<T> where T : class, ICloneable
 {
     protected T? Store;
-    protected FileStream? StoreFileStream;
 
     public abstract T GetDefaultJson();
 
@@ -18,29 +17,20 @@ public abstract class JsonDataStore<T> : IDisposable, IDataStore<T> where T : cl
         return Path.GetFullPath(fullJsonStorePath, Directory.GetCurrentDirectory());
     }
 
-    protected async Task EnsureSourceExists()
+    protected Task EnsureSourceExists()
     {
         var path = GetJsonFilePath();
         var dirName = Path.GetDirectoryName(path);
-        if (dirName == null) return;
+        if (dirName == null) return Task.CompletedTask;
 
         if (!Directory.Exists(dirName)) Directory.CreateDirectory(dirName);
 
-        if (!File.Exists(path)) await WriteStore();
-    }
-
-    public async Task WriteStore()
-    {
-        var path = GetJsonFilePath();
-        var jsonStore = Store ?? GetDefaultJson();
-        var serializedBlob = JsonSerializer.SerializeToUtf8Bytes(jsonStore, new JsonSerializerOptions
+        if (!File.Exists(path))
         {
-            WriteIndented = true
-        });
+            WriteStore();
+        }
 
-        var fileStream = GetFileStream(path);
-        fileStream.Position = 0;
-        await fileStream.WriteAsync(serializedBlob, 0, serializedBlob.Length);
+        return Task.CompletedTask;
     }
 
     public T? GetStore()
@@ -55,9 +45,8 @@ public abstract class JsonDataStore<T> : IDisposable, IDataStore<T> where T : cl
         await EnsureSourceExists();
 
         var path = GetJsonFilePath();
-        var fileStream = GetFileStream(path);
-        var reader = new StreamReader(fileStream, true);
-        var blob = await reader.ReadToEndAsync();
+
+        var blob = await File.ReadAllBytesAsync(path);
 
         Store = JsonSerializer.Deserialize<T>(blob, new JsonSerializerOptions
         {
@@ -66,22 +55,20 @@ public abstract class JsonDataStore<T> : IDisposable, IDataStore<T> where T : cl
 
         return Store;
     }
-
-    protected FileStream GetFileStream(string path)
+    
+    public void WriteStore()
     {
-        if (StoreFileStream != null) return StoreFileStream;
+        var path = GetJsonFilePath();
+        var jsonStore = Store ?? GetDefaultJson();
+        var serializedBlob = JsonSerializer.SerializeToUtf8Bytes(jsonStore, new JsonSerializerOptions
+        {
+            WriteIndented = true
+        });
 
-        StoreFileStream = new FileStream(path,
-            FileMode.OpenOrCreate,
-            FileAccess.ReadWrite,
-            FileShare.Read
-        );
-
-        return StoreFileStream;
-    }
-
-    public void Dispose()
-    {
-        StoreFileStream?.Dispose();
+        // var fileStream = GetFileStream(path);
+        // if (!fileStream.SafeFileHandle.IsClosed) {
+        //     fileStream.Close();
+        // }
+        File.WriteAllBytes(path, serializedBlob);
     }
 }

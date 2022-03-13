@@ -30,7 +30,7 @@ public class SelectDeviceCommandHandler
         commandHandler.Handler = CommandHandler.Create(() =>
         {
             var port = _selectedDeviceService.SelectedPortName;
-            var device = _store.GetDeviceByPort(port!);
+            var device = _store.GetDeviceByPort(port!)?.FirstOrDefault();
             _logger.LogInformation("Selected device {DeviceName} at port {Port}", device?.NickName, port);
         });
         return commandHandler;

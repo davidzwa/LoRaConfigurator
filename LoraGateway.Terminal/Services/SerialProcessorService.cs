@@ -12,18 +12,18 @@ public partial class SerialProcessorService
     private readonly ILogger<SerialProcessorService> _logger;
     private readonly MeasurementsService _measurementsService;
     private readonly SelectedDeviceService _selectedDeviceService;
-    private readonly DeviceDataStore _store;
+    private readonly DeviceDataStore _deviceStore;
     public static readonly byte EndByte = 0x00;
     public static readonly byte StartByte = 0xFF;
 
     public SerialProcessorService(
-        DeviceDataStore store,
+        DeviceDataStore deviceStore,
         SelectedDeviceService selectedDeviceService,
         MeasurementsService measurementsService,
         ILogger<SerialProcessorService> logger
     )
     {
-        _store = store;
+        _deviceStore = deviceStore;
         _selectedDeviceService = selectedDeviceService;
         _measurementsService = measurementsService;
         _logger = logger;
@@ -80,10 +80,10 @@ public partial class SerialProcessorService
             return;
         }
 
-        _logger.LogInformation("[{PortName}] Connected to device", portName);
+        var devices = _deviceStore.GetDeviceByPort(portName);
+        var names = devices.Select(d => d?.NickName);
+        _logger.LogInformation("[{PortName}] Connected to device - {Names}", portName, names);
         SerialPorts.Add(port);
-        
-        SendBootCommand(false, portName);
     }
 
     public SerialPort? GetPort(string portName)
@@ -267,12 +267,11 @@ public partial class SerialProcessorService
             var firmwareVersion = response.BootMessage.GetFirmwareAsString();
             var measurementCount = response.BootMessage.MeasurementCount;
             var measurementDisabled = response.BootMessage.MeasurementsDisabled;
-            var device = await _store.GetOrAddDevice(new Device
+            var device = await _deviceStore.GetOrAddDevice(new Device
             {
                 HardwareId = deviceId,
                 Id = deviceFullId.Id0,
                 FirmwareVersion = firmwareVersion,
-                IsGateway = false,
                 LastPortName = portName
             });
 

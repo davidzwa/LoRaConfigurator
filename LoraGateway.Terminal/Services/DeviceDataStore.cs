@@ -29,42 +29,30 @@ public class DeviceDataStore : JsonDataStore<DeviceCollection>
 
     public Device GetDeviceByNick(string nickName)
     {
-        var existingDevice = Store?.Devices?.Find(d => d.NickName.Equals(nickName, StringComparison.InvariantCultureIgnoreCase));
+        var existingDevice =
+            Store?.Devices?.Find(d => d.NickName.Equals(nickName, StringComparison.InvariantCultureIgnoreCase));
         if (existingDevice == null)
             throw new InvalidOperationException($"Could not find device by nickname '{nickName}'");
         return existingDevice;
     }
 
-    public Device? GetDeviceByPort(string portName)
+    public IEnumerable<Device?> GetDeviceByPort(string portName)
     {
-        return Store?.Devices?.Find(d => d?.LastPortName == portName);
+        if (Store?.Devices == null)
+            return new List<Device>();
+
+        return Store.Devices.FindAll(d => d?.LastPortName == portName);
     }
 
-    public async Task<Device?> MarkDeviceGateway(string deviceId)
-    {
-        var gatewayDevice = GetDevice(deviceId, true);
-        gatewayDevice!.IsGateway = true;
-
-        Store?.Devices.ForEach(d =>
-        {
-            if (!gatewayDevice.Id.Equals(deviceId)) d.IsGateway = false;
-        });
-
-        await WriteStore();
-
-        return gatewayDevice;
-    }
-
-    public async Task<Device?> UpdateDevice(string deviceId, Device newDevice)
+    public Task<Device> UpdateDevice(string deviceId, Device newDevice)
     {
         var existingDevice = GetDevice(deviceId, true);
         existingDevice!.Meta = newDevice.Meta;
         existingDevice.FirmwareVersion = newDevice.FirmwareVersion;
         existingDevice.LastPortName = newDevice.LastPortName;
-        existingDevice.IsGateway = newDevice.IsGateway;
 
-        await WriteStore();
-        return existingDevice;
+        WriteStore();
+        return Task.FromResult(existingDevice);
     }
 
     public async Task<Device?> GetOrAddDevice(Device device)
@@ -82,7 +70,7 @@ public class DeviceDataStore : JsonDataStore<DeviceCollection>
         device.RegisteredAt = DateTime.Now.ToFileTimeUtc().ToString();
         Store?.Devices.Add(device);
 
-        await WriteStore();
+        WriteStore();
 
         return device;
     }
