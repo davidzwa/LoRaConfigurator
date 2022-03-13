@@ -65,10 +65,6 @@ public abstract class JsonDataStore<T> : IDataStore<T> where T : class, ICloneab
             WriteIndented = true
         });
 
-        // var fileStream = GetFileStream(path);
-        // if (!fileStream.SafeFileHandle.IsClosed) {
-        //     fileStream.Close();
-        // }
         File.WriteAllBytes(path, serializedBlob);
     }
 }

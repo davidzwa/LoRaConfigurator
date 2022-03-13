@@ -29,22 +29,24 @@ namespace LoRa {
             "dEJvb3RJbmZvEg8KB1JlcXVlc3QYASABKAgiYwoTRGV2aWNlQ29uZmlndXJh",
             "dGlvbhIYChBFbmFibGVBbHdheXNTZW5kGAEgASgIEhgKEEFsd2F5c1NlbmRQ",
             "ZXJpb2QYAiABKA0SGAoQTGltaXRlZFNlbmRDb3VudBgDIAEoDSIxChhDbGVh",
-            "ck1lYXN1cmVtZW50c0NvbW1hbmQSFQoNU2VuZEJvb3RBZnRlchgBIAEoCCLC",
-            "AgoLVWFydENvbW1hbmQSIgoIcnhDb25maWcYASABKAsyDi5SYWRpb1J4Q29u",
-            "ZmlnSAASIgoIdHhDb25maWcYAiABKAsyDi5SYWRpb1R4Q29uZmlnSAASMwoT",
-            "ZGV2aWNlQ29uZmlndXJhdGlvbhgDIAEoCzIULkRldmljZUNvbmZpZ3VyYXRp",
-            "b25IABIrCg9yZXF1ZXN0Qm9vdEluZm8YBCABKAsyEC5SZXF1ZXN0Qm9vdElu",
-            "Zm9IABI9ChhjbGVhck1lYXN1cmVtZW50c0NvbW1hbmQYBSABKAsyGS5DbGVh",
-            "ck1lYXN1cmVtZW50c0NvbW1hbmRIABInCg90cmFuc21pdENvbW1hbmQYBiAB",
-            "KAsyDC5Mb1JhTWVzc2FnZUgAEhkKEWRvTm90UHJveHlDb21tYW5kGAcgASgI",
-            "QgYKBEJvZHlCB6oCBExvUmFiBnByb3RvMw=="));
+            "ck1lYXN1cmVtZW50c0NvbW1hbmQSFQoNU2VuZEJvb3RBZnRlchgBIAEoCCIL",
+            "CglMb1JhUmVzZXQi5AIKC1VhcnRDb21tYW5kEiIKCHJ4Q29uZmlnGAEgASgL",
+            "Mg4uUmFkaW9SeENvbmZpZ0gAEiIKCHR4Q29uZmlnGAIgASgLMg4uUmFkaW9U",
+            "eENvbmZpZ0gAEjMKE2RldmljZUNvbmZpZ3VyYXRpb24YAyABKAsyFC5EZXZp",
+            "Y2VDb25maWd1cmF0aW9uSAASKwoPcmVxdWVzdEJvb3RJbmZvGAQgASgLMhAu",
+            "UmVxdWVzdEJvb3RJbmZvSAASPQoYY2xlYXJNZWFzdXJlbWVudHNDb21tYW5k",
+            "GAUgASgLMhkuQ2xlYXJNZWFzdXJlbWVudHNDb21tYW5kSAASJwoPdHJhbnNt",
+            "aXRDb21tYW5kGAYgASgLMgwuTG9SYU1lc3NhZ2VIABIgCgpyZXNldFJhZGlv",
+            "GAcgASgLMgouTG9SYVJlc2V0SAASGQoRZG9Ob3RQcm94eUNvbW1hbmQYCCAB",
+            "KAhCBgoEQm9keUIHqgIETG9SYWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LoRa.LoraDeviceMessagesReflection.Descriptor, global::LoRa.LoraPhyReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RequestBootInfo), global::LoRa.RequestBootInfo.Parser, new[]{ "Request" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DeviceConfiguration), global::LoRa.DeviceConfiguration.Parser, new[]{ "EnableAlwaysSend", "AlwaysSendPeriod", "LimitedSendCount" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.ClearMeasurementsCommand), global::LoRa.ClearMeasurementsCommand.Parser, new[]{ "SendBootAfter" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.UartCommand), global::LoRa.UartCommand.Parser, new[]{ "RxConfig", "TxConfig", "DeviceConfiguration", "RequestBootInfo", "ClearMeasurementsCommand", "TransmitCommand", "DoNotProxyCommand" }, new[]{ "Body" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.LoRaReset), global::LoRa.LoRaReset.Parser, null, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.UartCommand), global::LoRa.UartCommand.Parser, new[]{ "RxConfig", "TxConfig", "DeviceConfiguration", "RequestBootInfo", "ClearMeasurementsCommand", "TransmitCommand", "ResetRadio", "DoNotProxyCommand" }, new[]{ "Body" }, null, null, null)
           }));
     }
     #endregion
@@ -698,6 +700,158 @@ namespace LoRa {
 
   }
 
+  public sealed partial class LoRaReset : pb::IMessage<LoRaReset>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<LoRaReset> _parser = new pb::MessageParser<LoRaReset>(() => new LoRaReset());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<LoRaReset> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LoRa.UartControlMessagesReflection.Descriptor.MessageTypes[3]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public LoRaReset() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public LoRaReset(LoRaReset other) : this() {
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public LoRaReset Clone() {
+      return new LoRaReset(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as LoRaReset);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(LoRaReset other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(LoRaReset other) {
+      if (other == null) {
+        return;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+        }
+      }
+    }
+    #endif
+
+  }
+
   public sealed partial class UartCommand : pb::IMessage<UartCommand>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -712,7 +866,7 @@ namespace LoRa {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LoRa.UartControlMessagesReflection.Descriptor.MessageTypes[3]; }
+      get { return global::LoRa.UartControlMessagesReflection.Descriptor.MessageTypes[4]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -751,6 +905,9 @@ namespace LoRa {
           break;
         case BodyOneofCase.TransmitCommand:
           TransmitCommand = other.TransmitCommand.Clone();
+          break;
+        case BodyOneofCase.ResetRadio:
+          ResetRadio = other.ResetRadio.Clone();
           break;
       }
 
@@ -844,8 +1001,20 @@ namespace LoRa {
       }
     }
 
+    /// <summary>Field number for the "resetRadio" field.</summary>
+    public const int ResetRadioFieldNumber = 7;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LoRa.LoRaReset ResetRadio {
+      get { return bodyCase_ == BodyOneofCase.ResetRadio ? (global::LoRa.LoRaReset) body_ : null; }
+      set {
+        body_ = value;
+        bodyCase_ = value == null ? BodyOneofCase.None : BodyOneofCase.ResetRadio;
+      }
+    }
+
     /// <summary>Field number for the "doNotProxyCommand" field.</summary>
-    public const int DoNotProxyCommandFieldNumber = 7;
+    public const int DoNotProxyCommandFieldNumber = 8;
     private bool doNotProxyCommand_;
     /// <summary>
     /// Do not proxy the LoRa command - for debugging purposes
@@ -869,6 +1038,7 @@ namespace LoRa {
       RequestBootInfo = 4,
       ClearMeasurementsCommand = 5,
       TransmitCommand = 6,
+      ResetRadio = 7,
     }
     private BodyOneofCase bodyCase_ = BodyOneofCase.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -905,6 +1075,7 @@ namespace LoRa {
       if (!object.Equals(RequestBootInfo, other.RequestBootInfo)) return false;
       if (!object.Equals(ClearMeasurementsCommand, other.ClearMeasurementsCommand)) return false;
       if (!object.Equals(TransmitCommand, other.TransmitCommand)) return false;
+      if (!object.Equals(ResetRadio, other.ResetRadio)) return false;
       if (DoNotProxyCommand != other.DoNotProxyCommand) return false;
       if (BodyCase != other.BodyCase) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -920,6 +1091,7 @@ namespace LoRa {
       if (bodyCase_ == BodyOneofCase.RequestBootInfo) hash ^= RequestBootInfo.GetHashCode();
       if (bodyCase_ == BodyOneofCase.ClearMeasurementsCommand) hash ^= ClearMeasurementsCommand.GetHashCode();
       if (bodyCase_ == BodyOneofCase.TransmitCommand) hash ^= TransmitCommand.GetHashCode();
+      if (bodyCase_ == BodyOneofCase.ResetRadio) hash ^= ResetRadio.GetHashCode();
       if (DoNotProxyCommand != false) hash ^= DoNotProxyCommand.GetHashCode();
       hash ^= (int) bodyCase_;
       if (_unknownFields != null) {
@@ -964,8 +1136,12 @@ namespace LoRa {
         output.WriteRawTag(50);
         output.WriteMessage(TransmitCommand);
       }
+      if (bodyCase_ == BodyOneofCase.ResetRadio) {
+        output.WriteRawTag(58);
+        output.WriteMessage(ResetRadio);
+      }
       if (DoNotProxyCommand != false) {
-        output.WriteRawTag(56);
+        output.WriteRawTag(64);
         output.WriteBool(DoNotProxyCommand);
       }
       if (_unknownFields != null) {
@@ -1002,8 +1178,12 @@ namespace LoRa {
         output.WriteRawTag(50);
         output.WriteMessage(TransmitCommand);
       }
+      if (bodyCase_ == BodyOneofCase.ResetRadio) {
+        output.WriteRawTag(58);
+        output.WriteMessage(ResetRadio);
+      }
       if (DoNotProxyCommand != false) {
-        output.WriteRawTag(56);
+        output.WriteRawTag(64);
         output.WriteBool(DoNotProxyCommand);
       }
       if (_unknownFields != null) {
@@ -1033,6 +1213,9 @@ namespace LoRa {
       }
       if (bodyCase_ == BodyOneofCase.TransmitCommand) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(TransmitCommand);
+      }
+      if (bodyCase_ == BodyOneofCase.ResetRadio) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(ResetRadio);
       }
       if (DoNotProxyCommand != false) {
         size += 1 + 1;
@@ -1088,6 +1271,12 @@ namespace LoRa {
             TransmitCommand = new global::LoRa.LoRaMessage();
           }
           TransmitCommand.MergeFrom(other.TransmitCommand);
+          break;
+        case BodyOneofCase.ResetRadio:
+          if (ResetRadio == null) {
+            ResetRadio = new global::LoRa.LoRaReset();
+          }
+          ResetRadio.MergeFrom(other.ResetRadio);
           break;
       }
 
@@ -1160,7 +1349,16 @@ namespace LoRa {
             TransmitCommand = subBuilder;
             break;
           }
-          case 56: {
+          case 58: {
+            global::LoRa.LoRaReset subBuilder = new global::LoRa.LoRaReset();
+            if (bodyCase_ == BodyOneofCase.ResetRadio) {
+              subBuilder.MergeFrom(ResetRadio);
+            }
+            input.ReadMessage(subBuilder);
+            ResetRadio = subBuilder;
+            break;
+          }
+          case 64: {
             DoNotProxyCommand = input.ReadBool();
             break;
           }
@@ -1233,7 +1431,16 @@ namespace LoRa {
             TransmitCommand = subBuilder;
             break;
           }
-          case 56: {
+          case 58: {
+            global::LoRa.LoRaReset subBuilder = new global::LoRa.LoRaReset();
+            if (bodyCase_ == BodyOneofCase.ResetRadio) {
+              subBuilder.MergeFrom(ResetRadio);
+            }
+            input.ReadMessage(subBuilder);
+            ResetRadio = subBuilder;
+            break;
+          }
+          case 64: {
             DoNotProxyCommand = input.ReadBool();
             break;
           }
