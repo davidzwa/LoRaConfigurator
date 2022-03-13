@@ -73,7 +73,8 @@ public abstract class JsonDataStore<T> : IDisposable, IDataStore<T> where T : cl
 
         StoreFileStream = new FileStream(path,
             FileMode.OpenOrCreate,
-            FileAccess.ReadWrite
+            FileAccess.ReadWrite,
+            FileShare.Read
         );
 
         return StoreFileStream;

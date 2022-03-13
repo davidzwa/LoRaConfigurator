@@ -41,7 +41,8 @@
     {
       "HardwareId": "5046325-876106005-825374777",
       "Id": 5046325,
-      "NickName": "Lefty",
+      "NickName": "H1",
+      "FirmwareVersion": "2.0.1.14",
       "FirmwareVersion": "2.0.1.12",
       "RegisteredAt": "132838798889785028",
       "LastPortName": "COM7",
@@ -71,8 +72,8 @@
     {
       "HardwareId": "6488128-876106005-825374777",
       "Id": 6488128,
-      "NickName": "Kifybolyha",
-      "FirmwareVersion": "2.0.1.12",
+      "NickName": "H2",
+      "FirmwareVersion": "2.0.1.14",
       "RegisteredAt": "132907664125525158",
       "LastPortName": "COM4",
       "IsGateway": false,

@@ -200,7 +200,7 @@ public partial class SerialProcessorService
         var dataLength = listBuffer[startByteIndex + 1];
         var endIndex = listBuffer.FindIndex(val => val == 0x00);
         _logger.LogDebug(
-            "[{Port}] PREAMBLE BUFFER {RawLen} Start {StartByteIndex} DataLen {DataLen} EndFound {HasEnd}",
+            "-- [{Port}] MSG RX BUFFER {RawLen} Start {StartByteIndex} DataLen {DataLen} EndFound {HasEnd}",
             port.PortName,
             listBuffer.Count, startByteIndex, dataLength, endIndex);
 
@@ -240,9 +240,8 @@ public partial class SerialProcessorService
 
         // Remove COBS overhead of 2
         outputBuffer.RemoveAt(0);
-        outputBuffer.RemoveAt(outputBuffer.Count - 1);
 
-        _logger.LogDebug("[{Port}] POST-COBS {Message}", portName,
+        _logger.LogDebug("[{Port}] POST-COBS \n\t{Message}", portName,
             SerialUtil.ByteArrayToString(outputBuffer.ToArray()));
 
         var decodedBuffer = outputBuffer.ToArray();
@@ -258,7 +257,7 @@ public partial class SerialProcessorService
             return 2;
         }
 
-        _logger.LogDebug("[{Port}] PROTO SUCESS Type {Type}", portName, response.BodyCase);
+        _logger.LogDebug("[{Port}] PROTO SUCCESS Type {Type}", portName, response.BodyCase);
 
         var bodyCase = response.BodyCase;
         if (bodyCase.Equals(UartResponse.BodyOneofCase.BootMessage))
@@ -340,7 +339,7 @@ public partial class SerialProcessorService
             _logger.LogInformation("Got an unknown message");
         }
 
-        _logger.LogDebug("-- [{Port}] MSG DONE --", portName);
+        _logger.LogDebug("-- [{Port}] MSG RX DONE --", portName);
 
         return 0;
     }
