@@ -2,9 +2,10 @@
 
 namespace LoraGateway.Services.Contracts;
 
-public abstract class JsonDataStore<T> : IDataStore<T> where T : class, ICloneable
+public abstract class JsonDataStore<T> : IDisposable, IDataStore<T> where T : class, ICloneable
 {
     protected T? Store;
+    protected StreamWriter? StoreFileStream;
 
     public abstract T GetDefaultJson();
 
@@ -36,8 +37,29 @@ public abstract class JsonDataStore<T> : IDataStore<T> where T : class, ICloneab
         {
             WriteIndented = true
         });
+        // GetFileStream(path).Write
+        Console.WriteLine($"WRITE {path}");
+        
+        await GetFileStream(path).BaseStream.WriteAsync(serializedBlob, 0, serializedBlob.Length);
+        // await File.WriteAllBytesAsync(path, serializedBlob);
 
-        await File.WriteAllBytesAsync(path, serializedBlob);
+        // return Task.CompletedTask;
+    }
+
+    protected StreamWriter GetFileStream(string path)
+    {
+        if (StoreFileStream != null) return StoreFileStream;
+        
+        StoreFileStream = new StreamWriter(path, false
+        //     new FileStreamOptions()
+        // {
+        //     Access = FileAccess.ReadWrite,
+        //     Mode = FileMode.OpenOrCreate,
+        //     Share = FileShare.ReadWrite
+        // }
+        );
+
+        return StoreFileStream;
     }
 
     public T? GetStore()
@@ -59,5 +81,10 @@ public abstract class JsonDataStore<T> : IDataStore<T> where T : class, ICloneab
         });
 
         return Store;
+    }
+
+    public void Dispose()
+    {
+        StoreFileStream?.Dispose();
     }
 }

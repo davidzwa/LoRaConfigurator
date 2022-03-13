@@ -59,9 +59,9 @@ public partial class SerialProcessorService
         // Set the read/write timeouts
         port.ReadTimeout = 10000;
         port.WriteTimeout = 500;
-        
-        port.ErrorReceived += (sender, args) => OnPortError((SerialPort) sender, args);
-        port.DataReceived += async (sender, args) => await OnPortData((SerialPort) sender, args);
+
+        port.ErrorReceived += (sender, args) => OnPortError((SerialPort)sender, args);
+        port.DataReceived += async (sender, args) => await OnPortData((SerialPort)sender, args);
         try
         {
             port.Open();
@@ -79,9 +79,11 @@ public partial class SerialProcessorService
         {
             return;
         }
-        
-        _logger.LogInformation("Connected to device {PortName}", portName);
+
+        _logger.LogInformation("[{PortName}] Connected to device", portName);
         SerialPorts.Add(port);
+        
+        SendBootCommand(false, portName);
     }
 
     public SerialPort? GetPort(string portName)
@@ -89,29 +91,44 @@ public partial class SerialProcessorService
         return SerialPorts.Find(p => p.PortName.Equals(portName));
     }
 
-    public void WriteMessage(UartCommand message)
+    public void SendBootCommand(bool doNotProxy, string? portName = null)
+    {
+        var command = new UartCommand
+        {
+            DoNotProxyCommand = doNotProxy,
+            RequestBootInfo = new RequestBootInfo { Request = true }
+        };
+        WriteMessage(command, portName);
+    }
+
+    public void WriteMessage(UartCommand message, string? portName = null)
     {
         var selectedPortName = _selectedDeviceService.SelectedPortName;
+        if (portName != null)
+        {
+            selectedPortName = portName;
+        }
+
         if (selectedPortName == null)
         {
-            throw new InvalidOperationException("Selected port [selected gateway] was not set - check USB connection");
+            throw new InvalidOperationException("Selected port was not set - check USB connection");
         }
 
         var payload = message.ToByteArray();
-        var protoMessageBuffer = new[] {(byte) payload.Length}.Concat(payload);
+        var protoMessageBuffer = new[] { (byte)payload.Length }.Concat(payload);
         var messageBuffer = Cobs.Encode(protoMessageBuffer).ToArray();
-        var len = new[] {(byte) messageBuffer.Length};
-        var transmitBuffer = new[] {StartByte}
+        var len = new[] { (byte)messageBuffer.Length };
+        var transmitBuffer = new[] { StartByte }
             .Concat(len)
             .Concat(messageBuffer)
-            .Concat(new[] {EndByte})
+            .Concat(new[] { EndByte })
             .ToArray();
 
-        _logger.LogDebug("TX {Message}", SerialUtil.ByteArrayToString(transmitBuffer));
+        _logger.LogDebug("[{Port}] TRANSMIT {Message}", selectedPortName, SerialUtil.ByteArrayToString(transmitBuffer));
         var port = GetPort(selectedPortName);
         if (port == null)
         {
-            _logger.LogWarning("Port was null. Cant send to {Port}", selectedPortName);
+            _logger.LogWarning("[{Port}] Port was null. Cant send", selectedPortName);
             return;
         }
 
@@ -120,17 +137,18 @@ public partial class SerialProcessorService
 
     public void OnPortError(SerialPort subject, SerialErrorReceivedEventArgs e)
     {
-        _logger.LogWarning("Serial error {ErrorType}", e.EventType);
+        _logger.LogWarning("[{Port}] Serial error {ErrorType}", e.EventType, subject.PortName);
     }
 
     public async Task OnPortData(SerialPort port, SerialDataReceivedEventArgs d)
     {
         if (port.BytesToRead == 0 || d.EventType == SerialData.Eof)
         {
-            _logger.LogDebug("EOF");
+            _logger.LogDebug("[{Port}] EOF", port.PortName);
             return;
         }
 
+        _logger.LogDebug("[{Port}] PORT DATA {Len}", port.PortName, port.BytesToRead);
         while (port.BytesToRead > 0) await ProcessMessagePreamble(port);
     }
 
@@ -142,7 +160,7 @@ public partial class SerialProcessorService
         {
             while (packetWaitingBytes)
             {
-                var newByte = (byte) port.ReadByte();
+                var newByte = (byte)port.ReadByte();
                 buffer.Add(newByte);
                 // If End byte is spotted we break
                 packetWaitingBytes = newByte != 0x00;
@@ -150,22 +168,22 @@ public partial class SerialProcessorService
         }
         catch (TimeoutException)
         {
-            _logger.LogInformation("Read timeout");
+            _logger.LogInformation("[{Port}] Read timeout", port.PortName);
             return;
         }
         catch (OperationCanceledException)
         {
-            _logger.LogWarning("Serial closed");
+            _logger.LogWarning("[{Port}] Serial closed", port.PortName);
             return;
         }
         catch (InvalidOperationException)
         {
-            _logger.LogError("Invalid operation on Serial port. Closing");
+            _logger.LogError("[{Port}] Invalid operation on Serial port. Closing", port.PortName);
             return;
         }
         catch (Exception e)
         {
-            _logger.LogError("Serial port error. Closing {Error}", e.Message);
+            _logger.LogError("[{Port}] Serial port error. Closing {Error}", e.Message, port.PortName);
             DisconnectPort(port.PortName);
             DisposePort(port.PortName);
             return;
@@ -173,20 +191,25 @@ public partial class SerialProcessorService
 
         if (buffer.Count <= 3)
         {
-            _logger.LogWarning("Illegal packet length <3. Skipping");
+            _logger.LogWarning("[{Port}] Illegal packet length <3. Skipping", port.PortName);
             return;
         }
 
         var listBuffer = buffer.ToList();
         var startByteIndex = listBuffer.FindIndex(val => val == 0xFF);
         var dataLength = listBuffer[startByteIndex + 1];
-        var hasEnd = listBuffer.FindIndex(val => val == 0x00);
+        var endIndex = listBuffer.FindIndex(val => val == 0x00);
+        _logger.LogDebug(
+            "[{Port}] PREAMBLE BUFFER {RawLen} Start {StartByteIndex} DataLen {DataLen} EndFound {HasEnd}",
+            port.PortName,
+            listBuffer.Count, startByteIndex, dataLength, endIndex);
 
         // Packet bytes: Start, Length, ...Data..., End
         var overhead = 3;
         if (dataLength + overhead < listBuffer.Count)
         {
-            _logger.LogWarning("Packet length {DataCount} smaller than buffer length {PacketLength}. Skipping",
+            _logger.LogWarning("[{Port}] Packet length {DataCount} smaller than buffer length {PacketLength}. Skipping",
+                port.PortName,
                 listBuffer.Count, dataLength + overhead);
             return;
         }
@@ -197,27 +220,30 @@ public partial class SerialProcessorService
         listBuffer.RemoveAt(0); // UART Length Byte
         listBuffer.RemoveAt(listBuffer.Count - 1); // End Byte
 
+        var payload = SerialUtil.ByteArrayToString(listBuffer.ToArray());
         _logger.LogDebug(
-            "Data [{Port}] Bytes [{Bytes}] Expected [{dataLength}] Start [{Start}] End [{End}] LeftOver [{LeftOver}]",
-            port.PortName, listBuffer.Count, dataLength, startByteIndex, hasEnd, port.BytesToRead);
-        _logger.LogDebug(SerialUtil.ByteArrayToString(listBuffer.ToArray()));
+            "[{Port}] PRE-COBS {Data} of {Bytes} bytes, left-over {LeftOver}, PAYLOAD\n\t{Payload}",
+            port.PortName, dataLength, listBuffer.Count, port.BytesToRead, payload);
 
         await ProcessMessage(port.PortName, listBuffer.ToArray());
     }
-    
+
     public async Task<int> ProcessMessage(string portName, byte[] buffer)
     {
-        _logger.LogDebug("Serial decoding COBS buffer ({ByteLength})", buffer.Length);
+        _logger.LogDebug("[{Port}] Serial decoding COBS buffer ({ByteLength})", portName, buffer.Length);
         var outputBuffer = Cobs.Decode(buffer);
         if (outputBuffer.Count == 0)
         {
-            _logger.LogError("COBS output empty {HexString}", SerialUtil.ByteArrayToString(buffer));
+            _logger.LogError("[{Port}] COBS output empty {HexString}", portName, SerialUtil.ByteArrayToString(buffer));
             return 1;
         }
 
         // Remove COBS overhead of 2
         outputBuffer.RemoveAt(0);
         outputBuffer.RemoveAt(outputBuffer.Count - 1);
+
+        _logger.LogDebug("[{Port}] POST-COBS {Message}", portName,
+            SerialUtil.ByteArrayToString(outputBuffer.ToArray()));
 
         var decodedBuffer = outputBuffer.ToArray();
         UartResponse response;
@@ -227,10 +253,12 @@ public partial class SerialProcessorService
         }
         catch (InvalidProtocolBufferException e)
         {
-            _logger.LogInformation(SerialUtil.ByteArrayToString(decodedBuffer));
-            _logger.LogError("Protobuf decoding error {Error} - skipping packet", e.Message);
+            _logger.LogError("[{Port}] PROTO ERROR decoding error {Error} - skipping packet \n\t {Payload}", portName,
+                e.Message, SerialUtil.ByteArrayToString(decodedBuffer));
             return 2;
         }
+
+        _logger.LogDebug("[{Port}] PROTO SUCESS Type {Type}", portName, response.BodyCase);
 
         var bodyCase = response.BodyCase;
         if (bodyCase.Equals(UartResponse.BodyOneofCase.BootMessage))
@@ -249,7 +277,8 @@ public partial class SerialProcessorService
                 LastPortName = portName
             });
 
-            _logger.LogInformation("[{Name}, MC:{Count}, MD:{Disabled}] heart beat {DeviceId}", device?.NickName,
+            _logger.LogInformation("[{Port} {Name}, MC:{Count}, MD:{Disabled}] heart beat {DeviceId}", portName,
+                device?.NickName,
                 measurementCount, measurementDisabled, deviceId);
         }
         else if (bodyCase.Equals(UartResponse.BodyOneofCase.AckMessage))
@@ -275,8 +304,9 @@ public partial class SerialProcessorService
         {
             var decodingResult = response.DecodingResult;
             var success = decodingResult.Success;
-            _logger.LogInformation("[{Name}, DecodingResult] Success: {Payload} Rank: {MatrixRank} FirstNumber: {FirstNumber} LastNumber: {LastNumber}", 
-                portName, 
+            _logger.LogInformation(
+                "[{Name}, DecodingResult] Success: {Payload} Rank: {MatrixRank} FirstNumber: {FirstNumber} LastNumber: {LastNumber}",
+                portName,
                 success,
                 decodingResult.MatrixRank,
                 decodingResult.FirstDecodedNumber,
@@ -309,6 +339,8 @@ public partial class SerialProcessorService
         {
             _logger.LogInformation("Got an unknown message");
         }
+
+        _logger.LogDebug("-- [{Port}] MSG DONE --", portName);
 
         return 0;
     }

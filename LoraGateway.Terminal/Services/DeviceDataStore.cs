@@ -69,7 +69,10 @@ public class DeviceDataStore : JsonDataStore<DeviceCollection>
 
     public async Task<Device?> GetOrAddDevice(Device device)
     {
-        if (Store == null) await LoadStore();
+        if (Store == null)
+        {
+            await LoadStore();
+        }
 
         // Ensure device doesnt already exist
         var existingDevice = GetDevice(device.HardwareId);

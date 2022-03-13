@@ -55,17 +55,6 @@ public static class SerialProcessingExtensions
         };
         processorService.WriteMessage(command);
     }
-    
-    public static void SendBootCommand(
-        this SerialProcessorService processorService, bool doNotProxy)
-    {
-        var command = new UartCommand
-        {
-            DoNotProxyCommand = doNotProxy,
-            RequestBootInfo = new RequestBootInfo {Request = true}
-        };
-        processorService.WriteMessage(command);
-    }
 
     public static void SendClearMeasurementsCommands(
         this SerialProcessorService processorService, bool doNotProxy)
