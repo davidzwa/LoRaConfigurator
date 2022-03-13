@@ -5,7 +5,7 @@ namespace LoraGateway.Services.Contracts;
 public abstract class JsonDataStore<T> : IDisposable, IDataStore<T> where T : class, ICloneable
 {
     protected T? Store;
-    protected StreamWriter? StoreFileStream;
+    protected FileStream? StoreFileStream;
 
     public abstract T GetDefaultJson();
 
@@ -37,29 +37,10 @@ public abstract class JsonDataStore<T> : IDisposable, IDataStore<T> where T : cl
         {
             WriteIndented = true
         });
-        // GetFileStream(path).Write
-        Console.WriteLine($"WRITE {path}");
-        
-        await GetFileStream(path).BaseStream.WriteAsync(serializedBlob, 0, serializedBlob.Length);
-        // await File.WriteAllBytesAsync(path, serializedBlob);
 
-        // return Task.CompletedTask;
-    }
-
-    protected StreamWriter GetFileStream(string path)
-    {
-        if (StoreFileStream != null) return StoreFileStream;
-        
-        StoreFileStream = new StreamWriter(path, false
-        //     new FileStreamOptions()
-        // {
-        //     Access = FileAccess.ReadWrite,
-        //     Mode = FileMode.OpenOrCreate,
-        //     Share = FileShare.ReadWrite
-        // }
-        );
-
-        return StoreFileStream;
+        var fileStream = GetFileStream(path);
+        fileStream.Position = 0;
+        await fileStream.WriteAsync(serializedBlob, 0, serializedBlob.Length);
     }
 
     public T? GetStore()
@@ -74,13 +55,28 @@ public abstract class JsonDataStore<T> : IDisposable, IDataStore<T> where T : cl
         await EnsureSourceExists();
 
         var path = GetJsonFilePath();
-        var blob = await File.ReadAllTextAsync(path);
+        var fileStream = GetFileStream(path);
+        var reader = new StreamReader(fileStream, true);
+        var blob = await reader.ReadToEndAsync();
+
         Store = JsonSerializer.Deserialize<T>(blob, new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
         });
 
         return Store;
+    }
+
+    protected FileStream GetFileStream(string path)
+    {
+        if (StoreFileStream != null) return StoreFileStream;
+
+        StoreFileStream = new FileStream(path,
+            FileMode.OpenOrCreate,
+            FileAccess.ReadWrite
+        );
+
+        return StoreFileStream;
     }
 
     public void Dispose()
