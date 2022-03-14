@@ -327,7 +327,7 @@ public partial class SerialProcessorService
             var result = await _measurementsService.AddMeasurement(sequenceNumber, snr, rssi);
             if (sequenceNumber > 60000) _measurementsService.SetLocationText("");
 
-            LoRaPacketHandler(response.LoraMeasurement.DownlinkPayload);
+            LoRaPacketHandler(response?.LoraMeasurement?.DownlinkPayload);
             
             // Debug for now
             _logger.LogInformation(
@@ -345,8 +345,10 @@ public partial class SerialProcessorService
         return 0;
     }
 
-    private void LoRaPacketHandler(LoRaMessage message)
+    private void LoRaPacketHandler(LoRaMessage? message)
     {
+        if (message == null) return;
+        
         if (message.BodyCase ==LoRaMessage.BodyOneofCase.ExperimentResponse)
         {
             var flashMeasureCount = message.ExperimentResponse.MeasurementCount;
