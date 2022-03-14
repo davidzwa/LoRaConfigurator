@@ -75,7 +75,7 @@
       "HardwareId": "5832774-876106005-825374777",
       "Id": 5832774,
       "NickName": "A1",
-      "FirmwareVersion": "2.0.1.12",
+      "FirmwareVersion": "2.0.2.3",
       "RegisteredAt": "132911431153208074",
       "LastPortName": "COM11",
       "Meta": null
@@ -111,7 +111,7 @@
       "HardwareId": "5046319-876106006-825374777",
       "Id": 5046319,
       "NickName": "A5",
-      "FirmwareVersion": "2.0.1.12",
+      "FirmwareVersion": "2.0.2.3",
       "RegisteredAt": "132913110564225018",
       "LastPortName": "COM15",
       "Meta": null
@@ -120,7 +120,7 @@
       "HardwareId": "4456541-808997123-808661810",
       "Id": 4456541,
       "NickName": "A6",
-      "FirmwareVersion": "2.0.1.12",
+      "FirmwareVersion": "2.0.2.3",
       "RegisteredAt": "132913120564985102",
       "LastPortName": "COM16",
       "Meta": null
