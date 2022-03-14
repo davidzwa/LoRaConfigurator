@@ -327,6 +327,8 @@ public partial class SerialProcessorService
             var result = await _measurementsService.AddMeasurement(sequenceNumber, snr, rssi);
             if (sequenceNumber > 60000) _measurementsService.SetLocationText("");
 
+            LoRaPacketHandler(response.LoraMeasurement.DownlinkPayload);
+            
             // Debug for now
             _logger.LogInformation(
                 "[{Name}] LoRa RX snr: {SNR} rssi: {RSSI} sequence-id:{Index} is-measurement:{IsMeasurement}, skipped:{Skipped}",
@@ -341,6 +343,15 @@ public partial class SerialProcessorService
         _logger.LogDebug("-- [{Port}] MSG RX DONE --", portName);
 
         return 0;
+    }
+
+    private void LoRaPacketHandler(LoRaMessage message)
+    {
+        if (message.BodyCase ==LoRaMessage.BodyOneofCase.ExperimentResponse)
+        {
+            var flashMeasureCount = message.ExperimentResponse.MeasurementCount;
+           _logger.LogInformation("Flash {FlashMeasureCount}", flashMeasureCount); 
+        }
     }
 
     public void DisposePort(string portName)

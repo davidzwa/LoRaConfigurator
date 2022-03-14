@@ -27,19 +27,23 @@ namespace LoRa {
             "ChVzaGFyZWQvZmlybXdhcmUucHJvdG8iSAoHVmVyc2lvbhINCgVNYWpvchgB",
             "IAEoDRINCgVNaW5vchgCIAEoDRINCgVQYXRjaBgDIAEoDRIQCghSZXZpc2lv",
             "bhgEIAEoDSIxCghEZXZpY2VJZBILCgNJZDAYASABKA0SCwoDSWQxGAIgASgN",
-            "EgsKA0lkMhgDIAEoDSK7AQoVUmxuY0luaXRDb25maWdDb21tYW5kEhYKDkdl",
-            "bmVyYXRpb25TaXplGAEgASgNEhcKD0dlbmVyYXRpb25Db3VudBgCIAEoDRIR",
-            "CglGcmFtZVNpemUYAyABKA0SEgoKRnJhbWVDb3VudBgEIAEoDRITCgtGaWVs",
-            "ZERlZ3JlZRgFIAEoDRIRCglGaWVsZFBvbHkYBiABKA0SEAoITGZzclNlZWQY",
-            "ByABKA0SEAoITGZzclBvbHkYCCABKA0iFQoTUmxuY0VuY29kZWRGcmFnbWVu",
-            "dCI9Cg9SbG5jU3RhdGVVcGRhdGUSFwoPR2VuZXJhdGlvbkluZGV4GAEgASgN",
-            "EhEKCUxmc3JTdGF0ZRgCIAEoDSIYChZSbG5jVGVybWluYXRpb25Db21tYW5k",
-            "QgeqAgRMb1JhYgZwcm90bzM="));
+            "EgsKA0lkMhgDIAEoDSKNAQoLQm9vdE1lc3NhZ2USIwoQRGV2aWNlSWRlbnRp",
+            "ZmllchgBIAEoCzIJLkRldmljZUlkEiEKD0Zpcm13YXJlVmVyc2lvbhgCIAEo",
+            "CzIILlZlcnNpb24SGAoQTWVhc3VyZW1lbnRDb3VudBgDIAEoDRIcChRNZWFz",
+            "dXJlbWVudHNEaXNhYmxlZBgEIAEoCCK7AQoVUmxuY0luaXRDb25maWdDb21t",
+            "YW5kEhYKDkdlbmVyYXRpb25TaXplGAEgASgNEhcKD0dlbmVyYXRpb25Db3Vu",
+            "dBgCIAEoDRIRCglGcmFtZVNpemUYAyABKA0SEgoKRnJhbWVDb3VudBgEIAEo",
+            "DRITCgtGaWVsZERlZ3JlZRgFIAEoDRIRCglGaWVsZFBvbHkYBiABKA0SEAoI",
+            "TGZzclNlZWQYByABKA0SEAoITGZzclBvbHkYCCABKA0iFQoTUmxuY0VuY29k",
+            "ZWRGcmFnbWVudCI9Cg9SbG5jU3RhdGVVcGRhdGUSFwoPR2VuZXJhdGlvbklu",
+            "ZGV4GAEgASgNEhEKCUxmc3JTdGF0ZRgCIAEoDSIYChZSbG5jVGVybWluYXRp",
+            "b25Db21tYW5kQgeqAgRMb1JhYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.Version), global::LoRa.Version.Parser, new[]{ "Major", "Minor", "Patch", "Revision" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DeviceId), global::LoRa.DeviceId.Parser, new[]{ "Id0", "Id1", "Id2" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.BootMessage), global::LoRa.BootMessage.Parser, new[]{ "DeviceIdentifier", "FirmwareVersion", "MeasurementCount", "MeasurementsDisabled" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncInitConfigCommand), global::LoRa.RlncInitConfigCommand.Parser, new[]{ "GenerationSize", "GenerationCount", "FrameSize", "FrameCount", "FieldDegree", "FieldPoly", "LfsrSeed", "LfsrPoly" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncEncodedFragment), global::LoRa.RlncEncodedFragment.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncStateUpdate), global::LoRa.RlncStateUpdate.Parser, new[]{ "GenerationIndex", "LfsrState" }, null, null, null, null),
@@ -613,6 +617,324 @@ namespace LoRa {
 
   }
 
+  public sealed partial class BootMessage : pb::IMessage<BootMessage>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<BootMessage> _parser = new pb::MessageParser<BootMessage>(() => new BootMessage());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<BootMessage> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LoRa.FirmwareReflection.Descriptor.MessageTypes[2]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public BootMessage() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public BootMessage(BootMessage other) : this() {
+      deviceIdentifier_ = other.deviceIdentifier_ != null ? other.deviceIdentifier_.Clone() : null;
+      firmwareVersion_ = other.firmwareVersion_ != null ? other.firmwareVersion_.Clone() : null;
+      measurementCount_ = other.measurementCount_;
+      measurementsDisabled_ = other.measurementsDisabled_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public BootMessage Clone() {
+      return new BootMessage(this);
+    }
+
+    /// <summary>Field number for the "DeviceIdentifier" field.</summary>
+    public const int DeviceIdentifierFieldNumber = 1;
+    private global::LoRa.DeviceId deviceIdentifier_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LoRa.DeviceId DeviceIdentifier {
+      get { return deviceIdentifier_; }
+      set {
+        deviceIdentifier_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "FirmwareVersion" field.</summary>
+    public const int FirmwareVersionFieldNumber = 2;
+    private global::LoRa.Version firmwareVersion_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LoRa.Version FirmwareVersion {
+      get { return firmwareVersion_; }
+      set {
+        firmwareVersion_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "MeasurementCount" field.</summary>
+    public const int MeasurementCountFieldNumber = 3;
+    private uint measurementCount_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint MeasurementCount {
+      get { return measurementCount_; }
+      set {
+        measurementCount_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "MeasurementsDisabled" field.</summary>
+    public const int MeasurementsDisabledFieldNumber = 4;
+    private bool measurementsDisabled_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool MeasurementsDisabled {
+      get { return measurementsDisabled_; }
+      set {
+        measurementsDisabled_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as BootMessage);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(BootMessage other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (!object.Equals(DeviceIdentifier, other.DeviceIdentifier)) return false;
+      if (!object.Equals(FirmwareVersion, other.FirmwareVersion)) return false;
+      if (MeasurementCount != other.MeasurementCount) return false;
+      if (MeasurementsDisabled != other.MeasurementsDisabled) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (deviceIdentifier_ != null) hash ^= DeviceIdentifier.GetHashCode();
+      if (firmwareVersion_ != null) hash ^= FirmwareVersion.GetHashCode();
+      if (MeasurementCount != 0) hash ^= MeasurementCount.GetHashCode();
+      if (MeasurementsDisabled != false) hash ^= MeasurementsDisabled.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (deviceIdentifier_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(DeviceIdentifier);
+      }
+      if (firmwareVersion_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(FirmwareVersion);
+      }
+      if (MeasurementCount != 0) {
+        output.WriteRawTag(24);
+        output.WriteUInt32(MeasurementCount);
+      }
+      if (MeasurementsDisabled != false) {
+        output.WriteRawTag(32);
+        output.WriteBool(MeasurementsDisabled);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (deviceIdentifier_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(DeviceIdentifier);
+      }
+      if (firmwareVersion_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(FirmwareVersion);
+      }
+      if (MeasurementCount != 0) {
+        output.WriteRawTag(24);
+        output.WriteUInt32(MeasurementCount);
+      }
+      if (MeasurementsDisabled != false) {
+        output.WriteRawTag(32);
+        output.WriteBool(MeasurementsDisabled);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (deviceIdentifier_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(DeviceIdentifier);
+      }
+      if (firmwareVersion_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(FirmwareVersion);
+      }
+      if (MeasurementCount != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(MeasurementCount);
+      }
+      if (MeasurementsDisabled != false) {
+        size += 1 + 1;
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(BootMessage other) {
+      if (other == null) {
+        return;
+      }
+      if (other.deviceIdentifier_ != null) {
+        if (deviceIdentifier_ == null) {
+          DeviceIdentifier = new global::LoRa.DeviceId();
+        }
+        DeviceIdentifier.MergeFrom(other.DeviceIdentifier);
+      }
+      if (other.firmwareVersion_ != null) {
+        if (firmwareVersion_ == null) {
+          FirmwareVersion = new global::LoRa.Version();
+        }
+        FirmwareVersion.MergeFrom(other.FirmwareVersion);
+      }
+      if (other.MeasurementCount != 0) {
+        MeasurementCount = other.MeasurementCount;
+      }
+      if (other.MeasurementsDisabled != false) {
+        MeasurementsDisabled = other.MeasurementsDisabled;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            if (deviceIdentifier_ == null) {
+              DeviceIdentifier = new global::LoRa.DeviceId();
+            }
+            input.ReadMessage(DeviceIdentifier);
+            break;
+          }
+          case 18: {
+            if (firmwareVersion_ == null) {
+              FirmwareVersion = new global::LoRa.Version();
+            }
+            input.ReadMessage(FirmwareVersion);
+            break;
+          }
+          case 24: {
+            MeasurementCount = input.ReadUInt32();
+            break;
+          }
+          case 32: {
+            MeasurementsDisabled = input.ReadBool();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            if (deviceIdentifier_ == null) {
+              DeviceIdentifier = new global::LoRa.DeviceId();
+            }
+            input.ReadMessage(DeviceIdentifier);
+            break;
+          }
+          case 18: {
+            if (firmwareVersion_ == null) {
+              FirmwareVersion = new global::LoRa.Version();
+            }
+            input.ReadMessage(FirmwareVersion);
+            break;
+          }
+          case 24: {
+            MeasurementCount = input.ReadUInt32();
+            break;
+          }
+          case 32: {
+            MeasurementsDisabled = input.ReadBool();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
   public sealed partial class RlncInitConfigCommand : pb::IMessage<RlncInitConfigCommand>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -627,7 +949,7 @@ namespace LoRa {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LoRa.FirmwareReflection.Descriptor.MessageTypes[2]; }
+      get { return global::LoRa.FirmwareReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1078,7 +1400,7 @@ namespace LoRa {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LoRa.FirmwareReflection.Descriptor.MessageTypes[3]; }
+      get { return global::LoRa.FirmwareReflection.Descriptor.MessageTypes[4]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1230,7 +1552,7 @@ namespace LoRa {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LoRa.FirmwareReflection.Descriptor.MessageTypes[4]; }
+      get { return global::LoRa.FirmwareReflection.Descriptor.MessageTypes[5]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1460,7 +1782,7 @@ namespace LoRa {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LoRa.FirmwareReflection.Descriptor.MessageTypes[5]; }
+      get { return global::LoRa.FirmwareReflection.Descriptor.MessageTypes[6]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

@@ -24,325 +24,32 @@ namespace LoRa {
     static ExperimentConfigReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Ch5zaGFyZWQvZXhwZXJpbWVudF9jb25maWcucHJvdG8aFXNoYXJlZC9sb3Jh",
-            "X3BoeS5wcm90byKqAQoYRm9yd2FyZFJhZGlvQ29uZmlnVXBkYXRlEioKDXJh",
-            "ZGlvUnhDb25maWcYASABKAsyDi5SYWRpb1J4Q29uZmlnSACIAQESKgoNcmFk",
-            "aW9UeENvbmZpZxgCIAEoCzIOLlJhZGlvVHhDb25maWdIAYgBARISCgpSZXNl",
-            "dFJhZGlvGAMgASgIQhAKDl9yYWRpb1J4Q29uZmlnQhAKDl9yYWRpb1R4Q29u",
-            "ZmlnIvsCChhGb3J3YXJkRXhwZXJpbWVudENvbW1hbmQSHAoUaXNUcmFuc21p",
-            "dHRlckdhdGV3YXkYASABKAgSRQoOZ2F0ZXdheUNvbW1hbmQYAiABKA4yKC5G",
-            "b3J3YXJkRXhwZXJpbWVudENvbW1hbmQuR2F0ZXdheUNvbW1hbmRIAIgBARJB",
-            "CgxzbGF2ZUNvbW1hbmQYAyABKA4yJi5Gb3J3YXJkRXhwZXJpbWVudENvbW1h",
-            "bmQuU2xhdmVDb21tYW5kSAGIAQEiSgoOR2F0ZXdheUNvbW1hbmQSEQoNUGF1",
-            "c2VUcmFuc21pdBAAEhIKDlJlc3VtZVRyYW5zbWl0EAESEQoNUmVzZXRUcmFu",
-            "c21pdBACIkcKDFNsYXZlQ29tbWFuZBIOCgpDbGVhckZsYXNoEAASDgoKUXVl",
-            "cnlGbGFzaBABEhcKE1N0cmVhbUZsYXNoQ29udGVudHMQAkIRCg9fZ2F0ZXdh",
-            "eUNvbW1hbmRCDwoNX3NsYXZlQ29tbWFuZCJgChJFeHBlcmltZW50UmVzcG9u",
-            "c2USGAoQTWVhc3VyZW1lbnRDb3VudBgBIAEoDRIcChRNZWFzdXJlbWVudHNE",
-            "aXNhYmxlZBgCIAEoCBISCgpXYXNDbGVhcmVkGAMgASgIIjMKGE1lYXN1cmVt",
-            "ZW50U3RyZWFtUmVxdWVzdBIXCg9GcmFnbWVudFNpemVNYXgYASABKA0iGwoZ",
-            "TWVhc3VyZW1lbnRTdHJlYW1GcmFnbWVudEIHqgIETG9SYWIGcHJvdG8z"));
+            "Ch5zaGFyZWQvZXhwZXJpbWVudF9jb25maWcucHJvdG8itwEKGEZvcndhcmRF",
+            "eHBlcmltZW50Q29tbWFuZBJBCgxzbGF2ZUNvbW1hbmQYAiABKA4yJi5Gb3J3",
+            "YXJkRXhwZXJpbWVudENvbW1hbmQuU2xhdmVDb21tYW5kSACIAQEiRwoMU2xh",
+            "dmVDb21tYW5kEg4KCkNsZWFyRmxhc2gQABIOCgpRdWVyeUZsYXNoEAESFwoT",
+            "U3RyZWFtRmxhc2hDb250ZW50cxACQg8KDV9zbGF2ZUNvbW1hbmQiYAoSRXhw",
+            "ZXJpbWVudFJlc3BvbnNlEhgKEE1lYXN1cmVtZW50Q291bnQYASABKA0SHAoU",
+            "TWVhc3VyZW1lbnRzRGlzYWJsZWQYAiABKAgSEgoKV2FzQ2xlYXJlZBgDIAEo",
+            "CCIzChhNZWFzdXJlbWVudFN0cmVhbVJlcXVlc3QSFwoPRnJhZ21lbnRTaXpl",
+            "TWF4GAEgASgNIhsKGU1lYXN1cmVtZW50U3RyZWFtRnJhZ21lbnQibAoORGVj",
+            "b2RpbmdSZXN1bHQSDwoHU3VjY2VzcxgBIAEoCBISCgpNYXRyaXhSYW5rGAIg",
+            "ASgNEhoKEkZpcnN0RGVjb2RlZE51bWJlchgDIAEoDRIZChFMYXN0RGVjb2Rl",
+            "ZE51bWJlchgEIAEoDUIHqgIETG9SYWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::LoRa.LoraPhyReflection.Descriptor, },
+          new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.ForwardRadioConfigUpdate), global::LoRa.ForwardRadioConfigUpdate.Parser, new[]{ "RadioRxConfig", "RadioTxConfig", "ResetRadio" }, new[]{ "RadioRxConfig", "RadioTxConfig" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.ForwardExperimentCommand), global::LoRa.ForwardExperimentCommand.Parser, new[]{ "IsTransmitterGateway", "GatewayCommand", "SlaveCommand" }, new[]{ "GatewayCommand", "SlaveCommand" }, new[]{ typeof(global::LoRa.ForwardExperimentCommand.Types.GatewayCommand), typeof(global::LoRa.ForwardExperimentCommand.Types.SlaveCommand) }, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.ForwardExperimentCommand), global::LoRa.ForwardExperimentCommand.Parser, new[]{ "SlaveCommand" }, new[]{ "SlaveCommand" }, new[]{ typeof(global::LoRa.ForwardExperimentCommand.Types.SlaveCommand) }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.ExperimentResponse), global::LoRa.ExperimentResponse.Parser, new[]{ "MeasurementCount", "MeasurementsDisabled", "WasCleared" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.MeasurementStreamRequest), global::LoRa.MeasurementStreamRequest.Parser, new[]{ "FragmentSizeMax" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.MeasurementStreamFragment), global::LoRa.MeasurementStreamFragment.Parser, null, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.MeasurementStreamFragment), global::LoRa.MeasurementStreamFragment.Parser, null, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DecodingResult), global::LoRa.DecodingResult.Parser, new[]{ "Success", "MatrixRank", "FirstDecodedNumber", "LastDecodedNumber" }, null, null, null, null)
           }));
     }
     #endregion
 
   }
   #region Messages
-  public sealed partial class ForwardRadioConfigUpdate : pb::IMessage<ForwardRadioConfigUpdate>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
-    private static readonly pb::MessageParser<ForwardRadioConfigUpdate> _parser = new pb::MessageParser<ForwardRadioConfigUpdate>(() => new ForwardRadioConfigUpdate());
-    private pb::UnknownFieldSet _unknownFields;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<ForwardRadioConfigUpdate> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::LoRa.ExperimentConfigReflection.Descriptor.MessageTypes[0]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ForwardRadioConfigUpdate() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ForwardRadioConfigUpdate(ForwardRadioConfigUpdate other) : this() {
-      radioRxConfig_ = other.radioRxConfig_ != null ? other.radioRxConfig_.Clone() : null;
-      radioTxConfig_ = other.radioTxConfig_ != null ? other.radioTxConfig_.Clone() : null;
-      resetRadio_ = other.resetRadio_;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ForwardRadioConfigUpdate Clone() {
-      return new ForwardRadioConfigUpdate(this);
-    }
-
-    /// <summary>Field number for the "radioRxConfig" field.</summary>
-    public const int RadioRxConfigFieldNumber = 1;
-    private global::LoRa.RadioRxConfig radioRxConfig_;
-    /// <summary>
-    /// We can configure either RX, TX or both
-    /// </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LoRa.RadioRxConfig RadioRxConfig {
-      get { return radioRxConfig_; }
-      set {
-        radioRxConfig_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "radioTxConfig" field.</summary>
-    public const int RadioTxConfigFieldNumber = 2;
-    private global::LoRa.RadioTxConfig radioTxConfig_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LoRa.RadioTxConfig RadioTxConfig {
-      get { return radioTxConfig_; }
-      set {
-        radioTxConfig_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "ResetRadio" field.</summary>
-    public const int ResetRadioFieldNumber = 3;
-    private bool resetRadio_;
-    /// <summary>
-    /// Call underlying GPIO to reset RF shield
-    /// </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool ResetRadio {
-      get { return resetRadio_; }
-      set {
-        resetRadio_ = value;
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override bool Equals(object other) {
-      return Equals(other as ForwardRadioConfigUpdate);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(ForwardRadioConfigUpdate other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      if (!object.Equals(RadioRxConfig, other.RadioRxConfig)) return false;
-      if (!object.Equals(RadioTxConfig, other.RadioTxConfig)) return false;
-      if (ResetRadio != other.ResetRadio) return false;
-      return Equals(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override int GetHashCode() {
-      int hash = 1;
-      if (radioRxConfig_ != null) hash ^= RadioRxConfig.GetHashCode();
-      if (radioTxConfig_ != null) hash ^= RadioTxConfig.GetHashCode();
-      if (ResetRadio != false) hash ^= ResetRadio.GetHashCode();
-      if (_unknownFields != null) {
-        hash ^= _unknownFields.GetHashCode();
-      }
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
-      if (radioRxConfig_ != null) {
-        output.WriteRawTag(10);
-        output.WriteMessage(RadioRxConfig);
-      }
-      if (radioTxConfig_ != null) {
-        output.WriteRawTag(18);
-        output.WriteMessage(RadioTxConfig);
-      }
-      if (ResetRadio != false) {
-        output.WriteRawTag(24);
-        output.WriteBool(ResetRadio);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(output);
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (radioRxConfig_ != null) {
-        output.WriteRawTag(10);
-        output.WriteMessage(RadioRxConfig);
-      }
-      if (radioTxConfig_ != null) {
-        output.WriteRawTag(18);
-        output.WriteMessage(RadioTxConfig);
-      }
-      if (ResetRadio != false) {
-        output.WriteRawTag(24);
-        output.WriteBool(ResetRadio);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int CalculateSize() {
-      int size = 0;
-      if (radioRxConfig_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(RadioRxConfig);
-      }
-      if (radioTxConfig_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(RadioTxConfig);
-      }
-      if (ResetRadio != false) {
-        size += 1 + 1;
-      }
-      if (_unknownFields != null) {
-        size += _unknownFields.CalculateSize();
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(ForwardRadioConfigUpdate other) {
-      if (other == null) {
-        return;
-      }
-      if (other.radioRxConfig_ != null) {
-        if (radioRxConfig_ == null) {
-          RadioRxConfig = new global::LoRa.RadioRxConfig();
-        }
-        RadioRxConfig.MergeFrom(other.RadioRxConfig);
-      }
-      if (other.radioTxConfig_ != null) {
-        if (radioTxConfig_ == null) {
-          RadioTxConfig = new global::LoRa.RadioTxConfig();
-        }
-        RadioTxConfig.MergeFrom(other.RadioTxConfig);
-      }
-      if (other.ResetRadio != false) {
-        ResetRadio = other.ResetRadio;
-      }
-      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-            break;
-          case 10: {
-            if (radioRxConfig_ == null) {
-              RadioRxConfig = new global::LoRa.RadioRxConfig();
-            }
-            input.ReadMessage(RadioRxConfig);
-            break;
-          }
-          case 18: {
-            if (radioTxConfig_ == null) {
-              RadioTxConfig = new global::LoRa.RadioTxConfig();
-            }
-            input.ReadMessage(RadioTxConfig);
-            break;
-          }
-          case 24: {
-            ResetRadio = input.ReadBool();
-            break;
-          }
-        }
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 10: {
-            if (radioRxConfig_ == null) {
-              RadioRxConfig = new global::LoRa.RadioRxConfig();
-            }
-            input.ReadMessage(RadioRxConfig);
-            break;
-          }
-          case 18: {
-            if (radioTxConfig_ == null) {
-              RadioTxConfig = new global::LoRa.RadioTxConfig();
-            }
-            input.ReadMessage(RadioTxConfig);
-            break;
-          }
-          case 24: {
-            ResetRadio = input.ReadBool();
-            break;
-          }
-        }
-      }
-    }
-    #endif
-
-  }
-
   public sealed partial class ForwardExperimentCommand : pb::IMessage<ForwardExperimentCommand>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -358,7 +65,7 @@ namespace LoRa {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LoRa.ExperimentConfigReflection.Descriptor.MessageTypes[1]; }
+      get { return global::LoRa.ExperimentConfigReflection.Descriptor.MessageTypes[0]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -379,8 +86,6 @@ namespace LoRa {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ForwardExperimentCommand(ForwardExperimentCommand other) : this() {
       _hasBits0 = other._hasBits0;
-      isTransmitterGateway_ = other.isTransmitterGateway_;
-      gatewayCommand_ = other.gatewayCommand_;
       slaveCommand_ = other.slaveCommand_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -391,51 +96,8 @@ namespace LoRa {
       return new ForwardExperimentCommand(this);
     }
 
-    /// <summary>Field number for the "isTransmitterGateway" field.</summary>
-    public const int IsTransmitterGatewayFieldNumber = 1;
-    private bool isTransmitterGateway_;
-    /// <summary>
-    /// If true become gateway, otherwise become slave receiver
-    /// </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool IsTransmitterGateway {
-      get { return isTransmitterGateway_; }
-      set {
-        isTransmitterGateway_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "gatewayCommand" field.</summary>
-    public const int GatewayCommandFieldNumber = 2;
-    private global::LoRa.ForwardExperimentCommand.Types.GatewayCommand gatewayCommand_;
-    /// <summary>
-    /// Only valid if transmitting gateway
-    /// </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LoRa.ForwardExperimentCommand.Types.GatewayCommand GatewayCommand {
-      get { if ((_hasBits0 & 1) != 0) { return gatewayCommand_; } else { return global::LoRa.ForwardExperimentCommand.Types.GatewayCommand.PauseTransmit; } }
-      set {
-        _hasBits0 |= 1;
-        gatewayCommand_ = value;
-      }
-    }
-    /// <summary>Gets whether the "gatewayCommand" field is set</summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool HasGatewayCommand {
-      get { return (_hasBits0 & 1) != 0; }
-    }
-    /// <summary>Clears the value of the "gatewayCommand" field</summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void ClearGatewayCommand() {
-      _hasBits0 &= ~1;
-    }
-
     /// <summary>Field number for the "slaveCommand" field.</summary>
-    public const int SlaveCommandFieldNumber = 3;
+    public const int SlaveCommandFieldNumber = 2;
     private global::LoRa.ForwardExperimentCommand.Types.SlaveCommand slaveCommand_;
     /// <summary>
     /// Only valid if receiving slave
@@ -443,9 +105,9 @@ namespace LoRa {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LoRa.ForwardExperimentCommand.Types.SlaveCommand SlaveCommand {
-      get { if ((_hasBits0 & 2) != 0) { return slaveCommand_; } else { return global::LoRa.ForwardExperimentCommand.Types.SlaveCommand.ClearFlash; } }
+      get { if ((_hasBits0 & 1) != 0) { return slaveCommand_; } else { return global::LoRa.ForwardExperimentCommand.Types.SlaveCommand.ClearFlash; } }
       set {
-        _hasBits0 |= 2;
+        _hasBits0 |= 1;
         slaveCommand_ = value;
       }
     }
@@ -453,13 +115,13 @@ namespace LoRa {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool HasSlaveCommand {
-      get { return (_hasBits0 & 2) != 0; }
+      get { return (_hasBits0 & 1) != 0; }
     }
     /// <summary>Clears the value of the "slaveCommand" field</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public void ClearSlaveCommand() {
-      _hasBits0 &= ~2;
+      _hasBits0 &= ~1;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -477,8 +139,6 @@ namespace LoRa {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (IsTransmitterGateway != other.IsTransmitterGateway) return false;
-      if (GatewayCommand != other.GatewayCommand) return false;
       if (SlaveCommand != other.SlaveCommand) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -487,8 +147,6 @@ namespace LoRa {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (IsTransmitterGateway != false) hash ^= IsTransmitterGateway.GetHashCode();
-      if (HasGatewayCommand) hash ^= GatewayCommand.GetHashCode();
       if (HasSlaveCommand) hash ^= SlaveCommand.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -508,16 +166,8 @@ namespace LoRa {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (IsTransmitterGateway != false) {
-        output.WriteRawTag(8);
-        output.WriteBool(IsTransmitterGateway);
-      }
-      if (HasGatewayCommand) {
-        output.WriteRawTag(16);
-        output.WriteEnum((int) GatewayCommand);
-      }
       if (HasSlaveCommand) {
-        output.WriteRawTag(24);
+        output.WriteRawTag(16);
         output.WriteEnum((int) SlaveCommand);
       }
       if (_unknownFields != null) {
@@ -530,16 +180,8 @@ namespace LoRa {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (IsTransmitterGateway != false) {
-        output.WriteRawTag(8);
-        output.WriteBool(IsTransmitterGateway);
-      }
-      if (HasGatewayCommand) {
-        output.WriteRawTag(16);
-        output.WriteEnum((int) GatewayCommand);
-      }
       if (HasSlaveCommand) {
-        output.WriteRawTag(24);
+        output.WriteRawTag(16);
         output.WriteEnum((int) SlaveCommand);
       }
       if (_unknownFields != null) {
@@ -552,12 +194,6 @@ namespace LoRa {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (IsTransmitterGateway != false) {
-        size += 1 + 1;
-      }
-      if (HasGatewayCommand) {
-        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) GatewayCommand);
-      }
       if (HasSlaveCommand) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) SlaveCommand);
       }
@@ -572,12 +208,6 @@ namespace LoRa {
     public void MergeFrom(ForwardExperimentCommand other) {
       if (other == null) {
         return;
-      }
-      if (other.IsTransmitterGateway != false) {
-        IsTransmitterGateway = other.IsTransmitterGateway;
-      }
-      if (other.HasGatewayCommand) {
-        GatewayCommand = other.GatewayCommand;
       }
       if (other.HasSlaveCommand) {
         SlaveCommand = other.SlaveCommand;
@@ -597,15 +227,7 @@ namespace LoRa {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 8: {
-            IsTransmitterGateway = input.ReadBool();
-            break;
-          }
           case 16: {
-            GatewayCommand = (global::LoRa.ForwardExperimentCommand.Types.GatewayCommand) input.ReadEnum();
-            break;
-          }
-          case 24: {
             SlaveCommand = (global::LoRa.ForwardExperimentCommand.Types.SlaveCommand) input.ReadEnum();
             break;
           }
@@ -624,15 +246,7 @@ namespace LoRa {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 8: {
-            IsTransmitterGateway = input.ReadBool();
-            break;
-          }
           case 16: {
-            GatewayCommand = (global::LoRa.ForwardExperimentCommand.Types.GatewayCommand) input.ReadEnum();
-            break;
-          }
-          case 24: {
             SlaveCommand = (global::LoRa.ForwardExperimentCommand.Types.SlaveCommand) input.ReadEnum();
             break;
           }
@@ -646,12 +260,6 @@ namespace LoRa {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static partial class Types {
-      public enum GatewayCommand {
-        [pbr::OriginalName("PauseTransmit")] PauseTransmit = 0,
-        [pbr::OriginalName("ResumeTransmit")] ResumeTransmit = 1,
-        [pbr::OriginalName("ResetTransmit")] ResetTransmit = 2,
-      }
-
       public enum SlaveCommand {
         [pbr::OriginalName("ClearFlash")] ClearFlash = 0,
         [pbr::OriginalName("QueryFlash")] QueryFlash = 1,
@@ -677,7 +285,7 @@ namespace LoRa {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LoRa.ExperimentConfigReflection.Descriptor.MessageTypes[2]; }
+      get { return global::LoRa.ExperimentConfigReflection.Descriptor.MessageTypes[1]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -940,7 +548,7 @@ namespace LoRa {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LoRa.ExperimentConfigReflection.Descriptor.MessageTypes[3]; }
+      get { return global::LoRa.ExperimentConfigReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1132,7 +740,7 @@ namespace LoRa {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LoRa.ExperimentConfigReflection.Descriptor.MessageTypes[4]; }
+      get { return global::LoRa.ExperimentConfigReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1263,6 +871,309 @@ namespace LoRa {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
+        }
+      }
+    }
+    #endif
+
+  }
+
+  public sealed partial class DecodingResult : pb::IMessage<DecodingResult>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<DecodingResult> _parser = new pb::MessageParser<DecodingResult>(() => new DecodingResult());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<DecodingResult> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LoRa.ExperimentConfigReflection.Descriptor.MessageTypes[4]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DecodingResult() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DecodingResult(DecodingResult other) : this() {
+      success_ = other.success_;
+      matrixRank_ = other.matrixRank_;
+      firstDecodedNumber_ = other.firstDecodedNumber_;
+      lastDecodedNumber_ = other.lastDecodedNumber_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DecodingResult Clone() {
+      return new DecodingResult(this);
+    }
+
+    /// <summary>Field number for the "Success" field.</summary>
+    public const int SuccessFieldNumber = 1;
+    private bool success_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Success {
+      get { return success_; }
+      set {
+        success_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "MatrixRank" field.</summary>
+    public const int MatrixRankFieldNumber = 2;
+    private uint matrixRank_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint MatrixRank {
+      get { return matrixRank_; }
+      set {
+        matrixRank_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "FirstDecodedNumber" field.</summary>
+    public const int FirstDecodedNumberFieldNumber = 3;
+    private uint firstDecodedNumber_;
+    /// <summary>
+    /// We check the internal payload
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint FirstDecodedNumber {
+      get { return firstDecodedNumber_; }
+      set {
+        firstDecodedNumber_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "LastDecodedNumber" field.</summary>
+    public const int LastDecodedNumberFieldNumber = 4;
+    private uint lastDecodedNumber_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint LastDecodedNumber {
+      get { return lastDecodedNumber_; }
+      set {
+        lastDecodedNumber_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as DecodingResult);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(DecodingResult other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Success != other.Success) return false;
+      if (MatrixRank != other.MatrixRank) return false;
+      if (FirstDecodedNumber != other.FirstDecodedNumber) return false;
+      if (LastDecodedNumber != other.LastDecodedNumber) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Success != false) hash ^= Success.GetHashCode();
+      if (MatrixRank != 0) hash ^= MatrixRank.GetHashCode();
+      if (FirstDecodedNumber != 0) hash ^= FirstDecodedNumber.GetHashCode();
+      if (LastDecodedNumber != 0) hash ^= LastDecodedNumber.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (Success != false) {
+        output.WriteRawTag(8);
+        output.WriteBool(Success);
+      }
+      if (MatrixRank != 0) {
+        output.WriteRawTag(16);
+        output.WriteUInt32(MatrixRank);
+      }
+      if (FirstDecodedNumber != 0) {
+        output.WriteRawTag(24);
+        output.WriteUInt32(FirstDecodedNumber);
+      }
+      if (LastDecodedNumber != 0) {
+        output.WriteRawTag(32);
+        output.WriteUInt32(LastDecodedNumber);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Success != false) {
+        output.WriteRawTag(8);
+        output.WriteBool(Success);
+      }
+      if (MatrixRank != 0) {
+        output.WriteRawTag(16);
+        output.WriteUInt32(MatrixRank);
+      }
+      if (FirstDecodedNumber != 0) {
+        output.WriteRawTag(24);
+        output.WriteUInt32(FirstDecodedNumber);
+      }
+      if (LastDecodedNumber != 0) {
+        output.WriteRawTag(32);
+        output.WriteUInt32(LastDecodedNumber);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (Success != false) {
+        size += 1 + 1;
+      }
+      if (MatrixRank != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(MatrixRank);
+      }
+      if (FirstDecodedNumber != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(FirstDecodedNumber);
+      }
+      if (LastDecodedNumber != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(LastDecodedNumber);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(DecodingResult other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Success != false) {
+        Success = other.Success;
+      }
+      if (other.MatrixRank != 0) {
+        MatrixRank = other.MatrixRank;
+      }
+      if (other.FirstDecodedNumber != 0) {
+        FirstDecodedNumber = other.FirstDecodedNumber;
+      }
+      if (other.LastDecodedNumber != 0) {
+        LastDecodedNumber = other.LastDecodedNumber;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            Success = input.ReadBool();
+            break;
+          }
+          case 16: {
+            MatrixRank = input.ReadUInt32();
+            break;
+          }
+          case 24: {
+            FirstDecodedNumber = input.ReadUInt32();
+            break;
+          }
+          case 32: {
+            LastDecodedNumber = input.ReadUInt32();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            Success = input.ReadBool();
+            break;
+          }
+          case 16: {
+            MatrixRank = input.ReadUInt32();
+            break;
+          }
+          case 24: {
+            FirstDecodedNumber = input.ReadUInt32();
+            break;
+          }
+          case 32: {
+            LastDecodedNumber = input.ReadUInt32();
+            break;
+          }
         }
       }
     }
