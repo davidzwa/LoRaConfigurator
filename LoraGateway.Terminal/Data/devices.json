@@ -39,7 +39,7 @@
       "HardwareId": "5046325-876106005-825374777",
       "Id": 5046325,
       "NickName": "H1",
-      "FirmwareVersion": "2.0.2.3",
+      "FirmwareVersion": "2.0.2.4",
       "RegisteredAt": "132838798889785028",
       "LastPortName": "COM17",
       "Meta": null
@@ -57,7 +57,7 @@
       "HardwareId": "2818104-876106005-825374777",
       "Id": 2818104,
       "NickName": "H3",
-      "FirmwareVersion": "2.0.2.3",
+      "FirmwareVersion": "2.0.2.4",
       "RegisteredAt": "132838808759884393",
       "LastPortName": "COM18",
       "Meta": null
