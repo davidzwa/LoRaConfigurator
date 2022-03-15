@@ -120,7 +120,7 @@ public class SerialCommandHandler
         command.AddOption(new Option("--q"));
         command.AddOption(new Option("--conf"));
         command.Handler = CommandHandler.Create(
-            (string d, bool clc, bool q, bool conf) =>
+            async (string d, bool clc, bool q, bool conf) =>
             {
                 var isMulticast = String.IsNullOrEmpty(d);
                 var loraMessage = new LoRaMessage();
@@ -135,6 +135,8 @@ public class SerialCommandHandler
                 // We will be transmitted a device conf
                 if (conf || q)
                 {
+                    await _fuotaManagerService.ReloadStore();
+                    
                     var store = _fuotaManagerService.GetStore();
                     loraMessage.DeviceConfiguration = new DeviceConfiguration();
                     
@@ -146,11 +148,12 @@ public class SerialCommandHandler
                     {
                         _logger.LogInformation("Stopping all transmitters");
                         loraMessage.IsMulticast = true;
+                        devConf.AlwaysSendPeriod = 0;
                         devConf.EnableAlwaysSend = false;
                     }
                     else
                     {
-                        devConf.EnableAlwaysSend = true;
+                        devConf.EnableAlwaysSend = false;
                         devConf.AlwaysSendPeriod = store.SeqPeriodMs;
                         devConf.LimitedSendCount = store.SeqCount;
                     }
