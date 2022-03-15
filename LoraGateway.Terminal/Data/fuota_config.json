@@ -1,4 +1,9 @@
 {
+  "TxPower": 0,
+  "TxBandwidth": 2,
+  "TxDataRate": 7,
+  "SeqPeriodMs": 2000,
+  "SeqCount": 30000,
   "UartFakeLoRaRXMode": false,
   "UpdateIntervalMilliSeconds": 100,
   "FakeFirmware": true,

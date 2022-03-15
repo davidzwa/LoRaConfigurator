@@ -117,32 +117,64 @@ public class SerialCommandHandler
         command.AddAlias("u");
         command.AddOption(new Option<string>("--d"));
         command.AddOption(new Option("--clc"));
+        command.AddOption(new Option("--q"));
+        command.AddOption(new Option("--conf"));
         command.Handler = CommandHandler.Create(
-            (string d, bool clc) =>
+            async (string d, bool clc, bool q, bool conf) =>
             {
-                var forwardExperimentCommand =
-                    clc
-                        ? ForwardExperimentCommand.Types.SlaveCommand.ClearFlash
-                        : ForwardExperimentCommand.Types.SlaveCommand.QueryFlash;
                 var isMulticast = String.IsNullOrEmpty(d);
-                
-                var loraMessage = new LoRaMessage
-                {
-                    IsMulticast = isMulticast,
-                    ForwardExperimentCommand = new ForwardExperimentCommand()
-                    {
-                        SlaveCommand = forwardExperimentCommand
-                    }
-                };
-                
+                var loraMessage = new LoRaMessage();
                 if (!isMulticast)
                 {
                     var device = _deviceDataStore.GetDeviceByNick(d);
                     loraMessage.DeviceId = device.Id;
                 }
-                
+
+                loraMessage.IsMulticast = isMulticast;
+
+                // We will be transmitted a device conf
+                if (conf || q)
+                {
+                    await _fuotaManagerService.ReloadStore();
+                    
+                    var store = _fuotaManagerService.GetStore();
+                    loraMessage.DeviceConfiguration = new DeviceConfiguration();
+                    
+                    var devConf = loraMessage.DeviceConfiguration;
+                    devConf.TxBandwidth = store.TxBandwidth;
+                    devConf.TxPower = store.TxPower;
+                    devConf.TxDataRate = store.TxDataRate;
+                    if (q)
+                    {
+                        _logger.LogInformation("Stopping all transmitters");
+                        loraMessage.IsMulticast = true;
+                        devConf.AlwaysSendPeriod = 0;
+                        devConf.EnableAlwaysSend = false;
+                    }
+                    else
+                    {
+                        devConf.EnableAlwaysSend = false;
+                        devConf.AlwaysSendPeriod = store.SeqPeriodMs;
+                        devConf.LimitedSendCount = store.SeqCount;
+                    }
+                }
+                else
+                {
+                    var forwardExperimentCommand =
+                        clc
+                            ? ForwardExperimentCommand.Types.SlaveCommand.ClearFlash
+                            : ForwardExperimentCommand.Types.SlaveCommand.QueryFlash;
+
+                    loraMessage.ForwardExperimentCommand = new ForwardExperimentCommand()
+                    {
+                        SlaveCommand = forwardExperimentCommand
+                    };
+                }
+
+
                 var selectedPortName = _selectedDeviceService.SelectedPortName;
-                _logger.LogInformation("Unicast command {Port} MC:{MC} ClearFlash:{Clc}", selectedPortName, isMulticast, clc);
+                _logger.LogInformation("Unicast command {Port} MC:{MC} ClearFlash:{Clc}", selectedPortName, isMulticast,
+                    clc);
                 _serialProcessorService.SendUnicastTransmitCommand(loraMessage, GetDoNotProxyConfig());
             });
 
@@ -161,10 +193,10 @@ public class SerialCommandHandler
             _logger.LogInformation("Set TX power {Power} sent {Port}", selectedPortName, power);
             _serialProcessorService.SendTxPowerCommandd(power, GetDoNotProxyConfig());
         });
-        
+
         return command;
     }
-    
+
     public Command GetBootCommand()
     {
         var command = new Command("boot");

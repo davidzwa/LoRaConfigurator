@@ -37,7 +37,7 @@ public static class Cobs
                 result.Insert(distanceIndex, distance);
 
                 // Set the distance index to the latest index plus one
-                distanceIndex = (byte) result.Count;
+                distanceIndex = (byte)result.Count;
 
                 // Reset the value which indicates the distance to the next zero (the frame delimiter)
                 distance = 1;
@@ -57,7 +57,7 @@ public static class Cobs
                     result.Insert(distanceIndex, distance);
 
                     // Set the distance index to the latest index plus one
-                    distanceIndex = (byte) result.Count;
+                    distanceIndex = (byte)result.Count;
 
                     // Reset the value which indicates the distance to the next zero (the frame delimiter)
                     distance = 1;
@@ -86,13 +86,12 @@ public static class Cobs
 
         var result = new List<byte>();
         var distanceIndex = 0;
-        byte distance = 1; // Distance to next zero
 
         // Continue decoding which the next index is valid
         while (distanceIndex < buffer.Length)
         {
             // Get the next distance value
-            distance = buffer[distanceIndex];
+            var distance = buffer[distanceIndex]; // Distance to next zero
 
             // Ensure the input is formatted correctly (distanceIndex + distance)
             if (buffer.Length < distanceIndex + distance || distance < 1)

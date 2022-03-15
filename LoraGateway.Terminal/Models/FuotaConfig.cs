@@ -4,6 +4,13 @@ namespace LoraGateway.Models;
 
 public class FuotaConfig : ICloneable
 {
+    // Phy settings
+    public int TxPower { get; set; } = 14;
+    public uint TxBandwidth { get; set; } = 2; // 0(125k),1(250k),2(500k)
+    public uint TxDataRate { get; set; } = 11; // 7-12
+    public uint SeqPeriodMs { get; set; } = 2000;
+    public uint SeqCount { get; set; } = 10;
+    
     // Enabling this makes sure the UART packet are treated are LoRa RX packets instead of forwarding them
     public bool UartFakeLoRaRxMode { get; set; } = true;
 

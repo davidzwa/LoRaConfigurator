@@ -14,7 +14,7 @@ namespace LoraGateway.Tests.UartProtocol;
 
 public class UartEncodingTests
 {
-    readonly IServiceProvider _services = 
+    readonly IServiceProvider _services =
         LoraGateway.CreateHostBuilder(new string[] { }).Build().Services;
 
     readonly byte[] _cobsPayload = new byte[]
@@ -31,7 +31,7 @@ public class UartEncodingTests
         0x1, // Protobuf end
         0x1, // COBS end
     };
-    
+
     readonly byte[] _cobsPayloadFaulty = new byte[]
     {
         // COBS payloads
@@ -45,19 +45,19 @@ public class UartEncodingTests
         0x1, // Protobuf end
         0x1, // COBS end
     };
-    
+
     [Fact]
     public async Task SerialProcessorReceiveDebugTest()
     {
         var serialProcessor = _services.GetRequiredService<SerialProcessorService>();
         var result = await serialProcessor.ProcessMessage("test", _cobsPayload);
         result.ShouldBe(0);
-        
+
         // Wrong protobuf COBS buffer (wrong byte removed)
         var result2 = await serialProcessor.ProcessMessage("test", _cobsPayloadFaulty);
         result2.ShouldBe(2);
     }
-    
+
     [Fact]
     public void UartProtobufDebugMessageDecodingTest()
     {
@@ -100,6 +100,48 @@ public class UartEncodingTests
 
         var result = UartResponse.Parser.ParseFrom(decodedData.ToArray());
         result.DebugMessage.Code.ShouldBe<uint>(0);
-        result.Payload.ShouldBe<ByteString>(ByteString.CopyFromUtf8("123"));
+        result.Payload.ShouldBe(ByteString.CopyFromUtf8("123"));
     }
+
+    [Fact]
+    public void ProtoFailureTest()
+    {
+        var payload = new byte[]
+        {
+            0x0a, 0x0d, 0x4c, 0x6f, 0x52, 0x61, 0x4d, 0x75, 0x6c, 0x74, 0x69, 0x63, 0x61, 0x73, 0x74, 0x12, 0x20, 0x0a,
+            0x11, 0x08, 0xc0, 0x80, 0x8c, 0x03, 0x10, 0x95, 0xa2, 0xe1, 0xa1, 0x03, 0x18, 0xb9, 0xf0, 0xc8, 0x89, 0x03,
+            0x12, 0x06, 0x08, 0x02, 0x18, 0x01, 0x20, 0x0c, 0x18, 0xaf, 0x03, 0x20, 0x01 
+            // We noticed the last byte was vital
+        };
+        
+        var result = UartResponse.Parser.ParseFrom(payload);
+        result.BodyCase.ShouldBe(UartResponse.BodyOneofCase.BootMessage);
+        result.BootMessage.MeasurementsDisabled.ShouldBeTrue();
+    }
+
+    [Fact]
+    public void ProtoFailure2Test()
+    {
+        var payload = new byte[]
+        {
+            0x0a, 0x0d, 0x4c, 0x6f, 0x52, 0x61, 0x4d, 0x75, 0x6c, 0x74, 0x69, 0x63, 0x61, 0x73, 0x74, 0x12, 0x1b, 0x0a, 
+            0x11, 0x08, 0xb5, 0x80, 0xb4, 0x02, 0x10, 0x95, 0xa2, 0xe1, 0xa1, 0x03, 0x18, 0xb9, 0xf0, 0xc8, 0x89, 0x03, 
+            0x12, 0x06, 0x08, 0x02, 0x18, 0x01, 0x20, 0x0d
+        };
+        var result = UartResponse.Parser.ParseFrom(payload);
+        result.BodyCase.ShouldBe(UartResponse.BodyOneofCase.BootMessage);
+        result.BootMessage.MeasurementsDisabled.ShouldBeTrue();
+    }
+
+    [Fact]
+    public void CobsOutputEmptyTest()
+    {
+        var cobsEncodedInput = new byte[]
+            { 0xc8, 0x89, 0x03, 0x12, 0x06, 0x08, 0x02, 0x18, 0x01, 0x20, 0x0e, 0x18, 0x04, 0x20, 0x01 };
+
+        var output = Cobs.Decode(cobsEncodedInput);
+        
+        output.Count.ShouldBeGreaterThan(0);
+    }
+    
 }

@@ -3,6 +3,6 @@
 public interface IDataStore<T>
 {
     public T GetDefaultJson();
-    public Task WriteStore();
+    public void WriteStore();
     public Task<T?> LoadStore();
 }

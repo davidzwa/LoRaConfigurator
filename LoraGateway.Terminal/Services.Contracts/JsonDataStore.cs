@@ -17,27 +17,20 @@ public abstract class JsonDataStore<T> : IDataStore<T> where T : class, ICloneab
         return Path.GetFullPath(fullJsonStorePath, Directory.GetCurrentDirectory());
     }
 
-    protected async Task EnsureSourceExists()
+    protected Task EnsureSourceExists()
     {
         var path = GetJsonFilePath();
         var dirName = Path.GetDirectoryName(path);
-        if (dirName == null) return;
+        if (dirName == null) return Task.CompletedTask;
 
         if (!Directory.Exists(dirName)) Directory.CreateDirectory(dirName);
 
-        if (!File.Exists(path)) await WriteStore();
-    }
-
-    public async Task WriteStore()
-    {
-        var path = GetJsonFilePath();
-        var jsonStore = Store ?? GetDefaultJson();
-        var serializedBlob = JsonSerializer.SerializeToUtf8Bytes(jsonStore, new JsonSerializerOptions
+        if (!File.Exists(path))
         {
-            WriteIndented = true
-        });
+            WriteStore();
+        }
 
-        await File.WriteAllBytesAsync(path, serializedBlob);
+        return Task.CompletedTask;
     }
 
     public T? GetStore()
@@ -52,12 +45,26 @@ public abstract class JsonDataStore<T> : IDataStore<T> where T : class, ICloneab
         await EnsureSourceExists();
 
         var path = GetJsonFilePath();
-        var blob = await File.ReadAllTextAsync(path);
+
+        var blob = await File.ReadAllBytesAsync(path);
+
         Store = JsonSerializer.Deserialize<T>(blob, new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
         });
 
         return Store;
+    }
+    
+    public void WriteStore()
+    {
+        var path = GetJsonFilePath();
+        var jsonStore = Store ?? GetDefaultJson();
+        var serializedBlob = JsonSerializer.SerializeToUtf8Bytes(jsonStore, new JsonSerializerOptions
+        {
+            WriteIndented = true
+        });
+
+        File.WriteAllBytes(path, serializedBlob);
     }
 }

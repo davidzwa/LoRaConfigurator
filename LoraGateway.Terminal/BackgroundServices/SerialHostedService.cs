@@ -1,4 +1,4 @@
-﻿using LoraGateway.Services;
+using LoraGateway.Services;
 using LoraGateway.Utils;
 using Microsoft.Extensions.Hosting;
 

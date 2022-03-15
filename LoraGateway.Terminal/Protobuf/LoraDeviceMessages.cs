@@ -25,32 +25,961 @@ namespace LoRa {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Chpsb3JhX2RldmljZV9tZXNzYWdlcy5wcm90bxoec2hhcmVkL2V4cGVyaW1l",
-            "bnRfY29uZmlnLnByb3RvGhVzaGFyZWQvZmlybXdhcmUucHJvdG8i7QQKC0xv",
-            "UmFNZXNzYWdlEhMKC0lzTXVsdGljYXN0GAEgASgIEhAKCERldmljZUlkGAIg",
-            "ASgNEhcKD0NvcnJlbGF0aW9uQ29kZRgDIAEoDRIPCgdQYXlsb2FkGAQgASgM",
-            "Ej0KGGZvcndhcmRSYWRpb0NvbmZpZ1VwZGF0ZRgFIAEoCzIZLkZvcndhcmRS",
-            "YWRpb0NvbmZpZ1VwZGF0ZUgAEj0KGGZvcndhcmRFeHBlcmltZW50Q29tbWFu",
-            "ZBgGIAEoCzIZLkZvcndhcmRFeHBlcmltZW50Q29tbWFuZEgAEjEKEmV4cGVy",
-            "aW1lbnRSZXNwb25zZRgHIAEoCzITLkV4cGVyaW1lbnRSZXNwb25zZUgAEj0K",
-            "GG1lYXN1cmVtZW50U3RyZWFtUmVxdWVzdBgIIAEoCzIZLk1lYXN1cmVtZW50",
-            "U3RyZWFtUmVxdWVzdEgAEj8KGW1lYXN1cmVtZW50U3RyZWFtRnJhZ21lbnQY",
-            "CSABKAsyGi5NZWFzdXJlbWVudFN0cmVhbUZyYWdtZW50SAASNwoVcmxuY0lu",
-            "aXRDb25maWdDb21tYW5kGAogASgLMhYuUmxuY0luaXRDb25maWdDb21tYW5k",
-            "SAASMwoTcmxuY0VuY29kZWRGcmFnbWVudBgLIAEoCzIULlJsbmNFbmNvZGVk",
-            "RnJhZ21lbnRIABIrCg9ybG5jU3RhdGVVcGRhdGUYDCABKAsyEC5SbG5jU3Rh",
-            "dGVVcGRhdGVIABI5ChZybG5jVGVybWluYXRpb25Db21tYW5kGA0gASgLMhcu",
-            "UmxuY1Rlcm1pbmF0aW9uQ29tbWFuZEgAQgYKBEJvZHlCB6oCBExvUmFiBnBy",
-            "b3RvMw=="));
+            "bnRfY29uZmlnLnByb3RvGhVzaGFyZWQvZmlybXdhcmUucHJvdG8iIgoPUmVx",
+            "dWVzdEJvb3RJbmZvEg8KB1JlcXVlc3QYASABKAginQEKE0RldmljZUNvbmZp",
+            "Z3VyYXRpb24SGAoQRW5hYmxlQWx3YXlzU2VuZBgBIAEoCBIYChBBbHdheXNT",
+            "ZW5kUGVyaW9kGAIgASgNEhgKEExpbWl0ZWRTZW5kQ291bnQYAyABKA0SDwoH",
+            "VHhQb3dlchgEIAEoBRITCgtUeEJhbmR3aWR0aBgFIAEoDRISCgpUeERhdGFS",
+            "YXRlGAYgASgNIgsKCUxvUmFSZXNldCIbCgdMb1JhQWNrEhAKCERldmljZUlk",
+            "GAEgASgNIpsGCgtMb1JhTWVzc2FnZRITCgtJc011bHRpY2FzdBgBIAEoCBIQ",
+            "CghEZXZpY2VJZBgCIAEoDRIXCg9Db3JyZWxhdGlvbkNvZGUYAyABKA0SDwoH",
+            "UGF5bG9hZBgEIAEoDBI9Chhmb3J3YXJkRXhwZXJpbWVudENvbW1hbmQYBiAB",
+            "KAsyGS5Gb3J3YXJkRXhwZXJpbWVudENvbW1hbmRIABIxChJleHBlcmltZW50",
+            "UmVzcG9uc2UYByABKAsyEy5FeHBlcmltZW50UmVzcG9uc2VIABI9ChhtZWFz",
+            "dXJlbWVudFN0cmVhbVJlcXVlc3QYCCABKAsyGS5NZWFzdXJlbWVudFN0cmVh",
+            "bVJlcXVlc3RIABI/ChltZWFzdXJlbWVudFN0cmVhbUZyYWdtZW50GAkgASgL",
+            "MhouTWVhc3VyZW1lbnRTdHJlYW1GcmFnbWVudEgAEjcKFXJsbmNJbml0Q29u",
+            "ZmlnQ29tbWFuZBgKIAEoCzIWLlJsbmNJbml0Q29uZmlnQ29tbWFuZEgAEjMK",
+            "E3JsbmNFbmNvZGVkRnJhZ21lbnQYCyABKAsyFC5SbG5jRW5jb2RlZEZyYWdt",
+            "ZW50SAASKwoPcmxuY1N0YXRlVXBkYXRlGAwgASgLMhAuUmxuY1N0YXRlVXBk",
+            "YXRlSAASOQoWcmxuY1Rlcm1pbmF0aW9uQ29tbWFuZBgNIAEoCzIXLlJsbmNU",
+            "ZXJtaW5hdGlvbkNvbW1hbmRIABIpCg5kZWNvZGluZ1Jlc3VsdBgOIAEoCzIP",
+            "LkRlY29kaW5nUmVzdWx0SAASMwoTZGV2aWNlQ29uZmlndXJhdGlvbhgPIAEo",
+            "CzIULkRldmljZUNvbmZpZ3VyYXRpb25IABIrCg9yZXF1ZXN0Qm9vdEluZm8Y",
+            "ECABKAsyEC5SZXF1ZXN0Qm9vdEluZm9IABIjCgtib290TWVzc2FnZRgRIAEo",
+            "CzIMLkJvb3RNZXNzYWdlSAASIAoKcmVzZXRSYWRpbxgSIAEoCzIKLkxvUmFS",
+            "ZXNldEgAEhcKA2FjaxgTIAEoCzIILkxvUmFBY2tIAEIGCgRCb2R5QgeqAgRM",
+            "b1JhYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LoRa.ExperimentConfigReflection.Descriptor, global::LoRa.FirmwareReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.LoRaMessage), global::LoRa.LoRaMessage.Parser, new[]{ "IsMulticast", "DeviceId", "CorrelationCode", "Payload", "ForwardRadioConfigUpdate", "ForwardExperimentCommand", "ExperimentResponse", "MeasurementStreamRequest", "MeasurementStreamFragment", "RlncInitConfigCommand", "RlncEncodedFragment", "RlncStateUpdate", "RlncTerminationCommand" }, new[]{ "Body" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RequestBootInfo), global::LoRa.RequestBootInfo.Parser, new[]{ "Request" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DeviceConfiguration), global::LoRa.DeviceConfiguration.Parser, new[]{ "EnableAlwaysSend", "AlwaysSendPeriod", "LimitedSendCount", "TxPower", "TxBandwidth", "TxDataRate" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.LoRaReset), global::LoRa.LoRaReset.Parser, null, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.LoRaAck), global::LoRa.LoRaAck.Parser, new[]{ "DeviceId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.LoRaMessage), global::LoRa.LoRaMessage.Parser, new[]{ "IsMulticast", "DeviceId", "CorrelationCode", "Payload", "ForwardExperimentCommand", "ExperimentResponse", "MeasurementStreamRequest", "MeasurementStreamFragment", "RlncInitConfigCommand", "RlncEncodedFragment", "RlncStateUpdate", "RlncTerminationCommand", "DecodingResult", "DeviceConfiguration", "RequestBootInfo", "BootMessage", "ResetRadio", "Ack" }, new[]{ "Body" }, null, null, null)
           }));
     }
     #endregion
 
   }
   #region Messages
+  /// <summary>
+  /// Shared with uart_control
+  /// </summary>
+  public sealed partial class RequestBootInfo : pb::IMessage<RequestBootInfo>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<RequestBootInfo> _parser = new pb::MessageParser<RequestBootInfo>(() => new RequestBootInfo());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<RequestBootInfo> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LoRa.LoraDeviceMessagesReflection.Descriptor.MessageTypes[0]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public RequestBootInfo() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public RequestBootInfo(RequestBootInfo other) : this() {
+      request_ = other.request_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public RequestBootInfo Clone() {
+      return new RequestBootInfo(this);
+    }
+
+    /// <summary>Field number for the "Request" field.</summary>
+    public const int RequestFieldNumber = 1;
+    private bool request_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Request {
+      get { return request_; }
+      set {
+        request_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as RequestBootInfo);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(RequestBootInfo other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Request != other.Request) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Request != false) hash ^= Request.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (Request != false) {
+        output.WriteRawTag(8);
+        output.WriteBool(Request);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Request != false) {
+        output.WriteRawTag(8);
+        output.WriteBool(Request);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (Request != false) {
+        size += 1 + 1;
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(RequestBootInfo other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Request != false) {
+        Request = other.Request;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            Request = input.ReadBool();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            Request = input.ReadBool();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
+  /// Shared with uart_control
+  /// </summary>
+  public sealed partial class DeviceConfiguration : pb::IMessage<DeviceConfiguration>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<DeviceConfiguration> _parser = new pb::MessageParser<DeviceConfiguration>(() => new DeviceConfiguration());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<DeviceConfiguration> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LoRa.LoraDeviceMessagesReflection.Descriptor.MessageTypes[1]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DeviceConfiguration() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DeviceConfiguration(DeviceConfiguration other) : this() {
+      enableAlwaysSend_ = other.enableAlwaysSend_;
+      alwaysSendPeriod_ = other.alwaysSendPeriod_;
+      limitedSendCount_ = other.limitedSendCount_;
+      txPower_ = other.txPower_;
+      txBandwidth_ = other.txBandwidth_;
+      txDataRate_ = other.txDataRate_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DeviceConfiguration Clone() {
+      return new DeviceConfiguration(this);
+    }
+
+    /// <summary>Field number for the "EnableAlwaysSend" field.</summary>
+    public const int EnableAlwaysSendFieldNumber = 1;
+    private bool enableAlwaysSend_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool EnableAlwaysSend {
+      get { return enableAlwaysSend_; }
+      set {
+        enableAlwaysSend_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "AlwaysSendPeriod" field.</summary>
+    public const int AlwaysSendPeriodFieldNumber = 2;
+    private uint alwaysSendPeriod_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint AlwaysSendPeriod {
+      get { return alwaysSendPeriod_; }
+      set {
+        alwaysSendPeriod_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "LimitedSendCount" field.</summary>
+    public const int LimitedSendCountFieldNumber = 3;
+    private uint limitedSendCount_;
+    /// <summary>
+    /// Ignored if EnableAlwaysSend is true
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint LimitedSendCount {
+      get { return limitedSendCount_; }
+      set {
+        limitedSendCount_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "TxPower" field.</summary>
+    public const int TxPowerFieldNumber = 4;
+    private int txPower_;
+    /// <summary>
+    /// TX power, BW and SF
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int TxPower {
+      get { return txPower_; }
+      set {
+        txPower_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "TxBandwidth" field.</summary>
+    public const int TxBandwidthFieldNumber = 5;
+    private uint txBandwidth_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint TxBandwidth {
+      get { return txBandwidth_; }
+      set {
+        txBandwidth_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "TxDataRate" field.</summary>
+    public const int TxDataRateFieldNumber = 6;
+    private uint txDataRate_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint TxDataRate {
+      get { return txDataRate_; }
+      set {
+        txDataRate_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as DeviceConfiguration);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(DeviceConfiguration other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (EnableAlwaysSend != other.EnableAlwaysSend) return false;
+      if (AlwaysSendPeriod != other.AlwaysSendPeriod) return false;
+      if (LimitedSendCount != other.LimitedSendCount) return false;
+      if (TxPower != other.TxPower) return false;
+      if (TxBandwidth != other.TxBandwidth) return false;
+      if (TxDataRate != other.TxDataRate) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (EnableAlwaysSend != false) hash ^= EnableAlwaysSend.GetHashCode();
+      if (AlwaysSendPeriod != 0) hash ^= AlwaysSendPeriod.GetHashCode();
+      if (LimitedSendCount != 0) hash ^= LimitedSendCount.GetHashCode();
+      if (TxPower != 0) hash ^= TxPower.GetHashCode();
+      if (TxBandwidth != 0) hash ^= TxBandwidth.GetHashCode();
+      if (TxDataRate != 0) hash ^= TxDataRate.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (EnableAlwaysSend != false) {
+        output.WriteRawTag(8);
+        output.WriteBool(EnableAlwaysSend);
+      }
+      if (AlwaysSendPeriod != 0) {
+        output.WriteRawTag(16);
+        output.WriteUInt32(AlwaysSendPeriod);
+      }
+      if (LimitedSendCount != 0) {
+        output.WriteRawTag(24);
+        output.WriteUInt32(LimitedSendCount);
+      }
+      if (TxPower != 0) {
+        output.WriteRawTag(32);
+        output.WriteInt32(TxPower);
+      }
+      if (TxBandwidth != 0) {
+        output.WriteRawTag(40);
+        output.WriteUInt32(TxBandwidth);
+      }
+      if (TxDataRate != 0) {
+        output.WriteRawTag(48);
+        output.WriteUInt32(TxDataRate);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (EnableAlwaysSend != false) {
+        output.WriteRawTag(8);
+        output.WriteBool(EnableAlwaysSend);
+      }
+      if (AlwaysSendPeriod != 0) {
+        output.WriteRawTag(16);
+        output.WriteUInt32(AlwaysSendPeriod);
+      }
+      if (LimitedSendCount != 0) {
+        output.WriteRawTag(24);
+        output.WriteUInt32(LimitedSendCount);
+      }
+      if (TxPower != 0) {
+        output.WriteRawTag(32);
+        output.WriteInt32(TxPower);
+      }
+      if (TxBandwidth != 0) {
+        output.WriteRawTag(40);
+        output.WriteUInt32(TxBandwidth);
+      }
+      if (TxDataRate != 0) {
+        output.WriteRawTag(48);
+        output.WriteUInt32(TxDataRate);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (EnableAlwaysSend != false) {
+        size += 1 + 1;
+      }
+      if (AlwaysSendPeriod != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(AlwaysSendPeriod);
+      }
+      if (LimitedSendCount != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(LimitedSendCount);
+      }
+      if (TxPower != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(TxPower);
+      }
+      if (TxBandwidth != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(TxBandwidth);
+      }
+      if (TxDataRate != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(TxDataRate);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(DeviceConfiguration other) {
+      if (other == null) {
+        return;
+      }
+      if (other.EnableAlwaysSend != false) {
+        EnableAlwaysSend = other.EnableAlwaysSend;
+      }
+      if (other.AlwaysSendPeriod != 0) {
+        AlwaysSendPeriod = other.AlwaysSendPeriod;
+      }
+      if (other.LimitedSendCount != 0) {
+        LimitedSendCount = other.LimitedSendCount;
+      }
+      if (other.TxPower != 0) {
+        TxPower = other.TxPower;
+      }
+      if (other.TxBandwidth != 0) {
+        TxBandwidth = other.TxBandwidth;
+      }
+      if (other.TxDataRate != 0) {
+        TxDataRate = other.TxDataRate;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            EnableAlwaysSend = input.ReadBool();
+            break;
+          }
+          case 16: {
+            AlwaysSendPeriod = input.ReadUInt32();
+            break;
+          }
+          case 24: {
+            LimitedSendCount = input.ReadUInt32();
+            break;
+          }
+          case 32: {
+            TxPower = input.ReadInt32();
+            break;
+          }
+          case 40: {
+            TxBandwidth = input.ReadUInt32();
+            break;
+          }
+          case 48: {
+            TxDataRate = input.ReadUInt32();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            EnableAlwaysSend = input.ReadBool();
+            break;
+          }
+          case 16: {
+            AlwaysSendPeriod = input.ReadUInt32();
+            break;
+          }
+          case 24: {
+            LimitedSendCount = input.ReadUInt32();
+            break;
+          }
+          case 32: {
+            TxPower = input.ReadInt32();
+            break;
+          }
+          case 40: {
+            TxBandwidth = input.ReadUInt32();
+            break;
+          }
+          case 48: {
+            TxDataRate = input.ReadUInt32();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  public sealed partial class LoRaReset : pb::IMessage<LoRaReset>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<LoRaReset> _parser = new pb::MessageParser<LoRaReset>(() => new LoRaReset());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<LoRaReset> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LoRa.LoraDeviceMessagesReflection.Descriptor.MessageTypes[2]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public LoRaReset() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public LoRaReset(LoRaReset other) : this() {
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public LoRaReset Clone() {
+      return new LoRaReset(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as LoRaReset);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(LoRaReset other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(LoRaReset other) {
+      if (other == null) {
+        return;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+        }
+      }
+    }
+    #endif
+
+  }
+
+  public sealed partial class LoRaAck : pb::IMessage<LoRaAck>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<LoRaAck> _parser = new pb::MessageParser<LoRaAck>(() => new LoRaAck());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<LoRaAck> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LoRa.LoraDeviceMessagesReflection.Descriptor.MessageTypes[3]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public LoRaAck() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public LoRaAck(LoRaAck other) : this() {
+      deviceId_ = other.deviceId_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public LoRaAck Clone() {
+      return new LoRaAck(this);
+    }
+
+    /// <summary>Field number for the "DeviceId" field.</summary>
+    public const int DeviceIdFieldNumber = 1;
+    private uint deviceId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint DeviceId {
+      get { return deviceId_; }
+      set {
+        deviceId_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as LoRaAck);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(LoRaAck other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (DeviceId != other.DeviceId) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (DeviceId != 0) hash ^= DeviceId.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (DeviceId != 0) {
+        output.WriteRawTag(8);
+        output.WriteUInt32(DeviceId);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (DeviceId != 0) {
+        output.WriteRawTag(8);
+        output.WriteUInt32(DeviceId);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (DeviceId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(DeviceId);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(LoRaAck other) {
+      if (other == null) {
+        return;
+      }
+      if (other.DeviceId != 0) {
+        DeviceId = other.DeviceId;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            DeviceId = input.ReadUInt32();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            DeviceId = input.ReadUInt32();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
   public sealed partial class LoRaMessage : pb::IMessage<LoRaMessage>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -65,7 +994,7 @@ namespace LoRa {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LoRa.LoraDeviceMessagesReflection.Descriptor.MessageTypes[0]; }
+      get { return global::LoRa.LoraDeviceMessagesReflection.Descriptor.MessageTypes[4]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -90,9 +1019,6 @@ namespace LoRa {
       correlationCode_ = other.correlationCode_;
       payload_ = other.payload_;
       switch (other.BodyCase) {
-        case BodyOneofCase.ForwardRadioConfigUpdate:
-          ForwardRadioConfigUpdate = other.ForwardRadioConfigUpdate.Clone();
-          break;
         case BodyOneofCase.ForwardExperimentCommand:
           ForwardExperimentCommand = other.ForwardExperimentCommand.Clone();
           break;
@@ -116,6 +1042,24 @@ namespace LoRa {
           break;
         case BodyOneofCase.RlncTerminationCommand:
           RlncTerminationCommand = other.RlncTerminationCommand.Clone();
+          break;
+        case BodyOneofCase.DecodingResult:
+          DecodingResult = other.DecodingResult.Clone();
+          break;
+        case BodyOneofCase.DeviceConfiguration:
+          DeviceConfiguration = other.DeviceConfiguration.Clone();
+          break;
+        case BodyOneofCase.RequestBootInfo:
+          RequestBootInfo = other.RequestBootInfo.Clone();
+          break;
+        case BodyOneofCase.BootMessage:
+          BootMessage = other.BootMessage.Clone();
+          break;
+        case BodyOneofCase.ResetRadio:
+          ResetRadio = other.ResetRadio.Clone();
+          break;
+        case BodyOneofCase.Ack:
+          Ack = other.Ack.Clone();
           break;
       }
 
@@ -173,18 +1117,6 @@ namespace LoRa {
       get { return payload_; }
       set {
         payload_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
-    }
-
-    /// <summary>Field number for the "forwardRadioConfigUpdate" field.</summary>
-    public const int ForwardRadioConfigUpdateFieldNumber = 5;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LoRa.ForwardRadioConfigUpdate ForwardRadioConfigUpdate {
-      get { return bodyCase_ == BodyOneofCase.ForwardRadioConfigUpdate ? (global::LoRa.ForwardRadioConfigUpdate) body_ : null; }
-      set {
-        body_ = value;
-        bodyCase_ = value == null ? BodyOneofCase.None : BodyOneofCase.ForwardRadioConfigUpdate;
       }
     }
 
@@ -287,11 +1219,82 @@ namespace LoRa {
       }
     }
 
+    /// <summary>Field number for the "decodingResult" field.</summary>
+    public const int DecodingResultFieldNumber = 14;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LoRa.DecodingResult DecodingResult {
+      get { return bodyCase_ == BodyOneofCase.DecodingResult ? (global::LoRa.DecodingResult) body_ : null; }
+      set {
+        body_ = value;
+        bodyCase_ = value == null ? BodyOneofCase.None : BodyOneofCase.DecodingResult;
+      }
+    }
+
+    /// <summary>Field number for the "deviceConfiguration" field.</summary>
+    public const int DeviceConfigurationFieldNumber = 15;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LoRa.DeviceConfiguration DeviceConfiguration {
+      get { return bodyCase_ == BodyOneofCase.DeviceConfiguration ? (global::LoRa.DeviceConfiguration) body_ : null; }
+      set {
+        body_ = value;
+        bodyCase_ = value == null ? BodyOneofCase.None : BodyOneofCase.DeviceConfiguration;
+      }
+    }
+
+    /// <summary>Field number for the "requestBootInfo" field.</summary>
+    public const int RequestBootInfoFieldNumber = 16;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LoRa.RequestBootInfo RequestBootInfo {
+      get { return bodyCase_ == BodyOneofCase.RequestBootInfo ? (global::LoRa.RequestBootInfo) body_ : null; }
+      set {
+        body_ = value;
+        bodyCase_ = value == null ? BodyOneofCase.None : BodyOneofCase.RequestBootInfo;
+      }
+    }
+
+    /// <summary>Field number for the "bootMessage" field.</summary>
+    public const int BootMessageFieldNumber = 17;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LoRa.BootMessage BootMessage {
+      get { return bodyCase_ == BodyOneofCase.BootMessage ? (global::LoRa.BootMessage) body_ : null; }
+      set {
+        body_ = value;
+        bodyCase_ = value == null ? BodyOneofCase.None : BodyOneofCase.BootMessage;
+      }
+    }
+
+    /// <summary>Field number for the "resetRadio" field.</summary>
+    public const int ResetRadioFieldNumber = 18;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LoRa.LoRaReset ResetRadio {
+      get { return bodyCase_ == BodyOneofCase.ResetRadio ? (global::LoRa.LoRaReset) body_ : null; }
+      set {
+        body_ = value;
+        bodyCase_ = value == null ? BodyOneofCase.None : BodyOneofCase.ResetRadio;
+      }
+    }
+
+    /// <summary>Field number for the "ack" field.</summary>
+    public const int AckFieldNumber = 19;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LoRa.LoRaAck Ack {
+      get { return bodyCase_ == BodyOneofCase.Ack ? (global::LoRa.LoRaAck) body_ : null; }
+      set {
+        body_ = value;
+        bodyCase_ = value == null ? BodyOneofCase.None : BodyOneofCase.Ack;
+      }
+    }
+
     private object body_;
     /// <summary>Enum of possible cases for the "Body" oneof.</summary>
     public enum BodyOneofCase {
       None = 0,
-      ForwardRadioConfigUpdate = 5,
       ForwardExperimentCommand = 6,
       ExperimentResponse = 7,
       MeasurementStreamRequest = 8,
@@ -300,6 +1303,12 @@ namespace LoRa {
       RlncEncodedFragment = 11,
       RlncStateUpdate = 12,
       RlncTerminationCommand = 13,
+      DecodingResult = 14,
+      DeviceConfiguration = 15,
+      RequestBootInfo = 16,
+      BootMessage = 17,
+      ResetRadio = 18,
+      Ack = 19,
     }
     private BodyOneofCase bodyCase_ = BodyOneofCase.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -334,7 +1343,6 @@ namespace LoRa {
       if (DeviceId != other.DeviceId) return false;
       if (CorrelationCode != other.CorrelationCode) return false;
       if (Payload != other.Payload) return false;
-      if (!object.Equals(ForwardRadioConfigUpdate, other.ForwardRadioConfigUpdate)) return false;
       if (!object.Equals(ForwardExperimentCommand, other.ForwardExperimentCommand)) return false;
       if (!object.Equals(ExperimentResponse, other.ExperimentResponse)) return false;
       if (!object.Equals(MeasurementStreamRequest, other.MeasurementStreamRequest)) return false;
@@ -343,6 +1351,12 @@ namespace LoRa {
       if (!object.Equals(RlncEncodedFragment, other.RlncEncodedFragment)) return false;
       if (!object.Equals(RlncStateUpdate, other.RlncStateUpdate)) return false;
       if (!object.Equals(RlncTerminationCommand, other.RlncTerminationCommand)) return false;
+      if (!object.Equals(DecodingResult, other.DecodingResult)) return false;
+      if (!object.Equals(DeviceConfiguration, other.DeviceConfiguration)) return false;
+      if (!object.Equals(RequestBootInfo, other.RequestBootInfo)) return false;
+      if (!object.Equals(BootMessage, other.BootMessage)) return false;
+      if (!object.Equals(ResetRadio, other.ResetRadio)) return false;
+      if (!object.Equals(Ack, other.Ack)) return false;
       if (BodyCase != other.BodyCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -355,7 +1369,6 @@ namespace LoRa {
       if (DeviceId != 0) hash ^= DeviceId.GetHashCode();
       if (CorrelationCode != 0) hash ^= CorrelationCode.GetHashCode();
       if (Payload.Length != 0) hash ^= Payload.GetHashCode();
-      if (bodyCase_ == BodyOneofCase.ForwardRadioConfigUpdate) hash ^= ForwardRadioConfigUpdate.GetHashCode();
       if (bodyCase_ == BodyOneofCase.ForwardExperimentCommand) hash ^= ForwardExperimentCommand.GetHashCode();
       if (bodyCase_ == BodyOneofCase.ExperimentResponse) hash ^= ExperimentResponse.GetHashCode();
       if (bodyCase_ == BodyOneofCase.MeasurementStreamRequest) hash ^= MeasurementStreamRequest.GetHashCode();
@@ -364,6 +1377,12 @@ namespace LoRa {
       if (bodyCase_ == BodyOneofCase.RlncEncodedFragment) hash ^= RlncEncodedFragment.GetHashCode();
       if (bodyCase_ == BodyOneofCase.RlncStateUpdate) hash ^= RlncStateUpdate.GetHashCode();
       if (bodyCase_ == BodyOneofCase.RlncTerminationCommand) hash ^= RlncTerminationCommand.GetHashCode();
+      if (bodyCase_ == BodyOneofCase.DecodingResult) hash ^= DecodingResult.GetHashCode();
+      if (bodyCase_ == BodyOneofCase.DeviceConfiguration) hash ^= DeviceConfiguration.GetHashCode();
+      if (bodyCase_ == BodyOneofCase.RequestBootInfo) hash ^= RequestBootInfo.GetHashCode();
+      if (bodyCase_ == BodyOneofCase.BootMessage) hash ^= BootMessage.GetHashCode();
+      if (bodyCase_ == BodyOneofCase.ResetRadio) hash ^= ResetRadio.GetHashCode();
+      if (bodyCase_ == BodyOneofCase.Ack) hash ^= Ack.GetHashCode();
       hash ^= (int) bodyCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -399,10 +1418,6 @@ namespace LoRa {
         output.WriteRawTag(34);
         output.WriteBytes(Payload);
       }
-      if (bodyCase_ == BodyOneofCase.ForwardRadioConfigUpdate) {
-        output.WriteRawTag(42);
-        output.WriteMessage(ForwardRadioConfigUpdate);
-      }
       if (bodyCase_ == BodyOneofCase.ForwardExperimentCommand) {
         output.WriteRawTag(50);
         output.WriteMessage(ForwardExperimentCommand);
@@ -434,6 +1449,30 @@ namespace LoRa {
       if (bodyCase_ == BodyOneofCase.RlncTerminationCommand) {
         output.WriteRawTag(106);
         output.WriteMessage(RlncTerminationCommand);
+      }
+      if (bodyCase_ == BodyOneofCase.DecodingResult) {
+        output.WriteRawTag(114);
+        output.WriteMessage(DecodingResult);
+      }
+      if (bodyCase_ == BodyOneofCase.DeviceConfiguration) {
+        output.WriteRawTag(122);
+        output.WriteMessage(DeviceConfiguration);
+      }
+      if (bodyCase_ == BodyOneofCase.RequestBootInfo) {
+        output.WriteRawTag(130, 1);
+        output.WriteMessage(RequestBootInfo);
+      }
+      if (bodyCase_ == BodyOneofCase.BootMessage) {
+        output.WriteRawTag(138, 1);
+        output.WriteMessage(BootMessage);
+      }
+      if (bodyCase_ == BodyOneofCase.ResetRadio) {
+        output.WriteRawTag(146, 1);
+        output.WriteMessage(ResetRadio);
+      }
+      if (bodyCase_ == BodyOneofCase.Ack) {
+        output.WriteRawTag(154, 1);
+        output.WriteMessage(Ack);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -461,10 +1500,6 @@ namespace LoRa {
         output.WriteRawTag(34);
         output.WriteBytes(Payload);
       }
-      if (bodyCase_ == BodyOneofCase.ForwardRadioConfigUpdate) {
-        output.WriteRawTag(42);
-        output.WriteMessage(ForwardRadioConfigUpdate);
-      }
       if (bodyCase_ == BodyOneofCase.ForwardExperimentCommand) {
         output.WriteRawTag(50);
         output.WriteMessage(ForwardExperimentCommand);
@@ -497,6 +1532,30 @@ namespace LoRa {
         output.WriteRawTag(106);
         output.WriteMessage(RlncTerminationCommand);
       }
+      if (bodyCase_ == BodyOneofCase.DecodingResult) {
+        output.WriteRawTag(114);
+        output.WriteMessage(DecodingResult);
+      }
+      if (bodyCase_ == BodyOneofCase.DeviceConfiguration) {
+        output.WriteRawTag(122);
+        output.WriteMessage(DeviceConfiguration);
+      }
+      if (bodyCase_ == BodyOneofCase.RequestBootInfo) {
+        output.WriteRawTag(130, 1);
+        output.WriteMessage(RequestBootInfo);
+      }
+      if (bodyCase_ == BodyOneofCase.BootMessage) {
+        output.WriteRawTag(138, 1);
+        output.WriteMessage(BootMessage);
+      }
+      if (bodyCase_ == BodyOneofCase.ResetRadio) {
+        output.WriteRawTag(146, 1);
+        output.WriteMessage(ResetRadio);
+      }
+      if (bodyCase_ == BodyOneofCase.Ack) {
+        output.WriteRawTag(154, 1);
+        output.WriteMessage(Ack);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -518,9 +1577,6 @@ namespace LoRa {
       }
       if (Payload.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeBytesSize(Payload);
-      }
-      if (bodyCase_ == BodyOneofCase.ForwardRadioConfigUpdate) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(ForwardRadioConfigUpdate);
       }
       if (bodyCase_ == BodyOneofCase.ForwardExperimentCommand) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(ForwardExperimentCommand);
@@ -545,6 +1601,24 @@ namespace LoRa {
       }
       if (bodyCase_ == BodyOneofCase.RlncTerminationCommand) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(RlncTerminationCommand);
+      }
+      if (bodyCase_ == BodyOneofCase.DecodingResult) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(DecodingResult);
+      }
+      if (bodyCase_ == BodyOneofCase.DeviceConfiguration) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(DeviceConfiguration);
+      }
+      if (bodyCase_ == BodyOneofCase.RequestBootInfo) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(RequestBootInfo);
+      }
+      if (bodyCase_ == BodyOneofCase.BootMessage) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(BootMessage);
+      }
+      if (bodyCase_ == BodyOneofCase.ResetRadio) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(ResetRadio);
+      }
+      if (bodyCase_ == BodyOneofCase.Ack) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(Ack);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -571,12 +1645,6 @@ namespace LoRa {
         Payload = other.Payload;
       }
       switch (other.BodyCase) {
-        case BodyOneofCase.ForwardRadioConfigUpdate:
-          if (ForwardRadioConfigUpdate == null) {
-            ForwardRadioConfigUpdate = new global::LoRa.ForwardRadioConfigUpdate();
-          }
-          ForwardRadioConfigUpdate.MergeFrom(other.ForwardRadioConfigUpdate);
-          break;
         case BodyOneofCase.ForwardExperimentCommand:
           if (ForwardExperimentCommand == null) {
             ForwardExperimentCommand = new global::LoRa.ForwardExperimentCommand();
@@ -625,6 +1693,42 @@ namespace LoRa {
           }
           RlncTerminationCommand.MergeFrom(other.RlncTerminationCommand);
           break;
+        case BodyOneofCase.DecodingResult:
+          if (DecodingResult == null) {
+            DecodingResult = new global::LoRa.DecodingResult();
+          }
+          DecodingResult.MergeFrom(other.DecodingResult);
+          break;
+        case BodyOneofCase.DeviceConfiguration:
+          if (DeviceConfiguration == null) {
+            DeviceConfiguration = new global::LoRa.DeviceConfiguration();
+          }
+          DeviceConfiguration.MergeFrom(other.DeviceConfiguration);
+          break;
+        case BodyOneofCase.RequestBootInfo:
+          if (RequestBootInfo == null) {
+            RequestBootInfo = new global::LoRa.RequestBootInfo();
+          }
+          RequestBootInfo.MergeFrom(other.RequestBootInfo);
+          break;
+        case BodyOneofCase.BootMessage:
+          if (BootMessage == null) {
+            BootMessage = new global::LoRa.BootMessage();
+          }
+          BootMessage.MergeFrom(other.BootMessage);
+          break;
+        case BodyOneofCase.ResetRadio:
+          if (ResetRadio == null) {
+            ResetRadio = new global::LoRa.LoRaReset();
+          }
+          ResetRadio.MergeFrom(other.ResetRadio);
+          break;
+        case BodyOneofCase.Ack:
+          if (Ack == null) {
+            Ack = new global::LoRa.LoRaAck();
+          }
+          Ack.MergeFrom(other.Ack);
+          break;
       }
 
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -658,15 +1762,6 @@ namespace LoRa {
             Payload = input.ReadBytes();
             break;
           }
-          case 42: {
-            global::LoRa.ForwardRadioConfigUpdate subBuilder = new global::LoRa.ForwardRadioConfigUpdate();
-            if (bodyCase_ == BodyOneofCase.ForwardRadioConfigUpdate) {
-              subBuilder.MergeFrom(ForwardRadioConfigUpdate);
-            }
-            input.ReadMessage(subBuilder);
-            ForwardRadioConfigUpdate = subBuilder;
-            break;
-          }
           case 50: {
             global::LoRa.ForwardExperimentCommand subBuilder = new global::LoRa.ForwardExperimentCommand();
             if (bodyCase_ == BodyOneofCase.ForwardExperimentCommand) {
@@ -737,6 +1832,60 @@ namespace LoRa {
             }
             input.ReadMessage(subBuilder);
             RlncTerminationCommand = subBuilder;
+            break;
+          }
+          case 114: {
+            global::LoRa.DecodingResult subBuilder = new global::LoRa.DecodingResult();
+            if (bodyCase_ == BodyOneofCase.DecodingResult) {
+              subBuilder.MergeFrom(DecodingResult);
+            }
+            input.ReadMessage(subBuilder);
+            DecodingResult = subBuilder;
+            break;
+          }
+          case 122: {
+            global::LoRa.DeviceConfiguration subBuilder = new global::LoRa.DeviceConfiguration();
+            if (bodyCase_ == BodyOneofCase.DeviceConfiguration) {
+              subBuilder.MergeFrom(DeviceConfiguration);
+            }
+            input.ReadMessage(subBuilder);
+            DeviceConfiguration = subBuilder;
+            break;
+          }
+          case 130: {
+            global::LoRa.RequestBootInfo subBuilder = new global::LoRa.RequestBootInfo();
+            if (bodyCase_ == BodyOneofCase.RequestBootInfo) {
+              subBuilder.MergeFrom(RequestBootInfo);
+            }
+            input.ReadMessage(subBuilder);
+            RequestBootInfo = subBuilder;
+            break;
+          }
+          case 138: {
+            global::LoRa.BootMessage subBuilder = new global::LoRa.BootMessage();
+            if (bodyCase_ == BodyOneofCase.BootMessage) {
+              subBuilder.MergeFrom(BootMessage);
+            }
+            input.ReadMessage(subBuilder);
+            BootMessage = subBuilder;
+            break;
+          }
+          case 146: {
+            global::LoRa.LoRaReset subBuilder = new global::LoRa.LoRaReset();
+            if (bodyCase_ == BodyOneofCase.ResetRadio) {
+              subBuilder.MergeFrom(ResetRadio);
+            }
+            input.ReadMessage(subBuilder);
+            ResetRadio = subBuilder;
+            break;
+          }
+          case 154: {
+            global::LoRa.LoRaAck subBuilder = new global::LoRa.LoRaAck();
+            if (bodyCase_ == BodyOneofCase.Ack) {
+              subBuilder.MergeFrom(Ack);
+            }
+            input.ReadMessage(subBuilder);
+            Ack = subBuilder;
             break;
           }
         }
@@ -770,15 +1919,6 @@ namespace LoRa {
             Payload = input.ReadBytes();
             break;
           }
-          case 42: {
-            global::LoRa.ForwardRadioConfigUpdate subBuilder = new global::LoRa.ForwardRadioConfigUpdate();
-            if (bodyCase_ == BodyOneofCase.ForwardRadioConfigUpdate) {
-              subBuilder.MergeFrom(ForwardRadioConfigUpdate);
-            }
-            input.ReadMessage(subBuilder);
-            ForwardRadioConfigUpdate = subBuilder;
-            break;
-          }
           case 50: {
             global::LoRa.ForwardExperimentCommand subBuilder = new global::LoRa.ForwardExperimentCommand();
             if (bodyCase_ == BodyOneofCase.ForwardExperimentCommand) {
@@ -849,6 +1989,60 @@ namespace LoRa {
             }
             input.ReadMessage(subBuilder);
             RlncTerminationCommand = subBuilder;
+            break;
+          }
+          case 114: {
+            global::LoRa.DecodingResult subBuilder = new global::LoRa.DecodingResult();
+            if (bodyCase_ == BodyOneofCase.DecodingResult) {
+              subBuilder.MergeFrom(DecodingResult);
+            }
+            input.ReadMessage(subBuilder);
+            DecodingResult = subBuilder;
+            break;
+          }
+          case 122: {
+            global::LoRa.DeviceConfiguration subBuilder = new global::LoRa.DeviceConfiguration();
+            if (bodyCase_ == BodyOneofCase.DeviceConfiguration) {
+              subBuilder.MergeFrom(DeviceConfiguration);
+            }
+            input.ReadMessage(subBuilder);
+            DeviceConfiguration = subBuilder;
+            break;
+          }
+          case 130: {
+            global::LoRa.RequestBootInfo subBuilder = new global::LoRa.RequestBootInfo();
+            if (bodyCase_ == BodyOneofCase.RequestBootInfo) {
+              subBuilder.MergeFrom(RequestBootInfo);
+            }
+            input.ReadMessage(subBuilder);
+            RequestBootInfo = subBuilder;
+            break;
+          }
+          case 138: {
+            global::LoRa.BootMessage subBuilder = new global::LoRa.BootMessage();
+            if (bodyCase_ == BodyOneofCase.BootMessage) {
+              subBuilder.MergeFrom(BootMessage);
+            }
+            input.ReadMessage(subBuilder);
+            BootMessage = subBuilder;
+            break;
+          }
+          case 146: {
+            global::LoRa.LoRaReset subBuilder = new global::LoRa.LoRaReset();
+            if (bodyCase_ == BodyOneofCase.ResetRadio) {
+              subBuilder.MergeFrom(ResetRadio);
+            }
+            input.ReadMessage(subBuilder);
+            ResetRadio = subBuilder;
+            break;
+          }
+          case 154: {
+            global::LoRa.LoRaAck subBuilder = new global::LoRa.LoRaAck();
+            if (bodyCase_ == BodyOneofCase.Ack) {
+              subBuilder.MergeFrom(Ack);
+            }
+            input.ReadMessage(subBuilder);
+            Ack = subBuilder;
             break;
           }
         }

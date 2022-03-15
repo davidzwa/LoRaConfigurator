@@ -25,24 +25,19 @@ namespace LoRa {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Cht1YXJ0X2NvbnRyb2xfbWVzc2FnZXMucHJvdG8aGmxvcmFfZGV2aWNlX21l",
-            "c3NhZ2VzLnByb3RvGhVzaGFyZWQvbG9yYV9waHkucHJvdG8iIgoPUmVxdWVz",
-            "dEJvb3RJbmZvEg8KB1JlcXVlc3QYASABKAgiYwoTRGV2aWNlQ29uZmlndXJh",
-            "dGlvbhIYChBFbmFibGVBbHdheXNTZW5kGAEgASgIEhgKEEFsd2F5c1NlbmRQ",
-            "ZXJpb2QYAiABKA0SGAoQTGltaXRlZFNlbmRDb3VudBgDIAEoDSIxChhDbGVh",
-            "ck1lYXN1cmVtZW50c0NvbW1hbmQSFQoNU2VuZEJvb3RBZnRlchgBIAEoCCLC",
-            "AgoLVWFydENvbW1hbmQSIgoIcnhDb25maWcYASABKAsyDi5SYWRpb1J4Q29u",
-            "ZmlnSAASIgoIdHhDb25maWcYAiABKAsyDi5SYWRpb1R4Q29uZmlnSAASMwoT",
-            "ZGV2aWNlQ29uZmlndXJhdGlvbhgDIAEoCzIULkRldmljZUNvbmZpZ3VyYXRp",
-            "b25IABIrCg9yZXF1ZXN0Qm9vdEluZm8YBCABKAsyEC5SZXF1ZXN0Qm9vdElu",
-            "Zm9IABI9ChhjbGVhck1lYXN1cmVtZW50c0NvbW1hbmQYBSABKAsyGS5DbGVh",
-            "ck1lYXN1cmVtZW50c0NvbW1hbmRIABInCg90cmFuc21pdENvbW1hbmQYBiAB",
-            "KAsyDC5Mb1JhTWVzc2FnZUgAEhkKEWRvTm90UHJveHlDb21tYW5kGAcgASgI",
-            "QgYKBEJvZHlCB6oCBExvUmFiBnByb3RvMw=="));
+            "c3NhZ2VzLnByb3RvGhVzaGFyZWQvbG9yYV9waHkucHJvdG8iMQoYQ2xlYXJN",
+            "ZWFzdXJlbWVudHNDb21tYW5kEhUKDVNlbmRCb290QWZ0ZXIYASABKAgiwgIK",
+            "C1VhcnRDb21tYW5kEiIKCHJ4Q29uZmlnGAEgASgLMg4uUmFkaW9SeENvbmZp",
+            "Z0gAEiIKCHR4Q29uZmlnGAIgASgLMg4uUmFkaW9UeENvbmZpZ0gAEjMKE2Rl",
+            "dmljZUNvbmZpZ3VyYXRpb24YAyABKAsyFC5EZXZpY2VDb25maWd1cmF0aW9u",
+            "SAASKwoPcmVxdWVzdEJvb3RJbmZvGAQgASgLMhAuUmVxdWVzdEJvb3RJbmZv",
+            "SAASPQoYY2xlYXJNZWFzdXJlbWVudHNDb21tYW5kGAUgASgLMhkuQ2xlYXJN",
+            "ZWFzdXJlbWVudHNDb21tYW5kSAASJwoPdHJhbnNtaXRDb21tYW5kGAYgASgL",
+            "MgwuTG9SYU1lc3NhZ2VIABIZChFkb05vdFByb3h5Q29tbWFuZBgIIAEoCEIG",
+            "CgRCb2R5QgeqAgRMb1JhYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LoRa.LoraDeviceMessagesReflection.Descriptor, global::LoRa.LoraPhyReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RequestBootInfo), global::LoRa.RequestBootInfo.Parser, new[]{ "Request" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DeviceConfiguration), global::LoRa.DeviceConfiguration.Parser, new[]{ "EnableAlwaysSend", "AlwaysSendPeriod", "LimitedSendCount" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.ClearMeasurementsCommand), global::LoRa.ClearMeasurementsCommand.Parser, new[]{ "SendBootAfter" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.UartCommand), global::LoRa.UartCommand.Parser, new[]{ "RxConfig", "TxConfig", "DeviceConfiguration", "RequestBootInfo", "ClearMeasurementsCommand", "TransmitCommand", "DoNotProxyCommand" }, new[]{ "Body" }, null, null, null)
           }));
@@ -51,461 +46,6 @@ namespace LoRa {
 
   }
   #region Messages
-  public sealed partial class RequestBootInfo : pb::IMessage<RequestBootInfo>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
-    private static readonly pb::MessageParser<RequestBootInfo> _parser = new pb::MessageParser<RequestBootInfo>(() => new RequestBootInfo());
-    private pb::UnknownFieldSet _unknownFields;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<RequestBootInfo> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::LoRa.UartControlMessagesReflection.Descriptor.MessageTypes[0]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public RequestBootInfo() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public RequestBootInfo(RequestBootInfo other) : this() {
-      request_ = other.request_;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public RequestBootInfo Clone() {
-      return new RequestBootInfo(this);
-    }
-
-    /// <summary>Field number for the "Request" field.</summary>
-    public const int RequestFieldNumber = 1;
-    private bool request_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Request {
-      get { return request_; }
-      set {
-        request_ = value;
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override bool Equals(object other) {
-      return Equals(other as RequestBootInfo);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(RequestBootInfo other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      if (Request != other.Request) return false;
-      return Equals(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override int GetHashCode() {
-      int hash = 1;
-      if (Request != false) hash ^= Request.GetHashCode();
-      if (_unknownFields != null) {
-        hash ^= _unknownFields.GetHashCode();
-      }
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
-      if (Request != false) {
-        output.WriteRawTag(8);
-        output.WriteBool(Request);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(output);
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Request != false) {
-        output.WriteRawTag(8);
-        output.WriteBool(Request);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int CalculateSize() {
-      int size = 0;
-      if (Request != false) {
-        size += 1 + 1;
-      }
-      if (_unknownFields != null) {
-        size += _unknownFields.CalculateSize();
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(RequestBootInfo other) {
-      if (other == null) {
-        return;
-      }
-      if (other.Request != false) {
-        Request = other.Request;
-      }
-      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-            break;
-          case 8: {
-            Request = input.ReadBool();
-            break;
-          }
-        }
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 8: {
-            Request = input.ReadBool();
-            break;
-          }
-        }
-      }
-    }
-    #endif
-
-  }
-
-  public sealed partial class DeviceConfiguration : pb::IMessage<DeviceConfiguration>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
-    private static readonly pb::MessageParser<DeviceConfiguration> _parser = new pb::MessageParser<DeviceConfiguration>(() => new DeviceConfiguration());
-    private pb::UnknownFieldSet _unknownFields;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<DeviceConfiguration> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::LoRa.UartControlMessagesReflection.Descriptor.MessageTypes[1]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public DeviceConfiguration() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public DeviceConfiguration(DeviceConfiguration other) : this() {
-      enableAlwaysSend_ = other.enableAlwaysSend_;
-      alwaysSendPeriod_ = other.alwaysSendPeriod_;
-      limitedSendCount_ = other.limitedSendCount_;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public DeviceConfiguration Clone() {
-      return new DeviceConfiguration(this);
-    }
-
-    /// <summary>Field number for the "EnableAlwaysSend" field.</summary>
-    public const int EnableAlwaysSendFieldNumber = 1;
-    private bool enableAlwaysSend_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool EnableAlwaysSend {
-      get { return enableAlwaysSend_; }
-      set {
-        enableAlwaysSend_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "AlwaysSendPeriod" field.</summary>
-    public const int AlwaysSendPeriodFieldNumber = 2;
-    private uint alwaysSendPeriod_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public uint AlwaysSendPeriod {
-      get { return alwaysSendPeriod_; }
-      set {
-        alwaysSendPeriod_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "LimitedSendCount" field.</summary>
-    public const int LimitedSendCountFieldNumber = 3;
-    private uint limitedSendCount_;
-    /// <summary>
-    /// Ignored if EnableAlwaysSend is true
-    /// </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public uint LimitedSendCount {
-      get { return limitedSendCount_; }
-      set {
-        limitedSendCount_ = value;
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override bool Equals(object other) {
-      return Equals(other as DeviceConfiguration);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(DeviceConfiguration other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      if (EnableAlwaysSend != other.EnableAlwaysSend) return false;
-      if (AlwaysSendPeriod != other.AlwaysSendPeriod) return false;
-      if (LimitedSendCount != other.LimitedSendCount) return false;
-      return Equals(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override int GetHashCode() {
-      int hash = 1;
-      if (EnableAlwaysSend != false) hash ^= EnableAlwaysSend.GetHashCode();
-      if (AlwaysSendPeriod != 0) hash ^= AlwaysSendPeriod.GetHashCode();
-      if (LimitedSendCount != 0) hash ^= LimitedSendCount.GetHashCode();
-      if (_unknownFields != null) {
-        hash ^= _unknownFields.GetHashCode();
-      }
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
-      if (EnableAlwaysSend != false) {
-        output.WriteRawTag(8);
-        output.WriteBool(EnableAlwaysSend);
-      }
-      if (AlwaysSendPeriod != 0) {
-        output.WriteRawTag(16);
-        output.WriteUInt32(AlwaysSendPeriod);
-      }
-      if (LimitedSendCount != 0) {
-        output.WriteRawTag(24);
-        output.WriteUInt32(LimitedSendCount);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(output);
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (EnableAlwaysSend != false) {
-        output.WriteRawTag(8);
-        output.WriteBool(EnableAlwaysSend);
-      }
-      if (AlwaysSendPeriod != 0) {
-        output.WriteRawTag(16);
-        output.WriteUInt32(AlwaysSendPeriod);
-      }
-      if (LimitedSendCount != 0) {
-        output.WriteRawTag(24);
-        output.WriteUInt32(LimitedSendCount);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int CalculateSize() {
-      int size = 0;
-      if (EnableAlwaysSend != false) {
-        size += 1 + 1;
-      }
-      if (AlwaysSendPeriod != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(AlwaysSendPeriod);
-      }
-      if (LimitedSendCount != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(LimitedSendCount);
-      }
-      if (_unknownFields != null) {
-        size += _unknownFields.CalculateSize();
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(DeviceConfiguration other) {
-      if (other == null) {
-        return;
-      }
-      if (other.EnableAlwaysSend != false) {
-        EnableAlwaysSend = other.EnableAlwaysSend;
-      }
-      if (other.AlwaysSendPeriod != 0) {
-        AlwaysSendPeriod = other.AlwaysSendPeriod;
-      }
-      if (other.LimitedSendCount != 0) {
-        LimitedSendCount = other.LimitedSendCount;
-      }
-      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-            break;
-          case 8: {
-            EnableAlwaysSend = input.ReadBool();
-            break;
-          }
-          case 16: {
-            AlwaysSendPeriod = input.ReadUInt32();
-            break;
-          }
-          case 24: {
-            LimitedSendCount = input.ReadUInt32();
-            break;
-          }
-        }
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 8: {
-            EnableAlwaysSend = input.ReadBool();
-            break;
-          }
-          case 16: {
-            AlwaysSendPeriod = input.ReadUInt32();
-            break;
-          }
-          case 24: {
-            LimitedSendCount = input.ReadUInt32();
-            break;
-          }
-        }
-      }
-    }
-    #endif
-
-  }
-
   public sealed partial class ClearMeasurementsCommand : pb::IMessage<ClearMeasurementsCommand>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -520,7 +60,7 @@ namespace LoRa {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LoRa.UartControlMessagesReflection.Descriptor.MessageTypes[2]; }
+      get { return global::LoRa.UartControlMessagesReflection.Descriptor.MessageTypes[0]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -712,7 +252,7 @@ namespace LoRa {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LoRa.UartControlMessagesReflection.Descriptor.MessageTypes[3]; }
+      get { return global::LoRa.UartControlMessagesReflection.Descriptor.MessageTypes[1]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -832,7 +372,7 @@ namespace LoRa {
     /// <summary>Field number for the "transmitCommand" field.</summary>
     public const int TransmitCommandFieldNumber = 6;
     /// <summary>
-    /// Request a LoRa transmission - generic
+    /// Request a LoRa transmission - wraps similar commands as above
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -845,7 +385,7 @@ namespace LoRa {
     }
 
     /// <summary>Field number for the "doNotProxyCommand" field.</summary>
-    public const int DoNotProxyCommandFieldNumber = 7;
+    public const int DoNotProxyCommandFieldNumber = 8;
     private bool doNotProxyCommand_;
     /// <summary>
     /// Do not proxy the LoRa command - for debugging purposes
@@ -965,7 +505,7 @@ namespace LoRa {
         output.WriteMessage(TransmitCommand);
       }
       if (DoNotProxyCommand != false) {
-        output.WriteRawTag(56);
+        output.WriteRawTag(64);
         output.WriteBool(DoNotProxyCommand);
       }
       if (_unknownFields != null) {
@@ -1003,7 +543,7 @@ namespace LoRa {
         output.WriteMessage(TransmitCommand);
       }
       if (DoNotProxyCommand != false) {
-        output.WriteRawTag(56);
+        output.WriteRawTag(64);
         output.WriteBool(DoNotProxyCommand);
       }
       if (_unknownFields != null) {
@@ -1160,7 +700,7 @@ namespace LoRa {
             TransmitCommand = subBuilder;
             break;
           }
-          case 56: {
+          case 64: {
             DoNotProxyCommand = input.ReadBool();
             break;
           }
@@ -1233,7 +773,7 @@ namespace LoRa {
             TransmitCommand = subBuilder;
             break;
           }
-          case 56: {
+          case 64: {
             DoNotProxyCommand = input.ReadBool();
             break;
           }

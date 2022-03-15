@@ -7,21 +7,22 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
+using Serilog.Filters;
 
 namespace LoraGateway;
 
 public static class LoraGateway
 {
-    public static string GetUniqueLogFile()
+    public static string GetUniqueLogFile(string postFix = "")
     {
         return Path.Combine(Directory.GetCurrentDirectory(),
-            $"../../../Logs/logs-{DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}.txt");
+            $"../../../Logs/logs-{DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}{postFix}.txt");
     }
     public static async Task Main(string[] args)
     {
         Log.Logger = new LoggerConfiguration()
 #if DEBUG
-            .MinimumLevel.Information()
+            .MinimumLevel.Debug()
 #else
                 .MinimumLevel.Information()
 #endif
@@ -29,11 +30,14 @@ public static class LoraGateway
             .Enrich.FromLogContext()
             .WriteTo.Console(
                 outputTemplate:
-                "[{Timestamp:HH:mm:ss} {Level:u3}] ({SourceContext}) {Message:lj}{NewLine}{Exception}"
+                "[{Timestamp:HH:mm:ss} {Level:u3}] ({SourceContext}) {Message:lj}{NewLine}{Exception}",
+                restrictedToMinimumLevel:LogEventLevel.Information
             )
-            .WriteTo.File(
-                GetUniqueLogFile()
-            )
+            .WriteTo.Logger(lc => lc
+                .WriteTo.File(GetUniqueLogFile(), LogEventLevel.Information))
+            .WriteTo.Logger(lc => lc
+                .Filter.ByIncludingOnly(Matching.FromSource<SerialProcessorService>())
+                .WriteTo.File(GetUniqueLogFile("_serial"), LogEventLevel.Debug))
             .CreateLogger();
 
         await CreateHostBuilder(args).RunConsoleAsync();
