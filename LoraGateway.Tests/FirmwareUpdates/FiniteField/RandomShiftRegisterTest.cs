@@ -3,9 +3,9 @@ using LoraGateway.Services.Firmware.RandomLinearCoding;
 using Shouldly;
 using Xunit;
 
-namespace LoraGateway.Tests.FirmwareUpdates.RandomLinearNetworkCoding;
+namespace LoraGateway.Tests.FirmwareUpdates.FiniteField;
 
-public class RandomLinearCodingTests
+public class RandomShiftRegisterTests
 {
     [Fact]
     public void RandomNumberGeneration()
