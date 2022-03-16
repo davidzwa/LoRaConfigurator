@@ -114,6 +114,8 @@ public partial class SerialProcessorService
             throw new InvalidOperationException("Selected port was not set - check USB connection");
         }
 
+        message.Crc8 = Crc8.ComputeChecksum(payload);
+        
         var payload = message.ToByteArray();
         var protoMessageBuffer = new[] { (byte)payload.Length }.Concat(payload);
         var messageBuffer = Cobs.Encode(protoMessageBuffer).ToArray();
