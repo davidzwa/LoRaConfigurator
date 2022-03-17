@@ -4,21 +4,6 @@ namespace LoraGateway.Services.Extensions;
 
 public static class SerialProcessingExtensions
 {
-    public static void SendUnicastTransmitCommand(
-        this SerialProcessorService processorService,
-        LoRaMessage loRaMessage,
-        bool doNotProxy
-    )
-    {
-        var command = new UartCommand
-        {
-            DoNotProxyCommand = doNotProxy,
-            TransmitCommand = loRaMessage
-        };
-
-        processorService.WriteMessage(command);
-    }
-
     public static void SendDeviceConfiguration(
         this SerialProcessorService processorService,
         bool enableAlwaysSend,
@@ -42,7 +27,7 @@ public static class SerialProcessingExtensions
         processorService.WriteMessage(command);
     }
 
-    public static void SendTxPowerCommandd(
+    public static void SendTxPowerCommand(
         this SerialProcessorService processorService, int power, bool doNotProxy)
     {
         var command = new UartCommand

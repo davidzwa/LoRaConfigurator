@@ -1,4 +1,6 @@
-﻿using System.CommandLine;
+using System.CommandLine;
+using System.CommandLine.Builder;
+using System.CommandLine.Parsing;
 using LoraGateway.Services.CommandLine;
 
 namespace LoraGateway.Services;
@@ -32,10 +34,12 @@ public class ConsoleProcessorService
             if (message == null) return;
 
             var rootCommand = new RootCommand("Processes UART terminal commands for the LoRa proxy gateway device.");
+            rootCommand.TreatUnmatchedTokensAsErrors = true;
             rootCommand.Add(_selectDeviceCommandHandler.GetSelectCommand());
             rootCommand.Add(_selectDeviceCommandHandler.GetCurrentSelectedCommand());
             _serialCommandHandler.ApplyCommands(rootCommand);
             rootCommand.Add(_listDeviceCommandHandler.GetHandler());
+
             await rootCommand.InvokeAsync(message);
         }
         catch (Exception ex)

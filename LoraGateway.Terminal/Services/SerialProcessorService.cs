@@ -91,56 +91,6 @@ public partial class SerialProcessorService
         return SerialPorts.Find(p => p.PortName.Equals(portName));
     }
 
-    public void SendBootCommand(bool doNotProxy, string? portName = null)
-    {
-        var command = new UartCommand
-        {
-            DoNotProxyCommand = doNotProxy,
-            RequestBootInfo = new RequestBootInfo {Request = true}
-        };
-        WriteMessage(command, portName);
-    }
-
-    public void WriteMessage(UartCommand message, string? portName = null)
-    {
-        var selectedPortName = _selectedDeviceService.SelectedPortName;
-        if (portName != null)
-        {
-            selectedPortName = portName;
-        }
-
-        if (selectedPortName == null)
-        {
-            throw new InvalidOperationException("Selected port was not set - check USB connection");
-        }
-
-        // Get inner payload, prepend length and crc
-        var payload = message.ToByteArray();
-        var crc8Checksum = Crc8.ComputeChecksum(payload);
-        var protoMessageBuffer = new[] {crc8Checksum, (byte) payload.Length}.Concat(payload);
-
-        // Encode packet
-        var messageBuffer = Cobs.Encode(protoMessageBuffer).ToArray();
-        var decodedTest = Cobs.Decode(messageBuffer);
-
-        var transmitBuffer = new[] {StartByte}
-            .Concat(new[] {(byte) messageBuffer.Length})
-            .Concat(messageBuffer)
-            .Concat(new[] {EndByte})
-            .ToArray();
-
-        _logger.LogInformation("[{Port}] \n\tTRANSMIT {Message} \n\tPROTO    {Payload}", selectedPortName,
-            SerialUtil.ByteArrayToString(transmitBuffer), SerialUtil.ByteArrayToString(payload));
-        var port = GetPort(selectedPortName);
-        if (port == null)
-        {
-            _logger.LogWarning("[{Port}] Port was null. Cant send", selectedPortName);
-            return;
-        }
-
-        port.Write(transmitBuffer, 0, transmitBuffer.Length);
-    }
-
     public void OnPortError(SerialPort subject, SerialErrorReceivedEventArgs e)
     {
         _logger.LogWarning("[{Port}] Serial error {ErrorType}", e.EventType, subject.PortName);

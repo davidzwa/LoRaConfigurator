@@ -4,7 +4,7 @@
   "TxDataRate": 7,
   "SeqPeriodMs": 2000,
   "SeqCount": 30000,
-  "UartFakeLoRaRXMode": false,
+  "UartFakeLoRaRXMode": true,
   "UpdateIntervalMilliSeconds": 100,
   "FakeFirmware": true,
   "FakeFragmentCount": 7,
