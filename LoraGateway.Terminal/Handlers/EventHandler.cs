@@ -50,6 +50,11 @@ public class FuotaEventHandler : IEventHandler<InitFuotaSession>, IEventHandler<
     
     public async Task HandleEventAsync(StopFuotaSession @event)
     {
+        // An external factor caused FUOTA cancellation
+        if (_fuotaManagerService.IsFuotaSessionEnabled())
+        {
+            _fuotaManagerService.ClearFuotaSession();
+        }
         await _fuotaSessionHostedService.StopAsync(@event.Token);
     }
 }

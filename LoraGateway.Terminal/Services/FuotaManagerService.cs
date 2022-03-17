@@ -243,7 +243,7 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         return fragmentBytes.ToList();
     }
 
-    private void ClearFuotaSession()
+    public void ClearFuotaSession()
     {
         // if (!IsFuotaSessionEnabled()) throw new ValidationException("Cant stop FUOTA session when none is enabled");
 

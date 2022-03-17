@@ -248,10 +248,24 @@ public partial class SerialProcessorService
         }
         else if (bodyCase.Equals(UartResponse.BodyOneofCase.DebugMessage))
         {
-            var payload = response.Payload;
+            var payload = response.Payload.ToStringUtf8();
             var code = response.DebugMessage.Code;
 
-            _logger.LogInformation("[{Name}, Debug] {Payload} Code:{Code}", portName, payload.ToStringUtf8(), code);
+            if (payload!.Contains("CRC-FAIL"))
+            {
+                await _eventPublisher.PublishEventAsync(new StopFuotaSession{Message = "CRC failure"});
+            }
+
+            if (payload!.Contains("PROTO-FAIL"))
+            {
+                await _eventPublisher.PublishEventAsync(new StopFuotaSession{Message = "PROTO failure"});
+            }
+            if (payload!.Contains("MC"))
+            {
+                return 0;
+            }
+
+            _logger.LogInformation("[{Name}, Debug] {Payload} Code:{Code}", portName, payload, code);
         }
         else if (bodyCase.Equals(UartResponse.BodyOneofCase.ExceptionMessage))
         {
