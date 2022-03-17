@@ -60,8 +60,8 @@ public partial class SerialProcessorService
         port.ReadTimeout = 10000;
         port.WriteTimeout = 500;
 
-        port.ErrorReceived += (sender, args) => OnPortError((SerialPort)sender, args);
-        port.DataReceived += async (sender, args) => await OnPortData((SerialPort)sender, args);
+        port.ErrorReceived += (sender, args) => OnPortError((SerialPort) sender, args);
+        port.DataReceived += async (sender, args) => await OnPortData((SerialPort) sender, args);
         try
         {
             port.Open();
@@ -96,7 +96,7 @@ public partial class SerialProcessorService
         var command = new UartCommand
         {
             DoNotProxyCommand = doNotProxy,
-            RequestBootInfo = new RequestBootInfo { Request = true }
+            RequestBootInfo = new RequestBootInfo {Request = true}
         };
         WriteMessage(command, portName);
     }
@@ -114,19 +114,23 @@ public partial class SerialProcessorService
             throw new InvalidOperationException("Selected port was not set - check USB connection");
         }
 
+        // Get inner payload, prepend length and crc
         var payload = message.ToByteArray();
-        message.Crc8 = Crc8.ComputeChecksum(payload);
-        
-        var protoMessageBuffer = new[] { (byte)payload.Length }.Concat(payload);
+        var crc8Checksum = Crc8.ComputeChecksum(payload);
+        var protoMessageBuffer = new[] {crc8Checksum, (byte) payload.Length}.Concat(payload);
+
+        // Encode packet
         var messageBuffer = Cobs.Encode(protoMessageBuffer).ToArray();
-        var len = new[] { (byte)messageBuffer.Length };
-        var transmitBuffer = new[] { StartByte }
-            .Concat(len)
+        var decodedTest = Cobs.Decode(messageBuffer);
+
+        var transmitBuffer = new[] {StartByte}
+            .Concat(new[] {(byte) messageBuffer.Length})
             .Concat(messageBuffer)
-            .Concat(new[] { EndByte })
+            .Concat(new[] {EndByte})
             .ToArray();
 
-        _logger.LogDebug("[{Port}] TRANSMIT {Message}", selectedPortName, SerialUtil.ByteArrayToString(transmitBuffer));
+        _logger.LogInformation("[{Port}] \n\tTRANSMIT {Message} \n\tPROTO    {Payload}", selectedPortName,
+            SerialUtil.ByteArrayToString(transmitBuffer), SerialUtil.ByteArrayToString(payload));
         var port = GetPort(selectedPortName);
         if (port == null)
         {
@@ -162,7 +166,7 @@ public partial class SerialProcessorService
         {
             while (packetWaitingBytes)
             {
-                var newByte = (byte)port.ReadByte();
+                var newByte = (byte) port.ReadByte();
                 buffer.Add(newByte);
                 // If End byte is spotted we break
                 packetWaitingBytes = newByte != 0x00;
@@ -236,7 +240,8 @@ public partial class SerialProcessorService
         var outputBuffer = Cobs.Decode(buffer);
         if (outputBuffer.Count == 0)
         {
-            _logger.LogError("[{Port}] COBS output empty - input \n\t {HexString}", portName, SerialUtil.ByteArrayToString(buffer));
+            _logger.LogError("[{Port}] COBS output empty - input \n\t {HexString}", portName,
+                SerialUtil.ByteArrayToString(buffer));
             return 1;
         }
 
@@ -330,7 +335,7 @@ public partial class SerialProcessorService
             if (sequenceNumber > 60000) _measurementsService.SetLocationText("");
 
             LoRaPacketHandler(response?.LoraMeasurement?.DownlinkPayload);
-            
+
             // Debug for now
             _logger.LogInformation(
                 "[{Name}] LoRa RX snr: {SNR} rssi: {RSSI} sequence-id:{Index} is-measurement:{IsMeasurement}, skipped:{Skipped}",
@@ -350,11 +355,11 @@ public partial class SerialProcessorService
     private void LoRaPacketHandler(LoRaMessage? message)
     {
         if (message == null) return;
-        
-        if (message.BodyCase ==LoRaMessage.BodyOneofCase.ExperimentResponse)
+
+        if (message.BodyCase == LoRaMessage.BodyOneofCase.ExperimentResponse)
         {
             var flashMeasureCount = message.ExperimentResponse.MeasurementCount;
-           _logger.LogInformation("Flash {FlashMeasureCount}", flashMeasureCount); 
+            _logger.LogInformation("Flash {FlashMeasureCount}", flashMeasureCount);
         }
     }
 
