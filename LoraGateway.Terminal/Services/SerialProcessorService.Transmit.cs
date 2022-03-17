@@ -113,6 +113,10 @@ public partial class SerialProcessorService
         bool doNotProxy
     )
     {
+        if (doNotProxy)
+        {
+            _logger.LogWarning("DO NOT PROXY TURNED ON FOR UNICAST!");
+        }
         var command = new UartCommand
         {
             DoNotProxyCommand = doNotProxy,
