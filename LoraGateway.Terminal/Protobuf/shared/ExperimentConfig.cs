@@ -35,7 +35,11 @@ namespace LoRa {
             "TWF4GAEgASgNIhsKGU1lYXN1cmVtZW50U3RyZWFtRnJhZ21lbnQibAoORGVj",
             "b2RpbmdSZXN1bHQSDwoHU3VjY2VzcxgBIAEoCBISCgpNYXRyaXhSYW5rGAIg",
             "ASgNEhoKEkZpcnN0RGVjb2RlZE51bWJlchgDIAEoDRIZChFMYXN0RGVjb2Rl",
-            "ZE51bWJlchgEIAEoDUIHqgIETG9SYWIGcHJvdG8z"));
+            "ZE51bWJlchgEIAEoDSKtAQoORGVjb2RpbmdVcGRhdGUSEgoKTWF0cml4Q3Jj",
+            "OBgBIAEoDRIUCgxGaXJzdFJvd0NyYzgYAiABKA0SFQoNU2Vjb25kUm93Q3Jj",
+            "OBgDIAEoDRIMCgRSYW5rGAQgASgNEhkKEVJlY2VpdmVkRnJhZ21lbnRzGAUg",
+            "ASgNEh4KFkN1cnJlbnRHZW5lcmF0aW9uSW5kZXgYBiABKA0SEQoJSXNSdW5u",
+            "aW5nGAcgASgIQgeqAgRMb1JhYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -43,7 +47,8 @@ namespace LoRa {
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.ExperimentResponse), global::LoRa.ExperimentResponse.Parser, new[]{ "MeasurementCount", "MeasurementsDisabled", "WasCleared" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.MeasurementStreamRequest), global::LoRa.MeasurementStreamRequest.Parser, new[]{ "FragmentSizeMax" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.MeasurementStreamFragment), global::LoRa.MeasurementStreamFragment.Parser, null, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DecodingResult), global::LoRa.DecodingResult.Parser, new[]{ "Success", "MatrixRank", "FirstDecodedNumber", "LastDecodedNumber" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DecodingResult), global::LoRa.DecodingResult.Parser, new[]{ "Success", "MatrixRank", "FirstDecodedNumber", "LastDecodedNumber" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DecodingUpdate), global::LoRa.DecodingUpdate.Parser, new[]{ "MatrixCrc8", "FirstRowCrc8", "SecondRowCrc8", "Rank", "ReceivedFragments", "CurrentGenerationIndex", "IsRunning" }, null, null, null, null)
           }));
     }
     #endregion
@@ -1172,6 +1177,417 @@ namespace LoRa {
           }
           case 32: {
             LastDecodedNumber = input.ReadUInt32();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  public sealed partial class DecodingUpdate : pb::IMessage<DecodingUpdate>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<DecodingUpdate> _parser = new pb::MessageParser<DecodingUpdate>(() => new DecodingUpdate());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<DecodingUpdate> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LoRa.ExperimentConfigReflection.Descriptor.MessageTypes[5]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DecodingUpdate() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DecodingUpdate(DecodingUpdate other) : this() {
+      matrixCrc8_ = other.matrixCrc8_;
+      firstRowCrc8_ = other.firstRowCrc8_;
+      secondRowCrc8_ = other.secondRowCrc8_;
+      rank_ = other.rank_;
+      receivedFragments_ = other.receivedFragments_;
+      currentGenerationIndex_ = other.currentGenerationIndex_;
+      isRunning_ = other.isRunning_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DecodingUpdate Clone() {
+      return new DecodingUpdate(this);
+    }
+
+    /// <summary>Field number for the "MatrixCrc8" field.</summary>
+    public const int MatrixCrc8FieldNumber = 1;
+    private uint matrixCrc8_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint MatrixCrc8 {
+      get { return matrixCrc8_; }
+      set {
+        matrixCrc8_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "FirstRowCrc8" field.</summary>
+    public const int FirstRowCrc8FieldNumber = 2;
+    private uint firstRowCrc8_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint FirstRowCrc8 {
+      get { return firstRowCrc8_; }
+      set {
+        firstRowCrc8_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "SecondRowCrc8" field.</summary>
+    public const int SecondRowCrc8FieldNumber = 3;
+    private uint secondRowCrc8_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint SecondRowCrc8 {
+      get { return secondRowCrc8_; }
+      set {
+        secondRowCrc8_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "Rank" field.</summary>
+    public const int RankFieldNumber = 4;
+    private uint rank_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint Rank {
+      get { return rank_; }
+      set {
+        rank_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "ReceivedFragments" field.</summary>
+    public const int ReceivedFragmentsFieldNumber = 5;
+    private uint receivedFragments_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint ReceivedFragments {
+      get { return receivedFragments_; }
+      set {
+        receivedFragments_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "CurrentGenerationIndex" field.</summary>
+    public const int CurrentGenerationIndexFieldNumber = 6;
+    private uint currentGenerationIndex_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint CurrentGenerationIndex {
+      get { return currentGenerationIndex_; }
+      set {
+        currentGenerationIndex_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "IsRunning" field.</summary>
+    public const int IsRunningFieldNumber = 7;
+    private bool isRunning_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool IsRunning {
+      get { return isRunning_; }
+      set {
+        isRunning_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as DecodingUpdate);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(DecodingUpdate other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (MatrixCrc8 != other.MatrixCrc8) return false;
+      if (FirstRowCrc8 != other.FirstRowCrc8) return false;
+      if (SecondRowCrc8 != other.SecondRowCrc8) return false;
+      if (Rank != other.Rank) return false;
+      if (ReceivedFragments != other.ReceivedFragments) return false;
+      if (CurrentGenerationIndex != other.CurrentGenerationIndex) return false;
+      if (IsRunning != other.IsRunning) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (MatrixCrc8 != 0) hash ^= MatrixCrc8.GetHashCode();
+      if (FirstRowCrc8 != 0) hash ^= FirstRowCrc8.GetHashCode();
+      if (SecondRowCrc8 != 0) hash ^= SecondRowCrc8.GetHashCode();
+      if (Rank != 0) hash ^= Rank.GetHashCode();
+      if (ReceivedFragments != 0) hash ^= ReceivedFragments.GetHashCode();
+      if (CurrentGenerationIndex != 0) hash ^= CurrentGenerationIndex.GetHashCode();
+      if (IsRunning != false) hash ^= IsRunning.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (MatrixCrc8 != 0) {
+        output.WriteRawTag(8);
+        output.WriteUInt32(MatrixCrc8);
+      }
+      if (FirstRowCrc8 != 0) {
+        output.WriteRawTag(16);
+        output.WriteUInt32(FirstRowCrc8);
+      }
+      if (SecondRowCrc8 != 0) {
+        output.WriteRawTag(24);
+        output.WriteUInt32(SecondRowCrc8);
+      }
+      if (Rank != 0) {
+        output.WriteRawTag(32);
+        output.WriteUInt32(Rank);
+      }
+      if (ReceivedFragments != 0) {
+        output.WriteRawTag(40);
+        output.WriteUInt32(ReceivedFragments);
+      }
+      if (CurrentGenerationIndex != 0) {
+        output.WriteRawTag(48);
+        output.WriteUInt32(CurrentGenerationIndex);
+      }
+      if (IsRunning != false) {
+        output.WriteRawTag(56);
+        output.WriteBool(IsRunning);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (MatrixCrc8 != 0) {
+        output.WriteRawTag(8);
+        output.WriteUInt32(MatrixCrc8);
+      }
+      if (FirstRowCrc8 != 0) {
+        output.WriteRawTag(16);
+        output.WriteUInt32(FirstRowCrc8);
+      }
+      if (SecondRowCrc8 != 0) {
+        output.WriteRawTag(24);
+        output.WriteUInt32(SecondRowCrc8);
+      }
+      if (Rank != 0) {
+        output.WriteRawTag(32);
+        output.WriteUInt32(Rank);
+      }
+      if (ReceivedFragments != 0) {
+        output.WriteRawTag(40);
+        output.WriteUInt32(ReceivedFragments);
+      }
+      if (CurrentGenerationIndex != 0) {
+        output.WriteRawTag(48);
+        output.WriteUInt32(CurrentGenerationIndex);
+      }
+      if (IsRunning != false) {
+        output.WriteRawTag(56);
+        output.WriteBool(IsRunning);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (MatrixCrc8 != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(MatrixCrc8);
+      }
+      if (FirstRowCrc8 != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(FirstRowCrc8);
+      }
+      if (SecondRowCrc8 != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(SecondRowCrc8);
+      }
+      if (Rank != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Rank);
+      }
+      if (ReceivedFragments != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(ReceivedFragments);
+      }
+      if (CurrentGenerationIndex != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(CurrentGenerationIndex);
+      }
+      if (IsRunning != false) {
+        size += 1 + 1;
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(DecodingUpdate other) {
+      if (other == null) {
+        return;
+      }
+      if (other.MatrixCrc8 != 0) {
+        MatrixCrc8 = other.MatrixCrc8;
+      }
+      if (other.FirstRowCrc8 != 0) {
+        FirstRowCrc8 = other.FirstRowCrc8;
+      }
+      if (other.SecondRowCrc8 != 0) {
+        SecondRowCrc8 = other.SecondRowCrc8;
+      }
+      if (other.Rank != 0) {
+        Rank = other.Rank;
+      }
+      if (other.ReceivedFragments != 0) {
+        ReceivedFragments = other.ReceivedFragments;
+      }
+      if (other.CurrentGenerationIndex != 0) {
+        CurrentGenerationIndex = other.CurrentGenerationIndex;
+      }
+      if (other.IsRunning != false) {
+        IsRunning = other.IsRunning;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            MatrixCrc8 = input.ReadUInt32();
+            break;
+          }
+          case 16: {
+            FirstRowCrc8 = input.ReadUInt32();
+            break;
+          }
+          case 24: {
+            SecondRowCrc8 = input.ReadUInt32();
+            break;
+          }
+          case 32: {
+            Rank = input.ReadUInt32();
+            break;
+          }
+          case 40: {
+            ReceivedFragments = input.ReadUInt32();
+            break;
+          }
+          case 48: {
+            CurrentGenerationIndex = input.ReadUInt32();
+            break;
+          }
+          case 56: {
+            IsRunning = input.ReadBool();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            MatrixCrc8 = input.ReadUInt32();
+            break;
+          }
+          case 16: {
+            FirstRowCrc8 = input.ReadUInt32();
+            break;
+          }
+          case 24: {
+            SecondRowCrc8 = input.ReadUInt32();
+            break;
+          }
+          case 32: {
+            Rank = input.ReadUInt32();
+            break;
+          }
+          case 40: {
+            ReceivedFragments = input.ReadUInt32();
+            break;
+          }
+          case 48: {
+            CurrentGenerationIndex = input.ReadUInt32();
+            break;
+          }
+          case 56: {
+            IsRunning = input.ReadBool();
             break;
           }
         }

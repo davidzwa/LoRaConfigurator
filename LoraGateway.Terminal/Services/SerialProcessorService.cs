@@ -1,7 +1,9 @@
 using System.IO.Ports;
 using System.Text;
 using Google.Protobuf;
+using JKang.EventBus;
 using LoRa;
+using LoraGateway.Handlers;
 using LoraGateway.Models;
 using LoraGateway.Utils;
 
@@ -13,17 +15,20 @@ public partial class SerialProcessorService
     private readonly MeasurementsService _measurementsService;
     private readonly SelectedDeviceService _selectedDeviceService;
     private readonly DeviceDataStore _deviceStore;
+    private readonly IEventPublisher _eventPublisher;
     public static readonly byte EndByte = 0x00;
     public static readonly byte StartByte = 0xFF;
 
     public SerialProcessorService(
         DeviceDataStore deviceStore,
+        IEventPublisher eventPublisher,
         SelectedDeviceService selectedDeviceService,
         MeasurementsService measurementsService,
         ILogger<SerialProcessorService> logger
     )
     {
         _deviceStore = deviceStore;
+        _eventPublisher = eventPublisher;
         _selectedDeviceService = selectedDeviceService;
         _measurementsService = measurementsService;
         _logger = logger;
@@ -251,9 +256,30 @@ public partial class SerialProcessorService
         else if (bodyCase.Equals(UartResponse.BodyOneofCase.ExceptionMessage))
         {
             var payload = response.Payload;
-            var code = response.DebugMessage.Code;
+            var code = response.ExceptionMessage?.Code;
 
             _logger.LogError("[{Name}, Exception] {Payload} Code:{Code}", portName, payload.ToStringUtf8(), code);
+        }
+        else if (bodyCase.Equals(UartResponse.BodyOneofCase.DecodingUpdate))
+        {
+            var decodingResult = response.DecodingUpdate;
+            var rank = decodingResult.Rank;
+            _logger.LogInformation(
+                "[{Name}, DecodingType] Rank: {Rank} GenIndex: {MatrixRank} FragRx: {ReceivedFragments} FirstRowCrc: {FirstRowCrc} SecondRowCrc: {SecondRowCrc} IsRunning: {IsRunning}",
+                portName,
+                rank,
+                decodingResult.CurrentGenerationIndex,
+                decodingResult.ReceivedFragments,
+                decodingResult.FirstRowCrc8,
+                decodingResult.SecondRowCrc8,
+                decodingResult.IsRunning
+            );
+            
+            // Update the hosted service to progress
+            await _eventPublisher.PublishEventAsync(new DecodingUpdateEvent
+            {
+                DecodingUpdate = decodingResult
+            });
         }
         else if (bodyCase.Equals(UartResponse.BodyOneofCase.DecodingResult))
         {
@@ -276,21 +302,28 @@ public partial class SerialProcessorService
                 return 3;
             }
 
-            var snr = response.LoraMeasurement.Snr;
-            var rssi = response.LoraMeasurement.Rssi;
-            var sequenceNumber = response.LoraMeasurement.SequenceNumber;
-            var isMeasurement = response.LoraMeasurement.IsMeasurementFragment;
+            if (response.LoraMeasurement.Rssi == -1)
+            {
+                // Suppress
+            }
+            else
+            {
+                var snr = response.LoraMeasurement.Snr;
+                var rssi = response.LoraMeasurement.Rssi;
+                var sequenceNumber = response.LoraMeasurement.SequenceNumber;
+                var isMeasurement = response.LoraMeasurement.IsMeasurementFragment;
 
-            var result = await _measurementsService.AddMeasurement(sequenceNumber, snr, rssi);
-            if (sequenceNumber > 60000) _measurementsService.SetLocationText("");
+                var result = await _measurementsService.AddMeasurement(sequenceNumber, snr, rssi);
+                if (sequenceNumber > 60000) _measurementsService.SetLocationText("");
 
-            LoRaPacketHandler(response?.LoraMeasurement?.DownlinkPayload);
+                LoRaPacketHandler(response?.LoraMeasurement?.DownlinkPayload);
 
-            // Debug for now
-            _logger.LogInformation(
-                "[{Name}] LoRa RX snr: {SNR} rssi: {RSSI} sequence-id:{Index} is-measurement:{IsMeasurement}, skipped:{Skipped}",
-                portName,
-                snr, rssi, sequenceNumber, isMeasurement, result);
+                // Debug for now
+                _logger.LogInformation(
+                    "[{Name}] LoRa RX snr: {SNR} rssi: {RSSI} sequence-id:{Index} is-measurement:{IsMeasurement}, skipped:{Skipped}",
+                    portName,
+                    snr, rssi, sequenceNumber, isMeasurement, result);
+            }
         }
         else
         {

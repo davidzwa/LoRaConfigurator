@@ -13,6 +13,7 @@ public class FuotaConfig : ICloneable
     
     // Enabling this makes sure the UART packet are treated are LoRa RX packets instead of forwarding them
     public bool UartFakeLoRaRxMode { get; set; } = true;
+    public bool UartFakeAwaitAck { get; set; } = true;
 
     public uint UpdateIntervalMilliSeconds { get; set; } = 500;
     // Not checked

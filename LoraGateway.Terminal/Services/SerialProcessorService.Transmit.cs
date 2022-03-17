@@ -21,7 +21,7 @@ public partial class SerialProcessorService
         if (String.IsNullOrEmpty(nickName))
         {
             ClearDeviceFilter();
-            _logger.LogInformation("Set device unicast filter to BROADCAST mode");
+            _logger.LogDebug("Set device unicast filter to BROADCAST mode");
             return;
         }
         
@@ -32,7 +32,7 @@ public partial class SerialProcessorService
         }
 
         _deviceFilter = device;
-        _logger.LogInformation("Set device unicast filter to {DeviceId}", _deviceFilter!.Id);
+        _logger.LogDebug("Set device unicast filter to {DeviceId}", _deviceFilter!.Id);
     }
 
     public void ClearDeviceFilter()
@@ -70,7 +70,7 @@ public partial class SerialProcessorService
             .Concat(new[] {EndByte})
             .ToArray();
 
-        _logger.LogInformation("[{Port}] \n\tTRANSMIT {Message} \n\tPROTO    {Payload}", selectedPortName,
+        _logger.LogDebug("[{Port}] \n\tTRANSMIT {Message} \n\tPROTO    {Payload}", selectedPortName,
             SerialUtil.ByteArrayToString(transmitBuffer), SerialUtil.ByteArrayToString(payload));
         var port = GetPort(selectedPortName);
         if (port == null)
@@ -181,8 +181,6 @@ public partial class SerialProcessorService
             TransmitCommand = TransformMessageCastType(new LoRaMessage
             {
                 CorrelationCode = 0,
-                DeviceId = 0,
-                IsMulticast = true,
                 RlncStateUpdate = new RlncStateUpdate()
                 {
                     GenerationIndex = fuotaSession.CurrentGenerationIndex
