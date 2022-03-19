@@ -43,18 +43,19 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         var encodingVector = new ArraySegment<byte>(arrayPayload, 0, encodingLength);
         var payloadVector = new ArraySegment<byte>(arrayPayload, encodingLength, arrayPayload.Length - encodingLength);
 
-        var rank = update.Rank;
+        var rank = update.RankProgress;
         _logger.LogInformation("Vector {Vector}| Packet {Packet} (OUTPUT)",
             SerialUtil.ByteArrayToString(encodingVector.ToArray()),
             SerialUtil.ByteArrayToString(payloadVector.ToArray()));
         _logger.LogInformation(
-            "[{Name}, DecodingType] Rank: {Rank} GenIndex: {MatrixRank} FragRx: {ReceivedFragments} FirstRowCrc: {FirstRowCrc} SecondRowCrc: {SecondRowCrc} IsRunning: {IsRunning}",
+            "[{Name}, DecodingType] Rank: {Rank} GenIndex: {MatrixRank} FragRx: {ReceivedFragments} FirstRowCrc: {FirstRowCrc} LastAppendedRowCrc({LastRowIndex}): {LastRowCrc} IsRunning: {IsRunning}",
             source,
             rank,
             update.CurrentGenerationIndex,
             update.ReceivedFragments,
             update.FirstRowCrc8,
-            update.SecondRowCrc8,
+            update.LastRowIndex,
+            update.LastRowCrc8,
             update.IsRunning
         );
 
