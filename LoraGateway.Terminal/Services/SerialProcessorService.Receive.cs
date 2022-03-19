@@ -59,7 +59,8 @@ public partial class SerialProcessorService
             "PROTO-FAIL",
             "RLNC_TERMINATE",
             "DevConfStop",
-            "CRC-FAIL"
+            "CRC-FAIL",
+            "PUSH-BUTTON"
         };
         if (inclusions.Any(e => payload.Contains(e)))
         {
