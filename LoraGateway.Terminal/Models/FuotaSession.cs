@@ -27,7 +27,7 @@ public class FuotaSession
     public uint TotalFragmentCount { get; set; }
     public FuotaConfig Config { get; }
     public DateTime TimeStarted { get; }
-
+    
     public uint CurrentGenerationIndex { get; private set; } = 0;
     public uint CurrentFragmentIndex { get; private set; } = 0;
 }

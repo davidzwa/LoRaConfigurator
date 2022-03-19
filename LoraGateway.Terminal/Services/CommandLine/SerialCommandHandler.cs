@@ -8,7 +8,6 @@ namespace LoraGateway.Services.CommandLine;
 
 public class SerialCommandHandler
 {
-    private readonly DeviceDataStore _deviceDataStore;
     private readonly FuotaManagerService _fuotaManagerService;
     private readonly ILogger _logger;
     private readonly MeasurementsService _measurementsService;
@@ -20,7 +19,6 @@ public class SerialCommandHandler
         SelectedDeviceService selectedDeviceService,
         MeasurementsService measurementsService,
         FuotaManagerService fuotaManagerService,
-        DeviceDataStore deviceDataStore,
         SerialProcessorService serialProcessorService
     )
     {
@@ -28,7 +26,6 @@ public class SerialCommandHandler
         _selectedDeviceService = selectedDeviceService;
         _measurementsService = measurementsService;
         _fuotaManagerService = fuotaManagerService;
-        _deviceDataStore = deviceDataStore;
         _serialProcessorService = serialProcessorService;
     }
 

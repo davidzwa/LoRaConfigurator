@@ -27,6 +27,6 @@ public class FuotaManagerServiceTests
         fuotaManagerService.IsFuotaSessionEnabled().ShouldBeFalse();
         Should.Throw<ValidationException>(() => fuotaManagerService.GetCurrentSession());
         Should.NotThrow(() => fuotaManagerService.LogSessionProgress());
-        Should.Throw<ValidationException>(() => fuotaManagerService.FetchNextRlncPayload());
+        Should.Throw<ValidationException>(() => fuotaManagerService.FetchNextRlncPayloadWithGenerator());
     }
 }

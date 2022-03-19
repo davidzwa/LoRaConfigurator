@@ -125,10 +125,23 @@ public partial class SerialProcessorService
 
         WriteMessage(command);
     }
+
+    private void SetDeviceFilterFromFuotaConfig(FuotaConfig fuotaSession)
+    {
+        if (String.IsNullOrEmpty(fuotaSession.TargetedNickname))
+        {
+            _deviceFilter = null;
+        }
+        else
+        {
+            SetDeviceFilter(fuotaSession.TargetedNickname);
+        }
+    }
     
     public void SendRlncInitConfigCommand(FuotaSession fuotaSession)
     {
         var config = fuotaSession.Config;
+        SetDeviceFilterFromFuotaConfig(config);
         
         var command = new UartCommand
         {
@@ -140,7 +153,7 @@ public partial class SerialProcessorService
                 {
                     FieldPoly = GFSymbol.Polynomial,
                     FieldDegree = config.FieldDegree,
-                    FrameCount = config.FakeFragmentCount,
+                    TotalFrameCount = config.FakeFragmentCount,
                     FrameSize = config.FakeFragmentSize,
                     // Calculated value from config store
                     GenerationCount = fuotaSession.GenerationCount,
@@ -155,10 +168,11 @@ public partial class SerialProcessorService
         WriteMessage(command);
     }
 
-    public void SendNextRlncFragment(FuotaSession fuotaSession, List<byte> payload)
+    public void SendNextRlncFragment(FuotaSession fuotaSession, FragmentWithGenerator fragment)
     {
         var config = fuotaSession.Config;
-        var byteString = ByteString.CopyFrom(payload.ToArray());
+        SetDeviceFilterFromFuotaConfig(config);
+        var byteString = ByteString.CopyFrom(fragment.Fragment.ToArray());
 
         var command = new UartCommand
         {
@@ -170,6 +184,9 @@ public partial class SerialProcessorService
                 IsMulticast = true,
                 Payload = byteString,
                 RlncEncodedFragment = new RlncEncodedFragment()
+                {
+                    LfsrState = fragment.UsedGenerator
+                }
             })
         };
 
@@ -179,6 +196,7 @@ public partial class SerialProcessorService
     public void SendRlncUpdate(FuotaSession fuotaSession)
     {
         var config = fuotaSession.Config;
+        SetDeviceFilterFromFuotaConfig(config);
         var command = new UartCommand
         {
             DoNotProxyCommand = config.UartFakeLoRaRxMode,
@@ -198,6 +216,7 @@ public partial class SerialProcessorService
     public void SendRlncTermination(FuotaSession fuotaSession)
     {
         var config = fuotaSession.Config;
+        SetDeviceFilterFromFuotaConfig(config);
         var command = new UartCommand
         {
             DoNotProxyCommand = config.UartFakeLoRaRxMode,

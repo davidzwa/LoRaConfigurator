@@ -163,6 +163,11 @@ public class RlncEncodingService
         return currentGeneration;
     }
 
+    public EncodedPacket GetLastEncodedPacket()
+    {
+        return _generations!.Last().EncodedPackets.Last();
+    }
+
     public List<EncodedPacket> PrecodeNumberOfPackets(uint packetCount, bool resetGenerationPackets = false)
     {
         ValidateGenerationsState();
@@ -193,9 +198,6 @@ public class RlncEncodingService
             // Increments the current encoded packet count automatically - its zero based
             packetsGenerated.Add(encodedPacket);
             currentGeneration.EncodedPackets.Add(encodedPacket);
-
-            // TODO convert to serilog
-            // Console.WriteLine("Encoded packet index {0}", currentGeneration.EncodedPackets.Count - 1);
         }
 
         return packetsGenerated;
