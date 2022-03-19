@@ -29,6 +29,7 @@ public partial class SerialProcessorService
 
     async Task<int> ReceiveDebugMessage(string portName, UartResponse response)
     {
+        var serialString = SerialUtil.ByteArrayToString(response.Payload.ToArray());
         var payload = response.Payload.ToStringUtf8();
         var code = response.DebugMessage.Code;
 
@@ -46,7 +47,21 @@ public partial class SerialProcessorService
             return 1;
         }
 
-        _logger.LogInformation("[{Name}, Debug] {Payload} Code:{Code}", portName, payload, code);
+        string[] inclusions =
+        {
+            "LORATX-DONE",
+            "PeriodTX",
+            "PROTO-FAIL",
+            "RLNC_TERMINATE",
+            "DevConfStop"
+        };
+        if (inclusions.Any(e => payload.Contains(e)))
+        {
+            _logger.LogInformation("[{Name}, Debug] {Payload} Code:{Code}", portName, payload, code);    
+        }
+        else {
+            _logger.LogDebug("!! [{Name}, Debug] {Payload} Code:{Code} \n\t {SerialPayload}", portName, payload, code, serialString);
+        }
         return 0;
     }
 

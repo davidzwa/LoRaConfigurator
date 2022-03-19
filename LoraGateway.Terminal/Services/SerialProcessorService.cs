@@ -51,7 +51,7 @@ public partial class SerialProcessorService
 
         // Allow the user to set the appropriate properties.
         port.PortName = portName;
-        port.BaudRate = 921600;
+        port.BaudRate = 230400;
         port.Parity = Parity.None;
         port.DataBits = 8;
         port.StopBits = StopBits.One;

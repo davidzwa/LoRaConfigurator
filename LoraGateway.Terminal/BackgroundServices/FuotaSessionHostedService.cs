@@ -14,6 +14,7 @@ public class FuotaSessionHostedService : IHostedService
     private readonly FuotaManagerService _fuotaManagerService;
 
     private bool _stopFired = false;
+    private bool _deviceLaggingBehind = false;
 
     public FuotaSessionHostedService(
         ILogger<FuotaSessionHostedService> logger,
@@ -56,12 +57,7 @@ public class FuotaSessionHostedService : IHostedService
                     _serialProcessorService.SendRlncInitConfigCommand(session);
 
                     // Give the devices some time to catch up
-                    await Task.Delay(1000, cancellationToken);
-
-                    // Nice debugging step to verify init step
-                    // _logger.LogInformation("Quitting RLNC init");
-                    // await _fuotaManagerService.StopFuotaSession();
-                    // return;
+                    await Task.Delay(100, cancellationToken);
                 }
                 catch (Exception e)
                 {
@@ -109,8 +105,17 @@ public class FuotaSessionHostedService : IHostedService
 
             if (_fuotaManagerService.IsAwaitAckEnabled() && _fuotaManagerService.ShouldWait())
             {
-                _logger.LogInformation("ACKs lagging behind. Waiting");
+                if (!_deviceLaggingBehind) {
+                    _logger.LogInformation("ACKs lagging behind. Waiting");
+                    _deviceLaggingBehind = true;
+                }
                 return;
+            }
+            
+            // Restore the status to operational
+            if (_deviceLaggingBehind)
+            {
+                _deviceLaggingBehind = false;
             }
             
             if (_fuotaManagerService.IsCurrentGenerationComplete())
