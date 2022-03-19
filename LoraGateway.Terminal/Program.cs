@@ -1,4 +1,5 @@
-﻿using LoraGateway.BackgroundServices;
+﻿using LoRa;
+using LoraGateway.BackgroundServices;
 using LoraGateway.Handlers;
 using LoraGateway.Services;
 using LoraGateway.Services.CommandLine;
@@ -70,6 +71,7 @@ public static class LoraGateway
                     builder.AddInMemoryEventBus(subscriber =>
                     {
                         subscriber.Subscribe<InitFuotaSession, FuotaEventHandler>();
+                        subscriber.Subscribe<DecodingUpdateEvent, FuotaEventHandler>();
                         subscriber.Subscribe<StopFuotaSession, FuotaEventHandler>();
                     });
                 });

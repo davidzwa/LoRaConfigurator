@@ -33,13 +33,14 @@ namespace LoRa {
             "IAEoCzIMLkxvUmFNZXNzYWdlQhgKFl9Jc01lYXN1cmVtZW50RnJhZ21lbnQi",
             "GgoKQWNrTWVzc2FnZRIMCgRDb2RlGAEgASgNIiAKEEV4Y2VwdGlvbk1lc3Nh",
             "Z2USDAoEQ29kZRgBIAEoDSIcCgxEZWJ1Z01lc3NhZ2USDAoEQ29kZRgBIAEo",
-            "DSKdAgoMVWFydFJlc3BvbnNlEg8KB1BheWxvYWQYASABKAwSIwoLYm9vdE1l",
+            "DSLIAgoMVWFydFJlc3BvbnNlEg8KB1BheWxvYWQYASABKAwSIwoLYm9vdE1l",
             "c3NhZ2UYAiABKAsyDC5Cb290TWVzc2FnZUgAEiEKCmFja01lc3NhZ2UYAyAB",
             "KAsyCy5BY2tNZXNzYWdlSAASKwoPbG9yYU1lYXN1cmVtZW50GAQgASgLMhAu",
             "TG9yYU1lYXN1cmVtZW50SAASJQoMZGVidWdNZXNzYWdlGAUgASgLMg0uRGVi",
             "dWdNZXNzYWdlSAASLQoQZXhjZXB0aW9uTWVzc2FnZRgGIAEoCzIRLkV4Y2Vw",
             "dGlvbk1lc3NhZ2VIABIpCg5kZWNvZGluZ1Jlc3VsdBgHIAEoCzIPLkRlY29k",
-            "aW5nUmVzdWx0SABCBgoEQm9keUIHqgIETG9SYWIGcHJvdG8z"));
+            "aW5nUmVzdWx0SAASKQoOZGVjb2RpbmdVcGRhdGUYCCABKAsyDy5EZWNvZGlu",
+            "Z1VwZGF0ZUgAQgYKBEJvZHlCB6oCBExvUmFiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LoRa.FirmwareReflection.Descriptor, global::LoRa.ExperimentConfigReflection.Descriptor, global::LoRa.LoraDeviceMessagesReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -47,7 +48,7 @@ namespace LoRa {
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.AckMessage), global::LoRa.AckMessage.Parser, new[]{ "Code" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.ExceptionMessage), global::LoRa.ExceptionMessage.Parser, new[]{ "Code" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DebugMessage), global::LoRa.DebugMessage.Parser, new[]{ "Code" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.UartResponse), global::LoRa.UartResponse.Parser, new[]{ "Payload", "BootMessage", "AckMessage", "LoraMeasurement", "DebugMessage", "ExceptionMessage", "DecodingResult" }, new[]{ "Body" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.UartResponse), global::LoRa.UartResponse.Parser, new[]{ "Payload", "BootMessage", "AckMessage", "LoraMeasurement", "DebugMessage", "ExceptionMessage", "DecodingResult", "DecodingUpdate" }, new[]{ "Body" }, null, null, null)
           }));
     }
     #endregion
@@ -1113,6 +1114,9 @@ namespace LoRa {
         case BodyOneofCase.DecodingResult:
           DecodingResult = other.DecodingResult.Clone();
           break;
+        case BodyOneofCase.DecodingUpdate:
+          DecodingUpdate = other.DecodingUpdate.Clone();
+          break;
       }
 
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -1208,6 +1212,21 @@ namespace LoRa {
       }
     }
 
+    /// <summary>Field number for the "decodingUpdate" field.</summary>
+    public const int DecodingUpdateFieldNumber = 8;
+    /// <summary>
+    /// Debugging ACK
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LoRa.DecodingUpdate DecodingUpdate {
+      get { return bodyCase_ == BodyOneofCase.DecodingUpdate ? (global::LoRa.DecodingUpdate) body_ : null; }
+      set {
+        body_ = value;
+        bodyCase_ = value == null ? BodyOneofCase.None : BodyOneofCase.DecodingUpdate;
+      }
+    }
+
     private object body_;
     /// <summary>Enum of possible cases for the "Body" oneof.</summary>
     public enum BodyOneofCase {
@@ -1218,6 +1237,7 @@ namespace LoRa {
       DebugMessage = 5,
       ExceptionMessage = 6,
       DecodingResult = 7,
+      DecodingUpdate = 8,
     }
     private BodyOneofCase bodyCase_ = BodyOneofCase.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1255,6 +1275,7 @@ namespace LoRa {
       if (!object.Equals(DebugMessage, other.DebugMessage)) return false;
       if (!object.Equals(ExceptionMessage, other.ExceptionMessage)) return false;
       if (!object.Equals(DecodingResult, other.DecodingResult)) return false;
+      if (!object.Equals(DecodingUpdate, other.DecodingUpdate)) return false;
       if (BodyCase != other.BodyCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -1270,6 +1291,7 @@ namespace LoRa {
       if (bodyCase_ == BodyOneofCase.DebugMessage) hash ^= DebugMessage.GetHashCode();
       if (bodyCase_ == BodyOneofCase.ExceptionMessage) hash ^= ExceptionMessage.GetHashCode();
       if (bodyCase_ == BodyOneofCase.DecodingResult) hash ^= DecodingResult.GetHashCode();
+      if (bodyCase_ == BodyOneofCase.DecodingUpdate) hash ^= DecodingUpdate.GetHashCode();
       hash ^= (int) bodyCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -1317,6 +1339,10 @@ namespace LoRa {
         output.WriteRawTag(58);
         output.WriteMessage(DecodingResult);
       }
+      if (bodyCase_ == BodyOneofCase.DecodingUpdate) {
+        output.WriteRawTag(66);
+        output.WriteMessage(DecodingUpdate);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -1355,6 +1381,10 @@ namespace LoRa {
         output.WriteRawTag(58);
         output.WriteMessage(DecodingResult);
       }
+      if (bodyCase_ == BodyOneofCase.DecodingUpdate) {
+        output.WriteRawTag(66);
+        output.WriteMessage(DecodingUpdate);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -1385,6 +1415,9 @@ namespace LoRa {
       }
       if (bodyCase_ == BodyOneofCase.DecodingResult) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(DecodingResult);
+      }
+      if (bodyCase_ == BodyOneofCase.DecodingUpdate) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(DecodingUpdate);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1437,6 +1470,12 @@ namespace LoRa {
             DecodingResult = new global::LoRa.DecodingResult();
           }
           DecodingResult.MergeFrom(other.DecodingResult);
+          break;
+        case BodyOneofCase.DecodingUpdate:
+          if (DecodingUpdate == null) {
+            DecodingUpdate = new global::LoRa.DecodingUpdate();
+          }
+          DecodingUpdate.MergeFrom(other.DecodingUpdate);
           break;
       }
 
@@ -1513,6 +1552,15 @@ namespace LoRa {
             DecodingResult = subBuilder;
             break;
           }
+          case 66: {
+            global::LoRa.DecodingUpdate subBuilder = new global::LoRa.DecodingUpdate();
+            if (bodyCase_ == BodyOneofCase.DecodingUpdate) {
+              subBuilder.MergeFrom(DecodingUpdate);
+            }
+            input.ReadMessage(subBuilder);
+            DecodingUpdate = subBuilder;
+            break;
+          }
         }
       }
     #endif
@@ -1584,6 +1632,15 @@ namespace LoRa {
             }
             input.ReadMessage(subBuilder);
             DecodingResult = subBuilder;
+            break;
+          }
+          case 66: {
+            global::LoRa.DecodingUpdate subBuilder = new global::LoRa.DecodingUpdate();
+            if (bodyCase_ == BodyOneofCase.DecodingUpdate) {
+              subBuilder.MergeFrom(DecodingUpdate);
+            }
+            input.ReadMessage(subBuilder);
+            DecodingUpdate = subBuilder;
             break;
           }
         }

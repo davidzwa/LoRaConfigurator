@@ -27,11 +27,11 @@ public class DeviceDataStore : JsonDataStore<DeviceCollection>
         return existingDevice;
     }
 
-    public Device GetDeviceByNick(string nickName)
+    public Device? GetDeviceByNick(string nickName, bool throwIfNotFound = false)
     {
         var existingDevice =
             Store?.Devices?.Find(d => d.NickName.Equals(nickName, StringComparison.InvariantCultureIgnoreCase));
-        if (existingDevice == null)
+        if (existingDevice == null && throwIfNotFound)
             throw new InvalidOperationException($"Could not find device by nickname '{nickName}'");
         return existingDevice;
     }

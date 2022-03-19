@@ -1,4 +1,4 @@
-﻿using System.CommandLine;
+using System.CommandLine;
 using System.CommandLine.Invocation;
 
 namespace LoraGateway.Services.CommandLine;
@@ -31,11 +31,10 @@ public class ListDeviceCommandHandler
         commandHandler.Handler = CommandHandler.Create(() =>
         {
             var ports = _serialProcessorService.SerialPorts;
-
             foreach (var port in ports)
             {
-                var device = _deviceStore.GetDeviceByPort(port.PortName);
-                if (device == null)
+                var device = _deviceStore.GetDeviceByPort(port.PortName).ToList();
+                if (device.Count == 0)
                 {
                     _logger.LogInformation("Untracked device on port {port}", port.PortName);
                 }

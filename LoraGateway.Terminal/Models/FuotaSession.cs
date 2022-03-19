@@ -1,4 +1,6 @@
-﻿namespace LoraGateway.Models;
+﻿using LoRa;
+
+namespace LoraGateway.Models;
 
 public class FuotaSession
 {
@@ -19,7 +21,8 @@ public class FuotaSession
     {
         CurrentFragmentIndex++;
     }
-    
+
+    public List<DecodingUpdate> Acks { get; } = new();
     public uint GenerationCount { get; }
     public uint TotalFragmentCount { get; set; }
     public FuotaConfig Config { get; }

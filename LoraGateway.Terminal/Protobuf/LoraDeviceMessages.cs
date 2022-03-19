@@ -1221,6 +1221,9 @@ namespace LoRa {
 
     /// <summary>Field number for the "decodingResult" field.</summary>
     public const int DecodingResultFieldNumber = 14;
+    /// <summary>
+    /// ACK
+    /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LoRa.DecodingResult DecodingResult {

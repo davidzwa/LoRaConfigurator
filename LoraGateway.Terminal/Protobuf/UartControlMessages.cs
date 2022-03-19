@@ -33,7 +33,7 @@ namespace LoRa {
             "SAASKwoPcmVxdWVzdEJvb3RJbmZvGAQgASgLMhAuUmVxdWVzdEJvb3RJbmZv",
             "SAASPQoYY2xlYXJNZWFzdXJlbWVudHNDb21tYW5kGAUgASgLMhkuQ2xlYXJN",
             "ZWFzdXJlbWVudHNDb21tYW5kSAASJwoPdHJhbnNtaXRDb21tYW5kGAYgASgL",
-            "MgwuTG9SYU1lc3NhZ2VIABIZChFkb05vdFByb3h5Q29tbWFuZBgIIAEoCEIG",
+            "MgwuTG9SYU1lc3NhZ2VIABIZChFEb05vdFByb3h5Q29tbWFuZBgIIAEoCEIG",
             "CgRCb2R5QgeqAgRMb1JhYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LoRa.LoraDeviceMessagesReflection.Descriptor, global::LoRa.LoraPhyReflection.Descriptor, },
@@ -384,7 +384,7 @@ namespace LoRa {
       }
     }
 
-    /// <summary>Field number for the "doNotProxyCommand" field.</summary>
+    /// <summary>Field number for the "DoNotProxyCommand" field.</summary>
     public const int DoNotProxyCommandFieldNumber = 8;
     private bool doNotProxyCommand_;
     /// <summary>

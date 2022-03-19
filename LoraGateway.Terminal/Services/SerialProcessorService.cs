@@ -1,7 +1,9 @@
 using System.IO.Ports;
 using System.Text;
 using Google.Protobuf;
+using JKang.EventBus;
 using LoRa;
+using LoraGateway.Handlers;
 using LoraGateway.Models;
 using LoraGateway.Utils;
 
@@ -13,17 +15,20 @@ public partial class SerialProcessorService
     private readonly MeasurementsService _measurementsService;
     private readonly SelectedDeviceService _selectedDeviceService;
     private readonly DeviceDataStore _deviceStore;
+    private readonly IEventPublisher _eventPublisher;
     public static readonly byte EndByte = 0x00;
     public static readonly byte StartByte = 0xFF;
 
     public SerialProcessorService(
         DeviceDataStore deviceStore,
+        IEventPublisher eventPublisher,
         SelectedDeviceService selectedDeviceService,
         MeasurementsService measurementsService,
         ILogger<SerialProcessorService> logger
     )
     {
         _deviceStore = deviceStore;
+        _eventPublisher = eventPublisher;
         _selectedDeviceService = selectedDeviceService;
         _measurementsService = measurementsService;
         _logger = logger;
@@ -60,8 +65,8 @@ public partial class SerialProcessorService
         port.ReadTimeout = 10000;
         port.WriteTimeout = 500;
 
-        port.ErrorReceived += (sender, args) => OnPortError((SerialPort)sender, args);
-        port.DataReceived += async (sender, args) => await OnPortData((SerialPort)sender, args);
+        port.ErrorReceived += (sender, args) => OnPortError((SerialPort) sender, args);
+        port.DataReceived += async (sender, args) => await OnPortData((SerialPort) sender, args);
         try
         {
             port.Open();
@@ -91,50 +96,6 @@ public partial class SerialProcessorService
         return SerialPorts.Find(p => p.PortName.Equals(portName));
     }
 
-    public void SendBootCommand(bool doNotProxy, string? portName = null)
-    {
-        var command = new UartCommand
-        {
-            DoNotProxyCommand = doNotProxy,
-            RequestBootInfo = new RequestBootInfo { Request = true }
-        };
-        WriteMessage(command, portName);
-    }
-
-    public void WriteMessage(UartCommand message, string? portName = null)
-    {
-        var selectedPortName = _selectedDeviceService.SelectedPortName;
-        if (portName != null)
-        {
-            selectedPortName = portName;
-        }
-
-        if (selectedPortName == null)
-        {
-            throw new InvalidOperationException("Selected port was not set - check USB connection");
-        }
-
-        var payload = message.ToByteArray();
-        var protoMessageBuffer = new[] { (byte)payload.Length }.Concat(payload);
-        var messageBuffer = Cobs.Encode(protoMessageBuffer).ToArray();
-        var len = new[] { (byte)messageBuffer.Length };
-        var transmitBuffer = new[] { StartByte }
-            .Concat(len)
-            .Concat(messageBuffer)
-            .Concat(new[] { EndByte })
-            .ToArray();
-
-        _logger.LogDebug("[{Port}] TRANSMIT {Message}", selectedPortName, SerialUtil.ByteArrayToString(transmitBuffer));
-        var port = GetPort(selectedPortName);
-        if (port == null)
-        {
-            _logger.LogWarning("[{Port}] Port was null. Cant send", selectedPortName);
-            return;
-        }
-
-        port.Write(transmitBuffer, 0, transmitBuffer.Length);
-    }
-
     public void OnPortError(SerialPort subject, SerialErrorReceivedEventArgs e)
     {
         _logger.LogWarning("[{Port}] Serial error {ErrorType}", e.EventType, subject.PortName);
@@ -160,7 +121,7 @@ public partial class SerialProcessorService
         {
             while (packetWaitingBytes)
             {
-                var newByte = (byte)port.ReadByte();
+                var newByte = (byte) port.ReadByte();
                 buffer.Add(newByte);
                 // If End byte is spotted we break
                 packetWaitingBytes = newByte != 0x00;
@@ -234,7 +195,8 @@ public partial class SerialProcessorService
         var outputBuffer = Cobs.Decode(buffer);
         if (outputBuffer.Count == 0)
         {
-            _logger.LogError("[{Port}] COBS output empty - input \n\t {HexString}", portName, SerialUtil.ByteArrayToString(buffer));
+            _logger.LogError("[{Port}] COBS output empty - input \n\t {HexString}", portName,
+                SerialUtil.ByteArrayToString(buffer));
             return 1;
         }
 
@@ -286,17 +248,52 @@ public partial class SerialProcessorService
         }
         else if (bodyCase.Equals(UartResponse.BodyOneofCase.DebugMessage))
         {
-            var payload = response.Payload;
+            var payload = response.Payload.ToStringUtf8();
             var code = response.DebugMessage.Code;
 
-            _logger.LogInformation("[{Name}, Debug] {Payload} Code:{Code}", portName, payload.ToStringUtf8(), code);
+            if (payload!.Contains("CRC-FAIL"))
+            {
+                await _eventPublisher.PublishEventAsync(new StopFuotaSession{Message = "CRC failure"});
+            }
+
+            if (payload!.Contains("PROTO-FAIL"))
+            {
+                await _eventPublisher.PublishEventAsync(new StopFuotaSession{Message = "PROTO failure"});
+            }
+            if (payload!.Contains("MC"))
+            {
+                return 0;
+            }
+
+            _logger.LogInformation("[{Name}, Debug] {Payload} Code:{Code}", portName, payload, code);
         }
         else if (bodyCase.Equals(UartResponse.BodyOneofCase.ExceptionMessage))
         {
             var payload = response.Payload;
-            var code = response.DebugMessage.Code;
+            var code = response.ExceptionMessage?.Code;
 
             _logger.LogError("[{Name}, Exception] {Payload} Code:{Code}", portName, payload.ToStringUtf8(), code);
+        }
+        else if (bodyCase.Equals(UartResponse.BodyOneofCase.DecodingUpdate))
+        {
+            var decodingResult = response.DecodingUpdate;
+            var rank = decodingResult.Rank;
+            _logger.LogInformation(
+                "[{Name}, DecodingType] Rank: {Rank} GenIndex: {MatrixRank} FragRx: {ReceivedFragments} FirstRowCrc: {FirstRowCrc} SecondRowCrc: {SecondRowCrc} IsRunning: {IsRunning}",
+                portName,
+                rank,
+                decodingResult.CurrentGenerationIndex,
+                decodingResult.ReceivedFragments,
+                decodingResult.FirstRowCrc8,
+                decodingResult.SecondRowCrc8,
+                decodingResult.IsRunning
+            );
+            
+            // Update the hosted service to progress
+            await _eventPublisher.PublishEventAsync(new DecodingUpdateEvent
+            {
+                DecodingUpdate = decodingResult
+            });
         }
         else if (bodyCase.Equals(UartResponse.BodyOneofCase.DecodingResult))
         {
@@ -319,21 +316,28 @@ public partial class SerialProcessorService
                 return 3;
             }
 
-            var snr = response.LoraMeasurement.Snr;
-            var rssi = response.LoraMeasurement.Rssi;
-            var sequenceNumber = response.LoraMeasurement.SequenceNumber;
-            var isMeasurement = response.LoraMeasurement.IsMeasurementFragment;
+            if (response.LoraMeasurement.Rssi == -1)
+            {
+                // Suppress
+            }
+            else
+            {
+                var snr = response.LoraMeasurement.Snr;
+                var rssi = response.LoraMeasurement.Rssi;
+                var sequenceNumber = response.LoraMeasurement.SequenceNumber;
+                var isMeasurement = response.LoraMeasurement.IsMeasurementFragment;
 
-            var result = await _measurementsService.AddMeasurement(sequenceNumber, snr, rssi);
-            if (sequenceNumber > 60000) _measurementsService.SetLocationText("");
+                var result = await _measurementsService.AddMeasurement(sequenceNumber, snr, rssi);
+                if (sequenceNumber > 60000) _measurementsService.SetLocationText("");
 
-            LoRaPacketHandler(response?.LoraMeasurement?.DownlinkPayload);
-            
-            // Debug for now
-            _logger.LogInformation(
-                "[{Name}] LoRa RX snr: {SNR} rssi: {RSSI} sequence-id:{Index} is-measurement:{IsMeasurement}, skipped:{Skipped}",
-                portName,
-                snr, rssi, sequenceNumber, isMeasurement, result);
+                LoRaPacketHandler(response?.LoraMeasurement?.DownlinkPayload);
+
+                // Debug for now
+                _logger.LogInformation(
+                    "[{Name}] LoRa RX snr: {SNR} rssi: {RSSI} sequence-id:{Index} is-measurement:{IsMeasurement}, skipped:{Skipped}",
+                    portName,
+                    snr, rssi, sequenceNumber, isMeasurement, result);
+            }
         }
         else
         {
@@ -348,11 +352,11 @@ public partial class SerialProcessorService
     private void LoRaPacketHandler(LoRaMessage? message)
     {
         if (message == null) return;
-        
-        if (message.BodyCase ==LoRaMessage.BodyOneofCase.ExperimentResponse)
+
+        if (message.BodyCase == LoRaMessage.BodyOneofCase.ExperimentResponse)
         {
             var flashMeasureCount = message.ExperimentResponse.MeasurementCount;
-           _logger.LogInformation("Flash {FlashMeasureCount}", flashMeasureCount); 
+            _logger.LogInformation("Flash {FlashMeasureCount}", flashMeasureCount);
         }
     }
 

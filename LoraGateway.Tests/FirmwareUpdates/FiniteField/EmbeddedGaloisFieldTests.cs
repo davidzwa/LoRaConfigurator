@@ -2,7 +2,7 @@
 using Shouldly;
 using Xunit;
 
-namespace LoraGateway.Tests.FirmwareUpdates.RandomLinearNetworkCoding;
+namespace LoraGateway.Tests.FirmwareUpdates.FiniteField;
 
 public class EmbeddedGaloisFieldTests
 {

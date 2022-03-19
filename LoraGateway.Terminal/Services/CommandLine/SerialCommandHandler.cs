@@ -1,19 +1,17 @@
 using System.CommandLine;
 using System.CommandLine.Invocation;
-using Google.Protobuf;
-using JKang.EventBus;
+using System.CommandLine.Parsing;
 using LoRa;
-using LoraGateway.Handlers;
 using LoraGateway.Services.Extensions;
 
 namespace LoraGateway.Services.CommandLine;
 
 public class SerialCommandHandler
 {
+    private readonly DeviceDataStore _deviceDataStore;
+    private readonly FuotaManagerService _fuotaManagerService;
     private readonly ILogger _logger;
     private readonly MeasurementsService _measurementsService;
-    private readonly FuotaManagerService _fuotaManagerService;
-    private readonly DeviceDataStore _deviceDataStore;
     private readonly SelectedDeviceService _selectedDeviceService;
     private readonly SerialProcessorService _serialProcessorService;
 
@@ -36,11 +34,12 @@ public class SerialCommandHandler
 
     public RootCommand ApplyCommands(RootCommand rootCommand)
     {
+        rootCommand.AddGlobalOption(new Option<string>("--d"));
         rootCommand.Add(GetBootCommand());
         rootCommand.Add(GetUnicastSendCommand());
         rootCommand.Add(GetDeviceConfigurationCommand());
         rootCommand.Add(GetClearMeasurementsCommand());
-        rootCommand.Add(GetRlncCommand());
+        rootCommand.Add(GetRlncInitCommand());
         rootCommand.Add(GetRlncStoreReloadCommand());
         rootCommand.Add(SetTxPowerCommand());
 
@@ -48,7 +47,7 @@ public class SerialCommandHandler
         return rootCommand;
     }
 
-    bool GetDoNotProxyConfig()
+    private bool GetDoNotProxyConfig()
     {
         var store = _fuotaManagerService.GetStore();
         if (store == null) return false;
@@ -56,12 +55,15 @@ public class SerialCommandHandler
         return store.UartFakeLoRaRxMode;
     }
 
-    public Command GetRlncCommand()
+    public Command GetRlncInitCommand()
     {
         var command = new Command("rlnc-init");
         command.AddAlias("rlnc");
         command.Handler = CommandHandler.Create(
-            async () => { await _fuotaManagerService.HandleRlncConsoleCommand(); });
+            async () =>
+            {
+                await _fuotaManagerService.HandleRlncConsoleCommand();
+            });
         return command;
     }
 
@@ -70,7 +72,10 @@ public class SerialCommandHandler
         var command = new Command("rlnc-load");
         command.AddAlias("rl");
         command.Handler = CommandHandler.Create(
-            async () => { await _fuotaManagerService.ReloadStore(); });
+            async () =>
+            {
+                await _fuotaManagerService.ReloadStore();
+            });
         return command;
     }
 
@@ -99,10 +104,7 @@ public class SerialCommandHandler
         command.Handler = CommandHandler.Create(
             (bool enableAlwaysSend, uint t, uint n, string loc) =>
             {
-                if (loc.Length != 0)
-                {
-                    _measurementsService.SetLocationText(loc);
-                }
+                if (loc.Length != 0) _measurementsService.SetLocationText(loc);
 
                 var selectedPortName = _selectedDeviceService.SelectedPortName;
                 _logger.LogInformation("Device config {Port}", selectedPortName);
@@ -115,33 +117,24 @@ public class SerialCommandHandler
     {
         var command = new Command("unicast");
         command.AddAlias("u");
-        command.AddOption(new Option<string>("--d"));
         command.AddOption(new Option("--clc"));
         command.AddOption(new Option("--q"));
         command.AddOption(new Option("--conf"));
         command.Handler = CommandHandler.Create(
             async (string d, bool clc, bool q, bool conf) =>
             {
-                var isMulticast = String.IsNullOrEmpty(d);
                 var loraMessage = new LoRaMessage();
-                if (!isMulticast)
-                {
-                    var device = _deviceDataStore.GetDeviceByNick(d);
-                    loraMessage.DeviceId = device.Id;
-                }
-
-                loraMessage.IsMulticast = isMulticast;
 
                 // We will be transmitted a device conf
                 if (conf || q)
                 {
                     await _fuotaManagerService.ReloadStore();
-                    
+
                     var store = _fuotaManagerService.GetStore();
                     loraMessage.DeviceConfiguration = new DeviceConfiguration();
-                    
+
                     var devConf = loraMessage.DeviceConfiguration;
-                    devConf.TxBandwidth = store.TxBandwidth;
+                    devConf.TxBandwidth = store!.TxBandwidth;
                     devConf.TxPower = store.TxPower;
                     devConf.TxDataRate = store.TxDataRate;
                     if (q)
@@ -165,16 +158,20 @@ public class SerialCommandHandler
                             ? ForwardExperimentCommand.Types.SlaveCommand.ClearFlash
                             : ForwardExperimentCommand.Types.SlaveCommand.QueryFlash;
 
-                    loraMessage.ForwardExperimentCommand = new ForwardExperimentCommand()
+                    loraMessage.ForwardExperimentCommand = new ForwardExperimentCommand
                     {
                         SlaveCommand = forwardExperimentCommand
                     };
                 }
 
-
+                // Store multicast context
+                _serialProcessorService.SetDeviceFilter(d);
+                
+                var isMulticast = _serialProcessorService.IsDeviceFilterMulticast();
                 var selectedPortName = _selectedDeviceService.SelectedPortName;
                 _logger.LogInformation("Unicast command {Port} MC:{MC} ClearFlash:{Clc}", selectedPortName, isMulticast,
                     clc);
+                
                 _serialProcessorService.SendUnicastTransmitCommand(loraMessage, GetDoNotProxyConfig());
             });
 
@@ -191,7 +188,7 @@ public class SerialCommandHandler
         {
             var selectedPortName = _selectedDeviceService.SelectedPortName;
             _logger.LogInformation("Set TX power {Power} sent {Port}", selectedPortName, power);
-            _serialProcessorService.SendTxPowerCommandd(power, GetDoNotProxyConfig());
+            _serialProcessorService.SendTxPowerCommand(power, GetDoNotProxyConfig());
         });
 
         return command;

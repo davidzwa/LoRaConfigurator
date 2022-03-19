@@ -132,6 +132,18 @@ public class UartEncodingTests
         result.BodyCase.ShouldBe(UartResponse.BodyOneofCase.BootMessage);
         result.BootMessage.MeasurementsDisabled.ShouldBeTrue();
     }
+    
+    
+    [Fact]
+    public void BootRequestProtoDecode()
+    {
+        var payload = new byte[]
+        {
+            0x22, 0x02, 0x08, 0x01
+        };
+        var result = UartCommand.Parser.ParseFrom(payload);
+        result.BodyCase.ShouldBe(UartCommand.BodyOneofCase.RequestBootInfo);
+    }
 
     [Fact]
     public void CobsOutputEmptyTest()
@@ -143,5 +155,4 @@ public class UartEncodingTests
         
         output.Count.ShouldBeGreaterThan(0);
     }
-    
 }

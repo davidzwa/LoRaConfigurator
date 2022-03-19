@@ -33,6 +33,11 @@ public static class SerialUtil
         return portList;
     }
 
+    public static byte CheckSum(byte[] buffer)
+    {
+        return Crc8.ComputeChecksum(buffer);
+    }
+
     public static string ByteArrayToString(byte[] ba)
     {
         var hex = new StringBuilder(ba.Length * 2);

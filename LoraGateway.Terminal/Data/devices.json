@@ -65,17 +65,17 @@
     {
       "HardwareId": "4784163-808997123-808661810",
       "Id": 4784163,
-      "NickName": "Qepyshavaely",
-      "FirmwareVersion": "2.0.1.14",
+      "NickName": "A0",
+      "FirmwareVersion": "3.0.0.1",
       "RegisteredAt": "132848143947603040",
-      "LastPortName": "COM5",
+      "LastPortName": "COM4",
       "Meta": null
     },
     {
       "HardwareId": "5832774-876106005-825374777",
       "Id": 5832774,
       "NickName": "A1",
-      "FirmwareVersion": "2.0.2.5",
+      "FirmwareVersion": "3.0.0.1",
       "RegisteredAt": "132911431153208074",
       "LastPortName": "COM11",
       "Meta": null
@@ -84,7 +84,7 @@
       "HardwareId": "5570643-859328791-892940854",
       "Id": 5570643,
       "NickName": "A2",
-      "FirmwareVersion": "2.0.2.5",
+      "FirmwareVersion": "3.0.0.1",
       "RegisteredAt": "132848144244789782",
       "LastPortName": "COM3",
       "Meta": null
@@ -93,7 +93,7 @@
       "HardwareId": "5046343-876106006-825374777",
       "Id": 5046343,
       "NickName": "A3",
-      "FirmwareVersion": "2.0.2.5",
+      "FirmwareVersion": "3.0.0.1",
       "RegisteredAt": "132913055127166434",
       "LastPortName": "COM12",
       "Meta": null
@@ -111,7 +111,7 @@
       "HardwareId": "5046319-876106006-825374777",
       "Id": 5046319,
       "NickName": "A5",
-      "FirmwareVersion": "2.0.2.5",
+      "FirmwareVersion": "3.0.0.1",
       "RegisteredAt": "132913110564225018",
       "LastPortName": "COM15",
       "Meta": null
@@ -120,7 +120,7 @@
       "HardwareId": "4456541-808997123-808661810",
       "Id": 4456541,
       "NickName": "A6",
-      "FirmwareVersion": "2.0.2.5",
+      "FirmwareVersion": "3.0.0.1",
       "RegisteredAt": "132913120564985102",
       "LastPortName": "COM16",
       "Meta": null
