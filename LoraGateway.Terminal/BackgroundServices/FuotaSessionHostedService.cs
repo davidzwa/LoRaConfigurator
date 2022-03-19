@@ -53,7 +53,7 @@ public class FuotaSessionHostedService : IHostedService
                 var session = _fuotaManagerService.GetCurrentSession();
                 try
                 {
-                    _logger.LogDebug("Sending RLNC init command");
+                    _logger.LogInformation("Sending RLNC init command {Session} gens", session.GenerationCount);
                     _serialProcessorService.SendRlncInitConfigCommand(session);
 
                     // Give the devices some time to catch up
