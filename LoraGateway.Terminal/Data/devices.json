@@ -102,9 +102,9 @@
       "HardwareId": "4784212-876106006-825374777",
       "Id": 4784212,
       "NickName": "A4",
-      "FirmwareVersion": "2.0.2.5",
+      "FirmwareVersion": "3.0.0.0",
       "RegisteredAt": "132913102713712512",
-      "LastPortName": "COM13",
+      "LastPortName": "COM8",
       "Meta": null
     },
     {

@@ -191,18 +191,70 @@ public partial class SerialProcessorService
 
     public async Task<int> ProcessMessage(string portName, byte[] buffer)
     {
+        var decodingResult = DecodeBuffer(portName, buffer);
+
+        if (decodingResult.DecodingResult != DecodingStatus.Success)
+        {
+            return (int)decodingResult.DecodingResult;
+        }
+
+        var response = decodingResult.Response;
+        var bodyCase = response!.BodyCase;
+        if (bodyCase.Equals(UartResponse.BodyOneofCase.BootMessage))
+        {
+            await ReceiveBootMessage(portName, response);
+        }
+        else if (bodyCase.Equals(UartResponse.BodyOneofCase.AckMessage))
+        {
+            var ackNumber = response.AckMessage.Code;
+            _logger.LogInformation("[{Name}] ACK {Int}", portName, ackNumber);
+        }
+        else if (bodyCase.Equals(UartResponse.BodyOneofCase.DebugMessage))
+        {
+            return await ReceiveDebugMessage(portName, response);
+        }
+        else if (bodyCase.Equals(UartResponse.BodyOneofCase.ExceptionMessage))
+        {
+            ReceiveExceptionMessage(portName, response);
+        }
+        else if (bodyCase.Equals(UartResponse.BodyOneofCase.DecodingUpdate))
+        {
+            await ReceiveDecodingUpdate(portName, response);
+        }
+        else if (bodyCase.Equals(UartResponse.BodyOneofCase.DecodingResult))
+        {
+            ReceiveDecodingResult(portName, response);
+        }
+        else if (bodyCase.Equals(UartResponse.BodyOneofCase.LoraMeasurement))
+        {
+            await ReceiveLoRaMeasurement(portName, response);
+        }
+        else
+        {
+            _logger.LogInformation("Got an unknown message");
+        }
+
+        _logger.LogDebug("-- [{Port}] MSG RX DONE --", portName);
+
+        return 0;
+    }
+
+    private UartDecodingResultDto DecodeBuffer(string portName, byte[] buffer)
+    {
         _logger.LogDebug("[{Port}] Serial decoding COBS buffer ({ByteLength})", portName, buffer.Length);
         var outputBuffer = Cobs.Decode(buffer);
         if (outputBuffer.Count == 0)
         {
             _logger.LogError("[{Port}] COBS output empty - input \n\t {HexString}", portName,
                 SerialUtil.ByteArrayToString(buffer));
-            return 1;
+            return new ()
+            {
+                DecodingResult = DecodingStatus.FailCobs
+            };
         }
 
         // Remove COBS overhead of 2
         outputBuffer.RemoveAt(0);
-
         _logger.LogDebug("[{Port}] POST-COBS \n\t{Message}", portName,
             SerialUtil.ByteArrayToString(outputBuffer.ToArray()));
 
@@ -216,148 +268,18 @@ public partial class SerialProcessorService
         {
             _logger.LogError("[{Port}] PROTO ERROR decoding error {Error} - skipping packet \n\t {Payload}", portName,
                 e.Message, SerialUtil.ByteArrayToString(decodedBuffer));
-            return 2;
+            return new () {
+                DecodingResult = DecodingStatus.FailProto
+            };
         }
-
+        
         _logger.LogDebug("[{Port}] PROTO SUCCESS Type {Type}", portName, response.BodyCase);
 
-        var bodyCase = response.BodyCase;
-        if (bodyCase.Equals(UartResponse.BodyOneofCase.BootMessage))
+        return new()
         {
-            var deviceFullId = response.BootMessage.DeviceIdentifier;
-            var deviceId = deviceFullId.DeviceIdAsString();
-            var firmwareVersion = response.BootMessage.GetFirmwareAsString();
-            var measurementCount = response.BootMessage.MeasurementCount;
-            var measurementDisabled = response.BootMessage.MeasurementsDisabled;
-            var device = await _deviceStore.GetOrAddDevice(new Device
-            {
-                HardwareId = deviceId,
-                Id = deviceFullId.Id0,
-                FirmwareVersion = firmwareVersion,
-                LastPortName = portName
-            });
-
-            _logger.LogInformation("[{Port} {Name}, MC:{Count}, MD:{Disabled}] heart beat {DeviceId}", portName,
-                device?.NickName,
-                measurementCount, measurementDisabled, deviceId);
-        }
-        else if (bodyCase.Equals(UartResponse.BodyOneofCase.AckMessage))
-        {
-            var ackNumber = response.AckMessage.Code;
-            _logger.LogInformation("[{Name}] ACK {Int}", portName, ackNumber);
-        }
-        else if (bodyCase.Equals(UartResponse.BodyOneofCase.DebugMessage))
-        {
-            var payload = response.Payload.ToStringUtf8();
-            var code = response.DebugMessage.Code;
-
-            if (payload!.Contains("CRC-FAIL"))
-            {
-                await _eventPublisher.PublishEventAsync(new StopFuotaSession{Message = "CRC failure"});
-            }
-
-            if (payload!.Contains("PROTO-FAIL"))
-            {
-                await _eventPublisher.PublishEventAsync(new StopFuotaSession{Message = "PROTO failure"});
-            }
-            if (payload!.Contains("MC"))
-            {
-                return 0;
-            }
-
-            _logger.LogInformation("[{Name}, Debug] {Payload} Code:{Code}", portName, payload, code);
-        }
-        else if (bodyCase.Equals(UartResponse.BodyOneofCase.ExceptionMessage))
-        {
-            var payload = response.Payload;
-            var code = response.ExceptionMessage?.Code;
-
-            _logger.LogError("[{Name}, Exception] {Payload} Code:{Code}", portName, payload.ToStringUtf8(), code);
-        }
-        else if (bodyCase.Equals(UartResponse.BodyOneofCase.DecodingUpdate))
-        {
-            var decodingResult = response.DecodingUpdate;
-            var rank = decodingResult.Rank;
-            _logger.LogInformation(
-                "[{Name}, DecodingType] Rank: {Rank} GenIndex: {MatrixRank} FragRx: {ReceivedFragments} FirstRowCrc: {FirstRowCrc} SecondRowCrc: {SecondRowCrc} IsRunning: {IsRunning}",
-                portName,
-                rank,
-                decodingResult.CurrentGenerationIndex,
-                decodingResult.ReceivedFragments,
-                decodingResult.FirstRowCrc8,
-                decodingResult.SecondRowCrc8,
-                decodingResult.IsRunning
-            );
-            
-            // Update the hosted service to progress
-            await _eventPublisher.PublishEventAsync(new DecodingUpdateEvent
-            {
-                DecodingUpdate = decodingResult
-            });
-        }
-        else if (bodyCase.Equals(UartResponse.BodyOneofCase.DecodingResult))
-        {
-            var decodingResult = response.DecodingResult;
-            var success = decodingResult.Success;
-            _logger.LogInformation(
-                "[{Name}, DecodingResult] Success: {Payload} Rank: {MatrixRank} FirstNumber: {FirstNumber} LastNumber: {LastNumber}",
-                portName,
-                success,
-                decodingResult.MatrixRank,
-                decodingResult.FirstDecodedNumber,
-                decodingResult.LastDecodedNumber
-            );
-        }
-        else if (bodyCase.Equals(UartResponse.BodyOneofCase.LoraMeasurement))
-        {
-            if (!response.LoraMeasurement.Success)
-            {
-                _logger.LogInformation("[{Name}] LoRa RX error!", portName);
-                return 3;
-            }
-
-            if (response.LoraMeasurement.Rssi == -1)
-            {
-                // Suppress
-            }
-            else
-            {
-                var snr = response.LoraMeasurement.Snr;
-                var rssi = response.LoraMeasurement.Rssi;
-                var sequenceNumber = response.LoraMeasurement.SequenceNumber;
-                var isMeasurement = response.LoraMeasurement.IsMeasurementFragment;
-
-                var result = await _measurementsService.AddMeasurement(sequenceNumber, snr, rssi);
-                if (sequenceNumber > 60000) _measurementsService.SetLocationText("");
-
-                LoRaPacketHandler(response?.LoraMeasurement?.DownlinkPayload);
-
-                // Debug for now
-                _logger.LogInformation(
-                    "[{Name}] LoRa RX snr: {SNR} rssi: {RSSI} sequence-id:{Index} is-measurement:{IsMeasurement}, skipped:{Skipped}",
-                    portName,
-                    snr, rssi, sequenceNumber, isMeasurement, result);
-            }
-        }
-        else
-        {
-            _logger.LogInformation("Got an unknown message");
-        }
-
-        _logger.LogDebug("-- [{Port}] MSG RX DONE --", portName);
-
-        return 0;
-    }
-
-    private void LoRaPacketHandler(LoRaMessage? message)
-    {
-        if (message == null) return;
-
-        if (message.BodyCase == LoRaMessage.BodyOneofCase.ExperimentResponse)
-        {
-            var flashMeasureCount = message.ExperimentResponse.MeasurementCount;
-            _logger.LogInformation("Flash {FlashMeasureCount}", flashMeasureCount);
-        }
+            DecodingResult = DecodingStatus.Success,
+            Response = response
+        };
     }
 
     public void DisposePort(string portName)
