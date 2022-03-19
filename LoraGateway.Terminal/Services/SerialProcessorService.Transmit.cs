@@ -168,11 +168,11 @@ public partial class SerialProcessorService
         WriteMessage(command);
     }
 
-    public void SendNextRlncFragment(FuotaSession fuotaSession, List<byte> payload)
+    public void SendNextRlncFragment(FuotaSession fuotaSession, FragmentWithGenerator fragment)
     {
         var config = fuotaSession.Config;
         SetDeviceFilterFromFuotaConfig(config);
-        var byteString = ByteString.CopyFrom(payload.ToArray());
+        var byteString = ByteString.CopyFrom(fragment.Fragment.ToArray());
 
         var command = new UartCommand
         {
@@ -184,6 +184,9 @@ public partial class SerialProcessorService
                 IsMulticast = true,
                 Payload = byteString,
                 RlncEncodedFragment = new RlncEncodedFragment()
+                {
+                    LfsrState = fragment.UsedGenerator
+                }
             })
         };
 

@@ -58,7 +58,8 @@ public partial class SerialProcessorService
             "PeriodTX",
             "PROTO-FAIL",
             "RLNC_TERMINATE",
-            "DevConfStop"
+            "DevConfStop",
+            "CRC-FAIL"
         };
         if (inclusions.Any(e => payload.Contains(e)))
         {

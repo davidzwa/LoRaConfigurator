@@ -129,8 +129,8 @@ public class FuotaSessionHostedService : IHostedService
             }
 
             // _fuotaManagerService.LogSessionProgress();
-            var payload = _fuotaManagerService.FetchNextRlncPayload();
-            _serialProcessorService.SendNextRlncFragment(_fuotaManagerService.GetCurrentSession(), payload);
+            var fragmentWithGenerator = _fuotaManagerService.FetchNextRlncPayloadWithGenerator();
+            _serialProcessorService.SendNextRlncFragment(_fuotaManagerService.GetCurrentSession(), fragmentWithGenerator);
         }
         catch (Exception e)
         {
@@ -146,6 +146,7 @@ public class FuotaSessionHostedService : IHostedService
 
         if (_fuotaManagerService.IsFuotaSessionEnabled())
         {
+            _logger.LogInformation("FUOTA termination sent");
             _serialProcessorService.SendRlncTermination(_fuotaManagerService.GetCurrentSession());
         }
         

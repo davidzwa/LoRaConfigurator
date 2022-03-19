@@ -12,7 +12,7 @@
   "FakeFragmentCount": 5,
   "FakeFragmentSize": 5,
   "GenerationSize": 10,
-  "GenerationSizeRedundancy": 30,
+  "GenerationSizeRedundancy": 5,
   "FieldDegree": 8,
   "LfsrSeed": 8
 }

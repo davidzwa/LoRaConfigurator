@@ -35,33 +35,6 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         _rlncEncodingService = rlncEncodingService;
     }
 
-    public void SaveFuotaDebuggingProgress(string source, DecodingUpdate update, ByteString payload)
-    {
-        var arrayPayload = payload.ToArray();
-        var encodedPacket = _rlncEncodingService.GetLastEncodedPacket();
-        var encodingLength = encodedPacket.EncodingVector.Count;
-        var encodingVector = new ArraySegment<byte>(arrayPayload, 0, encodingLength);
-        var payloadVector = new ArraySegment<byte>(arrayPayload, encodingLength, arrayPayload.Length - encodingLength);
-
-        var rank = update.RankProgress;
-        _logger.LogInformation("Vector {Vector}| Packet {Packet} (OUTPUT)",
-            SerialUtil.ByteArrayToString(encodingVector.ToArray()),
-            SerialUtil.ByteArrayToString(payloadVector.ToArray()));
-        _logger.LogInformation(
-            "[{Name}, DecodingType] Rank: {Rank} GenIndex: {MatrixRank} FragRx: {ReceivedFragments} FirstRowCrc: {FirstRowCrc} LastAppendedRowCrc({LastRowIndex}): {LastRowCrc} IsRunning: {IsRunning}",
-            source,
-            rank,
-            update.CurrentGenerationIndex,
-            update.ReceivedFragments,
-            update.FirstRowCrc8,
-            update.LastRowIndex,
-            update.LastRowCrc8,
-            update.IsRunning
-        );
-
-        _currentFuotaSession?.Acks.Add(update);
-    }
-
     public bool ShouldWait()
     {
         var session = GetCurrentSession();
@@ -132,7 +105,6 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
     public FuotaSession GetCurrentSession()
     {
         if (_currentFuotaSession == null) throw new ValidationException("Cant provide fuota session as its unset");
-
         return _currentFuotaSession;
     }
 
@@ -241,7 +213,7 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         _rlncEncodingService.MoveNextGeneration();
     }
 
-    public List<byte> FetchNextRlncPayload()
+    public FragmentWithGenerator FetchNextRlncPayloadWithGenerator()
     {
         if (_currentFuotaSession == null) throw new ValidationException("Cant fetch RLNC payload when session is null");
 
@@ -253,17 +225,55 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
             throw new ValidationException("Generation packets have run out");
         }
 
+        var resetLfsrState = _rlncEncodingService.GetGeneratorState();
         var encodedPacket = _rlncEncodingService.PrecodeNumberOfPackets(1).First();
         var fragmentBytes = encodedPacket.Payload.Select(p => p.GetValue());
         var encodingVector = encodedPacket.EncodingVector.Select(p => p.GetValue()).ToArray();
-        _logger.LogInformation("Vector {Vector}| Packet {Message}",
+        _logger.LogInformation("Vector {Vector}| Packet {Message}| Gen {Generator} -> {CurrentGenerator}",
             SerialUtil.ByteArrayToString(encodingVector),
-            SerialUtil.ByteArrayToString(fragmentBytes.ToArray()));
+            SerialUtil.ByteArrayToString(fragmentBytes.ToArray()),
+            resetLfsrState,
+            _rlncEncodingService.GetGeneratorState()
+        );
 
         // Next fragment index to be sent is 1 higher
         _currentFuotaSession.IncrementFragmentIndex();
 
-        return fragmentBytes.ToList();
+        return new()
+        {
+            Fragment = fragmentBytes.ToArray(),
+            UsedGenerator = resetLfsrState
+        };
+    }
+    
+    public void SaveFuotaDebuggingProgress(string source, DecodingUpdate update, ByteString payload)
+    {
+        var arrayPayload = payload.ToArray();
+        var encodedPacket = _rlncEncodingService.GetLastEncodedPacket();
+        var encodingLength = encodedPacket.EncodingVector.Count;
+        var encodingVector = new ArraySegment<byte>(arrayPayload, 0, encodingLength);
+        var payloadVector = new ArraySegment<byte>(arrayPayload, encodingLength, arrayPayload.Length - encodingLength);
+
+        var rank = update.RankProgress;
+        _logger.LogInformation("Vector {Vector}| Packet {Packet}| Gen {UsedGenerator} -> {CurrentGenerator} (OUTPUT)",
+            SerialUtil.ByteArrayToString(encodingVector.ToArray()),
+            SerialUtil.ByteArrayToString(payloadVector.ToArray()),
+            update.UsedLfsrState,
+            update.CurrentLfsrState
+        );
+        _logger.LogInformation(
+            "[{Name}, DecodingType] Rank: {Rank} GenIndex: {MatrixRank} FragRx: {ReceivedFragments} FirstRowCrc: {FirstRowCrc} LastAppendedRowCrc({LastRowIndex}): {LastRowCrc} IsRunning: {IsRunning}",
+            source,
+            rank,
+            update.CurrentGenerationIndex,
+            update.ReceivedFragments,
+            update.FirstRowCrc8,
+            update.LastRowIndex,
+            update.LastRowCrc8,
+            update.IsRunning
+        );
+
+        _currentFuotaSession?.Acks.Add(update);
     }
 
     public void ClearFuotaSession()
