@@ -112,10 +112,7 @@ public class FuotaSessionHostedService : IHostedService
                 _logger.LogInformation("ACKs lagging behind. Waiting");
                 return;
             }
-
-            // perform UART FUOTA session operations
-            _fuotaManagerService.LogSessionProgress();
-
+            
             if (_fuotaManagerService.IsCurrentGenerationComplete())
             {
                 _fuotaManagerService.MoveNextRlncGeneration();
@@ -126,8 +123,8 @@ public class FuotaSessionHostedService : IHostedService
                 return;
             }
 
+            // _fuotaManagerService.LogSessionProgress();
             var payload = _fuotaManagerService.FetchNextRlncPayload();
-            
             _serialProcessorService.SendNextRlncFragment(_fuotaManagerService.GetCurrentSession(), payload);
         }
         catch (Exception e)

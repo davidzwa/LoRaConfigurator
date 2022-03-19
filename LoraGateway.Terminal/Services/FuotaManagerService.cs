@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Google.Protobuf;
 using JKang.EventBus;
 using LoRa;
 using LoraGateway.Handlers;
@@ -34,9 +35,30 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         _rlncEncodingService = rlncEncodingService;
     }
 
-    public void SaveFuotaDebuggingProgress(DecodingUpdate message)
+    public void SaveFuotaDebuggingProgress(string source, DecodingUpdate update, ByteString payload)
     {
-        _currentFuotaSession?.Acks.Add(message);
+        var arrayPayload = payload.ToArray();
+        var encodedPacket = _rlncEncodingService.GetLastEncodedPacket();
+        var encodingLength = encodedPacket.EncodingVector.Count;
+        var encodingVector = new ArraySegment<byte>(arrayPayload, 0, encodingLength);
+        var payloadVector = new ArraySegment<byte>(arrayPayload, encodingLength, arrayPayload.Length - encodingLength);
+
+        var rank = update.Rank;
+        _logger.LogInformation("Vector {Vector}| Packet {Packet} (OUTPUT)",
+            SerialUtil.ByteArrayToString(encodingVector.ToArray()),
+            SerialUtil.ByteArrayToString(payloadVector.ToArray()));
+        _logger.LogInformation(
+            "[{Name}, DecodingType] Rank: {Rank} GenIndex: {MatrixRank} FragRx: {ReceivedFragments} FirstRowCrc: {FirstRowCrc} SecondRowCrc: {SecondRowCrc} IsRunning: {IsRunning}",
+            source,
+            rank,
+            update.CurrentGenerationIndex,
+            update.ReceivedFragments,
+            update.FirstRowCrc8,
+            update.SecondRowCrc8,
+            update.IsRunning
+        );
+
+        _currentFuotaSession?.Acks.Add(update);
     }
 
     public bool ShouldWait()
@@ -46,8 +68,8 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         var genSize = session.Config.GenerationSize + session.Config.GenerationSizeRedundancy;
         var expectedAcksCount = genSize * ((int)currentGen) + session.CurrentFragmentIndex;
         return _currentFuotaSession!.Acks.Count < expectedAcksCount;
-    } 
-    
+    }
+
     public bool IsAwaitAckEnabled()
     {
         return GetCurrentSession().Config.UartFakeAwaitAck;
@@ -122,7 +144,7 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         var result = _cancellation.TryReset();
         if (!result) _logger.LogDebug("Resetting of FUOTA cancellation source failed. Continuing anyway");
 
-        await _eventPublisher.PublishEventAsync(new InitFuotaSession {Message = "Initiating"});
+        await _eventPublisher.PublishEventAsync(new InitFuotaSession { Message = "Initiating" });
     }
 
     public async Task StopFuotaSession()
@@ -131,7 +153,7 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         _cancellation.Cancel();
 
         // Termination imminent - clear the session and terminate the hosted service
-        await _eventPublisher.PublishEventAsync(new StopFuotaSession {Message = "Stopping"});
+        await _eventPublisher.PublishEventAsync(new StopFuotaSession { Message = "Stopping" });
 
         ClearFuotaSession();
     }
@@ -150,7 +172,7 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
 
         if (Store.FakeFirmware)
         {
-            var frameSize = (int) Store.FakeFragmentSize;
+            var frameSize = (int)Store.FakeFragmentSize;
             var firmwareSize = Store.FakeFragmentCount * frameSize;
             _firmwarePackets = await _blobFragmentationService.GenerateFakeFirmwareAsync(firmwareSize, frameSize);
             foreach (var packetIndex in Enumerable.Range(0, _firmwarePackets.Count))
@@ -166,17 +188,17 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         // Prepare 
         _rlncEncodingService.ConfigureEncoding(new EncodingConfiguration
         {
-            Seed = (byte) Store.LfsrSeed,
+            Seed = (byte)Store.LfsrSeed,
             CurrentGeneration = 0,
             FieldDegree = Store.FieldDegree,
             GenerationSize = Store.GenerationSize
         });
         var genCountResult =
-            (uint) _rlncEncodingService.PreprocessGenerations(_firmwarePackets, Store.GenerationSize);
+            (uint)_rlncEncodingService.PreprocessGenerations(_firmwarePackets, Store.GenerationSize);
 
         _currentFuotaSession = new FuotaSession(Store, genCountResult)
         {
-            TotalFragmentCount = (uint) _firmwarePackets.Count
+            TotalFragmentCount = (uint)_firmwarePackets.Count
         };
     }
 

@@ -7,7 +7,7 @@
   "UartFakeLoRaRXMode": true,
   "UartFakeAwaitAck": true,
   "TargetedNickname": "A4",
-  "UpdateIntervalMilliSeconds": 500,
+  "UpdateIntervalMilliSeconds": 250,
   "FakeFirmware": true,
   "FakeFragmentCount": 5,
   "FakeFragmentSize": 5,

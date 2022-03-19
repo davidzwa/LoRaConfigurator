@@ -1,7 +1,9 @@
-﻿using JKang.EventBus;
+﻿using Google.Protobuf;
+using JKang.EventBus;
 using LoRa;
 using LoraGateway.BackgroundServices;
 using LoraGateway.Services;
+using LoraGateway.Utils;
 
 namespace LoraGateway.Handlers;
 
@@ -13,7 +15,9 @@ public class InitFuotaSession
 
 public class DecodingUpdateEvent
 {
+    public string Source { get; set; }
     public DecodingUpdate? DecodingUpdate { get; set; }
+    public ByteString Payload { get; set; }
 }
 
 public class StopFuotaSession
@@ -44,7 +48,7 @@ public class FuotaEventHandler : IEventHandler<InitFuotaSession>, IEventHandler<
     public async Task HandleEventAsync(DecodingUpdateEvent @event)
     {
         if (@event.DecodingUpdate != null) {
-            _fuotaManagerService.SaveFuotaDebuggingProgress(@event.DecodingUpdate);
+            _fuotaManagerService.SaveFuotaDebuggingProgress(@event.Source, @event.DecodingUpdate, @event.Payload);
         }
     }
     

@@ -61,23 +61,13 @@ public partial class SerialProcessorService
     async Task ReceiveDecodingUpdate(string portName, UartResponse response)
     {
         var result = response.DecodingUpdate;
-        var rank = result.Rank;
-        _logger.LogInformation(
-            "[{Name}, DecodingType] Rank: {Rank} GenIndex: {MatrixRank} FragRx: {ReceivedFragments} FirstRowCrc: {FirstRowCrc} SecondRowCrc: {SecondRowCrc} IsRunning: {IsRunning}",
-            portName,
-            rank,
-            result.CurrentGenerationIndex,
-            result.ReceivedFragments,
-            result.FirstRowCrc8,
-            result.SecondRowCrc8,
-            result.IsRunning
-        );
-        _logger.LogInformation("Payload {Payload}", SerialUtil.ByteArrayToString(response.Payload.ToArray()));
-            
-        // Update the hosted service to progress
+        
+        // Let the event handler, fuota manager and hosted service fix the rest
         await _eventPublisher.PublishEventAsync(new DecodingUpdateEvent
         {
-            DecodingUpdate = result
+            Source = portName,
+            DecodingUpdate = result,
+            Payload = response.Payload
         });
     }
 

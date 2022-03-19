@@ -153,7 +153,7 @@ public partial class SerialProcessorService
                 {
                     FieldPoly = GFSymbol.Polynomial,
                     FieldDegree = config.FieldDegree,
-                    FrameCount = config.FakeFragmentCount,
+                    TotalFrameCount = config.FakeFragmentCount,
                     FrameSize = config.FakeFragmentSize,
                     // Calculated value from config store
                     GenerationCount = fuotaSession.GenerationCount,

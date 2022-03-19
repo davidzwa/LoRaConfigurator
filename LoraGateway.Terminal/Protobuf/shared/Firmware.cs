@@ -30,21 +30,21 @@ namespace LoRa {
             "EgsKA0lkMhgDIAEoDSKNAQoLQm9vdE1lc3NhZ2USIwoQRGV2aWNlSWRlbnRp",
             "ZmllchgBIAEoCzIJLkRldmljZUlkEiEKD0Zpcm13YXJlVmVyc2lvbhgCIAEo",
             "CzIILlZlcnNpb24SGAoQTWVhc3VyZW1lbnRDb3VudBgDIAEoDRIcChRNZWFz",
-            "dXJlbWVudHNEaXNhYmxlZBgEIAEoCCK7AQoVUmxuY0luaXRDb25maWdDb21t",
+            "dXJlbWVudHNEaXNhYmxlZBgEIAEoCCLAAQoVUmxuY0luaXRDb25maWdDb21t",
             "YW5kEhYKDkdlbmVyYXRpb25TaXplGAEgASgNEhcKD0dlbmVyYXRpb25Db3Vu",
-            "dBgCIAEoDRIRCglGcmFtZVNpemUYAyABKA0SEgoKRnJhbWVDb3VudBgEIAEo",
-            "DRITCgtGaWVsZERlZ3JlZRgFIAEoDRIRCglGaWVsZFBvbHkYBiABKA0SEAoI",
-            "TGZzclNlZWQYByABKA0SEAoITGZzclBvbHkYCCABKA0iFQoTUmxuY0VuY29k",
-            "ZWRGcmFnbWVudCI9Cg9SbG5jU3RhdGVVcGRhdGUSFwoPR2VuZXJhdGlvbklu",
-            "ZGV4GAEgASgNEhEKCUxmc3JTdGF0ZRgCIAEoDSIYChZSbG5jVGVybWluYXRp",
-            "b25Db21tYW5kQgeqAgRMb1JhYgZwcm90bzM="));
+            "dBgCIAEoDRIRCglGcmFtZVNpemUYAyABKA0SFwoPVG90YWxGcmFtZUNvdW50",
+            "GAQgASgNEhMKC0ZpZWxkRGVncmVlGAUgASgNEhEKCUZpZWxkUG9seRgGIAEo",
+            "DRIQCghMZnNyU2VlZBgHIAEoDRIQCghMZnNyUG9seRgIIAEoDSIVChNSbG5j",
+            "RW5jb2RlZEZyYWdtZW50Ij0KD1JsbmNTdGF0ZVVwZGF0ZRIXCg9HZW5lcmF0",
+            "aW9uSW5kZXgYASABKA0SEQoJTGZzclN0YXRlGAIgASgNIhgKFlJsbmNUZXJt",
+            "aW5hdGlvbkNvbW1hbmRCB6oCBExvUmFiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.Version), global::LoRa.Version.Parser, new[]{ "Major", "Minor", "Patch", "Revision" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DeviceId), global::LoRa.DeviceId.Parser, new[]{ "Id0", "Id1", "Id2" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.BootMessage), global::LoRa.BootMessage.Parser, new[]{ "DeviceIdentifier", "FirmwareVersion", "MeasurementCount", "MeasurementsDisabled" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncInitConfigCommand), global::LoRa.RlncInitConfigCommand.Parser, new[]{ "GenerationSize", "GenerationCount", "FrameSize", "FrameCount", "FieldDegree", "FieldPoly", "LfsrSeed", "LfsrPoly" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncInitConfigCommand), global::LoRa.RlncInitConfigCommand.Parser, new[]{ "GenerationSize", "GenerationCount", "FrameSize", "TotalFrameCount", "FieldDegree", "FieldPoly", "LfsrSeed", "LfsrPoly" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncEncodedFragment), global::LoRa.RlncEncodedFragment.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncStateUpdate), global::LoRa.RlncStateUpdate.Parser, new[]{ "GenerationIndex", "LfsrState" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncTerminationCommand), global::LoRa.RlncTerminationCommand.Parser, null, null, null, null, null)
@@ -972,7 +972,7 @@ namespace LoRa {
       generationSize_ = other.generationSize_;
       generationCount_ = other.generationCount_;
       frameSize_ = other.frameSize_;
-      frameCount_ = other.frameCount_;
+      totalFrameCount_ = other.totalFrameCount_;
       fieldDegree_ = other.fieldDegree_;
       fieldPoly_ = other.fieldPoly_;
       lfsrSeed_ = other.lfsrSeed_;
@@ -1022,15 +1022,15 @@ namespace LoRa {
       }
     }
 
-    /// <summary>Field number for the "FrameCount" field.</summary>
-    public const int FrameCountFieldNumber = 4;
-    private uint frameCount_;
+    /// <summary>Field number for the "TotalFrameCount" field.</summary>
+    public const int TotalFrameCountFieldNumber = 4;
+    private uint totalFrameCount_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public uint FrameCount {
-      get { return frameCount_; }
+    public uint TotalFrameCount {
+      get { return totalFrameCount_; }
       set {
-        frameCount_ = value;
+        totalFrameCount_ = value;
       }
     }
 
@@ -1100,7 +1100,7 @@ namespace LoRa {
       if (GenerationSize != other.GenerationSize) return false;
       if (GenerationCount != other.GenerationCount) return false;
       if (FrameSize != other.FrameSize) return false;
-      if (FrameCount != other.FrameCount) return false;
+      if (TotalFrameCount != other.TotalFrameCount) return false;
       if (FieldDegree != other.FieldDegree) return false;
       if (FieldPoly != other.FieldPoly) return false;
       if (LfsrSeed != other.LfsrSeed) return false;
@@ -1115,7 +1115,7 @@ namespace LoRa {
       if (GenerationSize != 0) hash ^= GenerationSize.GetHashCode();
       if (GenerationCount != 0) hash ^= GenerationCount.GetHashCode();
       if (FrameSize != 0) hash ^= FrameSize.GetHashCode();
-      if (FrameCount != 0) hash ^= FrameCount.GetHashCode();
+      if (TotalFrameCount != 0) hash ^= TotalFrameCount.GetHashCode();
       if (FieldDegree != 0) hash ^= FieldDegree.GetHashCode();
       if (FieldPoly != 0) hash ^= FieldPoly.GetHashCode();
       if (LfsrSeed != 0) hash ^= LfsrSeed.GetHashCode();
@@ -1150,9 +1150,9 @@ namespace LoRa {
         output.WriteRawTag(24);
         output.WriteUInt32(FrameSize);
       }
-      if (FrameCount != 0) {
+      if (TotalFrameCount != 0) {
         output.WriteRawTag(32);
-        output.WriteUInt32(FrameCount);
+        output.WriteUInt32(TotalFrameCount);
       }
       if (FieldDegree != 0) {
         output.WriteRawTag(40);
@@ -1192,9 +1192,9 @@ namespace LoRa {
         output.WriteRawTag(24);
         output.WriteUInt32(FrameSize);
       }
-      if (FrameCount != 0) {
+      if (TotalFrameCount != 0) {
         output.WriteRawTag(32);
-        output.WriteUInt32(FrameCount);
+        output.WriteUInt32(TotalFrameCount);
       }
       if (FieldDegree != 0) {
         output.WriteRawTag(40);
@@ -1231,8 +1231,8 @@ namespace LoRa {
       if (FrameSize != 0) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(FrameSize);
       }
-      if (FrameCount != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(FrameCount);
+      if (TotalFrameCount != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(TotalFrameCount);
       }
       if (FieldDegree != 0) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(FieldDegree);
@@ -1267,8 +1267,8 @@ namespace LoRa {
       if (other.FrameSize != 0) {
         FrameSize = other.FrameSize;
       }
-      if (other.FrameCount != 0) {
-        FrameCount = other.FrameCount;
+      if (other.TotalFrameCount != 0) {
+        TotalFrameCount = other.TotalFrameCount;
       }
       if (other.FieldDegree != 0) {
         FieldDegree = other.FieldDegree;
@@ -1310,7 +1310,7 @@ namespace LoRa {
             break;
           }
           case 32: {
-            FrameCount = input.ReadUInt32();
+            TotalFrameCount = input.ReadUInt32();
             break;
           }
           case 40: {
@@ -1357,7 +1357,7 @@ namespace LoRa {
             break;
           }
           case 32: {
-            FrameCount = input.ReadUInt32();
+            TotalFrameCount = input.ReadUInt32();
             break;
           }
           case 40: {
