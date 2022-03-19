@@ -201,7 +201,7 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         var genTotal = session.Config.GenerationSize + session.Config.GenerationSizeRedundancy;
         var fragment = genTotal * (currentGen - 1) + session.CurrentFragmentIndex + 1;
         var fragmentMax = session.Config.GenerationSize + maxGen * session.Config.GenerationSizeRedundancy;
-        var progress = Math.Round(100.0 * fragment / fragmentMax, 1);
+        var progress = Math.Round(100.0 * fragment / fragmentMax, 0);
 
         _logger.LogInformation("Progress {Progress}% Gen {Gen}/{MaxGen} Fragment {Frag}/{MaxFrag}",
             progress, currentGen, maxGen, fragment, fragmentMax);

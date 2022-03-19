@@ -41,7 +41,7 @@ public partial class SerialProcessorService
         {
             await _eventPublisher.PublishEventAsync(new StopFuotaSession{Message = "PROTO failure"});
         }
-        if (payload!.Contains("MC"))
+        if (payload!.Contains("MC") || payload!.Contains("UC"))
         {
             return 1;
         }
