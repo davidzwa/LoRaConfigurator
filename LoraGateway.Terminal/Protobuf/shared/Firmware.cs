@@ -30,31 +30,32 @@ namespace LoRa {
             "EgsKA0lkMhgDIAEoDSKNAQoLQm9vdE1lc3NhZ2USIwoQRGV2aWNlSWRlbnRp",
             "ZmllchgBIAEoCzIJLkRldmljZUlkEiEKD0Zpcm13YXJlVmVyc2lvbhgCIAEo",
             "CzIILlZlcnNpb24SGAoQTWVhc3VyZW1lbnRDb3VudBgDIAEoDRIcChRNZWFz",
-            "dXJlbWVudHNEaXNhYmxlZBgEIAEoCCLAAQoVUmxuY0luaXRDb25maWdDb21t",
+            "dXJlbWVudHNEaXNhYmxlZBgEIAEoCCL0AQoVUmxuY0luaXRDb25maWdDb21t",
             "YW5kEhYKDkdlbmVyYXRpb25TaXplGAEgASgNEhcKD0dlbmVyYXRpb25Db3Vu",
             "dBgCIAEoDRIRCglGcmFtZVNpemUYAyABKA0SFwoPVG90YWxGcmFtZUNvdW50",
             "GAQgASgNEhMKC0ZpZWxkRGVncmVlGAUgASgNEhEKCUZpZWxkUG9seRgGIAEo",
-            "DRIQCghMZnNyU2VlZBgHIAEoDRIQCghMZnNyUG9seRgIIAEoDSIoChNSbG5j",
-            "RW5jb2RlZEZyYWdtZW50EhEKCUxmc3JTdGF0ZRgBIAEoDSI9Cg9SbG5jU3Rh",
-            "dGVVcGRhdGUSFwoPR2VuZXJhdGlvbkluZGV4GAEgASgNEhEKCUxmc3JTdGF0",
-            "ZRgCIAEoDSIYChZSbG5jVGVybWluYXRpb25Db21tYW5kImwKDkRlY29kaW5n",
-            "UmVzdWx0Eg8KB1N1Y2Nlc3MYASABKAgSEgoKTWF0cml4UmFuaxgCIAEoDRIa",
-            "ChJGaXJzdERlY29kZWROdW1iZXIYAyABKA0SGQoRTGFzdERlY29kZWROdW1i",
-            "ZXIYBCABKA0iLAoORGVjb2RpbmdNYXRyaXgSDAoEQ29scxgBIAEoDRIMCgRS",
-            "b3dzGAIgASgNIvoBCg5EZWNvZGluZ1VwZGF0ZRISCgpNYXRyaXhDcmM4GAEg",
-            "ASgNEhQKDEZpcnN0Um93Q3JjOBgCIAEoDRITCgtMYXN0Um93Q3JjOBgDIAEo",
-            "DRIUCgxMYXN0Um93SW5kZXgYBCABKA0SFAoMUmFua1Byb2dyZXNzGAUgASgN",
-            "EhkKEVJlY2VpdmVkRnJhZ21lbnRzGAYgASgNEh4KFkN1cnJlbnRHZW5lcmF0",
-            "aW9uSW5kZXgYByABKA0SEQoJSXNSdW5uaW5nGAggASgIEhUKDVVzZWRMZnNy",
-            "U3RhdGUYCSABKA0SGAoQQ3VycmVudExmc3JTdGF0ZRgKIAEoDUIHqgIETG9S",
-            "YWIGcHJvdG8z"));
+            "DRIQCghMZnNyU2VlZBgHIAEoDRIQCghMZnNyUG9seRgIIAEoDRIXCg9EZWJ1",
+            "Z01hdHJpeFVhcnQYCSABKAgSGQoRRGVidWdGcmFnbWVudFVhcnQYCiABKAgi",
+            "KAoTUmxuY0VuY29kZWRGcmFnbWVudBIRCglMZnNyU3RhdGUYASABKA0iPQoP",
+            "UmxuY1N0YXRlVXBkYXRlEhcKD0dlbmVyYXRpb25JbmRleBgBIAEoDRIRCglM",
+            "ZnNyU3RhdGUYAiABKA0iGAoWUmxuY1Rlcm1pbmF0aW9uQ29tbWFuZCJsCg5E",
+            "ZWNvZGluZ1Jlc3VsdBIPCgdTdWNjZXNzGAEgASgIEhIKCk1hdHJpeFJhbmsY",
+            "AiABKA0SGgoSRmlyc3REZWNvZGVkTnVtYmVyGAMgASgNEhkKEUxhc3REZWNv",
+            "ZGVkTnVtYmVyGAQgASgNIiwKDkRlY29kaW5nTWF0cml4EgwKBENvbHMYASAB",
+            "KA0SDAoEUm93cxgCIAEoDSL6AQoORGVjb2RpbmdVcGRhdGUSEgoKTWF0cml4",
+            "Q3JjOBgBIAEoDRIUCgxGaXJzdFJvd0NyYzgYAiABKA0SEwoLTGFzdFJvd0Ny",
+            "YzgYAyABKA0SFAoMTGFzdFJvd0luZGV4GAQgASgNEhQKDFJhbmtQcm9ncmVz",
+            "cxgFIAEoDRIZChFSZWNlaXZlZEZyYWdtZW50cxgGIAEoDRIeChZDdXJyZW50",
+            "R2VuZXJhdGlvbkluZGV4GAcgASgNEhEKCUlzUnVubmluZxgIIAEoCBIVCg1V",
+            "c2VkTGZzclN0YXRlGAkgASgNEhgKEEN1cnJlbnRMZnNyU3RhdGUYCiABKA1C",
+            "B6oCBExvUmFiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.Version), global::LoRa.Version.Parser, new[]{ "Major", "Minor", "Patch", "Revision" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DeviceId), global::LoRa.DeviceId.Parser, new[]{ "Id0", "Id1", "Id2" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.BootMessage), global::LoRa.BootMessage.Parser, new[]{ "DeviceIdentifier", "FirmwareVersion", "MeasurementCount", "MeasurementsDisabled" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncInitConfigCommand), global::LoRa.RlncInitConfigCommand.Parser, new[]{ "GenerationSize", "GenerationCount", "FrameSize", "TotalFrameCount", "FieldDegree", "FieldPoly", "LfsrSeed", "LfsrPoly" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncInitConfigCommand), global::LoRa.RlncInitConfigCommand.Parser, new[]{ "GenerationSize", "GenerationCount", "FrameSize", "TotalFrameCount", "FieldDegree", "FieldPoly", "LfsrSeed", "LfsrPoly", "DebugMatrixUart", "DebugFragmentUart" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncEncodedFragment), global::LoRa.RlncEncodedFragment.Parser, new[]{ "LfsrState" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncStateUpdate), global::LoRa.RlncStateUpdate.Parser, new[]{ "GenerationIndex", "LfsrState" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncTerminationCommand), global::LoRa.RlncTerminationCommand.Parser, null, null, null, null, null),
@@ -990,6 +991,8 @@ namespace LoRa {
       fieldPoly_ = other.fieldPoly_;
       lfsrSeed_ = other.lfsrSeed_;
       lfsrPoly_ = other.lfsrPoly_;
+      debugMatrixUart_ = other.debugMatrixUart_;
+      debugFragmentUart_ = other.debugFragmentUart_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1095,6 +1098,30 @@ namespace LoRa {
       }
     }
 
+    /// <summary>Field number for the "DebugMatrixUart" field.</summary>
+    public const int DebugMatrixUartFieldNumber = 9;
+    private bool debugMatrixUart_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool DebugMatrixUart {
+      get { return debugMatrixUart_; }
+      set {
+        debugMatrixUart_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "DebugFragmentUart" field.</summary>
+    public const int DebugFragmentUartFieldNumber = 10;
+    private bool debugFragmentUart_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool DebugFragmentUart {
+      get { return debugFragmentUart_; }
+      set {
+        debugFragmentUart_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -1118,6 +1145,8 @@ namespace LoRa {
       if (FieldPoly != other.FieldPoly) return false;
       if (LfsrSeed != other.LfsrSeed) return false;
       if (LfsrPoly != other.LfsrPoly) return false;
+      if (DebugMatrixUart != other.DebugMatrixUart) return false;
+      if (DebugFragmentUart != other.DebugFragmentUart) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1133,6 +1162,8 @@ namespace LoRa {
       if (FieldPoly != 0) hash ^= FieldPoly.GetHashCode();
       if (LfsrSeed != 0) hash ^= LfsrSeed.GetHashCode();
       if (LfsrPoly != 0) hash ^= LfsrPoly.GetHashCode();
+      if (DebugMatrixUart != false) hash ^= DebugMatrixUart.GetHashCode();
+      if (DebugFragmentUart != false) hash ^= DebugFragmentUart.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1183,6 +1214,14 @@ namespace LoRa {
         output.WriteRawTag(64);
         output.WriteUInt32(LfsrPoly);
       }
+      if (DebugMatrixUart != false) {
+        output.WriteRawTag(72);
+        output.WriteBool(DebugMatrixUart);
+      }
+      if (DebugFragmentUart != false) {
+        output.WriteRawTag(80);
+        output.WriteBool(DebugFragmentUart);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -1225,6 +1264,14 @@ namespace LoRa {
         output.WriteRawTag(64);
         output.WriteUInt32(LfsrPoly);
       }
+      if (DebugMatrixUart != false) {
+        output.WriteRawTag(72);
+        output.WriteBool(DebugMatrixUart);
+      }
+      if (DebugFragmentUart != false) {
+        output.WriteRawTag(80);
+        output.WriteBool(DebugFragmentUart);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -1258,6 +1305,12 @@ namespace LoRa {
       }
       if (LfsrPoly != 0) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(LfsrPoly);
+      }
+      if (DebugMatrixUart != false) {
+        size += 1 + 1;
+      }
+      if (DebugFragmentUart != false) {
+        size += 1 + 1;
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1294,6 +1347,12 @@ namespace LoRa {
       }
       if (other.LfsrPoly != 0) {
         LfsrPoly = other.LfsrPoly;
+      }
+      if (other.DebugMatrixUart != false) {
+        DebugMatrixUart = other.DebugMatrixUart;
+      }
+      if (other.DebugFragmentUart != false) {
+        DebugFragmentUart = other.DebugFragmentUart;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1342,6 +1401,14 @@ namespace LoRa {
             LfsrPoly = input.ReadUInt32();
             break;
           }
+          case 72: {
+            DebugMatrixUart = input.ReadBool();
+            break;
+          }
+          case 80: {
+            DebugFragmentUart = input.ReadBool();
+            break;
+          }
         }
       }
     #endif
@@ -1387,6 +1454,14 @@ namespace LoRa {
           }
           case 64: {
             LfsrPoly = input.ReadUInt32();
+            break;
+          }
+          case 72: {
+            DebugMatrixUart = input.ReadBool();
+            break;
+          }
+          case 80: {
+            DebugFragmentUart = input.ReadBool();
             break;
           }
         }

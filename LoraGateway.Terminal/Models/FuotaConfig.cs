@@ -17,6 +17,8 @@ public class FuotaConfig : ICloneable
     public string TargetedNickname { get; set; } = "";
 
     public uint UpdateIntervalMilliSeconds { get; set; } = 500;
+    public bool DebugMatrixUart { get; set; } = false;
+    public bool DebugFragmentUart { get; set; } = false;
     // Not checked
     public bool FakeFirmware { get; set; } = true;
     // Not implemented
