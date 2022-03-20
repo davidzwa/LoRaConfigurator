@@ -217,6 +217,10 @@ public partial class SerialProcessorService
         {
             ReceiveExceptionMessage(portName, response);
         }
+        else if (bodyCase.Equals(UartResponse.BodyOneofCase.DecodingMatrix))
+        {
+            ReceiveDecodingMatrix(portName, response);
+        }
         else if (bodyCase.Equals(UartResponse.BodyOneofCase.DecodingUpdate))
         {
             await ReceiveDecodingUpdate(portName, response);

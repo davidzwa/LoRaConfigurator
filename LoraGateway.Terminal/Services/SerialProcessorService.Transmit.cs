@@ -155,6 +155,8 @@ public partial class SerialProcessorService
                     FieldDegree = config.FieldDegree,
                     TotalFrameCount = config.FakeFragmentCount,
                     FrameSize = config.FakeFragmentSize,
+                    DebugFragmentUart = config.DebugFragmentUart,
+                    DebugMatrixUart = config.DebugMatrixUart,
                     // Calculated value from config store
                     GenerationCount = fuotaSession.GenerationCount,
                     GenerationSize = config.GenerationSize,

@@ -7,8 +7,8 @@ namespace LoraGateway.Services.Firmware.Utils;
 /// </summary>
 public static class MatrixFunctions
 {
-    private static readonly GFSymbol unity = new(1);
-    private static readonly GFSymbol nil = new(0);
+    private static readonly GFSymbol Unity = new(1);
+    private static readonly GFSymbol Nil = new(0);
 
     /// <summary>
     ///     Reduces matrix to row-echelon (REF/Gauss) or reduced row-echelon (RREF/Gauss-Jordan) form and solves for augmented
@@ -22,17 +22,11 @@ public static class MatrixFunctions
         if (augmentedCols >= totalColCount)
             throw new ArgumentException("Too many augmented columns for total column count", nameof(augmentedCols));
 
-        // We dont collect a result, just return the full matrix result
-        // MatrixEliminationResult result = new MatrixEliminationResult();
-
         var output = input.Clone() as GFSymbol[,];
-
         if (output == null) throw new Exception("Cloned matrix was null");
-
-        // number of pivots found
+        
+        // Loop through columns, exclude augmented columns
         var numPivots = 0;
-
-        // loop through columns, exclude augmented columns
         for (var col = 0; col < totalColCount - augmentedCols; col++)
         {
             var pivotRow = FindPivot(output, numPivots, col, totalRowCount);
@@ -47,8 +41,6 @@ public static class MatrixFunctions
             pivotRow = numPivots;
             numPivots++;
 
-            // Require Reduced form unconditionally
-            // if (form == MatrixReductionForm.ReducedRowEchelonForm)
             for (var tmpRow = 0; tmpRow < pivotRow; tmpRow++)
                 EliminateRow(output, tmpRow, pivotRow.Value, col, totalColCount);
 
@@ -57,18 +49,6 @@ public static class MatrixFunctions
                 EliminateRow(output, tmpRow, pivotRow.Value, col, totalColCount);
         }
 
-        // result.FullMatrix = output;
-        // result.UnknownsCount = totalColCount - result.AugmentedColumnCount;
-        // result.TotalRowCount = totalRowCount;
-        // result.TotalColumnCount = totalColCount;
-        // result.AugmentedColumnCount = augmentedCols;
-
-        // We ignore augmented cols for now
-        // result.AugmentedColumns = ExtractColumns(output, result.UnknownsCount, totalColCount - 1);
-        // if (augmentedCols > 0 && form == MatrixReductionForm.ReducedRowEchelonForm)
-        //     // matrix has solution 
-        //     result = FindSolution(result);
-
         return output;
     }
 
@@ -76,7 +56,7 @@ public static class MatrixFunctions
     private static int? FindPivot(GFSymbol[,] input, int startRow, int col, int rowCount)
     {
         for (var i = startRow; i < rowCount; i++)
-            if (input[i, col] != nil)
+            if (input[i, col] != Nil)
                 return i;
 
         return null;
@@ -93,9 +73,9 @@ public static class MatrixFunctions
 
     private static void ReduceRow(GFSymbol[,] input, int row, int col, int colCount)
     {
-        var coefficient = unity / input[row, col];
+        var coefficient = Unity / input[row, col];
 
-        if (coefficient == unity)
+        if (coefficient == Unity)
             return;
 
         for (; col < colCount; col++)
@@ -110,7 +90,7 @@ public static class MatrixFunctions
         if (pivotRow == row)
             return;
 
-        if (input[row, pivotCol] == nil)
+        if (input[row, pivotCol] == Nil)
             return;
 
         var coefficient = input[row, pivotCol];

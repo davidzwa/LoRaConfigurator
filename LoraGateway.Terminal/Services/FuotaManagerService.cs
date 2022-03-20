@@ -245,24 +245,29 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
             UsedGenerator = resetLfsrState
         };
     }
-    
+
     public void SaveFuotaDebuggingProgress(string source, DecodingUpdate update, ByteString payload)
     {
-        var arrayPayload = payload.ToArray();
         var encodedPacket = _rlncEncodingService.GetLastEncodedPacket();
         var encodingLength = encodedPacket.EncodingVector.Count;
-        var encodingVector = new ArraySegment<byte>(arrayPayload, 0, encodingLength);
-        var payloadVector = new ArraySegment<byte>(arrayPayload, encodingLength, arrayPayload.Length - encodingLength);
-
         var rank = update.RankProgress;
-        _logger.LogInformation("Vector {Vector}| Packet {Packet}| Gen {UsedGenerator} -> {CurrentGenerator} (OUTPUT)",
-            SerialUtil.ByteArrayToString(encodingVector.ToArray()),
-            SerialUtil.ByteArrayToString(payloadVector.ToArray()),
-            update.UsedLfsrState,
-            update.CurrentLfsrState
-        );
+
+        var arrayPayload = payload.ToArray();
+        if (arrayPayload.Length > 0)
+        {
+            var encodingVector = new ArraySegment<byte>(arrayPayload, 0, encodingLength);
+            var payloadVector =
+                new ArraySegment<byte>(arrayPayload, encodingLength, arrayPayload.Length - encodingLength);
+
+            _logger.LogInformation(
+                "Vector {Vector}| Packet {Packet} (OUTPUT)", 
+                SerialUtil.ByteArrayToString(encodingVector.ToArray()), 
+                SerialUtil.ByteArrayToString(payloadVector.ToArray())
+            );
+        }
+
         _logger.LogInformation(
-            "[{Name}, DecodingType] Rank: {Rank} GenIndex: {MatrixRank} FragRx: {ReceivedFragments} FirstRowCrc: {FirstRowCrc} LastAppendedRowCrc({LastRowIndex}): {LastRowCrc} IsRunning: {IsRunning}",
+            "[{Name}, DecodingType] Rank: {Rank} GenIndex: {MatrixRank} FragRx: {ReceivedFragments} FirstRowCrc: {FirstRowCrc} LastAppendedRowCrc({LastRowIndex}): {LastRowCrc} LFSR {Lfsr1} -> {Lfsr2} IsRunning: {IsRunning}",
             source,
             rank,
             update.CurrentGenerationIndex,
@@ -270,6 +275,8 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
             update.FirstRowCrc8,
             update.LastRowIndex,
             update.LastRowCrc8,
+            update.UsedLfsrState,
+            update.CurrentLfsrState,
             update.IsRunning
         );
 

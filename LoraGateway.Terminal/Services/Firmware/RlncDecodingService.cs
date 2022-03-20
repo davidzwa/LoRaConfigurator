@@ -12,9 +12,14 @@ public static class RlncDecodingService
         var frameSize = encodedPackets.First().Payload.Count;
         var encodingMatrix = encodedPackets.ToAugmentedMatrix();
 
-        var result = MatrixFunctions.Eliminate(encodingMatrix, frameSize);
+        var result = DecodeMatrix(encodingMatrix, frameSize);
 
         return result.ToDecodedPackets(generationSize, frameSize);
+    }
+
+    public static GFSymbol[,] DecodeMatrix(GFSymbol[,] matrix, int augmentedCols)
+    {
+        return MatrixFunctions.Eliminate(matrix, augmentedCols);
     }
 
     private static List<DecodedPacket> FilterInnovativePackets(List<DecodedPacket> decodedPackets)

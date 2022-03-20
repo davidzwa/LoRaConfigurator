@@ -30,34 +30,37 @@ namespace LoRa {
             "EgsKA0lkMhgDIAEoDSKNAQoLQm9vdE1lc3NhZ2USIwoQRGV2aWNlSWRlbnRp",
             "ZmllchgBIAEoCzIJLkRldmljZUlkEiEKD0Zpcm13YXJlVmVyc2lvbhgCIAEo",
             "CzIILlZlcnNpb24SGAoQTWVhc3VyZW1lbnRDb3VudBgDIAEoDRIcChRNZWFz",
-            "dXJlbWVudHNEaXNhYmxlZBgEIAEoCCLAAQoVUmxuY0luaXRDb25maWdDb21t",
+            "dXJlbWVudHNEaXNhYmxlZBgEIAEoCCL0AQoVUmxuY0luaXRDb25maWdDb21t",
             "YW5kEhYKDkdlbmVyYXRpb25TaXplGAEgASgNEhcKD0dlbmVyYXRpb25Db3Vu",
             "dBgCIAEoDRIRCglGcmFtZVNpemUYAyABKA0SFwoPVG90YWxGcmFtZUNvdW50",
             "GAQgASgNEhMKC0ZpZWxkRGVncmVlGAUgASgNEhEKCUZpZWxkUG9seRgGIAEo",
-            "DRIQCghMZnNyU2VlZBgHIAEoDRIQCghMZnNyUG9seRgIIAEoDSIoChNSbG5j",
-            "RW5jb2RlZEZyYWdtZW50EhEKCUxmc3JTdGF0ZRgBIAEoDSI9Cg9SbG5jU3Rh",
-            "dGVVcGRhdGUSFwoPR2VuZXJhdGlvbkluZGV4GAEgASgNEhEKCUxmc3JTdGF0",
-            "ZRgCIAEoDSIYChZSbG5jVGVybWluYXRpb25Db21tYW5kImwKDkRlY29kaW5n",
-            "UmVzdWx0Eg8KB1N1Y2Nlc3MYASABKAgSEgoKTWF0cml4UmFuaxgCIAEoDRIa",
-            "ChJGaXJzdERlY29kZWROdW1iZXIYAyABKA0SGQoRTGFzdERlY29kZWROdW1i",
-            "ZXIYBCABKA0i+gEKDkRlY29kaW5nVXBkYXRlEhIKCk1hdHJpeENyYzgYASAB",
-            "KA0SFAoMRmlyc3RSb3dDcmM4GAIgASgNEhMKC0xhc3RSb3dDcmM4GAMgASgN",
-            "EhQKDExhc3RSb3dJbmRleBgEIAEoDRIUCgxSYW5rUHJvZ3Jlc3MYBSABKA0S",
-            "GQoRUmVjZWl2ZWRGcmFnbWVudHMYBiABKA0SHgoWQ3VycmVudEdlbmVyYXRp",
-            "b25JbmRleBgHIAEoDRIRCglJc1J1bm5pbmcYCCABKAgSFQoNVXNlZExmc3JT",
-            "dGF0ZRgJIAEoDRIYChBDdXJyZW50TGZzclN0YXRlGAogASgNQgeqAgRMb1Jh",
-            "YgZwcm90bzM="));
+            "DRIQCghMZnNyU2VlZBgHIAEoDRIQCghMZnNyUG9seRgIIAEoDRIXCg9EZWJ1",
+            "Z01hdHJpeFVhcnQYCSABKAgSGQoRRGVidWdGcmFnbWVudFVhcnQYCiABKAgi",
+            "KAoTUmxuY0VuY29kZWRGcmFnbWVudBIRCglMZnNyU3RhdGUYASABKA0iPQoP",
+            "UmxuY1N0YXRlVXBkYXRlEhcKD0dlbmVyYXRpb25JbmRleBgBIAEoDRIRCglM",
+            "ZnNyU3RhdGUYAiABKA0iGAoWUmxuY1Rlcm1pbmF0aW9uQ29tbWFuZCJsCg5E",
+            "ZWNvZGluZ1Jlc3VsdBIPCgdTdWNjZXNzGAEgASgIEhIKCk1hdHJpeFJhbmsY",
+            "AiABKA0SGgoSRmlyc3REZWNvZGVkTnVtYmVyGAMgASgNEhkKEUxhc3REZWNv",
+            "ZGVkTnVtYmVyGAQgASgNIiwKDkRlY29kaW5nTWF0cml4EgwKBENvbHMYASAB",
+            "KA0SDAoEUm93cxgCIAEoDSL6AQoORGVjb2RpbmdVcGRhdGUSEgoKTWF0cml4",
+            "Q3JjOBgBIAEoDRIUCgxGaXJzdFJvd0NyYzgYAiABKA0SEwoLTGFzdFJvd0Ny",
+            "YzgYAyABKA0SFAoMTGFzdFJvd0luZGV4GAQgASgNEhQKDFJhbmtQcm9ncmVz",
+            "cxgFIAEoDRIZChFSZWNlaXZlZEZyYWdtZW50cxgGIAEoDRIeChZDdXJyZW50",
+            "R2VuZXJhdGlvbkluZGV4GAcgASgNEhEKCUlzUnVubmluZxgIIAEoCBIVCg1V",
+            "c2VkTGZzclN0YXRlGAkgASgNEhgKEEN1cnJlbnRMZnNyU3RhdGUYCiABKA1C",
+            "B6oCBExvUmFiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.Version), global::LoRa.Version.Parser, new[]{ "Major", "Minor", "Patch", "Revision" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DeviceId), global::LoRa.DeviceId.Parser, new[]{ "Id0", "Id1", "Id2" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.BootMessage), global::LoRa.BootMessage.Parser, new[]{ "DeviceIdentifier", "FirmwareVersion", "MeasurementCount", "MeasurementsDisabled" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncInitConfigCommand), global::LoRa.RlncInitConfigCommand.Parser, new[]{ "GenerationSize", "GenerationCount", "FrameSize", "TotalFrameCount", "FieldDegree", "FieldPoly", "LfsrSeed", "LfsrPoly" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncInitConfigCommand), global::LoRa.RlncInitConfigCommand.Parser, new[]{ "GenerationSize", "GenerationCount", "FrameSize", "TotalFrameCount", "FieldDegree", "FieldPoly", "LfsrSeed", "LfsrPoly", "DebugMatrixUart", "DebugFragmentUart" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncEncodedFragment), global::LoRa.RlncEncodedFragment.Parser, new[]{ "LfsrState" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncStateUpdate), global::LoRa.RlncStateUpdate.Parser, new[]{ "GenerationIndex", "LfsrState" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncTerminationCommand), global::LoRa.RlncTerminationCommand.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DecodingResult), global::LoRa.DecodingResult.Parser, new[]{ "Success", "MatrixRank", "FirstDecodedNumber", "LastDecodedNumber" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DecodingMatrix), global::LoRa.DecodingMatrix.Parser, new[]{ "Cols", "Rows" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DecodingUpdate), global::LoRa.DecodingUpdate.Parser, new[]{ "MatrixCrc8", "FirstRowCrc8", "LastRowCrc8", "LastRowIndex", "RankProgress", "ReceivedFragments", "CurrentGenerationIndex", "IsRunning", "UsedLfsrState", "CurrentLfsrState" }, null, null, null, null)
           }));
     }
@@ -988,6 +991,8 @@ namespace LoRa {
       fieldPoly_ = other.fieldPoly_;
       lfsrSeed_ = other.lfsrSeed_;
       lfsrPoly_ = other.lfsrPoly_;
+      debugMatrixUart_ = other.debugMatrixUart_;
+      debugFragmentUart_ = other.debugFragmentUart_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1093,6 +1098,30 @@ namespace LoRa {
       }
     }
 
+    /// <summary>Field number for the "DebugMatrixUart" field.</summary>
+    public const int DebugMatrixUartFieldNumber = 9;
+    private bool debugMatrixUart_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool DebugMatrixUart {
+      get { return debugMatrixUart_; }
+      set {
+        debugMatrixUart_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "DebugFragmentUart" field.</summary>
+    public const int DebugFragmentUartFieldNumber = 10;
+    private bool debugFragmentUart_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool DebugFragmentUart {
+      get { return debugFragmentUart_; }
+      set {
+        debugFragmentUart_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -1116,6 +1145,8 @@ namespace LoRa {
       if (FieldPoly != other.FieldPoly) return false;
       if (LfsrSeed != other.LfsrSeed) return false;
       if (LfsrPoly != other.LfsrPoly) return false;
+      if (DebugMatrixUart != other.DebugMatrixUart) return false;
+      if (DebugFragmentUart != other.DebugFragmentUart) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1131,6 +1162,8 @@ namespace LoRa {
       if (FieldPoly != 0) hash ^= FieldPoly.GetHashCode();
       if (LfsrSeed != 0) hash ^= LfsrSeed.GetHashCode();
       if (LfsrPoly != 0) hash ^= LfsrPoly.GetHashCode();
+      if (DebugMatrixUart != false) hash ^= DebugMatrixUart.GetHashCode();
+      if (DebugFragmentUart != false) hash ^= DebugFragmentUart.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1181,6 +1214,14 @@ namespace LoRa {
         output.WriteRawTag(64);
         output.WriteUInt32(LfsrPoly);
       }
+      if (DebugMatrixUart != false) {
+        output.WriteRawTag(72);
+        output.WriteBool(DebugMatrixUart);
+      }
+      if (DebugFragmentUart != false) {
+        output.WriteRawTag(80);
+        output.WriteBool(DebugFragmentUart);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -1223,6 +1264,14 @@ namespace LoRa {
         output.WriteRawTag(64);
         output.WriteUInt32(LfsrPoly);
       }
+      if (DebugMatrixUart != false) {
+        output.WriteRawTag(72);
+        output.WriteBool(DebugMatrixUart);
+      }
+      if (DebugFragmentUart != false) {
+        output.WriteRawTag(80);
+        output.WriteBool(DebugFragmentUart);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -1256,6 +1305,12 @@ namespace LoRa {
       }
       if (LfsrPoly != 0) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(LfsrPoly);
+      }
+      if (DebugMatrixUart != false) {
+        size += 1 + 1;
+      }
+      if (DebugFragmentUart != false) {
+        size += 1 + 1;
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1292,6 +1347,12 @@ namespace LoRa {
       }
       if (other.LfsrPoly != 0) {
         LfsrPoly = other.LfsrPoly;
+      }
+      if (other.DebugMatrixUart != false) {
+        DebugMatrixUart = other.DebugMatrixUart;
+      }
+      if (other.DebugFragmentUart != false) {
+        DebugFragmentUart = other.DebugFragmentUart;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1340,6 +1401,14 @@ namespace LoRa {
             LfsrPoly = input.ReadUInt32();
             break;
           }
+          case 72: {
+            DebugMatrixUart = input.ReadBool();
+            break;
+          }
+          case 80: {
+            DebugFragmentUart = input.ReadBool();
+            break;
+          }
         }
       }
     #endif
@@ -1385,6 +1454,14 @@ namespace LoRa {
           }
           case 64: {
             LfsrPoly = input.ReadUInt32();
+            break;
+          }
+          case 72: {
+            DebugMatrixUart = input.ReadBool();
+            break;
+          }
+          case 80: {
+            DebugFragmentUart = input.ReadBool();
             break;
           }
         }
@@ -2271,6 +2348,232 @@ namespace LoRa {
 
   }
 
+  public sealed partial class DecodingMatrix : pb::IMessage<DecodingMatrix>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<DecodingMatrix> _parser = new pb::MessageParser<DecodingMatrix>(() => new DecodingMatrix());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<DecodingMatrix> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LoRa.FirmwareReflection.Descriptor.MessageTypes[8]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DecodingMatrix() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DecodingMatrix(DecodingMatrix other) : this() {
+      cols_ = other.cols_;
+      rows_ = other.rows_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DecodingMatrix Clone() {
+      return new DecodingMatrix(this);
+    }
+
+    /// <summary>Field number for the "Cols" field.</summary>
+    public const int ColsFieldNumber = 1;
+    private uint cols_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint Cols {
+      get { return cols_; }
+      set {
+        cols_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "Rows" field.</summary>
+    public const int RowsFieldNumber = 2;
+    private uint rows_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint Rows {
+      get { return rows_; }
+      set {
+        rows_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as DecodingMatrix);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(DecodingMatrix other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Cols != other.Cols) return false;
+      if (Rows != other.Rows) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Cols != 0) hash ^= Cols.GetHashCode();
+      if (Rows != 0) hash ^= Rows.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (Cols != 0) {
+        output.WriteRawTag(8);
+        output.WriteUInt32(Cols);
+      }
+      if (Rows != 0) {
+        output.WriteRawTag(16);
+        output.WriteUInt32(Rows);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Cols != 0) {
+        output.WriteRawTag(8);
+        output.WriteUInt32(Cols);
+      }
+      if (Rows != 0) {
+        output.WriteRawTag(16);
+        output.WriteUInt32(Rows);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (Cols != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Cols);
+      }
+      if (Rows != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Rows);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(DecodingMatrix other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Cols != 0) {
+        Cols = other.Cols;
+      }
+      if (other.Rows != 0) {
+        Rows = other.Rows;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            Cols = input.ReadUInt32();
+            break;
+          }
+          case 16: {
+            Rows = input.ReadUInt32();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            Cols = input.ReadUInt32();
+            break;
+          }
+          case 16: {
+            Rows = input.ReadUInt32();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
   public sealed partial class DecodingUpdate : pb::IMessage<DecodingUpdate>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -2285,7 +2588,7 @@ namespace LoRa {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LoRa.FirmwareReflection.Descriptor.MessageTypes[8]; }
+      get { return global::LoRa.FirmwareReflection.Descriptor.MessageTypes[9]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
