@@ -40,13 +40,14 @@ namespace LoRa {
             "ZRgCIAEoDSIYChZSbG5jVGVybWluYXRpb25Db21tYW5kImwKDkRlY29kaW5n",
             "UmVzdWx0Eg8KB1N1Y2Nlc3MYASABKAgSEgoKTWF0cml4UmFuaxgCIAEoDRIa",
             "ChJGaXJzdERlY29kZWROdW1iZXIYAyABKA0SGQoRTGFzdERlY29kZWROdW1i",
-            "ZXIYBCABKA0i+gEKDkRlY29kaW5nVXBkYXRlEhIKCk1hdHJpeENyYzgYASAB",
-            "KA0SFAoMRmlyc3RSb3dDcmM4GAIgASgNEhMKC0xhc3RSb3dDcmM4GAMgASgN",
-            "EhQKDExhc3RSb3dJbmRleBgEIAEoDRIUCgxSYW5rUHJvZ3Jlc3MYBSABKA0S",
-            "GQoRUmVjZWl2ZWRGcmFnbWVudHMYBiABKA0SHgoWQ3VycmVudEdlbmVyYXRp",
-            "b25JbmRleBgHIAEoDRIRCglJc1J1bm5pbmcYCCABKAgSFQoNVXNlZExmc3JT",
-            "dGF0ZRgJIAEoDRIYChBDdXJyZW50TGZzclN0YXRlGAogASgNQgeqAgRMb1Jh",
-            "YgZwcm90bzM="));
+            "ZXIYBCABKA0iLAoORGVjb2RpbmdNYXRyaXgSDAoEQ29scxgBIAEoDRIMCgRS",
+            "b3dzGAIgASgNIvoBCg5EZWNvZGluZ1VwZGF0ZRISCgpNYXRyaXhDcmM4GAEg",
+            "ASgNEhQKDEZpcnN0Um93Q3JjOBgCIAEoDRITCgtMYXN0Um93Q3JjOBgDIAEo",
+            "DRIUCgxMYXN0Um93SW5kZXgYBCABKA0SFAoMUmFua1Byb2dyZXNzGAUgASgN",
+            "EhkKEVJlY2VpdmVkRnJhZ21lbnRzGAYgASgNEh4KFkN1cnJlbnRHZW5lcmF0",
+            "aW9uSW5kZXgYByABKA0SEQoJSXNSdW5uaW5nGAggASgIEhUKDVVzZWRMZnNy",
+            "U3RhdGUYCSABKA0SGAoQQ3VycmVudExmc3JTdGF0ZRgKIAEoDUIHqgIETG9S",
+            "YWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -58,6 +59,7 @@ namespace LoRa {
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncStateUpdate), global::LoRa.RlncStateUpdate.Parser, new[]{ "GenerationIndex", "LfsrState" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncTerminationCommand), global::LoRa.RlncTerminationCommand.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DecodingResult), global::LoRa.DecodingResult.Parser, new[]{ "Success", "MatrixRank", "FirstDecodedNumber", "LastDecodedNumber" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DecodingMatrix), global::LoRa.DecodingMatrix.Parser, new[]{ "Cols", "Rows" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DecodingUpdate), global::LoRa.DecodingUpdate.Parser, new[]{ "MatrixCrc8", "FirstRowCrc8", "LastRowCrc8", "LastRowIndex", "RankProgress", "ReceivedFragments", "CurrentGenerationIndex", "IsRunning", "UsedLfsrState", "CurrentLfsrState" }, null, null, null, null)
           }));
     }
@@ -2271,6 +2273,232 @@ namespace LoRa {
 
   }
 
+  public sealed partial class DecodingMatrix : pb::IMessage<DecodingMatrix>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<DecodingMatrix> _parser = new pb::MessageParser<DecodingMatrix>(() => new DecodingMatrix());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<DecodingMatrix> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LoRa.FirmwareReflection.Descriptor.MessageTypes[8]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DecodingMatrix() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DecodingMatrix(DecodingMatrix other) : this() {
+      cols_ = other.cols_;
+      rows_ = other.rows_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DecodingMatrix Clone() {
+      return new DecodingMatrix(this);
+    }
+
+    /// <summary>Field number for the "Cols" field.</summary>
+    public const int ColsFieldNumber = 1;
+    private uint cols_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint Cols {
+      get { return cols_; }
+      set {
+        cols_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "Rows" field.</summary>
+    public const int RowsFieldNumber = 2;
+    private uint rows_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint Rows {
+      get { return rows_; }
+      set {
+        rows_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as DecodingMatrix);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(DecodingMatrix other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Cols != other.Cols) return false;
+      if (Rows != other.Rows) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Cols != 0) hash ^= Cols.GetHashCode();
+      if (Rows != 0) hash ^= Rows.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (Cols != 0) {
+        output.WriteRawTag(8);
+        output.WriteUInt32(Cols);
+      }
+      if (Rows != 0) {
+        output.WriteRawTag(16);
+        output.WriteUInt32(Rows);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Cols != 0) {
+        output.WriteRawTag(8);
+        output.WriteUInt32(Cols);
+      }
+      if (Rows != 0) {
+        output.WriteRawTag(16);
+        output.WriteUInt32(Rows);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (Cols != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Cols);
+      }
+      if (Rows != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Rows);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(DecodingMatrix other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Cols != 0) {
+        Cols = other.Cols;
+      }
+      if (other.Rows != 0) {
+        Rows = other.Rows;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            Cols = input.ReadUInt32();
+            break;
+          }
+          case 16: {
+            Rows = input.ReadUInt32();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            Cols = input.ReadUInt32();
+            break;
+          }
+          case 16: {
+            Rows = input.ReadUInt32();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
   public sealed partial class DecodingUpdate : pb::IMessage<DecodingUpdate>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -2285,7 +2513,7 @@ namespace LoRa {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LoRa.FirmwareReflection.Descriptor.MessageTypes[8]; }
+      get { return global::LoRa.FirmwareReflection.Descriptor.MessageTypes[9]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

@@ -38,11 +38,17 @@ public static class SerialUtil
         return Crc8.ComputeChecksum(buffer);
     }
 
-    public static string ByteArrayToString(byte[] ba)
+    public static string ArrayToStringLim(byte[] array, int start, int limit)
     {
-        var hex = new StringBuilder(ba.Length * 2);
-        foreach (var b in ba)
+        var hex = new StringBuilder(array.Length * 2);
+        var subArray = new ArraySegment<byte>(array, start, limit);
+        foreach (var b in subArray)
             hex.AppendFormat("{0:x2} ", b);
         return hex.ToString();
+    }
+    
+    public static string ByteArrayToString(byte[] ba)
+    {
+        return ArrayToStringLim(ba, 0, ba.Length);
     }
 }

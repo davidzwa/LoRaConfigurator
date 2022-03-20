@@ -57,9 +57,10 @@ public partial class SerialProcessorService
             "LORATX-DONE",
             "PeriodTX",
             "PROTO-FAIL",
-            "RLNC_TERMINATE",
-            "DevConfStop",
             "CRC-FAIL",
+            "RLNC_TERMINATE",
+            "INSERT_ROW",
+            "DevConfStop",
             "PUSH-BUTTON"
         };
         if (inclusions.Any(e => payload.Contains(e)))
@@ -93,6 +94,24 @@ public partial class SerialProcessorService
         });
     }
 
+    void ReceiveDecodingMatrix(string portName, UartResponse response)
+    {
+        var matrix = response.Payload.ToArray();
+        var sizes = response.DecodingMatrix;
+        _logger.LogInformation(
+            "[{Name}, DecodingMatrix] Rows {Rows} Cols {Cols}",
+            portName,
+            sizes.Rows,
+            sizes.Cols
+        );
+
+        for (uint i=0; i < sizes.Rows; i++)
+        {
+            var matrixRow = SerialUtil.ArrayToStringLim(matrix, (int)(i * sizes.Cols), (int)(sizes.Cols));
+            _logger.LogInformation("\t{MatrixRow}", matrixRow);
+        }
+    }
+    
     void ReceiveDecodingResult(string portName, UartResponse response)
     {
         var decodingResult = response.DecodingResult;
