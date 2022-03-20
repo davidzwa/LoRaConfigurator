@@ -4,6 +4,8 @@ using LoraGateway.Handlers;
 using LoraGateway.Services;
 using LoraGateway.Services.CommandLine;
 using LoraGateway.Services.Firmware;
+using LoraGateway.Services.Firmware.Utils;
+using LoraGateway.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -19,6 +21,7 @@ public static class LoraGateway
         return Path.Combine(Directory.GetCurrentDirectory(),
             $"../../../Logs/logs-{DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}{postFix}.txt");
     }
+
     public static async Task Main(string[] args)
     {
         Log.Logger = new LoggerConfiguration()
@@ -32,7 +35,7 @@ public static class LoraGateway
             .WriteTo.Console(
                 outputTemplate:
                 "[{Timestamp:HH:mm:ss} {Level:u3}] ({SourceContext}) {Message:lj}{NewLine}{Exception}",
-                restrictedToMinimumLevel:LogEventLevel.Information
+                restrictedToMinimumLevel: LogEventLevel.Information
             )
             .WriteTo.Logger(lc => lc
                 .WriteTo.File(GetUniqueLogFile(), LogEventLevel.Information))
@@ -40,6 +43,20 @@ public static class LoraGateway
                 .Filter.ByIncludingOnly(Matching.FromSource<SerialProcessorService>())
                 .WriteTo.File(GetUniqueLogFile("_serial"), LogEventLevel.Debug))
             .CreateLogger();
+
+        // byte[,] inputBytes = {
+        //     { 0x04, 0x82, 0x41, 0xa0, 0xd0, 0x00, 0x00, 0x00, 0x9a, 0x78 },
+        //     { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },
+        //     { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },
+        //     { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },
+        //     { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }
+        // };
+        // var resultingMatrix = inputBytes.BytesToMatrix();
+        // var matrixString = SerialUtil.MatrixToString(resultingMatrix);
+        // Log.Information("\n{MatrixRow}", matrixString);
+        // var matrix = RlncDecodingService.DecodeMatrix(resultingMatrix, 5);
+        // var gfString = SerialUtil.MatrixToString(matrix);
+        // Log.Information("\n{MatrixRow}", gfString);
 
         await CreateHostBuilder(args).RunConsoleAsync();
     }

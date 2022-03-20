@@ -3,6 +3,7 @@ using System.Management;
 using System.Runtime.InteropServices;
 using System.Text;
 using LoraGateway.Models;
+using LoraGateway.Services.Firmware.RandomLinearCoding;
 
 namespace LoraGateway.Utils;
 
@@ -38,6 +39,25 @@ public static class SerialUtil
         return Crc8.ComputeChecksum(buffer);
     }
 
+    public static string MatrixToString(GFSymbol[,] matrix)
+    {
+        string matrixOutput = "";
+        for (int i = 0; i < matrix.GetLength(0); i++)
+        {
+            List<byte> byteArray = new List<byte>();
+            for (int j = 0; j < matrix.GetLength(1); j++)
+            {
+                byteArray.Add(matrix[i,j].GetValue());
+            }
+
+            var rowString = ArrayToStringLim(byteArray.ToArray(), 0, matrix.GetLength(1));
+            matrixOutput += $"\t{rowString}\n";
+
+        }
+        
+        return matrixOutput;
+    }
+    
     public static string ArrayToStringLim(byte[] array, int start, int limit)
     {
         var hex = new StringBuilder(array.Length * 2);

@@ -6,7 +6,7 @@ public static class MatrixUtils
 {
     public static GFSymbol[,] ToAugmentedMatrix(this IList<EncodedPacket> source)
     {
-        if (source == null) throw new ArgumentNullException("source");
+        if (source == null) throw new ArgumentNullException(nameof(source));
 
         var max = source.Select(l => l.EncodingVector).Max(l => l.Count);
         var maxAugmentation = source.Select(l => l.Payload).Max(l => l.Count);
@@ -32,8 +32,10 @@ public static class MatrixUtils
         var max = source.Select(l => l.EncodingVector).Max(l => l.Count());
         var result = new GFSymbol[source.Count, max];
         for (var i = 0; i < source.Count; i++)
-        for (var j = 0; j < source[i].EncodingVector.Count(); j++)
+        for (var j = 0; j < source[i].EncodingVector.Count; j++)
+        {
             result[i, j] = source[i].EncodingVector[j];
+        }
 
         return result;
     }
@@ -49,5 +51,22 @@ public static class MatrixUtils
             result[i, j] = source[i].Payload[j];
 
         return result;
+    }
+
+    public static GFSymbol[,] BytesToMatrix(this byte[,] bytes)
+    {
+        var rowCount = bytes.GetLength(0);
+        var colCount = bytes.GetLength(1);
+        var matrix = new GFSymbol[rowCount, colCount];
+
+        for (var i = 0; i < rowCount; i++)
+        {
+            for (var j = 0; j < colCount; j++)
+            {
+                matrix[i, j] = new GFSymbol(bytes[i, j]);
+            }
+        }
+
+        return matrix;
     }
 }
