@@ -1,4 +1,5 @@
-﻿using Google.Protobuf;
+﻿using System.Text;
+using Google.Protobuf;
 using LoRa;
 using LoraGateway.Models;
 using LoraGateway.Services.Firmware.RandomLinearCoding;
@@ -46,6 +47,8 @@ public class RlncFlashBlobService
         var terminationCommand = GenerateTerminationCommand();
         AnalyseBlob(terminationCommand);
 
+        WriteDefaultValues();
+
         Log.Information("Cleanup blob generator");
         await _fuotaManagerService.StopFuotaSession(false);
     }
@@ -61,6 +64,33 @@ public class RlncFlashBlobService
         );
     }
 
+    const string fileName = "../../../../rlnc.bin";
+    
+    public void WriteDefaultValues()
+    {
+        using (var stream = File.Open(fileName, FileMode.Create))
+        {
+            using (var writer = new BinaryWriter(stream, Encoding.UTF8, false))
+            {
+                writer.Write(0xFFFF0000);
+                writer.Write(0xFFFFFFFF);
+                writer.Write(0xFFFFFFFF);
+                writer.Write(0xFFFFFFFF);
+                writer.Write((byte)0x01);
+                writer.Write((byte)0x02);
+                writer.Write((byte)0x03);
+                writer.Write((byte)0x04);
+                writer.Write((byte)0x05);
+                writer.Write((byte)0x06);
+                writer.Write((byte)0x07);
+                writer.Write((byte)0x08);
+                // writer.Write(@"c:\Temp");
+                // writer.Write(10);
+                // writer.Write(true);
+            }
+        }
+    }
+    
     private void AnalyseOptimalBlob(RlncFlashEncodedFragment blob)
     {
         var payload = blob.Payload;
