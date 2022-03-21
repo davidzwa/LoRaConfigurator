@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using Google.Protobuf;
 using LoRa;
 using LoraGateway.Models;
@@ -70,7 +70,7 @@ public class RlncFlashBlobService
     {
         using (var stream = File.Open(fileName, FileMode.Create))
         {
-            using (var writer = new BinaryWriter(stream, Encoding.UTF8, false))
+            using (var writer = new BinaryWriter(stream, Encoding.BigEndianUnicode, false))
             {
                 writer.Write(0xFFFF0000);
                 writer.Write(0xFFFFFFFF);
