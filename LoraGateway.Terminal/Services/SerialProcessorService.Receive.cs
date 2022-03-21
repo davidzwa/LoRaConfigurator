@@ -60,6 +60,7 @@ public partial class SerialProcessorService
             "CRC-FAIL",
             "RLNC_TERMINATE",
             "INSERT_ROW",
+            "RAMFUNC",
             "DevConfStop",
             "PUSH-BUTTON"
         };
@@ -134,28 +135,28 @@ public partial class SerialProcessorService
             return;
         }
 
-        if (response.LoraMeasurement.Rssi == -1)
-        {
-            // Suppress internal message
-        }
-        else
-        {
-            var snr = response.LoraMeasurement.Snr;
-            var rssi = response.LoraMeasurement.Rssi;
-            var sequenceNumber = response.LoraMeasurement.SequenceNumber;
-            var isMeasurement = response.LoraMeasurement.IsMeasurementFragment;
+        // if (response.LoraMeasurement.Rssi == -1)
+        // {
+        //     // Suppress internal message
+        // }
+        // else
+        // {
+        var snr = response.LoraMeasurement.Snr;
+        var rssi = response.LoraMeasurement.Rssi;
+        var sequenceNumber = response.LoraMeasurement.SequenceNumber;
+        var isMeasurement = response.LoraMeasurement.IsMeasurementFragment;
 
-            var result = await _measurementsService.AddMeasurement(sequenceNumber, snr, rssi);
-            if (sequenceNumber > 60000) _measurementsService.SetLocationText("");
+        var result = await _measurementsService.AddMeasurement(sequenceNumber, snr, rssi);
+        if (sequenceNumber > 60000) _measurementsService.SetLocationText("");
 
-            InnerLoRaPacketHandler(response?.LoraMeasurement?.DownlinkPayload);
+        InnerLoRaPacketHandler(response?.LoraMeasurement?.DownlinkPayload);
 
-            // Debug for now
-            _logger.LogInformation(
-                "[{Name}] LoRa RX snr: {SNR} rssi: {RSSI} sequence-id:{Index} is-measurement:{IsMeasurement}, skipped:{Skipped}",
-                portName,
-                snr, rssi, sequenceNumber, isMeasurement, result);
-        }
+        // Debug for now
+        _logger.LogInformation(
+            "[{Name}] LoRa RX snr: {SNR} rssi: {RSSI} sequence-id:{Index} is-measurement:{IsMeasurement}, skipped:{Skipped}",
+            portName,
+            snr, rssi, sequenceNumber, isMeasurement, result);
+        // }
     }
     
     private void InnerLoRaPacketHandler(LoRaMessage? message)

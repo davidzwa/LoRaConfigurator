@@ -108,7 +108,7 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         return _currentFuotaSession;
     }
 
-    public async Task StartFuotaSession()
+    public async Task StartFuotaSession(bool publishEvent = true)
     {
         _logger.LogInformation("Starting FUOTA session");
 
@@ -117,16 +117,18 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         var result = _cancellation.TryReset();
         if (!result) _logger.LogDebug("Resetting of FUOTA cancellation source failed. Continuing anyway");
 
-        await _eventPublisher.PublishEventAsync(new InitFuotaSession { Message = "Initiating" });
+        if (publishEvent)
+            await _eventPublisher.PublishEventAsync(new InitFuotaSession { Message = "Initiating" });
     }
 
-    public async Task StopFuotaSession()
+    public async Task StopFuotaSession(bool publishEvent = true)
     {
         _logger.LogInformation("Stopping FUOTA session");
         _cancellation.Cancel();
 
         // Termination imminent - clear the session and terminate the hosted service
-        await _eventPublisher.PublishEventAsync(new StopFuotaSession { Message = "Stopping" });
+        if (publishEvent) 
+            await _eventPublisher.PublishEventAsync(new StopFuotaSession { Message = "Stopping" });
 
         ClearFuotaSession();
     }
@@ -241,6 +243,7 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
 
         return new()
         {
+            GenerationIndex = (byte)_currentFuotaSession.CurrentGenerationIndex,
             Fragment = fragmentBytes.ToArray(),
             UsedGenerator = resetLfsrState
         };

@@ -57,7 +57,7 @@
       "HardwareId": "2818104-876106005-825374777",
       "Id": 2818104,
       "NickName": "H3",
-      "FirmwareVersion": "2.0.2.5",
+      "FirmwareVersion": "3.0.0.1",
       "RegisteredAt": "132838808759884393",
       "LastPortName": "COM18",
       "Meta": null
@@ -120,7 +120,7 @@
       "HardwareId": "4456541-808997123-808661810",
       "Id": 4456541,
       "NickName": "A6",
-      "FirmwareVersion": "3.0.0.1",
+      "FirmwareVersion": "3.2.0.0",
       "RegisteredAt": "132913120564985102",
       "LastPortName": "COM16",
       "Meta": null

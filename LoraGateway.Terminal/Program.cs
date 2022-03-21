@@ -74,6 +74,7 @@ public static class LoraGateway
                 services.AddSingleton<MeasurementsService>();
                 services.AddSingleton<BlobFragmentationService>();
                 services.AddSingleton<RlncEncodingService>();
+                services.AddSingleton<RlncFlashBlobService>();
                 services.AddSingleton<FuotaSessionHostedService>();
                 services.AddHostedService<FuotaSessionHostedService>(p => p.GetService<FuotaSessionHostedService>());
                 services.AddHostedService<SerialHostedService>();
