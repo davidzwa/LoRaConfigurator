@@ -27,35 +27,36 @@ namespace LoRa {
             "ChVzaGFyZWQvZmlybXdhcmUucHJvdG8iSAoHVmVyc2lvbhINCgVNYWpvchgB",
             "IAEoDRINCgVNaW5vchgCIAEoDRINCgVQYXRjaBgDIAEoDRIQCghSZXZpc2lv",
             "bhgEIAEoDSIxCghEZXZpY2VJZBILCgNJZDAYASABKA0SCwoDSWQxGAIgASgN",
-            "EgsKA0lkMhgDIAEoDSKNAQoLQm9vdE1lc3NhZ2USIwoQRGV2aWNlSWRlbnRp",
+            "EgsKA0lkMhgDIAEoDSKlAQoLQm9vdE1lc3NhZ2USIwoQRGV2aWNlSWRlbnRp",
             "ZmllchgBIAEoCzIJLkRldmljZUlkEiEKD0Zpcm13YXJlVmVyc2lvbhgCIAEo",
             "CzIILlZlcnNpb24SGAoQTWVhc3VyZW1lbnRDb3VudBgDIAEoDRIcChRNZWFz",
-            "dXJlbWVudHNEaXNhYmxlZBgEIAEoCCL0AQoVUmxuY0luaXRDb25maWdDb21t",
-            "YW5kEhYKDkdlbmVyYXRpb25TaXplGAEgASgNEhcKD0dlbmVyYXRpb25Db3Vu",
-            "dBgCIAEoDRIRCglGcmFtZVNpemUYAyABKA0SFwoPVG90YWxGcmFtZUNvdW50",
-            "GAQgASgNEhMKC0ZpZWxkRGVncmVlGAUgASgNEhEKCUZpZWxkUG9seRgGIAEo",
-            "DRIQCghMZnNyU2VlZBgHIAEoDRIQCghMZnNyUG9seRgIIAEoDRIXCg9EZWJ1",
-            "Z01hdHJpeFVhcnQYCSABKAgSGQoRRGVidWdGcmFnbWVudFVhcnQYCiABKAgi",
-            "KAoTUmxuY0VuY29kZWRGcmFnbWVudBIRCglMZnNyU3RhdGUYASABKA0iOQoY",
-            "UmxuY0ZsYXNoRW5jb2RlZEZyYWdtZW50EgwKBE1ldGEYASABKAwSDwoHUGF5",
-            "bG9hZBgCIAEoDCI9Cg9SbG5jU3RhdGVVcGRhdGUSFwoPR2VuZXJhdGlvbklu",
-            "ZGV4GAEgASgNEhEKCUxmc3JTdGF0ZRgCIAEoDSIYChZSbG5jVGVybWluYXRp",
-            "b25Db21tYW5kImwKDkRlY29kaW5nUmVzdWx0Eg8KB1N1Y2Nlc3MYASABKAgS",
-            "EgoKTWF0cml4UmFuaxgCIAEoDRIaChJGaXJzdERlY29kZWROdW1iZXIYAyAB",
-            "KA0SGQoRTGFzdERlY29kZWROdW1iZXIYBCABKA0iLAoORGVjb2RpbmdNYXRy",
-            "aXgSDAoEQ29scxgBIAEoDRIMCgRSb3dzGAIgASgNIvoBCg5EZWNvZGluZ1Vw",
-            "ZGF0ZRISCgpNYXRyaXhDcmM4GAEgASgNEhQKDEZpcnN0Um93Q3JjOBgCIAEo",
-            "DRITCgtMYXN0Um93Q3JjOBgDIAEoDRIUCgxMYXN0Um93SW5kZXgYBCABKA0S",
-            "FAoMUmFua1Byb2dyZXNzGAUgASgNEhkKEVJlY2VpdmVkRnJhZ21lbnRzGAYg",
-            "ASgNEh4KFkN1cnJlbnRHZW5lcmF0aW9uSW5kZXgYByABKA0SEQoJSXNSdW5u",
-            "aW5nGAggASgIEhUKDVVzZWRMZnNyU3RhdGUYCSABKA0SGAoQQ3VycmVudExm",
-            "c3JTdGF0ZRgKIAEoDUIHqgIETG9SYWIGcHJvdG8z"));
+            "dXJlbWVudHNEaXNhYmxlZBgEIAEoCBIWCg5SbG5jRmxhc2hTdGF0ZRgFIAEo",
+            "DSL0AQoVUmxuY0luaXRDb25maWdDb21tYW5kEhYKDkdlbmVyYXRpb25TaXpl",
+            "GAEgASgNEhcKD0dlbmVyYXRpb25Db3VudBgCIAEoDRIRCglGcmFtZVNpemUY",
+            "AyABKA0SFwoPVG90YWxGcmFtZUNvdW50GAQgASgNEhMKC0ZpZWxkRGVncmVl",
+            "GAUgASgNEhEKCUZpZWxkUG9seRgGIAEoDRIQCghMZnNyU2VlZBgHIAEoDRIQ",
+            "CghMZnNyUG9seRgIIAEoDRIXCg9EZWJ1Z01hdHJpeFVhcnQYCSABKAgSGQoR",
+            "RGVidWdGcmFnbWVudFVhcnQYCiABKAgiKAoTUmxuY0VuY29kZWRGcmFnbWVu",
+            "dBIRCglMZnNyU3RhdGUYASABKA0iOQoYUmxuY0ZsYXNoRW5jb2RlZEZyYWdt",
+            "ZW50EgwKBE1ldGEYASABKAwSDwoHUGF5bG9hZBgCIAEoDCI9Cg9SbG5jU3Rh",
+            "dGVVcGRhdGUSFwoPR2VuZXJhdGlvbkluZGV4GAEgASgNEhEKCUxmc3JTdGF0",
+            "ZRgCIAEoDSIYChZSbG5jVGVybWluYXRpb25Db21tYW5kImwKDkRlY29kaW5n",
+            "UmVzdWx0Eg8KB1N1Y2Nlc3MYASABKAgSEgoKTWF0cml4UmFuaxgCIAEoDRIa",
+            "ChJGaXJzdERlY29kZWROdW1iZXIYAyABKA0SGQoRTGFzdERlY29kZWROdW1i",
+            "ZXIYBCABKA0iLAoORGVjb2RpbmdNYXRyaXgSDAoEQ29scxgBIAEoDRIMCgRS",
+            "b3dzGAIgASgNIvoBCg5EZWNvZGluZ1VwZGF0ZRISCgpNYXRyaXhDcmM4GAEg",
+            "ASgNEhQKDEZpcnN0Um93Q3JjOBgCIAEoDRITCgtMYXN0Um93Q3JjOBgDIAEo",
+            "DRIUCgxMYXN0Um93SW5kZXgYBCABKA0SFAoMUmFua1Byb2dyZXNzGAUgASgN",
+            "EhkKEVJlY2VpdmVkRnJhZ21lbnRzGAYgASgNEh4KFkN1cnJlbnRHZW5lcmF0",
+            "aW9uSW5kZXgYByABKA0SEQoJSXNSdW5uaW5nGAggASgIEhUKDVVzZWRMZnNy",
+            "U3RhdGUYCSABKA0SGAoQQ3VycmVudExmc3JTdGF0ZRgKIAEoDUIHqgIETG9S",
+            "YWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.Version), global::LoRa.Version.Parser, new[]{ "Major", "Minor", "Patch", "Revision" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DeviceId), global::LoRa.DeviceId.Parser, new[]{ "Id0", "Id1", "Id2" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.BootMessage), global::LoRa.BootMessage.Parser, new[]{ "DeviceIdentifier", "FirmwareVersion", "MeasurementCount", "MeasurementsDisabled" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.BootMessage), global::LoRa.BootMessage.Parser, new[]{ "DeviceIdentifier", "FirmwareVersion", "MeasurementCount", "MeasurementsDisabled", "RlncFlashState" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncInitConfigCommand), global::LoRa.RlncInitConfigCommand.Parser, new[]{ "GenerationSize", "GenerationCount", "FrameSize", "TotalFrameCount", "FieldDegree", "FieldPoly", "LfsrSeed", "LfsrPoly", "DebugMatrixUart", "DebugFragmentUart" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncEncodedFragment), global::LoRa.RlncEncodedFragment.Parser, new[]{ "LfsrState" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncFlashEncodedFragment), global::LoRa.RlncFlashEncodedFragment.Parser, new[]{ "Meta", "Payload" }, null, null, null, null),
@@ -671,6 +672,7 @@ namespace LoRa {
       firmwareVersion_ = other.firmwareVersion_ != null ? other.firmwareVersion_.Clone() : null;
       measurementCount_ = other.measurementCount_;
       measurementsDisabled_ = other.measurementsDisabled_;
+      rlncFlashState_ = other.rlncFlashState_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -728,6 +730,18 @@ namespace LoRa {
       }
     }
 
+    /// <summary>Field number for the "RlncFlashState" field.</summary>
+    public const int RlncFlashStateFieldNumber = 5;
+    private uint rlncFlashState_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint RlncFlashState {
+      get { return rlncFlashState_; }
+      set {
+        rlncFlashState_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -747,6 +761,7 @@ namespace LoRa {
       if (!object.Equals(FirmwareVersion, other.FirmwareVersion)) return false;
       if (MeasurementCount != other.MeasurementCount) return false;
       if (MeasurementsDisabled != other.MeasurementsDisabled) return false;
+      if (RlncFlashState != other.RlncFlashState) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -758,6 +773,7 @@ namespace LoRa {
       if (firmwareVersion_ != null) hash ^= FirmwareVersion.GetHashCode();
       if (MeasurementCount != 0) hash ^= MeasurementCount.GetHashCode();
       if (MeasurementsDisabled != false) hash ^= MeasurementsDisabled.GetHashCode();
+      if (RlncFlashState != 0) hash ^= RlncFlashState.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -792,6 +808,10 @@ namespace LoRa {
         output.WriteRawTag(32);
         output.WriteBool(MeasurementsDisabled);
       }
+      if (RlncFlashState != 0) {
+        output.WriteRawTag(40);
+        output.WriteUInt32(RlncFlashState);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -818,6 +838,10 @@ namespace LoRa {
         output.WriteRawTag(32);
         output.WriteBool(MeasurementsDisabled);
       }
+      if (RlncFlashState != 0) {
+        output.WriteRawTag(40);
+        output.WriteUInt32(RlncFlashState);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -839,6 +863,9 @@ namespace LoRa {
       }
       if (MeasurementsDisabled != false) {
         size += 1 + 1;
+      }
+      if (RlncFlashState != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(RlncFlashState);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -869,6 +896,9 @@ namespace LoRa {
       }
       if (other.MeasurementsDisabled != false) {
         MeasurementsDisabled = other.MeasurementsDisabled;
+      }
+      if (other.RlncFlashState != 0) {
+        RlncFlashState = other.RlncFlashState;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -907,6 +937,10 @@ namespace LoRa {
             MeasurementsDisabled = input.ReadBool();
             break;
           }
+          case 40: {
+            RlncFlashState = input.ReadUInt32();
+            break;
+          }
         }
       }
     #endif
@@ -942,6 +976,10 @@ namespace LoRa {
           }
           case 32: {
             MeasurementsDisabled = input.ReadBool();
+            break;
+          }
+          case 40: {
+            RlncFlashState = input.ReadUInt32();
             break;
           }
         }

@@ -140,6 +140,8 @@ public class RlncEncodingService
         if (HasNextGeneration()) CurrentGenerationIndex++;
 
         ValidateGenerationsState();
+        
+        _generator.Reset();
     }
 
     /// <summary>

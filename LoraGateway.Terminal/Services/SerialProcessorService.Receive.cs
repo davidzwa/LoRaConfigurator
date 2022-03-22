@@ -14,6 +14,7 @@ public partial class SerialProcessorService
         var firmwareVersion = response.BootMessage.GetFirmwareAsString();
         var measurementCount = response.BootMessage.MeasurementCount;
         var measurementDisabled = response.BootMessage.MeasurementsDisabled;
+        var flashState = response.BootMessage.RlncFlashState;
         var device = await _deviceStore.GetOrAddDevice(new Device
         {
             HardwareId = deviceId,
@@ -22,9 +23,13 @@ public partial class SerialProcessorService
             LastPortName = portName
         });
 
-        _logger.LogInformation("[{Port} {Name}, MC:{Count}, MD:{Disabled}] heart beat {DeviceId}", portName,
+        _logger.LogInformation("[{Port} {Name}, MC:{Count}, MD:{Disabled}, FS:{FlashState}] heart beat {DeviceId}", 
+            portName,
             device?.NickName,
-            measurementCount, measurementDisabled, deviceId);
+            measurementCount, 
+            measurementDisabled, 
+            flashState,
+            deviceId);
     }
 
     async Task<int> ReceiveDebugMessage(string portName, UartResponse response)

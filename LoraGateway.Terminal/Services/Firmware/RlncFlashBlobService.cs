@@ -1,8 +1,10 @@
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 using Google.Protobuf;
 using LoRa;
 using LoraGateway.Models;
 using LoraGateway.Services.Firmware.RandomLinearCoding;
+using LoraGateway.Utils;
 using Serilog;
 using Shouldly;
 
@@ -10,7 +12,7 @@ namespace LoraGateway.Services.Firmware;
 
 public class RlncGeneration
 {
-    public List<RlncFlashEncodedFragment> Fragments { get; set; }
+    public List<RlncFlashEncodedFragment> Fragments { get; set; } = new();
     public LoRaMessage UpdateMessage { get; set; }
 }
 
@@ -18,6 +20,8 @@ public class RlncFlashBlobService
 {
     private readonly FuotaManagerService _fuotaManagerService;
     private int _packetsGenerated = 0;
+    private int _bytesWritten = 0;
+    public const string FileName = "../../../../rlnc.bin";
 
     public RlncFlashBlobService(FuotaManagerService fuotaManagerService)
     {
@@ -34,6 +38,7 @@ public class RlncFlashBlobService
 
         // Load config and start unmanaged session
         _packetsGenerated = 0;
+        _bytesWritten = 0;
         await _fuotaManagerService.LoadStore();
         await _fuotaManagerService.StartFuotaSession(false);
 
@@ -45,73 +50,107 @@ public class RlncFlashBlobService
         List<RlncGeneration> rlncGenerations = new List<RlncGeneration>();
         while (!_fuotaManagerService.IsFuotaSessionDone())
         {
+            Log.Information("Next gen started");
             var newRlncGeneration = new RlncGeneration();
             while (!_fuotaManagerService.IsCurrentGenerationComplete())
             {
-                var fragmentWithMeta = _fuotaManagerService.FetchNextRlncPayloadWithGenerator();
-                fragmentWithMeta.SequenceNumber = (byte)_packetsGenerated;
+                var fragmentWithMeta = _fuotaManagerService.FetchNextRlncPayloadWithGenerator(false);
+                fragmentWithMeta.SequenceNumber = (byte) _packetsGenerated;
                 _packetsGenerated++;
-                // var fragmentCommand = GenerateFragmentCommand(fragmentWithMeta);
-                // AnalyseBlob(fragmentCommand);
                 var optimizedFragmentCommand = GenerateOptimizedFragmentCommand(fragmentWithMeta);
                 AnalyseOptimalBlob(optimizedFragmentCommand);
-                
+
                 newRlncGeneration.Fragments.Add(optimizedFragmentCommand);
+            }
+
+            if (_fuotaManagerService.IsFuotaSessionDone())
+            {
+                rlncGenerations.Add(newRlncGeneration);
+                break;
             }
 
             _fuotaManagerService.MoveNextRlncGeneration();
             var generationUpdateCommand = GenerateGenerationUpdateCommand();
             AnalyseBlob(generationUpdateCommand);
             newRlncGeneration.UpdateMessage = generationUpdateCommand;
+
+            rlncGenerations.Add(newRlncGeneration);
         }
 
+        Log.Information("Writing blob with {PacketsGenerated} fragments to file {File} using {Bytes} bytes",
+            _packetsGenerated, FileName, _bytesWritten);
         WriteRlncBlob(initCommand, terminationCommand, rlncGenerations);
 
         Log.Information("Cleanup blob generator");
         await _fuotaManagerService.StopFuotaSession(false);
     }
-    
+
     public void WriteRlncBlob(
         LoRaMessage initMessage,
         LoRaMessage terminationMessage,
         List<RlncGeneration> generations
-        )
+    )
     {
         var initCommand = initMessage.ToByteArray();
         var termCommand = terminationMessage.ToByteArray();
-        using (var stream = File.Open(fileName, FileMode.Create))
+        using (var stream = File.Open(FileName, FileMode.Create))
         {
-            using (var writer = new BinaryWriter(stream, Encoding.BigEndianUnicode, false))
+            using (var writer = new BinaryWriter(stream, Encoding.UTF8, false))
             {
-                writer.Write(0xFFFF0000); // (32 bits) Page header
+                var prefix = 0xFFFF0000;
+                writer.Write(prefix); // (32 bits) Page header
+                Log.Information("Page header {Data}",
+                    SerialUtil.ByteArrayToString(BitConverter.GetBytes(prefix)));
                 writer.Write(initCommand.Length); // (32 bits) Init Size header 
+                Log.Information("Init command header {Data}",
+                    SerialUtil.ByteArrayToString(BitConverter.GetBytes(initCommand.Length)));
                 writer.Write(termCommand.Length); // (32 bits) Termination Size header
+                Log.Information("Term command header {Data}",
+                    SerialUtil.ByteArrayToString(BitConverter.GetBytes(termCommand.Length)));
                 writer.Write(initCommand);
+                Log.Information("Init command {Data}", SerialUtil.ByteArrayToString(initCommand));
                 writer.Write(termCommand);
+                Log.Information("Term command {Data}", SerialUtil.ByteArrayToString(termCommand));
 
+                int currentGenIndex = 0;
                 foreach (var gen in generations)
                 {
-                    var totalSize = (UInt32)gen.Fragments.Sum(f => f.Payload.Length + f.Meta.Length);
-                    byte[] syncHeader = new byte[]{
+                    var totalSize = (UInt16) gen.Fragments.Sum(f => f.Payload.Length + f.Meta.Length);
+                    byte[] syncHeader = new byte[]
+                    {
                         0xFF, 0xFF
                     }.Concat(BitConverter.GetBytes(totalSize)).ToArray();
+                    Log.Information("Sync header {Data}", SerialUtil.ByteArrayToString(syncHeader));
                     syncHeader.Length.ShouldBe(4);
                     // TODO check endianness
                     writer.Write(syncHeader);
-                    foreach(var encodedFragment in gen.Fragments)
+                    foreach (var encodedFragment in gen.Fragments)
                     {
-                        writer.Write(
-                            encodedFragment.Meta.Concat(encodedFragment.Payload).ToArray()
-                        );
+                        var flashPayload = encodedFragment.Meta.Concat(encodedFragment.Payload).ToArray();
+                        writer.Write(flashPayload);
+                        Log.Information("Fragment({Size}) {Data}", flashPayload.Length, SerialUtil.ByteArrayToString(
+                            flashPayload));
                     }
 
                     // TODO check endianness
-                    var updateMessage = gen.UpdateMessage.ToByteArray();
-                    var updateHeaderSize = updateMessage.Length;
-                    byte[] syncUpdateHeader = new byte[]{
-                        0xFF, 0xFF
-                    }.Concat(BitConverter.GetBytes(updateHeaderSize)).ToArray();
-                    writer.Write(syncUpdateHeader);
+                    if (gen.UpdateMessage == null && currentGenIndex + 1 != generations.Count)
+                    {
+                        throw new ValidationException("Missing update message in between generations");
+                    }
+
+                    if (gen.UpdateMessage != null)
+                    {
+                        var updateMessage = gen.UpdateMessage.ToByteArray();
+                        var updateHeaderSize = updateMessage.Length;
+                        byte[] syncUpdateHeader = new byte[]
+                        {
+                            0xFF, 0xFF
+                        }.Concat(BitConverter.GetBytes((UInt16) updateHeaderSize)).ToArray();
+                        writer.Write(syncUpdateHeader);
+                        Log.Information("Update header {Data}", SerialUtil.ByteArrayToString(syncUpdateHeader));
+                    }
+
+                    currentGenIndex++;
                 }
             }
         }
@@ -119,30 +158,27 @@ public class RlncFlashBlobService
 
     private void AnalyseBlob(LoRaMessage message)
     {
-        var payload = message.Payload;
+        // var payload = message.Payload;
         var blob = message.ToByteArray();
-        Log.Information("Encoded payload Size {Size} Proto size {SizeBlob}",
-            payload.Length,
-            blob.Length
-            // SerialUtil.ByteArrayToString(blob)
-        );
+        _bytesWritten += blob.Length;
+        // Log.Information("Encoded payload Size {Size} Proto size {SizeBlob}",
+        //     payload.Length,
+        //     blob.Length
+        //     // SerialUtil.ByteArrayToString(blob)
+        // );
     }
 
-    const string fileName = "../../../../rlnc.bin";
-    
-
-    
     private void AnalyseOptimalBlob(RlncFlashEncodedFragment blob)
     {
-        var payload = blob.Payload;
-        var proto = blob.ToByteString();
+        _bytesWritten += blob.Payload.Length + blob.Meta.Length;
 
-        Log.Information("Optimized fragment Size {Size} Total {TotalSize} Proto size {SizeBlob}",
-            payload.Length,
-            payload.Length + blob.Meta.Length,
-            proto.Length
-            // SerialUtil.ByteArrayToString(blob)
-        );
+        // var proto = blob.ToByteString();
+        // Log.Information("Optimized fragment Size {Size} Total {TotalSize}",
+        //     payload.Length,
+        //     payload.Length + blob.Meta.Length
+        //     // proto.Length
+        //     // SerialUtil.ByteArrayToString(blob)
+        // );
     }
 
     private LoRaMessage GenerateInitCommand(FuotaSession fuotaSession)

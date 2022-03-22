@@ -132,8 +132,7 @@ public class UartEncodingTests
         result.BodyCase.ShouldBe(UartResponse.BodyOneofCase.BootMessage);
         result.BootMessage.MeasurementsDisabled.ShouldBeTrue();
     }
-    
-    
+
     [Fact]
     public void BootRequestProtoDecode()
     {
