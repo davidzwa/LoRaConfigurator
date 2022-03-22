@@ -3,10 +3,16 @@ using Google.Protobuf;
 using LoRa;
 using LoraGateway.Models;
 using LoraGateway.Services.Firmware.RandomLinearCoding;
-using LoraGateway.Utils;
 using Serilog;
+using Shouldly;
 
 namespace LoraGateway.Services.Firmware;
+
+public class RlncGeneration
+{
+    public List<RlncFlashEncodedFragment> Fragments { get; set; }
+    public LoRaMessage UpdateMessage { get; set; }
+}
 
 public class RlncFlashBlobService
 {
@@ -33,24 +39,82 @@ public class RlncFlashBlobService
 
         var initCommand = GenerateInitCommand(_fuotaManagerService.GetCurrentSession());
         AnalyseBlob(initCommand);
-        var fragmentWithMeta = _fuotaManagerService.FetchNextRlncPayloadWithGenerator();
-        fragmentWithMeta.SequenceNumber = (byte)_packetsGenerated;
-        _packetsGenerated++;
-        
-        var fragmentCommand = GenerateFragmentCommand(fragmentWithMeta);
-        AnalyseBlob(fragmentCommand);
-        var optimizedFragmentCommand = GenerateOptimizedFragmentCommand(fragmentWithMeta);
-        AnalyseOptimalBlob(optimizedFragmentCommand);
-        
-        var generationUpdateCommand = GenerateGenerationUpdateCommand();
-        AnalyseBlob(generationUpdateCommand);
         var terminationCommand = GenerateTerminationCommand();
         AnalyseBlob(terminationCommand);
 
-        WriteDefaultValues();
+        List<RlncGeneration> rlncGenerations = new List<RlncGeneration>();
+        while (!_fuotaManagerService.IsFuotaSessionDone())
+        {
+            var newRlncGeneration = new RlncGeneration();
+            while (!_fuotaManagerService.IsCurrentGenerationComplete())
+            {
+                var fragmentWithMeta = _fuotaManagerService.FetchNextRlncPayloadWithGenerator();
+                fragmentWithMeta.SequenceNumber = (byte)_packetsGenerated;
+                _packetsGenerated++;
+                // var fragmentCommand = GenerateFragmentCommand(fragmentWithMeta);
+                // AnalyseBlob(fragmentCommand);
+                var optimizedFragmentCommand = GenerateOptimizedFragmentCommand(fragmentWithMeta);
+                AnalyseOptimalBlob(optimizedFragmentCommand);
+                
+                newRlncGeneration.Fragments.Add(optimizedFragmentCommand);
+            }
+
+            _fuotaManagerService.MoveNextRlncGeneration();
+            var generationUpdateCommand = GenerateGenerationUpdateCommand();
+            AnalyseBlob(generationUpdateCommand);
+            newRlncGeneration.UpdateMessage = generationUpdateCommand;
+        }
+
+        WriteRlncBlob(initCommand, terminationCommand, rlncGenerations);
 
         Log.Information("Cleanup blob generator");
         await _fuotaManagerService.StopFuotaSession(false);
+    }
+    
+    public void WriteRlncBlob(
+        LoRaMessage initMessage,
+        LoRaMessage terminationMessage,
+        List<RlncGeneration> generations
+        )
+    {
+        var initCommand = initMessage.ToByteArray();
+        var termCommand = terminationMessage.ToByteArray();
+        using (var stream = File.Open(fileName, FileMode.Create))
+        {
+            using (var writer = new BinaryWriter(stream, Encoding.BigEndianUnicode, false))
+            {
+                writer.Write(0xFFFF0000); // (32 bits) Page header
+                writer.Write(initCommand.Length); // (32 bits) Init Size header 
+                writer.Write(termCommand.Length); // (32 bits) Termination Size header
+                writer.Write(initCommand);
+                writer.Write(termCommand);
+
+                foreach (var gen in generations)
+                {
+                    var totalSize = (UInt32)gen.Fragments.Sum(f => f.Payload.Length + f.Meta.Length);
+                    byte[] syncHeader = new byte[]{
+                        0xFF, 0xFF
+                    }.Concat(BitConverter.GetBytes(totalSize)).ToArray();
+                    syncHeader.Length.ShouldBe(4);
+                    // TODO check endianness
+                    writer.Write(syncHeader);
+                    foreach(var encodedFragment in gen.Fragments)
+                    {
+                        writer.Write(
+                            encodedFragment.Meta.Concat(encodedFragment.Payload).ToArray()
+                        );
+                    }
+
+                    // TODO check endianness
+                    var updateMessage = gen.UpdateMessage.ToByteArray();
+                    var updateHeaderSize = updateMessage.Length;
+                    byte[] syncUpdateHeader = new byte[]{
+                        0xFF, 0xFF
+                    }.Concat(BitConverter.GetBytes(updateHeaderSize)).ToArray();
+                    writer.Write(syncUpdateHeader);
+                }
+            }
+        }
     }
 
     private void AnalyseBlob(LoRaMessage message)
@@ -66,30 +130,7 @@ public class RlncFlashBlobService
 
     const string fileName = "../../../../rlnc.bin";
     
-    public void WriteDefaultValues()
-    {
-        using (var stream = File.Open(fileName, FileMode.Create))
-        {
-            using (var writer = new BinaryWriter(stream, Encoding.BigEndianUnicode, false))
-            {
-                writer.Write(0xFFFF0000);
-                writer.Write(0xFFFFFFFF);
-                writer.Write(0xFFFFFFFF);
-                writer.Write(0xFFFFFFFF);
-                writer.Write((byte)0x01);
-                writer.Write((byte)0x02);
-                writer.Write((byte)0x03);
-                writer.Write((byte)0x04);
-                writer.Write((byte)0x05);
-                writer.Write((byte)0x06);
-                writer.Write((byte)0x07);
-                writer.Write((byte)0x08);
-                // writer.Write(@"c:\Temp");
-                // writer.Write(10);
-                // writer.Write(true);
-            }
-        }
-    }
+
     
     private void AnalyseOptimalBlob(RlncFlashEncodedFragment blob)
     {
