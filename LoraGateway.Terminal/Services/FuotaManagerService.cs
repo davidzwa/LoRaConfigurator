@@ -22,6 +22,9 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
     private FuotaSession? _currentFuotaSession;
     private List<UnencodedPacket> _firmwarePackets = new();
 
+    // Whether we attempted to start a remote session
+    public bool IsRemoteSessionStarted = false;
+
     public FuotaManagerService(
         ILogger<FuotaManagerService> logger,
         IEventPublisher eventPublisher,

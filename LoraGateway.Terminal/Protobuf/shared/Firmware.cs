@@ -31,45 +31,44 @@ namespace LoRa {
             "IqUBCgtCb290TWVzc2FnZRIjChBEZXZpY2VJZGVudGlmaWVyGAEgASgLMgku",
             "RGV2aWNlSWQSIQoPRmlybXdhcmVWZXJzaW9uGAIgASgLMgguVmVyc2lvbhIY",
             "ChBNZWFzdXJlbWVudENvdW50GAMgASgNEhwKFE1lYXN1cmVtZW50c0Rpc2Fi",
-            "bGVkGAQgASgIEhYKDlJsbmNGbGFzaFN0YXRlGAUgASgNIrwBChtSbG5jUmVt",
-            "b3RlRmxhc2hTdGFydENvbW1hbmQSJwofUmVkdWNlZEdlbmVyYXRpb25SZWR1",
-            "bmRhbmN5U2l6ZRgBIAEoDRI1ChV0cmFuc21pdENvbmZpZ3VyYXRpb24YAiAB",
-            "KAsyFi5UcmFuc21pdENvbmZpZ3VyYXRpb24SEgoKVGltZXJEZWxheRgDIAEo",
-            "DRIWCg5TZXRJc011bHRpY2FzdBgEIAEoCBIRCglEZXZpY2VJZDAYBSABKA0i",
-            "HAoaUmxuY1JlbW90ZUZsYXNoU3RvcENvbW1hbmQiGwoZUmxuY1F1ZXJ5UmVt",
-            "b3RlRmxhc2hTdGF0ZSLuAQoXUmxuY1JlbW90ZUZsYXNoUmVzcG9uc2USFgoO",
-            "UmxuY0ZsYXNoU3RhdGUYASABKA0SGAoQUmxuY1Nlc3Npb25TdGF0ZRgCIAEo",
-            "DRIWCg5DdXJyZW50VHhQb3dlchgDIAEoBRIaChJDdXJyZW50VHhCYW5kd2lk",
-            "dGgYBCABKA0SGQoRQ3VycmVudFR4RGF0YVJhdGUYBSABKA0SGQoRQ3VycmVu",
-            "dFRpbWVyRGVsYXkYBiABKA0SHQoVQ3VycmVudFNldElzTXVsdGljYXN0GAcg",
-            "ASgIEhgKEEN1cnJlbnREZXZpY2VJZDAYCCABKA0ilgIKFVJsbmNJbml0Q29u",
-            "ZmlnQ29tbWFuZBIWCg5HZW5lcmF0aW9uU2l6ZRgBIAEoDRIgChhHZW5lcmF0",
-            "aW9uUmVkdW5kYW5jeVNpemUYAiABKA0SFwoPR2VuZXJhdGlvbkNvdW50GAMg",
-            "ASgNEhEKCUZyYW1lU2l6ZRgEIAEoDRIXCg9Ub3RhbEZyYW1lQ291bnQYBSAB",
-            "KA0SEwoLRmllbGREZWdyZWUYBiABKA0SEQoJRmllbGRQb2x5GAcgASgNEhAK",
-            "CExmc3JTZWVkGAggASgNEhAKCExmc3JQb2x5GAkgASgNEhcKD0RlYnVnTWF0",
-            "cml4VWFydBgKIAEoCBIZChFEZWJ1Z0ZyYWdtZW50VWFydBgLIAEoCCIoChNS",
-            "bG5jRW5jb2RlZEZyYWdtZW50EhEKCUxmc3JTdGF0ZRgBIAEoDSI5ChhSbG5j",
-            "Rmxhc2hFbmNvZGVkRnJhZ21lbnQSDAoETWV0YRgBIAEoDBIPCgdQYXlsb2Fk",
-            "GAIgASgMIioKD1JsbmNTdGF0ZVVwZGF0ZRIXCg9HZW5lcmF0aW9uSW5kZXgY",
-            "ASABKA0iGAoWUmxuY1Rlcm1pbmF0aW9uQ29tbWFuZCJsCg5EZWNvZGluZ1Jl",
-            "c3VsdBIPCgdTdWNjZXNzGAEgASgIEhIKCk1hdHJpeFJhbmsYAiABKA0SGgoS",
-            "Rmlyc3REZWNvZGVkTnVtYmVyGAMgASgNEhkKEUxhc3REZWNvZGVkTnVtYmVy",
-            "GAQgASgNIiwKDkRlY29kaW5nTWF0cml4EgwKBENvbHMYASABKA0SDAoEUm93",
-            "cxgCIAEoDSL6AQoORGVjb2RpbmdVcGRhdGUSEgoKTWF0cml4Q3JjOBgBIAEo",
-            "DRIUCgxGaXJzdFJvd0NyYzgYAiABKA0SEwoLTGFzdFJvd0NyYzgYAyABKA0S",
-            "FAoMTGFzdFJvd0luZGV4GAQgASgNEhQKDFJhbmtQcm9ncmVzcxgFIAEoDRIZ",
-            "ChFSZWNlaXZlZEZyYWdtZW50cxgGIAEoDRIeChZDdXJyZW50R2VuZXJhdGlv",
-            "bkluZGV4GAcgASgNEhEKCUlzUnVubmluZxgIIAEoCBIVCg1Vc2VkTGZzclN0",
-            "YXRlGAkgASgNEhgKEEN1cnJlbnRMZnNyU3RhdGUYCiABKA1CB6oCBExvUmFi",
-            "BnByb3RvMw=="));
+            "bGVkGAQgASgIEhYKDlJsbmNGbGFzaFN0YXRlGAUgASgNIpMBChtSbG5jUmVt",
+            "b3RlRmxhc2hTdGFydENvbW1hbmQSNQoVdHJhbnNtaXRDb25maWd1cmF0aW9u",
+            "GAIgASgLMhYuVHJhbnNtaXRDb25maWd1cmF0aW9uEhIKClRpbWVyRGVsYXkY",
+            "AyABKA0SFgoOU2V0SXNNdWx0aWNhc3QYBCABKAgSEQoJRGV2aWNlSWQwGAUg",
+            "ASgNIhwKGlJsbmNSZW1vdGVGbGFzaFN0b3BDb21tYW5kIhsKGVJsbmNRdWVy",
+            "eVJlbW90ZUZsYXNoU3RhdGUi7gEKF1JsbmNSZW1vdGVGbGFzaFJlc3BvbnNl",
+            "EhYKDlJsbmNGbGFzaFN0YXRlGAEgASgNEhgKEFJsbmNTZXNzaW9uU3RhdGUY",
+            "AiABKA0SFgoOQ3VycmVudFR4UG93ZXIYAyABKAUSGgoSQ3VycmVudFR4QmFu",
+            "ZHdpZHRoGAQgASgNEhkKEUN1cnJlbnRUeERhdGFSYXRlGAUgASgNEhkKEUN1",
+            "cnJlbnRUaW1lckRlbGF5GAYgASgNEh0KFUN1cnJlbnRTZXRJc011bHRpY2Fz",
+            "dBgHIAEoCBIYChBDdXJyZW50RGV2aWNlSWQwGAggASgNIpYCChVSbG5jSW5p",
+            "dENvbmZpZ0NvbW1hbmQSFgoOR2VuZXJhdGlvblNpemUYASABKA0SIAoYR2Vu",
+            "ZXJhdGlvblJlZHVuZGFuY3lTaXplGAIgASgNEhcKD0dlbmVyYXRpb25Db3Vu",
+            "dBgDIAEoDRIRCglGcmFtZVNpemUYBCABKA0SFwoPVG90YWxGcmFtZUNvdW50",
+            "GAUgASgNEhMKC0ZpZWxkRGVncmVlGAYgASgNEhEKCUZpZWxkUG9seRgHIAEo",
+            "DRIQCghMZnNyU2VlZBgIIAEoDRIQCghMZnNyUG9seRgJIAEoDRIXCg9EZWJ1",
+            "Z01hdHJpeFVhcnQYCiABKAgSGQoRRGVidWdGcmFnbWVudFVhcnQYCyABKAgi",
+            "KAoTUmxuY0VuY29kZWRGcmFnbWVudBIRCglMZnNyU3RhdGUYASABKA0iOQoY",
+            "UmxuY0ZsYXNoRW5jb2RlZEZyYWdtZW50EgwKBE1ldGEYASABKAwSDwoHUGF5",
+            "bG9hZBgCIAEoDCIqCg9SbG5jU3RhdGVVcGRhdGUSFwoPR2VuZXJhdGlvbklu",
+            "ZGV4GAEgASgNIhgKFlJsbmNUZXJtaW5hdGlvbkNvbW1hbmQibAoORGVjb2Rp",
+            "bmdSZXN1bHQSDwoHU3VjY2VzcxgBIAEoCBISCgpNYXRyaXhSYW5rGAIgASgN",
+            "EhoKEkZpcnN0RGVjb2RlZE51bWJlchgDIAEoDRIZChFMYXN0RGVjb2RlZE51",
+            "bWJlchgEIAEoDSIsCg5EZWNvZGluZ01hdHJpeBIMCgRDb2xzGAEgASgNEgwK",
+            "BFJvd3MYAiABKA0i+gEKDkRlY29kaW5nVXBkYXRlEhIKCk1hdHJpeENyYzgY",
+            "ASABKA0SFAoMRmlyc3RSb3dDcmM4GAIgASgNEhMKC0xhc3RSb3dDcmM4GAMg",
+            "ASgNEhQKDExhc3RSb3dJbmRleBgEIAEoDRIUCgxSYW5rUHJvZ3Jlc3MYBSAB",
+            "KA0SGQoRUmVjZWl2ZWRGcmFnbWVudHMYBiABKA0SHgoWQ3VycmVudEdlbmVy",
+            "YXRpb25JbmRleBgHIAEoDRIRCglJc1J1bm5pbmcYCCABKAgSFQoNVXNlZExm",
+            "c3JTdGF0ZRgJIAEoDRIYChBDdXJyZW50TGZzclN0YXRlGAogASgNQgeqAgRM",
+            "b1JhYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LoRa.ExperimentConfigReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.Version), global::LoRa.Version.Parser, new[]{ "Major", "Minor", "Patch", "Revision" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DeviceId), global::LoRa.DeviceId.Parser, new[]{ "Id0", "Id1", "Id2" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.BootMessage), global::LoRa.BootMessage.Parser, new[]{ "DeviceIdentifier", "FirmwareVersion", "MeasurementCount", "MeasurementsDisabled", "RlncFlashState" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncRemoteFlashStartCommand), global::LoRa.RlncRemoteFlashStartCommand.Parser, new[]{ "ReducedGenerationRedundancySize", "TransmitConfiguration", "TimerDelay", "SetIsMulticast", "DeviceId0" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncRemoteFlashStartCommand), global::LoRa.RlncRemoteFlashStartCommand.Parser, new[]{ "TransmitConfiguration", "TimerDelay", "SetIsMulticast", "DeviceId0" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncRemoteFlashStopCommand), global::LoRa.RlncRemoteFlashStopCommand.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncQueryRemoteFlashState), global::LoRa.RlncQueryRemoteFlashState.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncRemoteFlashResponse), global::LoRa.RlncRemoteFlashResponse.Parser, new[]{ "RlncFlashState", "RlncSessionState", "CurrentTxPower", "CurrentTxBandwidth", "CurrentTxDataRate", "CurrentTimerDelay", "CurrentSetIsMulticast", "CurrentDeviceId0" }, null, null, null, null),
@@ -1005,6 +1004,10 @@ namespace LoRa {
 
   }
 
+  /// <summary>
+  /// We can stretch this only so far given a certain redundancy
+  /// uint32 ReducedGenerationRedundancySize = 1;
+  /// </summary>
   public sealed partial class RlncRemoteFlashStartCommand : pb::IMessage<RlncRemoteFlashStartCommand>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -1039,7 +1042,6 @@ namespace LoRa {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public RlncRemoteFlashStartCommand(RlncRemoteFlashStartCommand other) : this() {
-      reducedGenerationRedundancySize_ = other.reducedGenerationRedundancySize_;
       transmitConfiguration_ = other.transmitConfiguration_ != null ? other.transmitConfiguration_.Clone() : null;
       timerDelay_ = other.timerDelay_;
       setIsMulticast_ = other.setIsMulticast_;
@@ -1051,21 +1053,6 @@ namespace LoRa {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public RlncRemoteFlashStartCommand Clone() {
       return new RlncRemoteFlashStartCommand(this);
-    }
-
-    /// <summary>Field number for the "ReducedGenerationRedundancySize" field.</summary>
-    public const int ReducedGenerationRedundancySizeFieldNumber = 1;
-    private uint reducedGenerationRedundancySize_;
-    /// <summary>
-    /// We can stretch this only so far given a certain redundancy
-    /// </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public uint ReducedGenerationRedundancySize {
-      get { return reducedGenerationRedundancySize_; }
-      set {
-        reducedGenerationRedundancySize_ = value;
-      }
     }
 
     /// <summary>Field number for the "transmitConfiguration" field.</summary>
@@ -1137,7 +1124,6 @@ namespace LoRa {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (ReducedGenerationRedundancySize != other.ReducedGenerationRedundancySize) return false;
       if (!object.Equals(TransmitConfiguration, other.TransmitConfiguration)) return false;
       if (TimerDelay != other.TimerDelay) return false;
       if (SetIsMulticast != other.SetIsMulticast) return false;
@@ -1149,7 +1135,6 @@ namespace LoRa {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (ReducedGenerationRedundancySize != 0) hash ^= ReducedGenerationRedundancySize.GetHashCode();
       if (transmitConfiguration_ != null) hash ^= TransmitConfiguration.GetHashCode();
       if (TimerDelay != 0) hash ^= TimerDelay.GetHashCode();
       if (SetIsMulticast != false) hash ^= SetIsMulticast.GetHashCode();
@@ -1172,10 +1157,6 @@ namespace LoRa {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (ReducedGenerationRedundancySize != 0) {
-        output.WriteRawTag(8);
-        output.WriteUInt32(ReducedGenerationRedundancySize);
-      }
       if (transmitConfiguration_ != null) {
         output.WriteRawTag(18);
         output.WriteMessage(TransmitConfiguration);
@@ -1202,10 +1183,6 @@ namespace LoRa {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (ReducedGenerationRedundancySize != 0) {
-        output.WriteRawTag(8);
-        output.WriteUInt32(ReducedGenerationRedundancySize);
-      }
       if (transmitConfiguration_ != null) {
         output.WriteRawTag(18);
         output.WriteMessage(TransmitConfiguration);
@@ -1232,9 +1209,6 @@ namespace LoRa {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (ReducedGenerationRedundancySize != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(ReducedGenerationRedundancySize);
-      }
       if (transmitConfiguration_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(TransmitConfiguration);
       }
@@ -1258,9 +1232,6 @@ namespace LoRa {
     public void MergeFrom(RlncRemoteFlashStartCommand other) {
       if (other == null) {
         return;
-      }
-      if (other.ReducedGenerationRedundancySize != 0) {
-        ReducedGenerationRedundancySize = other.ReducedGenerationRedundancySize;
       }
       if (other.transmitConfiguration_ != null) {
         if (transmitConfiguration_ == null) {
@@ -1292,10 +1263,6 @@ namespace LoRa {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 8: {
-            ReducedGenerationRedundancySize = input.ReadUInt32();
-            break;
-          }
           case 18: {
             if (transmitConfiguration_ == null) {
               TransmitConfiguration = new global::LoRa.TransmitConfiguration();
@@ -1330,10 +1297,6 @@ namespace LoRa {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 8: {
-            ReducedGenerationRedundancySize = input.ReadUInt32();
-            break;
-          }
           case 18: {
             if (transmitConfiguration_ == null) {
               TransmitConfiguration = new global::LoRa.TransmitConfiguration();

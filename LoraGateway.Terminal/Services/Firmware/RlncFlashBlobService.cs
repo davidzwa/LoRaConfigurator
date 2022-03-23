@@ -13,7 +13,7 @@ namespace LoraGateway.Services.Firmware;
 public class RlncGeneration
 {
     public List<RlncFlashEncodedFragment> Fragments { get; set; } = new();
-    public LoRaMessage UpdateMessage { get; set; }
+    public bool ShouldUpdateAfter { get; set; }
 }
 
 public class RlncFlashBlobService
@@ -55,7 +55,7 @@ public class RlncFlashBlobService
             while (!_fuotaManagerService.IsCurrentGenerationComplete())
             {
                 var fragmentWithMeta = _fuotaManagerService.FetchNextRlncPayloadWithGenerator(false);
-                fragmentWithMeta.SequenceNumber = (byte) _packetsGenerated;
+                fragmentWithMeta.SequenceNumber = (byte)_packetsGenerated;
                 _packetsGenerated++;
                 var optimizedFragmentCommand = GenerateOptimizedFragmentCommand(fragmentWithMeta);
                 AnalyseOptimalBlob(optimizedFragmentCommand);
@@ -65,14 +65,13 @@ public class RlncFlashBlobService
 
             if (_fuotaManagerService.IsFuotaSessionDone())
             {
+                newRlncGeneration.ShouldUpdateAfter = false;
                 rlncGenerations.Add(newRlncGeneration);
                 break;
             }
 
             _fuotaManagerService.MoveNextRlncGeneration();
-            var generationUpdateCommand = GenerateGenerationUpdateCommand();
-            AnalyseBlob(generationUpdateCommand);
-            newRlncGeneration.UpdateMessage = generationUpdateCommand;
+            newRlncGeneration.ShouldUpdateAfter = true;
 
             rlncGenerations.Add(newRlncGeneration);
         }
@@ -115,7 +114,7 @@ public class RlncFlashBlobService
                 int currentGenIndex = 0;
                 foreach (var gen in generations)
                 {
-                    var totalSize = (UInt16) gen.Fragments.Sum(f => f.Payload.Length + f.Meta.Length);
+                    var totalSize = (UInt16)gen.Fragments.Sum(f => f.Payload.Length + f.Meta.Length);
                     byte[] syncHeader = new byte[]
                     {
                         0xFF, 0xFF
@@ -123,7 +122,7 @@ public class RlncFlashBlobService
                     Log.Information("Sync header {Data}", SerialUtil.ByteArrayToString(syncHeader));
                     syncHeader.Length.ShouldBe(4);
                     writer.Write(syncHeader);
-                    
+
                     foreach (var encodedFragment in gen.Fragments)
                     {
                         var flashPayload = encodedFragment.Meta.Concat(encodedFragment.Payload).ToArray();
@@ -132,25 +131,22 @@ public class RlncFlashBlobService
                             flashPayload));
                     }
 
-                    // TODO check endianness
-                    if (gen.UpdateMessage == null && currentGenIndex + 1 != generations.Count)
+                    if (gen.ShouldUpdateAfter == false && currentGenIndex + 1 != generations.Count)
                     {
                         throw new ValidationException("Missing update message in between generations");
                     }
 
-                    if (gen.UpdateMessage != null)
+                    currentGenIndex++;
+                    
+                    if (gen.ShouldUpdateAfter)
                     {
-                        var updateMessage = gen.UpdateMessage.ToByteArray();
-                        var updateHeaderSize = updateMessage.Length;
                         byte[] syncUpdateHeader = new byte[]
                         {
                             0xFF, 0xFF
-                        }.Concat(BitConverter.GetBytes((UInt16) updateHeaderSize).Reverse()).ToArray();
+                        }.Concat(BitConverter.GetBytes((UInt16)currentGenIndex).Reverse()).ToArray();
                         writer.Write(syncUpdateHeader);
                         Log.Information("Update header {Data}", SerialUtil.ByteArrayToString(syncUpdateHeader));
                     }
-
-                    currentGenIndex++;
                 }
             }
         }
@@ -233,21 +229,6 @@ public class RlncFlashBlobService
         };
 
         return message;
-    }
-
-    private LoRaMessage GenerateGenerationUpdateCommand()
-    {
-        return new LoRaMessage
-        {
-            CorrelationCode = 0x01,
-            DeviceId = 0x01,
-            IsMulticast = true,
-            RlncStateUpdate = new RlncStateUpdate
-            {
-                GenerationIndex = 0x23, // TODO
-                LfsrState = 0x01 // TODO
-            }
-        };
     }
 
     private LoRaMessage GenerateTerminationCommand()

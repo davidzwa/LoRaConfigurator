@@ -174,10 +174,16 @@ public partial class SerialProcessorService
     {
         if (message == null) return;
 
-        if (message.BodyCase == LoRaMessage.BodyOneofCase.ExperimentResponse)
+        var messageType = message.BodyCase;
+        if (messageType == LoRaMessage.BodyOneofCase.ExperimentResponse)
         {
             var flashMeasureCount = message.ExperimentResponse.MeasurementCount;
             _logger.LogInformation("Flash {FlashMeasureCount}", flashMeasureCount);
+        }
+        else if (messageType == LoRaMessage.BodyOneofCase.RlncRemoteFlashResponse)
+        {
+            var txPower = message.RlncRemoteFlashResponse.CurrentTxPower;
+            _logger.LogInformation("RLNC Response {TXPower}", txPower);
         }
     }
 }

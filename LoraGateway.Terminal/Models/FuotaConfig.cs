@@ -13,9 +13,12 @@ public class FuotaConfig : ICloneable
     
     // Enabling this makes sure the UART packet are treated are LoRa RX packets instead of forwarding them
     public bool UartFakeLoRaRxMode { get; set; } = true;
-    public bool UartFakeAwaitAck { get; set; } = true;
+    public bool UartFakeAwaitAck { get; set; } = false;
     public string TargetedNickname { get; set; } = "";
 
+    public uint RemoteDeviceId0 { get; set; } = 0;
+    public bool RemoteIsMulticast { get; set; } = true;
+    public uint RemoteUpdateIntervalMs { get; set; } = 500;
     public uint UpdateIntervalMilliSeconds { get; set; } = 500;
     public bool DebugMatrixUart { get; set; } = false;
     public bool DebugFragmentUart { get; set; } = false;
