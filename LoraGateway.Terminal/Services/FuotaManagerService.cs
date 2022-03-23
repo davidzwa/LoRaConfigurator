@@ -82,7 +82,7 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         var currentGen = _currentFuotaSession.CurrentGenerationIndex + 1;
         var maxGen = _currentFuotaSession.GenerationCount;
 
-        return currentGen == maxGen;
+        return currentGen >= maxGen;
     }
 
     public bool IsCurrentGenerationComplete()
@@ -90,11 +90,15 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         if (_currentFuotaSession == null) return true;
 
         var config = _currentFuotaSession.Config;
+        var redundancy = config.GenerationSizeRedundancy;
 
-        var maxGenerationFragments = config.GenerationSize + config.GenerationSizeRedundancy;
+        var maxGenerationFragments = config.GenerationSize + redundancy;
+        int remainingFragments = (int)_currentFuotaSession.TotalFragmentCount -
+                                 (int)config.GenerationSize * (int)_currentFuotaSession.CurrentGenerationIndex;
+        var minimumFragmentsRemaining = Math.Min(maxGenerationFragments, remainingFragments + redundancy);
+        
         var fragmentIndex = _currentFuotaSession.CurrentFragmentIndex;
-
-        return fragmentIndex >= maxGenerationFragments;
+        return fragmentIndex >= minimumFragmentsRemaining;
     }
 
     public bool IsFuotaSessionDone()
@@ -108,7 +112,7 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         return _currentFuotaSession;
     }
 
-    public async Task StartFuotaSession()
+    public async Task StartFuotaSession(bool publishEvent = true)
     {
         _logger.LogInformation("Starting FUOTA session");
 
@@ -117,16 +121,18 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         var result = _cancellation.TryReset();
         if (!result) _logger.LogDebug("Resetting of FUOTA cancellation source failed. Continuing anyway");
 
-        await _eventPublisher.PublishEventAsync(new InitFuotaSession { Message = "Initiating" });
+        if (publishEvent)
+            await _eventPublisher.PublishEventAsync(new InitFuotaSession { Message = "Initiating" });
     }
 
-    public async Task StopFuotaSession()
+    public async Task StopFuotaSession(bool publishEvent = true)
     {
         _logger.LogInformation("Stopping FUOTA session");
         _cancellation.Cancel();
 
         // Termination imminent - clear the session and terminate the hosted service
-        await _eventPublisher.PublishEventAsync(new StopFuotaSession { Message = "Stopping" });
+        if (publishEvent)
+            await _eventPublisher.PublishEventAsync(new StopFuotaSession { Message = "Stopping" });
 
         ClearFuotaSession();
     }
@@ -213,7 +219,7 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         _rlncEncodingService.MoveNextGeneration();
     }
 
-    public FragmentWithGenerator FetchNextRlncPayloadWithGenerator()
+    public FragmentWithGenerator FetchNextRlncPayloadWithGenerator(bool logPacket = true)
     {
         if (_currentFuotaSession == null) throw new ValidationException("Cant fetch RLNC payload when session is null");
 
@@ -225,24 +231,27 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
             throw new ValidationException("Generation packets have run out");
         }
 
-        var resetLfsrState = _rlncEncodingService.GetGeneratorState();
+        var currentLfsrState = _rlncEncodingService.GetGeneratorState();
         var encodedPacket = _rlncEncodingService.PrecodeNumberOfPackets(1).First();
         var fragmentBytes = encodedPacket.Payload.Select(p => p.GetValue());
         var encodingVector = encodedPacket.EncodingVector.Select(p => p.GetValue()).ToArray();
-        _logger.LogInformation("Vector {Vector}| Packet {Message}| Gen {Generator} -> {CurrentGenerator}",
-            SerialUtil.ByteArrayToString(encodingVector),
-            SerialUtil.ByteArrayToString(fragmentBytes.ToArray()),
-            resetLfsrState,
-            _rlncEncodingService.GetGeneratorState()
-        );
+
+        if (logPacket)
+            _logger.LogInformation("Vector {Vector}| Packet {Message}| Gen {Generator} -> {CurrentGenerator}",
+                SerialUtil.ByteArrayToString(encodingVector),
+                SerialUtil.ByteArrayToString(fragmentBytes.ToArray()),
+                currentLfsrState,
+                _rlncEncodingService.GetGeneratorState()
+            );
 
         // Next fragment index to be sent is 1 higher
         _currentFuotaSession.IncrementFragmentIndex();
 
         return new()
         {
+            GenerationIndex = (byte)_currentFuotaSession.CurrentGenerationIndex,
             Fragment = fragmentBytes.ToArray(),
-            UsedGenerator = resetLfsrState
+            UsedGenerator = currentLfsrState
         };
     }
 
@@ -260,8 +269,8 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
                 new ArraySegment<byte>(arrayPayload, encodingLength, arrayPayload.Length - encodingLength);
 
             _logger.LogInformation(
-                "Vector {Vector}| Packet {Packet} (OUTPUT)", 
-                SerialUtil.ByteArrayToString(encodingVector.ToArray()), 
+                "Vector {Vector}| Packet {Packet} (OUTPUT)",
+                SerialUtil.ByteArrayToString(encodingVector.ToArray()),
                 SerialUtil.ByteArrayToString(payloadVector.ToArray())
             );
         }

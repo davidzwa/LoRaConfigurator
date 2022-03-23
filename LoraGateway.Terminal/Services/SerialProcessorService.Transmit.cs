@@ -159,6 +159,7 @@ public partial class SerialProcessorService
                     DebugMatrixUart = config.DebugMatrixUart,
                     // Calculated value from config store
                     GenerationCount = fuotaSession.GenerationCount,
+                    GenerationRedundancySize = config.GenerationSizeRedundancy,
                     GenerationSize = config.GenerationSize,
                     // Wont send poly as its highly static
                     // LfsrPoly = ,

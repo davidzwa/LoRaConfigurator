@@ -121,10 +121,8 @@ public class FuotaSessionHostedService : IHostedService
             if (_fuotaManagerService.IsCurrentGenerationComplete())
             {
                 _fuotaManagerService.MoveNextRlncGeneration();
-
                 var fuotaSession = _fuotaManagerService.GetCurrentSession();
                 _serialProcessorService.SendRlncUpdate(fuotaSession);
-
                 return;
             }
 

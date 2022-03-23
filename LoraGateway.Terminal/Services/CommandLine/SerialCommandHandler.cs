@@ -3,12 +3,14 @@ using System.CommandLine.Invocation;
 using System.CommandLine.Parsing;
 using LoRa;
 using LoraGateway.Services.Extensions;
+using LoraGateway.Services.Firmware;
 
 namespace LoraGateway.Services.CommandLine;
 
 public class SerialCommandHandler
 {
     private readonly FuotaManagerService _fuotaManagerService;
+    private readonly RlncFlashBlobService _rlncFlashBlobService;
     private readonly ILogger _logger;
     private readonly MeasurementsService _measurementsService;
     private readonly SelectedDeviceService _selectedDeviceService;
@@ -19,6 +21,7 @@ public class SerialCommandHandler
         SelectedDeviceService selectedDeviceService,
         MeasurementsService measurementsService,
         FuotaManagerService fuotaManagerService,
+        RlncFlashBlobService rlncFlashBlobService, 
         SerialProcessorService serialProcessorService
     )
     {
@@ -26,6 +29,7 @@ public class SerialCommandHandler
         _selectedDeviceService = selectedDeviceService;
         _measurementsService = measurementsService;
         _fuotaManagerService = fuotaManagerService;
+        _rlncFlashBlobService = rlncFlashBlobService;
         _serialProcessorService = serialProcessorService;
     }
 
@@ -37,6 +41,7 @@ public class SerialCommandHandler
         rootCommand.Add(GetDeviceConfigurationCommand());
         rootCommand.Add(GetClearMeasurementsCommand());
         rootCommand.Add(GetRlncInitCommand());
+        rootCommand.Add(GenerateBlobCommand());
         rootCommand.Add(GetRlncStoreReloadCommand());
         rootCommand.Add(SetTxPowerCommand());
 
@@ -52,6 +57,17 @@ public class SerialCommandHandler
         return store.UartFakeLoRaRxMode;
     }
 
+    public Command GenerateBlobCommand()
+    {
+        var command = new Command("rlnc-blob");
+        command.Handler = CommandHandler.Create(
+            async () =>
+            {
+                await _rlncFlashBlobService.GenerateFlashBlob();
+            });
+        return command;
+    }
+    
     public Command GetRlncInitCommand()
     {
         var command = new Command("rlnc-init");

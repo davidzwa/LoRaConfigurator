@@ -27,36 +27,39 @@ namespace LoRa {
             "ChVzaGFyZWQvZmlybXdhcmUucHJvdG8iSAoHVmVyc2lvbhINCgVNYWpvchgB",
             "IAEoDRINCgVNaW5vchgCIAEoDRINCgVQYXRjaBgDIAEoDRIQCghSZXZpc2lv",
             "bhgEIAEoDSIxCghEZXZpY2VJZBILCgNJZDAYASABKA0SCwoDSWQxGAIgASgN",
-            "EgsKA0lkMhgDIAEoDSKNAQoLQm9vdE1lc3NhZ2USIwoQRGV2aWNlSWRlbnRp",
+            "EgsKA0lkMhgDIAEoDSKlAQoLQm9vdE1lc3NhZ2USIwoQRGV2aWNlSWRlbnRp",
             "ZmllchgBIAEoCzIJLkRldmljZUlkEiEKD0Zpcm13YXJlVmVyc2lvbhgCIAEo",
             "CzIILlZlcnNpb24SGAoQTWVhc3VyZW1lbnRDb3VudBgDIAEoDRIcChRNZWFz",
-            "dXJlbWVudHNEaXNhYmxlZBgEIAEoCCL0AQoVUmxuY0luaXRDb25maWdDb21t",
-            "YW5kEhYKDkdlbmVyYXRpb25TaXplGAEgASgNEhcKD0dlbmVyYXRpb25Db3Vu",
-            "dBgCIAEoDRIRCglGcmFtZVNpemUYAyABKA0SFwoPVG90YWxGcmFtZUNvdW50",
-            "GAQgASgNEhMKC0ZpZWxkRGVncmVlGAUgASgNEhEKCUZpZWxkUG9seRgGIAEo",
-            "DRIQCghMZnNyU2VlZBgHIAEoDRIQCghMZnNyUG9seRgIIAEoDRIXCg9EZWJ1",
-            "Z01hdHJpeFVhcnQYCSABKAgSGQoRRGVidWdGcmFnbWVudFVhcnQYCiABKAgi",
-            "KAoTUmxuY0VuY29kZWRGcmFnbWVudBIRCglMZnNyU3RhdGUYASABKA0iPQoP",
-            "UmxuY1N0YXRlVXBkYXRlEhcKD0dlbmVyYXRpb25JbmRleBgBIAEoDRIRCglM",
-            "ZnNyU3RhdGUYAiABKA0iGAoWUmxuY1Rlcm1pbmF0aW9uQ29tbWFuZCJsCg5E",
-            "ZWNvZGluZ1Jlc3VsdBIPCgdTdWNjZXNzGAEgASgIEhIKCk1hdHJpeFJhbmsY",
-            "AiABKA0SGgoSRmlyc3REZWNvZGVkTnVtYmVyGAMgASgNEhkKEUxhc3REZWNv",
-            "ZGVkTnVtYmVyGAQgASgNIiwKDkRlY29kaW5nTWF0cml4EgwKBENvbHMYASAB",
-            "KA0SDAoEUm93cxgCIAEoDSL6AQoORGVjb2RpbmdVcGRhdGUSEgoKTWF0cml4",
-            "Q3JjOBgBIAEoDRIUCgxGaXJzdFJvd0NyYzgYAiABKA0SEwoLTGFzdFJvd0Ny",
-            "YzgYAyABKA0SFAoMTGFzdFJvd0luZGV4GAQgASgNEhQKDFJhbmtQcm9ncmVz",
-            "cxgFIAEoDRIZChFSZWNlaXZlZEZyYWdtZW50cxgGIAEoDRIeChZDdXJyZW50",
-            "R2VuZXJhdGlvbkluZGV4GAcgASgNEhEKCUlzUnVubmluZxgIIAEoCBIVCg1V",
-            "c2VkTGZzclN0YXRlGAkgASgNEhgKEEN1cnJlbnRMZnNyU3RhdGUYCiABKA1C",
-            "B6oCBExvUmFiBnByb3RvMw=="));
+            "dXJlbWVudHNEaXNhYmxlZBgEIAEoCBIWCg5SbG5jRmxhc2hTdGF0ZRgFIAEo",
+            "DSKWAgoVUmxuY0luaXRDb25maWdDb21tYW5kEhYKDkdlbmVyYXRpb25TaXpl",
+            "GAEgASgNEiAKGEdlbmVyYXRpb25SZWR1bmRhbmN5U2l6ZRgCIAEoDRIXCg9H",
+            "ZW5lcmF0aW9uQ291bnQYAyABKA0SEQoJRnJhbWVTaXplGAQgASgNEhcKD1Rv",
+            "dGFsRnJhbWVDb3VudBgFIAEoDRITCgtGaWVsZERlZ3JlZRgGIAEoDRIRCglG",
+            "aWVsZFBvbHkYByABKA0SEAoITGZzclNlZWQYCCABKA0SEAoITGZzclBvbHkY",
+            "CSABKA0SFwoPRGVidWdNYXRyaXhVYXJ0GAogASgIEhkKEURlYnVnRnJhZ21l",
+            "bnRVYXJ0GAsgASgIIigKE1JsbmNFbmNvZGVkRnJhZ21lbnQSEQoJTGZzclN0",
+            "YXRlGAEgASgNIjkKGFJsbmNGbGFzaEVuY29kZWRGcmFnbWVudBIMCgRNZXRh",
+            "GAEgASgMEg8KB1BheWxvYWQYAiABKAwiPQoPUmxuY1N0YXRlVXBkYXRlEhcK",
+            "D0dlbmVyYXRpb25JbmRleBgBIAEoDRIRCglMZnNyU3RhdGUYAiABKA0iGAoW",
+            "UmxuY1Rlcm1pbmF0aW9uQ29tbWFuZCJsCg5EZWNvZGluZ1Jlc3VsdBIPCgdT",
+            "dWNjZXNzGAEgASgIEhIKCk1hdHJpeFJhbmsYAiABKA0SGgoSRmlyc3REZWNv",
+            "ZGVkTnVtYmVyGAMgASgNEhkKEUxhc3REZWNvZGVkTnVtYmVyGAQgASgNIiwK",
+            "DkRlY29kaW5nTWF0cml4EgwKBENvbHMYASABKA0SDAoEUm93cxgCIAEoDSL6",
+            "AQoORGVjb2RpbmdVcGRhdGUSEgoKTWF0cml4Q3JjOBgBIAEoDRIUCgxGaXJz",
+            "dFJvd0NyYzgYAiABKA0SEwoLTGFzdFJvd0NyYzgYAyABKA0SFAoMTGFzdFJv",
+            "d0luZGV4GAQgASgNEhQKDFJhbmtQcm9ncmVzcxgFIAEoDRIZChFSZWNlaXZl",
+            "ZEZyYWdtZW50cxgGIAEoDRIeChZDdXJyZW50R2VuZXJhdGlvbkluZGV4GAcg",
+            "ASgNEhEKCUlzUnVubmluZxgIIAEoCBIVCg1Vc2VkTGZzclN0YXRlGAkgASgN",
+            "EhgKEEN1cnJlbnRMZnNyU3RhdGUYCiABKA1CB6oCBExvUmFiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.Version), global::LoRa.Version.Parser, new[]{ "Major", "Minor", "Patch", "Revision" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DeviceId), global::LoRa.DeviceId.Parser, new[]{ "Id0", "Id1", "Id2" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.BootMessage), global::LoRa.BootMessage.Parser, new[]{ "DeviceIdentifier", "FirmwareVersion", "MeasurementCount", "MeasurementsDisabled" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncInitConfigCommand), global::LoRa.RlncInitConfigCommand.Parser, new[]{ "GenerationSize", "GenerationCount", "FrameSize", "TotalFrameCount", "FieldDegree", "FieldPoly", "LfsrSeed", "LfsrPoly", "DebugMatrixUart", "DebugFragmentUart" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.BootMessage), global::LoRa.BootMessage.Parser, new[]{ "DeviceIdentifier", "FirmwareVersion", "MeasurementCount", "MeasurementsDisabled", "RlncFlashState" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncInitConfigCommand), global::LoRa.RlncInitConfigCommand.Parser, new[]{ "GenerationSize", "GenerationRedundancySize", "GenerationCount", "FrameSize", "TotalFrameCount", "FieldDegree", "FieldPoly", "LfsrSeed", "LfsrPoly", "DebugMatrixUart", "DebugFragmentUart" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncEncodedFragment), global::LoRa.RlncEncodedFragment.Parser, new[]{ "LfsrState" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncFlashEncodedFragment), global::LoRa.RlncFlashEncodedFragment.Parser, new[]{ "Meta", "Payload" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncStateUpdate), global::LoRa.RlncStateUpdate.Parser, new[]{ "GenerationIndex", "LfsrState" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncTerminationCommand), global::LoRa.RlncTerminationCommand.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DecodingResult), global::LoRa.DecodingResult.Parser, new[]{ "Success", "MatrixRank", "FirstDecodedNumber", "LastDecodedNumber" }, null, null, null, null),
@@ -669,6 +672,7 @@ namespace LoRa {
       firmwareVersion_ = other.firmwareVersion_ != null ? other.firmwareVersion_.Clone() : null;
       measurementCount_ = other.measurementCount_;
       measurementsDisabled_ = other.measurementsDisabled_;
+      rlncFlashState_ = other.rlncFlashState_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -726,6 +730,18 @@ namespace LoRa {
       }
     }
 
+    /// <summary>Field number for the "RlncFlashState" field.</summary>
+    public const int RlncFlashStateFieldNumber = 5;
+    private uint rlncFlashState_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint RlncFlashState {
+      get { return rlncFlashState_; }
+      set {
+        rlncFlashState_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -745,6 +761,7 @@ namespace LoRa {
       if (!object.Equals(FirmwareVersion, other.FirmwareVersion)) return false;
       if (MeasurementCount != other.MeasurementCount) return false;
       if (MeasurementsDisabled != other.MeasurementsDisabled) return false;
+      if (RlncFlashState != other.RlncFlashState) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -756,6 +773,7 @@ namespace LoRa {
       if (firmwareVersion_ != null) hash ^= FirmwareVersion.GetHashCode();
       if (MeasurementCount != 0) hash ^= MeasurementCount.GetHashCode();
       if (MeasurementsDisabled != false) hash ^= MeasurementsDisabled.GetHashCode();
+      if (RlncFlashState != 0) hash ^= RlncFlashState.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -790,6 +808,10 @@ namespace LoRa {
         output.WriteRawTag(32);
         output.WriteBool(MeasurementsDisabled);
       }
+      if (RlncFlashState != 0) {
+        output.WriteRawTag(40);
+        output.WriteUInt32(RlncFlashState);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -816,6 +838,10 @@ namespace LoRa {
         output.WriteRawTag(32);
         output.WriteBool(MeasurementsDisabled);
       }
+      if (RlncFlashState != 0) {
+        output.WriteRawTag(40);
+        output.WriteUInt32(RlncFlashState);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -837,6 +863,9 @@ namespace LoRa {
       }
       if (MeasurementsDisabled != false) {
         size += 1 + 1;
+      }
+      if (RlncFlashState != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(RlncFlashState);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -867,6 +896,9 @@ namespace LoRa {
       }
       if (other.MeasurementsDisabled != false) {
         MeasurementsDisabled = other.MeasurementsDisabled;
+      }
+      if (other.RlncFlashState != 0) {
+        RlncFlashState = other.RlncFlashState;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -905,6 +937,10 @@ namespace LoRa {
             MeasurementsDisabled = input.ReadBool();
             break;
           }
+          case 40: {
+            RlncFlashState = input.ReadUInt32();
+            break;
+          }
         }
       }
     #endif
@@ -940,6 +976,10 @@ namespace LoRa {
           }
           case 32: {
             MeasurementsDisabled = input.ReadBool();
+            break;
+          }
+          case 40: {
+            RlncFlashState = input.ReadUInt32();
             break;
           }
         }
@@ -984,6 +1024,7 @@ namespace LoRa {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public RlncInitConfigCommand(RlncInitConfigCommand other) : this() {
       generationSize_ = other.generationSize_;
+      generationRedundancySize_ = other.generationRedundancySize_;
       generationCount_ = other.generationCount_;
       frameSize_ = other.frameSize_;
       totalFrameCount_ = other.totalFrameCount_;
@@ -1014,8 +1055,20 @@ namespace LoRa {
       }
     }
 
+    /// <summary>Field number for the "GenerationRedundancySize" field.</summary>
+    public const int GenerationRedundancySizeFieldNumber = 2;
+    private uint generationRedundancySize_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint GenerationRedundancySize {
+      get { return generationRedundancySize_; }
+      set {
+        generationRedundancySize_ = value;
+      }
+    }
+
     /// <summary>Field number for the "GenerationCount" field.</summary>
-    public const int GenerationCountFieldNumber = 2;
+    public const int GenerationCountFieldNumber = 3;
     private uint generationCount_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1027,7 +1080,7 @@ namespace LoRa {
     }
 
     /// <summary>Field number for the "FrameSize" field.</summary>
-    public const int FrameSizeFieldNumber = 3;
+    public const int FrameSizeFieldNumber = 4;
     private uint frameSize_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1039,7 +1092,7 @@ namespace LoRa {
     }
 
     /// <summary>Field number for the "TotalFrameCount" field.</summary>
-    public const int TotalFrameCountFieldNumber = 4;
+    public const int TotalFrameCountFieldNumber = 5;
     private uint totalFrameCount_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1051,7 +1104,7 @@ namespace LoRa {
     }
 
     /// <summary>Field number for the "FieldDegree" field.</summary>
-    public const int FieldDegreeFieldNumber = 5;
+    public const int FieldDegreeFieldNumber = 6;
     private uint fieldDegree_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1063,7 +1116,7 @@ namespace LoRa {
     }
 
     /// <summary>Field number for the "FieldPoly" field.</summary>
-    public const int FieldPolyFieldNumber = 6;
+    public const int FieldPolyFieldNumber = 7;
     private uint fieldPoly_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1075,7 +1128,7 @@ namespace LoRa {
     }
 
     /// <summary>Field number for the "LfsrSeed" field.</summary>
-    public const int LfsrSeedFieldNumber = 7;
+    public const int LfsrSeedFieldNumber = 8;
     private uint lfsrSeed_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1087,7 +1140,7 @@ namespace LoRa {
     }
 
     /// <summary>Field number for the "LfsrPoly" field.</summary>
-    public const int LfsrPolyFieldNumber = 8;
+    public const int LfsrPolyFieldNumber = 9;
     private uint lfsrPoly_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1099,7 +1152,7 @@ namespace LoRa {
     }
 
     /// <summary>Field number for the "DebugMatrixUart" field.</summary>
-    public const int DebugMatrixUartFieldNumber = 9;
+    public const int DebugMatrixUartFieldNumber = 10;
     private bool debugMatrixUart_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1111,7 +1164,7 @@ namespace LoRa {
     }
 
     /// <summary>Field number for the "DebugFragmentUart" field.</summary>
-    public const int DebugFragmentUartFieldNumber = 10;
+    public const int DebugFragmentUartFieldNumber = 11;
     private bool debugFragmentUart_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1138,6 +1191,7 @@ namespace LoRa {
         return true;
       }
       if (GenerationSize != other.GenerationSize) return false;
+      if (GenerationRedundancySize != other.GenerationRedundancySize) return false;
       if (GenerationCount != other.GenerationCount) return false;
       if (FrameSize != other.FrameSize) return false;
       if (TotalFrameCount != other.TotalFrameCount) return false;
@@ -1155,6 +1209,7 @@ namespace LoRa {
     public override int GetHashCode() {
       int hash = 1;
       if (GenerationSize != 0) hash ^= GenerationSize.GetHashCode();
+      if (GenerationRedundancySize != 0) hash ^= GenerationRedundancySize.GetHashCode();
       if (GenerationCount != 0) hash ^= GenerationCount.GetHashCode();
       if (FrameSize != 0) hash ^= FrameSize.GetHashCode();
       if (TotalFrameCount != 0) hash ^= TotalFrameCount.GetHashCode();
@@ -1186,40 +1241,44 @@ namespace LoRa {
         output.WriteRawTag(8);
         output.WriteUInt32(GenerationSize);
       }
-      if (GenerationCount != 0) {
+      if (GenerationRedundancySize != 0) {
         output.WriteRawTag(16);
+        output.WriteUInt32(GenerationRedundancySize);
+      }
+      if (GenerationCount != 0) {
+        output.WriteRawTag(24);
         output.WriteUInt32(GenerationCount);
       }
       if (FrameSize != 0) {
-        output.WriteRawTag(24);
+        output.WriteRawTag(32);
         output.WriteUInt32(FrameSize);
       }
       if (TotalFrameCount != 0) {
-        output.WriteRawTag(32);
+        output.WriteRawTag(40);
         output.WriteUInt32(TotalFrameCount);
       }
       if (FieldDegree != 0) {
-        output.WriteRawTag(40);
+        output.WriteRawTag(48);
         output.WriteUInt32(FieldDegree);
       }
       if (FieldPoly != 0) {
-        output.WriteRawTag(48);
+        output.WriteRawTag(56);
         output.WriteUInt32(FieldPoly);
       }
       if (LfsrSeed != 0) {
-        output.WriteRawTag(56);
+        output.WriteRawTag(64);
         output.WriteUInt32(LfsrSeed);
       }
       if (LfsrPoly != 0) {
-        output.WriteRawTag(64);
+        output.WriteRawTag(72);
         output.WriteUInt32(LfsrPoly);
       }
       if (DebugMatrixUart != false) {
-        output.WriteRawTag(72);
+        output.WriteRawTag(80);
         output.WriteBool(DebugMatrixUart);
       }
       if (DebugFragmentUart != false) {
-        output.WriteRawTag(80);
+        output.WriteRawTag(88);
         output.WriteBool(DebugFragmentUart);
       }
       if (_unknownFields != null) {
@@ -1236,40 +1295,44 @@ namespace LoRa {
         output.WriteRawTag(8);
         output.WriteUInt32(GenerationSize);
       }
-      if (GenerationCount != 0) {
+      if (GenerationRedundancySize != 0) {
         output.WriteRawTag(16);
+        output.WriteUInt32(GenerationRedundancySize);
+      }
+      if (GenerationCount != 0) {
+        output.WriteRawTag(24);
         output.WriteUInt32(GenerationCount);
       }
       if (FrameSize != 0) {
-        output.WriteRawTag(24);
+        output.WriteRawTag(32);
         output.WriteUInt32(FrameSize);
       }
       if (TotalFrameCount != 0) {
-        output.WriteRawTag(32);
+        output.WriteRawTag(40);
         output.WriteUInt32(TotalFrameCount);
       }
       if (FieldDegree != 0) {
-        output.WriteRawTag(40);
+        output.WriteRawTag(48);
         output.WriteUInt32(FieldDegree);
       }
       if (FieldPoly != 0) {
-        output.WriteRawTag(48);
+        output.WriteRawTag(56);
         output.WriteUInt32(FieldPoly);
       }
       if (LfsrSeed != 0) {
-        output.WriteRawTag(56);
+        output.WriteRawTag(64);
         output.WriteUInt32(LfsrSeed);
       }
       if (LfsrPoly != 0) {
-        output.WriteRawTag(64);
+        output.WriteRawTag(72);
         output.WriteUInt32(LfsrPoly);
       }
       if (DebugMatrixUart != false) {
-        output.WriteRawTag(72);
+        output.WriteRawTag(80);
         output.WriteBool(DebugMatrixUart);
       }
       if (DebugFragmentUart != false) {
-        output.WriteRawTag(80);
+        output.WriteRawTag(88);
         output.WriteBool(DebugFragmentUart);
       }
       if (_unknownFields != null) {
@@ -1284,6 +1347,9 @@ namespace LoRa {
       int size = 0;
       if (GenerationSize != 0) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(GenerationSize);
+      }
+      if (GenerationRedundancySize != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(GenerationRedundancySize);
       }
       if (GenerationCount != 0) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(GenerationCount);
@@ -1326,6 +1392,9 @@ namespace LoRa {
       }
       if (other.GenerationSize != 0) {
         GenerationSize = other.GenerationSize;
+      }
+      if (other.GenerationRedundancySize != 0) {
+        GenerationRedundancySize = other.GenerationRedundancySize;
       }
       if (other.GenerationCount != 0) {
         GenerationCount = other.GenerationCount;
@@ -1374,38 +1443,42 @@ namespace LoRa {
             break;
           }
           case 16: {
-            GenerationCount = input.ReadUInt32();
+            GenerationRedundancySize = input.ReadUInt32();
             break;
           }
           case 24: {
-            FrameSize = input.ReadUInt32();
+            GenerationCount = input.ReadUInt32();
             break;
           }
           case 32: {
-            TotalFrameCount = input.ReadUInt32();
+            FrameSize = input.ReadUInt32();
             break;
           }
           case 40: {
-            FieldDegree = input.ReadUInt32();
+            TotalFrameCount = input.ReadUInt32();
             break;
           }
           case 48: {
-            FieldPoly = input.ReadUInt32();
+            FieldDegree = input.ReadUInt32();
             break;
           }
           case 56: {
-            LfsrSeed = input.ReadUInt32();
+            FieldPoly = input.ReadUInt32();
             break;
           }
           case 64: {
-            LfsrPoly = input.ReadUInt32();
+            LfsrSeed = input.ReadUInt32();
             break;
           }
           case 72: {
-            DebugMatrixUart = input.ReadBool();
+            LfsrPoly = input.ReadUInt32();
             break;
           }
           case 80: {
+            DebugMatrixUart = input.ReadBool();
+            break;
+          }
+          case 88: {
             DebugFragmentUart = input.ReadBool();
             break;
           }
@@ -1429,38 +1502,42 @@ namespace LoRa {
             break;
           }
           case 16: {
-            GenerationCount = input.ReadUInt32();
+            GenerationRedundancySize = input.ReadUInt32();
             break;
           }
           case 24: {
-            FrameSize = input.ReadUInt32();
+            GenerationCount = input.ReadUInt32();
             break;
           }
           case 32: {
-            TotalFrameCount = input.ReadUInt32();
+            FrameSize = input.ReadUInt32();
             break;
           }
           case 40: {
-            FieldDegree = input.ReadUInt32();
+            TotalFrameCount = input.ReadUInt32();
             break;
           }
           case 48: {
-            FieldPoly = input.ReadUInt32();
+            FieldDegree = input.ReadUInt32();
             break;
           }
           case 56: {
-            LfsrSeed = input.ReadUInt32();
+            FieldPoly = input.ReadUInt32();
             break;
           }
           case 64: {
-            LfsrPoly = input.ReadUInt32();
+            LfsrSeed = input.ReadUInt32();
             break;
           }
           case 72: {
-            DebugMatrixUart = input.ReadBool();
+            LfsrPoly = input.ReadUInt32();
             break;
           }
           case 80: {
+            DebugMatrixUart = input.ReadBool();
+            break;
+          }
+          case 88: {
             DebugFragmentUart = input.ReadBool();
             break;
           }
@@ -1663,6 +1740,235 @@ namespace LoRa {
 
   }
 
+  public sealed partial class RlncFlashEncodedFragment : pb::IMessage<RlncFlashEncodedFragment>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<RlncFlashEncodedFragment> _parser = new pb::MessageParser<RlncFlashEncodedFragment>(() => new RlncFlashEncodedFragment());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<RlncFlashEncodedFragment> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LoRa.FirmwareReflection.Descriptor.MessageTypes[5]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public RlncFlashEncodedFragment() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public RlncFlashEncodedFragment(RlncFlashEncodedFragment other) : this() {
+      meta_ = other.meta_;
+      payload_ = other.payload_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public RlncFlashEncodedFragment Clone() {
+      return new RlncFlashEncodedFragment(this);
+    }
+
+    /// <summary>Field number for the "Meta" field.</summary>
+    public const int MetaFieldNumber = 1;
+    private pb::ByteString meta_ = pb::ByteString.Empty;
+    /// <summary>
+    /// This is a compressed field
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pb::ByteString Meta {
+      get { return meta_; }
+      set {
+        meta_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "Payload" field.</summary>
+    public const int PayloadFieldNumber = 2;
+    private pb::ByteString payload_ = pb::ByteString.Empty;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pb::ByteString Payload {
+      get { return payload_; }
+      set {
+        payload_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as RlncFlashEncodedFragment);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(RlncFlashEncodedFragment other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Meta != other.Meta) return false;
+      if (Payload != other.Payload) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Meta.Length != 0) hash ^= Meta.GetHashCode();
+      if (Payload.Length != 0) hash ^= Payload.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (Meta.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteBytes(Meta);
+      }
+      if (Payload.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteBytes(Payload);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Meta.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteBytes(Meta);
+      }
+      if (Payload.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteBytes(Payload);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (Meta.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeBytesSize(Meta);
+      }
+      if (Payload.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeBytesSize(Payload);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(RlncFlashEncodedFragment other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Meta.Length != 0) {
+        Meta = other.Meta;
+      }
+      if (other.Payload.Length != 0) {
+        Payload = other.Payload;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            Meta = input.ReadBytes();
+            break;
+          }
+          case 18: {
+            Payload = input.ReadBytes();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            Meta = input.ReadBytes();
+            break;
+          }
+          case 18: {
+            Payload = input.ReadBytes();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
   public sealed partial class RlncStateUpdate : pb::IMessage<RlncStateUpdate>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -1677,7 +1983,7 @@ namespace LoRa {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LoRa.FirmwareReflection.Descriptor.MessageTypes[5]; }
+      get { return global::LoRa.FirmwareReflection.Descriptor.MessageTypes[6]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1907,7 +2213,7 @@ namespace LoRa {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LoRa.FirmwareReflection.Descriptor.MessageTypes[6]; }
+      get { return global::LoRa.FirmwareReflection.Descriptor.MessageTypes[7]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2059,7 +2365,7 @@ namespace LoRa {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LoRa.FirmwareReflection.Descriptor.MessageTypes[7]; }
+      get { return global::LoRa.FirmwareReflection.Descriptor.MessageTypes[8]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2362,7 +2668,7 @@ namespace LoRa {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LoRa.FirmwareReflection.Descriptor.MessageTypes[8]; }
+      get { return global::LoRa.FirmwareReflection.Descriptor.MessageTypes[9]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2588,7 +2894,7 @@ namespace LoRa {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LoRa.FirmwareReflection.Descriptor.MessageTypes[9]; }
+      get { return global::LoRa.FirmwareReflection.Descriptor.MessageTypes[10]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

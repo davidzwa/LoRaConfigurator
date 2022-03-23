@@ -17,6 +17,7 @@
         <PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
         <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
         <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
+        <PackageReference Include="Shouldly" Version="4.0.3" />
         <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.21308.1" />
         <PackageReference Include="System.IO.Ports" Version="6.0.0" />
         <PackageReference Include="System.Management" Version="6.0.0" />
