@@ -90,11 +90,15 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         if (_currentFuotaSession == null) return true;
 
         var config = _currentFuotaSession.Config;
+        var redundancy = config.GenerationSizeRedundancy;
 
-        var maxGenerationFragments = config.GenerationSize + config.GenerationSizeRedundancy;
+        var maxGenerationFragments = config.GenerationSize + redundancy;
+        int remainingFragments = (int)_currentFuotaSession.TotalFragmentCount -
+                                 (int)config.GenerationSize * (int)_currentFuotaSession.CurrentGenerationIndex;
+        var minimumFragmentsRemaining = Math.Min(maxGenerationFragments, remainingFragments + redundancy);
+        
         var fragmentIndex = _currentFuotaSession.CurrentFragmentIndex;
-
-        return fragmentIndex >= maxGenerationFragments;
+        return fragmentIndex >= minimumFragmentsRemaining;
     }
 
     public bool IsFuotaSessionDone()
@@ -127,7 +131,7 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         _cancellation.Cancel();
 
         // Termination imminent - clear the session and terminate the hosted service
-        if (publishEvent) 
+        if (publishEvent)
             await _eventPublisher.PublishEventAsync(new StopFuotaSession { Message = "Stopping" });
 
         ClearFuotaSession();
@@ -231,7 +235,7 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         var encodedPacket = _rlncEncodingService.PrecodeNumberOfPackets(1).First();
         var fragmentBytes = encodedPacket.Payload.Select(p => p.GetValue());
         var encodingVector = encodedPacket.EncodingVector.Select(p => p.GetValue()).ToArray();
-        
+
         if (logPacket)
             _logger.LogInformation("Vector {Vector}| Packet {Message}| Gen {Generator} -> {CurrentGenerator}",
                 SerialUtil.ByteArrayToString(encodingVector),
@@ -265,8 +269,8 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
                 new ArraySegment<byte>(arrayPayload, encodingLength, arrayPayload.Length - encodingLength);
 
             _logger.LogInformation(
-                "Vector {Vector}| Packet {Packet} (OUTPUT)", 
-                SerialUtil.ByteArrayToString(encodingVector.ToArray()), 
+                "Vector {Vector}| Packet {Packet} (OUTPUT)",
+                SerialUtil.ByteArrayToString(encodingVector.ToArray()),
                 SerialUtil.ByteArrayToString(payloadVector.ToArray())
             );
         }

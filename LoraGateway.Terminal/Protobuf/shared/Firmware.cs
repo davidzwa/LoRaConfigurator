@@ -31,33 +31,33 @@ namespace LoRa {
             "ZmllchgBIAEoCzIJLkRldmljZUlkEiEKD0Zpcm13YXJlVmVyc2lvbhgCIAEo",
             "CzIILlZlcnNpb24SGAoQTWVhc3VyZW1lbnRDb3VudBgDIAEoDRIcChRNZWFz",
             "dXJlbWVudHNEaXNhYmxlZBgEIAEoCBIWCg5SbG5jRmxhc2hTdGF0ZRgFIAEo",
-            "DSL0AQoVUmxuY0luaXRDb25maWdDb21tYW5kEhYKDkdlbmVyYXRpb25TaXpl",
-            "GAEgASgNEhcKD0dlbmVyYXRpb25Db3VudBgCIAEoDRIRCglGcmFtZVNpemUY",
-            "AyABKA0SFwoPVG90YWxGcmFtZUNvdW50GAQgASgNEhMKC0ZpZWxkRGVncmVl",
-            "GAUgASgNEhEKCUZpZWxkUG9seRgGIAEoDRIQCghMZnNyU2VlZBgHIAEoDRIQ",
-            "CghMZnNyUG9seRgIIAEoDRIXCg9EZWJ1Z01hdHJpeFVhcnQYCSABKAgSGQoR",
-            "RGVidWdGcmFnbWVudFVhcnQYCiABKAgiKAoTUmxuY0VuY29kZWRGcmFnbWVu",
-            "dBIRCglMZnNyU3RhdGUYASABKA0iOQoYUmxuY0ZsYXNoRW5jb2RlZEZyYWdt",
-            "ZW50EgwKBE1ldGEYASABKAwSDwoHUGF5bG9hZBgCIAEoDCI9Cg9SbG5jU3Rh",
-            "dGVVcGRhdGUSFwoPR2VuZXJhdGlvbkluZGV4GAEgASgNEhEKCUxmc3JTdGF0",
-            "ZRgCIAEoDSIYChZSbG5jVGVybWluYXRpb25Db21tYW5kImwKDkRlY29kaW5n",
-            "UmVzdWx0Eg8KB1N1Y2Nlc3MYASABKAgSEgoKTWF0cml4UmFuaxgCIAEoDRIa",
-            "ChJGaXJzdERlY29kZWROdW1iZXIYAyABKA0SGQoRTGFzdERlY29kZWROdW1i",
-            "ZXIYBCABKA0iLAoORGVjb2RpbmdNYXRyaXgSDAoEQ29scxgBIAEoDRIMCgRS",
-            "b3dzGAIgASgNIvoBCg5EZWNvZGluZ1VwZGF0ZRISCgpNYXRyaXhDcmM4GAEg",
-            "ASgNEhQKDEZpcnN0Um93Q3JjOBgCIAEoDRITCgtMYXN0Um93Q3JjOBgDIAEo",
-            "DRIUCgxMYXN0Um93SW5kZXgYBCABKA0SFAoMUmFua1Byb2dyZXNzGAUgASgN",
-            "EhkKEVJlY2VpdmVkRnJhZ21lbnRzGAYgASgNEh4KFkN1cnJlbnRHZW5lcmF0",
-            "aW9uSW5kZXgYByABKA0SEQoJSXNSdW5uaW5nGAggASgIEhUKDVVzZWRMZnNy",
-            "U3RhdGUYCSABKA0SGAoQQ3VycmVudExmc3JTdGF0ZRgKIAEoDUIHqgIETG9S",
-            "YWIGcHJvdG8z"));
+            "DSKWAgoVUmxuY0luaXRDb25maWdDb21tYW5kEhYKDkdlbmVyYXRpb25TaXpl",
+            "GAEgASgNEiAKGEdlbmVyYXRpb25SZWR1bmRhbmN5U2l6ZRgCIAEoDRIXCg9H",
+            "ZW5lcmF0aW9uQ291bnQYAyABKA0SEQoJRnJhbWVTaXplGAQgASgNEhcKD1Rv",
+            "dGFsRnJhbWVDb3VudBgFIAEoDRITCgtGaWVsZERlZ3JlZRgGIAEoDRIRCglG",
+            "aWVsZFBvbHkYByABKA0SEAoITGZzclNlZWQYCCABKA0SEAoITGZzclBvbHkY",
+            "CSABKA0SFwoPRGVidWdNYXRyaXhVYXJ0GAogASgIEhkKEURlYnVnRnJhZ21l",
+            "bnRVYXJ0GAsgASgIIigKE1JsbmNFbmNvZGVkRnJhZ21lbnQSEQoJTGZzclN0",
+            "YXRlGAEgASgNIjkKGFJsbmNGbGFzaEVuY29kZWRGcmFnbWVudBIMCgRNZXRh",
+            "GAEgASgMEg8KB1BheWxvYWQYAiABKAwiPQoPUmxuY1N0YXRlVXBkYXRlEhcK",
+            "D0dlbmVyYXRpb25JbmRleBgBIAEoDRIRCglMZnNyU3RhdGUYAiABKA0iGAoW",
+            "UmxuY1Rlcm1pbmF0aW9uQ29tbWFuZCJsCg5EZWNvZGluZ1Jlc3VsdBIPCgdT",
+            "dWNjZXNzGAEgASgIEhIKCk1hdHJpeFJhbmsYAiABKA0SGgoSRmlyc3REZWNv",
+            "ZGVkTnVtYmVyGAMgASgNEhkKEUxhc3REZWNvZGVkTnVtYmVyGAQgASgNIiwK",
+            "DkRlY29kaW5nTWF0cml4EgwKBENvbHMYASABKA0SDAoEUm93cxgCIAEoDSL6",
+            "AQoORGVjb2RpbmdVcGRhdGUSEgoKTWF0cml4Q3JjOBgBIAEoDRIUCgxGaXJz",
+            "dFJvd0NyYzgYAiABKA0SEwoLTGFzdFJvd0NyYzgYAyABKA0SFAoMTGFzdFJv",
+            "d0luZGV4GAQgASgNEhQKDFJhbmtQcm9ncmVzcxgFIAEoDRIZChFSZWNlaXZl",
+            "ZEZyYWdtZW50cxgGIAEoDRIeChZDdXJyZW50R2VuZXJhdGlvbkluZGV4GAcg",
+            "ASgNEhEKCUlzUnVubmluZxgIIAEoCBIVCg1Vc2VkTGZzclN0YXRlGAkgASgN",
+            "EhgKEEN1cnJlbnRMZnNyU3RhdGUYCiABKA1CB6oCBExvUmFiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.Version), global::LoRa.Version.Parser, new[]{ "Major", "Minor", "Patch", "Revision" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DeviceId), global::LoRa.DeviceId.Parser, new[]{ "Id0", "Id1", "Id2" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.BootMessage), global::LoRa.BootMessage.Parser, new[]{ "DeviceIdentifier", "FirmwareVersion", "MeasurementCount", "MeasurementsDisabled", "RlncFlashState" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncInitConfigCommand), global::LoRa.RlncInitConfigCommand.Parser, new[]{ "GenerationSize", "GenerationCount", "FrameSize", "TotalFrameCount", "FieldDegree", "FieldPoly", "LfsrSeed", "LfsrPoly", "DebugMatrixUart", "DebugFragmentUart" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncInitConfigCommand), global::LoRa.RlncInitConfigCommand.Parser, new[]{ "GenerationSize", "GenerationRedundancySize", "GenerationCount", "FrameSize", "TotalFrameCount", "FieldDegree", "FieldPoly", "LfsrSeed", "LfsrPoly", "DebugMatrixUart", "DebugFragmentUart" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncEncodedFragment), global::LoRa.RlncEncodedFragment.Parser, new[]{ "LfsrState" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncFlashEncodedFragment), global::LoRa.RlncFlashEncodedFragment.Parser, new[]{ "Meta", "Payload" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncStateUpdate), global::LoRa.RlncStateUpdate.Parser, new[]{ "GenerationIndex", "LfsrState" }, null, null, null, null),
@@ -1024,6 +1024,7 @@ namespace LoRa {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public RlncInitConfigCommand(RlncInitConfigCommand other) : this() {
       generationSize_ = other.generationSize_;
+      generationRedundancySize_ = other.generationRedundancySize_;
       generationCount_ = other.generationCount_;
       frameSize_ = other.frameSize_;
       totalFrameCount_ = other.totalFrameCount_;
@@ -1054,8 +1055,20 @@ namespace LoRa {
       }
     }
 
+    /// <summary>Field number for the "GenerationRedundancySize" field.</summary>
+    public const int GenerationRedundancySizeFieldNumber = 2;
+    private uint generationRedundancySize_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint GenerationRedundancySize {
+      get { return generationRedundancySize_; }
+      set {
+        generationRedundancySize_ = value;
+      }
+    }
+
     /// <summary>Field number for the "GenerationCount" field.</summary>
-    public const int GenerationCountFieldNumber = 2;
+    public const int GenerationCountFieldNumber = 3;
     private uint generationCount_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1067,7 +1080,7 @@ namespace LoRa {
     }
 
     /// <summary>Field number for the "FrameSize" field.</summary>
-    public const int FrameSizeFieldNumber = 3;
+    public const int FrameSizeFieldNumber = 4;
     private uint frameSize_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1079,7 +1092,7 @@ namespace LoRa {
     }
 
     /// <summary>Field number for the "TotalFrameCount" field.</summary>
-    public const int TotalFrameCountFieldNumber = 4;
+    public const int TotalFrameCountFieldNumber = 5;
     private uint totalFrameCount_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1091,7 +1104,7 @@ namespace LoRa {
     }
 
     /// <summary>Field number for the "FieldDegree" field.</summary>
-    public const int FieldDegreeFieldNumber = 5;
+    public const int FieldDegreeFieldNumber = 6;
     private uint fieldDegree_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1103,7 +1116,7 @@ namespace LoRa {
     }
 
     /// <summary>Field number for the "FieldPoly" field.</summary>
-    public const int FieldPolyFieldNumber = 6;
+    public const int FieldPolyFieldNumber = 7;
     private uint fieldPoly_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1115,7 +1128,7 @@ namespace LoRa {
     }
 
     /// <summary>Field number for the "LfsrSeed" field.</summary>
-    public const int LfsrSeedFieldNumber = 7;
+    public const int LfsrSeedFieldNumber = 8;
     private uint lfsrSeed_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1127,7 +1140,7 @@ namespace LoRa {
     }
 
     /// <summary>Field number for the "LfsrPoly" field.</summary>
-    public const int LfsrPolyFieldNumber = 8;
+    public const int LfsrPolyFieldNumber = 9;
     private uint lfsrPoly_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1139,7 +1152,7 @@ namespace LoRa {
     }
 
     /// <summary>Field number for the "DebugMatrixUart" field.</summary>
-    public const int DebugMatrixUartFieldNumber = 9;
+    public const int DebugMatrixUartFieldNumber = 10;
     private bool debugMatrixUart_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1151,7 +1164,7 @@ namespace LoRa {
     }
 
     /// <summary>Field number for the "DebugFragmentUart" field.</summary>
-    public const int DebugFragmentUartFieldNumber = 10;
+    public const int DebugFragmentUartFieldNumber = 11;
     private bool debugFragmentUart_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1178,6 +1191,7 @@ namespace LoRa {
         return true;
       }
       if (GenerationSize != other.GenerationSize) return false;
+      if (GenerationRedundancySize != other.GenerationRedundancySize) return false;
       if (GenerationCount != other.GenerationCount) return false;
       if (FrameSize != other.FrameSize) return false;
       if (TotalFrameCount != other.TotalFrameCount) return false;
@@ -1195,6 +1209,7 @@ namespace LoRa {
     public override int GetHashCode() {
       int hash = 1;
       if (GenerationSize != 0) hash ^= GenerationSize.GetHashCode();
+      if (GenerationRedundancySize != 0) hash ^= GenerationRedundancySize.GetHashCode();
       if (GenerationCount != 0) hash ^= GenerationCount.GetHashCode();
       if (FrameSize != 0) hash ^= FrameSize.GetHashCode();
       if (TotalFrameCount != 0) hash ^= TotalFrameCount.GetHashCode();
@@ -1226,40 +1241,44 @@ namespace LoRa {
         output.WriteRawTag(8);
         output.WriteUInt32(GenerationSize);
       }
-      if (GenerationCount != 0) {
+      if (GenerationRedundancySize != 0) {
         output.WriteRawTag(16);
+        output.WriteUInt32(GenerationRedundancySize);
+      }
+      if (GenerationCount != 0) {
+        output.WriteRawTag(24);
         output.WriteUInt32(GenerationCount);
       }
       if (FrameSize != 0) {
-        output.WriteRawTag(24);
+        output.WriteRawTag(32);
         output.WriteUInt32(FrameSize);
       }
       if (TotalFrameCount != 0) {
-        output.WriteRawTag(32);
+        output.WriteRawTag(40);
         output.WriteUInt32(TotalFrameCount);
       }
       if (FieldDegree != 0) {
-        output.WriteRawTag(40);
+        output.WriteRawTag(48);
         output.WriteUInt32(FieldDegree);
       }
       if (FieldPoly != 0) {
-        output.WriteRawTag(48);
+        output.WriteRawTag(56);
         output.WriteUInt32(FieldPoly);
       }
       if (LfsrSeed != 0) {
-        output.WriteRawTag(56);
+        output.WriteRawTag(64);
         output.WriteUInt32(LfsrSeed);
       }
       if (LfsrPoly != 0) {
-        output.WriteRawTag(64);
+        output.WriteRawTag(72);
         output.WriteUInt32(LfsrPoly);
       }
       if (DebugMatrixUart != false) {
-        output.WriteRawTag(72);
+        output.WriteRawTag(80);
         output.WriteBool(DebugMatrixUart);
       }
       if (DebugFragmentUart != false) {
-        output.WriteRawTag(80);
+        output.WriteRawTag(88);
         output.WriteBool(DebugFragmentUart);
       }
       if (_unknownFields != null) {
@@ -1276,40 +1295,44 @@ namespace LoRa {
         output.WriteRawTag(8);
         output.WriteUInt32(GenerationSize);
       }
-      if (GenerationCount != 0) {
+      if (GenerationRedundancySize != 0) {
         output.WriteRawTag(16);
+        output.WriteUInt32(GenerationRedundancySize);
+      }
+      if (GenerationCount != 0) {
+        output.WriteRawTag(24);
         output.WriteUInt32(GenerationCount);
       }
       if (FrameSize != 0) {
-        output.WriteRawTag(24);
+        output.WriteRawTag(32);
         output.WriteUInt32(FrameSize);
       }
       if (TotalFrameCount != 0) {
-        output.WriteRawTag(32);
+        output.WriteRawTag(40);
         output.WriteUInt32(TotalFrameCount);
       }
       if (FieldDegree != 0) {
-        output.WriteRawTag(40);
+        output.WriteRawTag(48);
         output.WriteUInt32(FieldDegree);
       }
       if (FieldPoly != 0) {
-        output.WriteRawTag(48);
+        output.WriteRawTag(56);
         output.WriteUInt32(FieldPoly);
       }
       if (LfsrSeed != 0) {
-        output.WriteRawTag(56);
+        output.WriteRawTag(64);
         output.WriteUInt32(LfsrSeed);
       }
       if (LfsrPoly != 0) {
-        output.WriteRawTag(64);
+        output.WriteRawTag(72);
         output.WriteUInt32(LfsrPoly);
       }
       if (DebugMatrixUart != false) {
-        output.WriteRawTag(72);
+        output.WriteRawTag(80);
         output.WriteBool(DebugMatrixUart);
       }
       if (DebugFragmentUart != false) {
-        output.WriteRawTag(80);
+        output.WriteRawTag(88);
         output.WriteBool(DebugFragmentUart);
       }
       if (_unknownFields != null) {
@@ -1324,6 +1347,9 @@ namespace LoRa {
       int size = 0;
       if (GenerationSize != 0) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(GenerationSize);
+      }
+      if (GenerationRedundancySize != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(GenerationRedundancySize);
       }
       if (GenerationCount != 0) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(GenerationCount);
@@ -1366,6 +1392,9 @@ namespace LoRa {
       }
       if (other.GenerationSize != 0) {
         GenerationSize = other.GenerationSize;
+      }
+      if (other.GenerationRedundancySize != 0) {
+        GenerationRedundancySize = other.GenerationRedundancySize;
       }
       if (other.GenerationCount != 0) {
         GenerationCount = other.GenerationCount;
@@ -1414,38 +1443,42 @@ namespace LoRa {
             break;
           }
           case 16: {
-            GenerationCount = input.ReadUInt32();
+            GenerationRedundancySize = input.ReadUInt32();
             break;
           }
           case 24: {
-            FrameSize = input.ReadUInt32();
+            GenerationCount = input.ReadUInt32();
             break;
           }
           case 32: {
-            TotalFrameCount = input.ReadUInt32();
+            FrameSize = input.ReadUInt32();
             break;
           }
           case 40: {
-            FieldDegree = input.ReadUInt32();
+            TotalFrameCount = input.ReadUInt32();
             break;
           }
           case 48: {
-            FieldPoly = input.ReadUInt32();
+            FieldDegree = input.ReadUInt32();
             break;
           }
           case 56: {
-            LfsrSeed = input.ReadUInt32();
+            FieldPoly = input.ReadUInt32();
             break;
           }
           case 64: {
-            LfsrPoly = input.ReadUInt32();
+            LfsrSeed = input.ReadUInt32();
             break;
           }
           case 72: {
-            DebugMatrixUart = input.ReadBool();
+            LfsrPoly = input.ReadUInt32();
             break;
           }
           case 80: {
+            DebugMatrixUart = input.ReadBool();
+            break;
+          }
+          case 88: {
             DebugFragmentUart = input.ReadBool();
             break;
           }
@@ -1469,38 +1502,42 @@ namespace LoRa {
             break;
           }
           case 16: {
-            GenerationCount = input.ReadUInt32();
+            GenerationRedundancySize = input.ReadUInt32();
             break;
           }
           case 24: {
-            FrameSize = input.ReadUInt32();
+            GenerationCount = input.ReadUInt32();
             break;
           }
           case 32: {
-            TotalFrameCount = input.ReadUInt32();
+            FrameSize = input.ReadUInt32();
             break;
           }
           case 40: {
-            FieldDegree = input.ReadUInt32();
+            TotalFrameCount = input.ReadUInt32();
             break;
           }
           case 48: {
-            FieldPoly = input.ReadUInt32();
+            FieldDegree = input.ReadUInt32();
             break;
           }
           case 56: {
-            LfsrSeed = input.ReadUInt32();
+            FieldPoly = input.ReadUInt32();
             break;
           }
           case 64: {
-            LfsrPoly = input.ReadUInt32();
+            LfsrSeed = input.ReadUInt32();
             break;
           }
           case 72: {
-            DebugMatrixUart = input.ReadBool();
+            LfsrPoly = input.ReadUInt32();
             break;
           }
           case 80: {
+            DebugMatrixUart = input.ReadBool();
+            break;
+          }
+          case 88: {
             DebugFragmentUart = input.ReadBool();
             break;
           }

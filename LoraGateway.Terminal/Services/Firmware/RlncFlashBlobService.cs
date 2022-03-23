@@ -119,11 +119,11 @@ public class RlncFlashBlobService
                     byte[] syncHeader = new byte[]
                     {
                         0xFF, 0xFF
-                    }.Concat(BitConverter.GetBytes(totalSize)).ToArray();
+                    }.Concat(BitConverter.GetBytes(totalSize).Reverse()).ToArray();
                     Log.Information("Sync header {Data}", SerialUtil.ByteArrayToString(syncHeader));
                     syncHeader.Length.ShouldBe(4);
-                    // TODO check endianness
                     writer.Write(syncHeader);
+                    
                     foreach (var encodedFragment in gen.Fragments)
                     {
                         var flashPayload = encodedFragment.Meta.Concat(encodedFragment.Payload).ToArray();
@@ -145,7 +145,7 @@ public class RlncFlashBlobService
                         byte[] syncUpdateHeader = new byte[]
                         {
                             0xFF, 0xFF
-                        }.Concat(BitConverter.GetBytes((UInt16) updateHeaderSize)).ToArray();
+                        }.Concat(BitConverter.GetBytes((UInt16) updateHeaderSize).Reverse()).ToArray();
                         writer.Write(syncUpdateHeader);
                         Log.Information("Update header {Data}", SerialUtil.ByteArrayToString(syncUpdateHeader));
                     }
@@ -198,6 +198,7 @@ public class RlncFlashBlobService
                 // Calculated value from config store
                 GenerationCount = fuotaSession.GenerationCount,
                 GenerationSize = config.GenerationSize,
+                GenerationRedundancySize = config.GenerationSizeRedundancy,
                 // Wont send poly as its highly static
                 // LfsrPoly = ,
                 LfsrSeed = config.LfsrSeed
