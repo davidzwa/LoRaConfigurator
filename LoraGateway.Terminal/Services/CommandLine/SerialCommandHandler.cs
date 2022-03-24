@@ -116,10 +116,10 @@ public class SerialCommandHandler
 
                 var isMulticast = _serialProcessorService.IsDeviceFilterMulticast();
                 var selectedPortName = _selectedDeviceService.SelectedPortName;
-                _logger.LogInformation("Unicast RLNC command {Port} MC:{MC} Start:{StartRemote}",
+                _logger.LogInformation("Unicast RLNC command {Port} MC:{MC} Type:{CommandType}",
                     selectedPortName,
                     isMulticast,
-                    !_fuotaManagerService.IsRemoteSessionStarted);
+                    loraMessage.BodyCase);
 
                 _serialProcessorService.SendUnicastTransmitCommand(loraMessage, GetDoNotProxyConfig());
             });

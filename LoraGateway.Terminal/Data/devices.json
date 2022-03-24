@@ -75,7 +75,7 @@
       "HardwareId": "5832774-876106005-825374777",
       "Id": 5832774,
       "NickName": "A1",
-      "FirmwareVersion": "3.0.0.1",
+      "FirmwareVersion": "3.3.0.0",
       "RegisteredAt": "132911431153208074",
       "LastPortName": "COM11",
       "Meta": null
@@ -93,7 +93,7 @@
       "HardwareId": "5046343-876106006-825374777",
       "Id": 5046343,
       "NickName": "A3",
-      "FirmwareVersion": "3.0.0.1",
+      "FirmwareVersion": "3.3.0.0",
       "RegisteredAt": "132913055127166434",
       "LastPortName": "COM12",
       "Meta": null
