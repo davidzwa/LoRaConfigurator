@@ -163,7 +163,13 @@ public partial class SerialProcessorService
                     GenerationSize = config.GenerationSize,
                     // Wont send poly as its highly static
                     // LfsrPoly = ,
-                    LfsrSeed = config.LfsrSeed
+                    LfsrSeed = config.LfsrSeed,
+                    ReceptionRateConfig = new ()
+                    {
+                        PacketErrorRate = config.ApproxPacketErrorRate,
+                        OverrideSeed = config.OverridePacketErrorSeed,
+                        Seed = config.PacketErrorSeed
+                    }
                 }
             })
         };

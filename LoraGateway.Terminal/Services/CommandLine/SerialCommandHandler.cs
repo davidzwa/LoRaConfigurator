@@ -1,6 +1,5 @@
 using System.CommandLine;
 using System.CommandLine.Invocation;
-using System.CommandLine.Parsing;
 using LoRa;
 using LoraGateway.Services.Extensions;
 using LoraGateway.Services.Firmware;
@@ -106,6 +105,12 @@ public class SerialCommandHandler
                             TxBandwidth = config.TxBandwidth,
                             TxPower = config.TxPower,
                             TxDataRate = config.TxDataRate
+                        },
+                        ReceptionRateConfig = new ()
+                        {
+                            PacketErrorRate = config.ApproxPacketErrorRate,
+                            OverrideSeed = config.OverridePacketErrorSeed,
+                            Seed = config.PacketErrorSeed
                         }
                     };
                     _fuotaManagerService.IsRemoteSessionStarted = true;

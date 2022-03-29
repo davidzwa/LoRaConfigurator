@@ -10,11 +10,6 @@ namespace LoraGateway.Services.Firmware;
 /// </summary>
 public class BlobFragmentationService
 {
-    public BlobFragmentationService()
-    {
-        
-    }
-    
     private int ValidateGenerationSize(long firmwareSize, int frameSize)
     {
         if (frameSize < 1) throw new ValidationException("Illegal frameSize of 0 specified");
@@ -69,10 +64,4 @@ public class BlobFragmentationService
         [FieldOffset(2)] public readonly byte Byte2;
         [FieldOffset(3)] public readonly byte Byte3;
     }
-
-    // public void FragmentFirmwareBinFile() {
-    // Function to fragment a realistic firmware file, padding the last inconsistent packet
-    // }
-
-    // public bool CompareFragmentSequences(List<UnencodedPacket> a, List<UnencodedPacket> b) { }
 }

@@ -19,6 +19,9 @@ public class FuotaConfig : ICloneable
     public uint RemoteDeviceId0 { get; set; } = 0;
     public bool RemoteIsMulticast { get; set; } = true;
     public uint RemoteUpdateIntervalMs { get; set; } = 500;
+    public float ApproxPacketErrorRate { get; set; } = 0.2f;
+    public bool OverridePacketErrorSeed { get; set; } = true;
+    public UInt32 PacketErrorSeed { get; set; } = 1963;
     public uint LocalUpdateIntervalMs { get; set; } = 500;
     public bool DebugMatrixUart { get; set; } = false;
     public bool DebugFragmentUart { get; set; } = false;

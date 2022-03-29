@@ -34,8 +34,9 @@ namespace LoRa {
             "CCIzChhNZWFzdXJlbWVudFN0cmVhbVJlcXVlc3QSFwoPRnJhZ21lbnRTaXpl",
             "TWF4GAEgASgNIhsKGU1lYXN1cmVtZW50U3RyZWFtRnJhZ21lbnQiUQoVVHJh",
             "bnNtaXRDb25maWd1cmF0aW9uEg8KB1R4UG93ZXIYASABKAUSEwoLVHhCYW5k",
-            "d2lkdGgYAiABKA0SEgoKVHhEYXRhUmF0ZRgDIAEoDUIHqgIETG9SYWIGcHJv",
-            "dG8z"));
+            "d2lkdGgYAiABKA0SEgoKVHhEYXRhUmF0ZRgDIAEoDSJSChNSZWNlcHRpb25S",
+            "YXRlQ29uZmlnEhcKD1BhY2tldEVycm9yUmF0ZRgBIAEoAhIUCgxPdmVycmlk",
+            "ZVNlZWQYAiABKAgSDAoEU2VlZBgDIAEoDUIHqgIETG9SYWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -43,7 +44,8 @@ namespace LoRa {
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.ExperimentResponse), global::LoRa.ExperimentResponse.Parser, new[]{ "MeasurementCount", "MeasurementsDisabled", "WasCleared" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.MeasurementStreamRequest), global::LoRa.MeasurementStreamRequest.Parser, new[]{ "FragmentSizeMax" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.MeasurementStreamFragment), global::LoRa.MeasurementStreamFragment.Parser, null, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.TransmitConfiguration), global::LoRa.TransmitConfiguration.Parser, new[]{ "TxPower", "TxBandwidth", "TxDataRate" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.TransmitConfiguration), global::LoRa.TransmitConfiguration.Parser, new[]{ "TxPower", "TxBandwidth", "TxDataRate" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.ReceptionRateConfig), global::LoRa.ReceptionRateConfig.Parser, new[]{ "PacketErrorRate", "OverrideSeed", "Seed" }, null, null, null, null)
           }));
     }
     #endregion
@@ -1135,6 +1137,269 @@ namespace LoRa {
           }
           case 24: {
             TxDataRate = input.ReadUInt32();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  public sealed partial class ReceptionRateConfig : pb::IMessage<ReceptionRateConfig>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<ReceptionRateConfig> _parser = new pb::MessageParser<ReceptionRateConfig>(() => new ReceptionRateConfig());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<ReceptionRateConfig> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LoRa.ExperimentConfigReflection.Descriptor.MessageTypes[5]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ReceptionRateConfig() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ReceptionRateConfig(ReceptionRateConfig other) : this() {
+      packetErrorRate_ = other.packetErrorRate_;
+      overrideSeed_ = other.overrideSeed_;
+      seed_ = other.seed_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ReceptionRateConfig Clone() {
+      return new ReceptionRateConfig(this);
+    }
+
+    /// <summary>Field number for the "PacketErrorRate" field.</summary>
+    public const int PacketErrorRateFieldNumber = 1;
+    private float packetErrorRate_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public float PacketErrorRate {
+      get { return packetErrorRate_; }
+      set {
+        packetErrorRate_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "OverrideSeed" field.</summary>
+    public const int OverrideSeedFieldNumber = 2;
+    private bool overrideSeed_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool OverrideSeed {
+      get { return overrideSeed_; }
+      set {
+        overrideSeed_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "Seed" field.</summary>
+    public const int SeedFieldNumber = 3;
+    private uint seed_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint Seed {
+      get { return seed_; }
+      set {
+        seed_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as ReceptionRateConfig);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(ReceptionRateConfig other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(PacketErrorRate, other.PacketErrorRate)) return false;
+      if (OverrideSeed != other.OverrideSeed) return false;
+      if (Seed != other.Seed) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (PacketErrorRate != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(PacketErrorRate);
+      if (OverrideSeed != false) hash ^= OverrideSeed.GetHashCode();
+      if (Seed != 0) hash ^= Seed.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (PacketErrorRate != 0F) {
+        output.WriteRawTag(13);
+        output.WriteFloat(PacketErrorRate);
+      }
+      if (OverrideSeed != false) {
+        output.WriteRawTag(16);
+        output.WriteBool(OverrideSeed);
+      }
+      if (Seed != 0) {
+        output.WriteRawTag(24);
+        output.WriteUInt32(Seed);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (PacketErrorRate != 0F) {
+        output.WriteRawTag(13);
+        output.WriteFloat(PacketErrorRate);
+      }
+      if (OverrideSeed != false) {
+        output.WriteRawTag(16);
+        output.WriteBool(OverrideSeed);
+      }
+      if (Seed != 0) {
+        output.WriteRawTag(24);
+        output.WriteUInt32(Seed);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (PacketErrorRate != 0F) {
+        size += 1 + 4;
+      }
+      if (OverrideSeed != false) {
+        size += 1 + 1;
+      }
+      if (Seed != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Seed);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(ReceptionRateConfig other) {
+      if (other == null) {
+        return;
+      }
+      if (other.PacketErrorRate != 0F) {
+        PacketErrorRate = other.PacketErrorRate;
+      }
+      if (other.OverrideSeed != false) {
+        OverrideSeed = other.OverrideSeed;
+      }
+      if (other.Seed != 0) {
+        Seed = other.Seed;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 13: {
+            PacketErrorRate = input.ReadFloat();
+            break;
+          }
+          case 16: {
+            OverrideSeed = input.ReadBool();
+            break;
+          }
+          case 24: {
+            Seed = input.ReadUInt32();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 13: {
+            PacketErrorRate = input.ReadFloat();
+            break;
+          }
+          case 16: {
+            OverrideSeed = input.ReadBool();
+            break;
+          }
+          case 24: {
+            Seed = input.ReadUInt32();
             break;
           }
         }

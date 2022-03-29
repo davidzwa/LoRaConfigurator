@@ -137,7 +137,7 @@ public class RlncFlashBlobService
                     }
 
                     currentGenIndex++;
-                    
+
                     if (gen.ShouldUpdateAfter)
                     {
                         byte[] syncUpdateHeader = new byte[]
@@ -154,27 +154,13 @@ public class RlncFlashBlobService
 
     private void AnalyseBlob(LoRaMessage message)
     {
-        // var payload = message.Payload;
         var blob = message.ToByteArray();
         _bytesWritten += blob.Length;
-        // Log.Information("Encoded payload Size {Size} Proto size {SizeBlob}",
-        //     payload.Length,
-        //     blob.Length
-        //     // SerialUtil.ByteArrayToString(blob)
-        // );
     }
 
     private void AnalyseOptimalBlob(RlncFlashEncodedFragment blob)
     {
         _bytesWritten += blob.Payload.Length + blob.Meta.Length;
-
-        // var proto = blob.ToByteString();
-        // Log.Information("Optimized fragment Size {Size} Total {TotalSize}",
-        //     payload.Length,
-        //     payload.Length + blob.Meta.Length
-        //     // proto.Length
-        //     // SerialUtil.ByteArrayToString(blob)
-        // );
     }
 
     private LoRaMessage GenerateInitCommand(FuotaSession fuotaSession)
@@ -197,7 +183,13 @@ public class RlncFlashBlobService
                 GenerationRedundancySize = config.GenerationSizeRedundancy,
                 // Wont send poly as its highly static
                 // LfsrPoly = ,
-                LfsrSeed = config.LfsrSeed
+                LfsrSeed = config.LfsrSeed,
+                ReceptionRateConfig = new()
+                {
+                    PacketErrorRate = config.ApproxPacketErrorRate,
+                    OverrideSeed = config.OverridePacketErrorSeed,
+                    Seed = config.PacketErrorSeed
+                }
             }
         };
     }
@@ -212,23 +204,6 @@ public class RlncFlashBlobService
                 fragment.UsedGenerator, fragment.SequenceNumber, fragment.GenerationIndex
             })
         };
-    }
-
-    private LoRaMessage GenerateFragmentCommand(FragmentWithGenerator fragment)
-    {
-        var message = new LoRaMessage
-        {
-            CorrelationCode = 0,
-            DeviceId = 0,
-            IsMulticast = true,
-            Payload = ByteString.CopyFrom(fragment.Fragment),
-            RlncEncodedFragment = new RlncEncodedFragment()
-            {
-                LfsrState = fragment.UsedGenerator
-            }
-        };
-
-        return message;
     }
 
     private LoRaMessage GenerateTerminationCommand()

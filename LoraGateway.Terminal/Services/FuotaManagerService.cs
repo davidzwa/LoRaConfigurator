@@ -99,7 +99,7 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         int remainingFragments = (int)_currentFuotaSession.TotalFragmentCount -
                                  (int)config.GenerationSize * (int)_currentFuotaSession.CurrentGenerationIndex;
         var minimumFragmentsRemaining = Math.Min(maxGenerationFragments, remainingFragments + redundancy);
-        
+
         var fragmentIndex = _currentFuotaSession.CurrentFragmentIndex;
         return fragmentIndex >= minimumFragmentsRemaining;
     }
@@ -260,8 +260,10 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
 
     public void SaveFuotaDebuggingProgress(string source, DecodingUpdate update, ByteString payload)
     {
-        // var encodedPacket = _rlncEncodingService.GetLastEncodedPacket();
-        var encodingLength = 4; // encodedPacket.EncodingVector.Count;
+        // TODO test the min input
+        var encodingLength = (int)Math.Min(Store.GenerationSize,
+            Store.FakeFragmentCount -
+            update.CurrentGenerationIndex * Store.GenerationSize); // encodedPacket.EncodingVector.Count;
         var rank = update.RankProgress;
 
         var arrayPayload = payload.ToArray();

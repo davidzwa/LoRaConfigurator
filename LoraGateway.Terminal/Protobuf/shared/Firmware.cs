@@ -32,48 +32,50 @@ namespace LoRa {
             "RGV2aWNlSWQSIQoPRmlybXdhcmVWZXJzaW9uGAIgASgLMgguVmVyc2lvbhIY",
             "ChBNZWFzdXJlbWVudENvdW50GAMgASgNEhwKFE1lYXN1cmVtZW50c0Rpc2Fi",
             "bGVkGAQgASgIEhYKDlJsbmNGbGFzaFN0YXRlGAUgASgNEhgKEFJsbmNTZXNz",
-            "aW9uU3RhdGUYBiABKA0ixwEKG1JsbmNSZW1vdGVGbGFzaFN0YXJ0Q29tbWFu",
+            "aW9uU3RhdGUYBiABKA0ixgEKG1JsbmNSZW1vdGVGbGFzaFN0YXJ0Q29tbWFu",
             "ZBI1ChV0cmFuc21pdENvbmZpZ3VyYXRpb24YAiABKAsyFi5UcmFuc21pdENv",
-            "bmZpZ3VyYXRpb24SEgoKVGltZXJEZWxheRgDIAEoDRIWCg5TZXRJc011bHRp",
-            "Y2FzdBgEIAEoCBIRCglEZXZpY2VJZDAYBSABKA0SFwoPRGVidWdNYXRyaXhV",
-            "YXJ0GAYgASgIEhkKEURlYnVnRnJhZ21lbnRVYXJ0GAcgASgIIhwKGlJsbmNS",
-            "ZW1vdGVGbGFzaFN0b3BDb21tYW5kIhsKGVJsbmNRdWVyeVJlbW90ZUZsYXNo",
-            "U3RhdGUi7gEKF1JsbmNSZW1vdGVGbGFzaFJlc3BvbnNlEhYKDlJsbmNGbGFz",
-            "aFN0YXRlGAEgASgNEhgKEFJsbmNTZXNzaW9uU3RhdGUYAiABKA0SFgoOQ3Vy",
-            "cmVudFR4UG93ZXIYAyABKAUSGgoSQ3VycmVudFR4QmFuZHdpZHRoGAQgASgN",
-            "EhkKEUN1cnJlbnRUeERhdGFSYXRlGAUgASgNEhkKEUN1cnJlbnRUaW1lckRl",
-            "bGF5GAYgASgNEh0KFUN1cnJlbnRTZXRJc011bHRpY2FzdBgHIAEoCBIYChBD",
-            "dXJyZW50RGV2aWNlSWQwGAggASgNIpYCChVSbG5jSW5pdENvbmZpZ0NvbW1h",
-            "bmQSFgoOR2VuZXJhdGlvblNpemUYASABKA0SIAoYR2VuZXJhdGlvblJlZHVu",
-            "ZGFuY3lTaXplGAIgASgNEhcKD0dlbmVyYXRpb25Db3VudBgDIAEoDRIRCglG",
-            "cmFtZVNpemUYBCABKA0SFwoPVG90YWxGcmFtZUNvdW50GAUgASgNEhMKC0Zp",
-            "ZWxkRGVncmVlGAYgASgNEhEKCUZpZWxkUG9seRgHIAEoDRIQCghMZnNyU2Vl",
-            "ZBgIIAEoDRIQCghMZnNyUG9seRgJIAEoDRIXCg9EZWJ1Z01hdHJpeFVhcnQY",
-            "CiABKAgSGQoRRGVidWdGcmFnbWVudFVhcnQYCyABKAgiKAoTUmxuY0VuY29k",
-            "ZWRGcmFnbWVudBIRCglMZnNyU3RhdGUYASABKA0iOQoYUmxuY0ZsYXNoRW5j",
-            "b2RlZEZyYWdtZW50EgwKBE1ldGEYASABKAwSDwoHUGF5bG9hZBgCIAEoDCIq",
-            "Cg9SbG5jU3RhdGVVcGRhdGUSFwoPR2VuZXJhdGlvbkluZGV4GAEgASgNIhgK",
-            "FlJsbmNUZXJtaW5hdGlvbkNvbW1hbmQibAoORGVjb2RpbmdSZXN1bHQSDwoH",
-            "U3VjY2VzcxgBIAEoCBISCgpNYXRyaXhSYW5rGAIgASgNEhoKEkZpcnN0RGVj",
-            "b2RlZE51bWJlchgDIAEoDRIZChFMYXN0RGVjb2RlZE51bWJlchgEIAEoDSIs",
-            "Cg5EZWNvZGluZ01hdHJpeBIMCgRDb2xzGAEgASgNEgwKBFJvd3MYAiABKA0i",
-            "+gEKDkRlY29kaW5nVXBkYXRlEhIKCk1hdHJpeENyYzgYASABKA0SFAoMRmly",
-            "c3RSb3dDcmM4GAIgASgNEhMKC0xhc3RSb3dDcmM4GAMgASgNEhQKDExhc3RS",
-            "b3dJbmRleBgEIAEoDRIUCgxSYW5rUHJvZ3Jlc3MYBSABKA0SGQoRUmVjZWl2",
-            "ZWRGcmFnbWVudHMYBiABKA0SHgoWQ3VycmVudEdlbmVyYXRpb25JbmRleBgH",
-            "IAEoDRIRCglJc1J1bm5pbmcYCCABKAgSFQoNVXNlZExmc3JTdGF0ZRgJIAEo",
-            "DRIYChBDdXJyZW50TGZzclN0YXRlGAogASgNQgeqAgRMb1JhYgZwcm90bzM="));
+            "bmZpZ3VyYXRpb24SMQoTcmVjZXB0aW9uUmF0ZUNvbmZpZxgDIAEoCzIULlJl",
+            "Y2VwdGlvblJhdGVDb25maWcSEgoKVGltZXJEZWxheRgEIAEoDRIWCg5TZXRJ",
+            "c011bHRpY2FzdBgFIAEoCBIRCglEZXZpY2VJZDAYBiABKA0iHAoaUmxuY1Jl",
+            "bW90ZUZsYXNoU3RvcENvbW1hbmQiGwoZUmxuY1F1ZXJ5UmVtb3RlRmxhc2hT",
+            "dGF0ZSLuAQoXUmxuY1JlbW90ZUZsYXNoUmVzcG9uc2USFgoOUmxuY0ZsYXNo",
+            "U3RhdGUYASABKA0SGAoQUmxuY1Nlc3Npb25TdGF0ZRgCIAEoDRIWCg5DdXJy",
+            "ZW50VHhQb3dlchgDIAEoBRIaChJDdXJyZW50VHhCYW5kd2lkdGgYBCABKA0S",
+            "GQoRQ3VycmVudFR4RGF0YVJhdGUYBSABKA0SGQoRQ3VycmVudFRpbWVyRGVs",
+            "YXkYBiABKA0SHQoVQ3VycmVudFNldElzTXVsdGljYXN0GAcgASgIEhgKEEN1",
+            "cnJlbnREZXZpY2VJZDAYCCABKA0i5gIKFVJsbmNJbml0Q29uZmlnQ29tbWFu",
+            "ZBIWCg5HZW5lcmF0aW9uU2l6ZRgBIAEoDRIgChhHZW5lcmF0aW9uUmVkdW5k",
+            "YW5jeVNpemUYAiABKA0SFwoPR2VuZXJhdGlvbkNvdW50GAMgASgNEhEKCUZy",
+            "YW1lU2l6ZRgEIAEoDRIXCg9Ub3RhbEZyYW1lQ291bnQYBSABKA0SEwoLRmll",
+            "bGREZWdyZWUYBiABKA0SEQoJRmllbGRQb2x5GAcgASgNEhAKCExmc3JTZWVk",
+            "GAggASgNEhAKCExmc3JQb2x5GAkgASgNEhcKD0RlYnVnTWF0cml4VWFydBgK",
+            "IAEoCBIZChFEZWJ1Z0ZyYWdtZW50VWFydBgLIAEoCBI2ChNyZWNlcHRpb25S",
+            "YXRlQ29uZmlnGAwgASgLMhQuUmVjZXB0aW9uUmF0ZUNvbmZpZ0gAiAEBQhYK",
+            "FF9yZWNlcHRpb25SYXRlQ29uZmlnIigKE1JsbmNFbmNvZGVkRnJhZ21lbnQS",
+            "EQoJTGZzclN0YXRlGAEgASgNIjkKGFJsbmNGbGFzaEVuY29kZWRGcmFnbWVu",
+            "dBIMCgRNZXRhGAEgASgMEg8KB1BheWxvYWQYAiABKAwiKgoPUmxuY1N0YXRl",
+            "VXBkYXRlEhcKD0dlbmVyYXRpb25JbmRleBgBIAEoDSIYChZSbG5jVGVybWlu",
+            "YXRpb25Db21tYW5kImwKDkRlY29kaW5nUmVzdWx0Eg8KB1N1Y2Nlc3MYASAB",
+            "KAgSEgoKTWF0cml4UmFuaxgCIAEoDRIaChJGaXJzdERlY29kZWROdW1iZXIY",
+            "AyABKA0SGQoRTGFzdERlY29kZWROdW1iZXIYBCABKA0iLAoORGVjb2RpbmdN",
+            "YXRyaXgSDAoEQ29scxgBIAEoDRIMCgRSb3dzGAIgASgNIvoBCg5EZWNvZGlu",
+            "Z1VwZGF0ZRISCgpNYXRyaXhDcmM4GAEgASgNEhQKDEZpcnN0Um93Q3JjOBgC",
+            "IAEoDRITCgtMYXN0Um93Q3JjOBgDIAEoDRIUCgxMYXN0Um93SW5kZXgYBCAB",
+            "KA0SFAoMUmFua1Byb2dyZXNzGAUgASgNEhkKEVJlY2VpdmVkRnJhZ21lbnRz",
+            "GAYgASgNEh4KFkN1cnJlbnRHZW5lcmF0aW9uSW5kZXgYByABKA0SEQoJSXNS",
+            "dW5uaW5nGAggASgIEhUKDVVzZWRMZnNyU3RhdGUYCSABKA0SGAoQQ3VycmVu",
+            "dExmc3JTdGF0ZRgKIAEoDUIHqgIETG9SYWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LoRa.ExperimentConfigReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.Version), global::LoRa.Version.Parser, new[]{ "Major", "Minor", "Patch", "Revision" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DeviceId), global::LoRa.DeviceId.Parser, new[]{ "Id0", "Id1", "Id2" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.BootMessage), global::LoRa.BootMessage.Parser, new[]{ "DeviceIdentifier", "FirmwareVersion", "MeasurementCount", "MeasurementsDisabled", "RlncFlashState", "RlncSessionState" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncRemoteFlashStartCommand), global::LoRa.RlncRemoteFlashStartCommand.Parser, new[]{ "TransmitConfiguration", "TimerDelay", "SetIsMulticast", "DeviceId0", "DebugMatrixUart", "DebugFragmentUart" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncRemoteFlashStartCommand), global::LoRa.RlncRemoteFlashStartCommand.Parser, new[]{ "TransmitConfiguration", "ReceptionRateConfig", "TimerDelay", "SetIsMulticast", "DeviceId0" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncRemoteFlashStopCommand), global::LoRa.RlncRemoteFlashStopCommand.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncQueryRemoteFlashState), global::LoRa.RlncQueryRemoteFlashState.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncRemoteFlashResponse), global::LoRa.RlncRemoteFlashResponse.Parser, new[]{ "RlncFlashState", "RlncSessionState", "CurrentTxPower", "CurrentTxBandwidth", "CurrentTxDataRate", "CurrentTimerDelay", "CurrentSetIsMulticast", "CurrentDeviceId0" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncInitConfigCommand), global::LoRa.RlncInitConfigCommand.Parser, new[]{ "GenerationSize", "GenerationRedundancySize", "GenerationCount", "FrameSize", "TotalFrameCount", "FieldDegree", "FieldPoly", "LfsrSeed", "LfsrPoly", "DebugMatrixUart", "DebugFragmentUart" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncInitConfigCommand), global::LoRa.RlncInitConfigCommand.Parser, new[]{ "GenerationSize", "GenerationRedundancySize", "GenerationCount", "FrameSize", "TotalFrameCount", "FieldDegree", "FieldPoly", "LfsrSeed", "LfsrPoly", "DebugMatrixUart", "DebugFragmentUart", "ReceptionRateConfig" }, new[]{ "ReceptionRateConfig" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncEncodedFragment), global::LoRa.RlncEncodedFragment.Parser, new[]{ "LfsrState" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncFlashEncodedFragment), global::LoRa.RlncFlashEncodedFragment.Parser, new[]{ "Meta", "Payload" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncStateUpdate), global::LoRa.RlncStateUpdate.Parser, new[]{ "GenerationIndex" }, null, null, null, null),
@@ -1081,11 +1083,10 @@ namespace LoRa {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public RlncRemoteFlashStartCommand(RlncRemoteFlashStartCommand other) : this() {
       transmitConfiguration_ = other.transmitConfiguration_ != null ? other.transmitConfiguration_.Clone() : null;
+      receptionRateConfig_ = other.receptionRateConfig_ != null ? other.receptionRateConfig_.Clone() : null;
       timerDelay_ = other.timerDelay_;
       setIsMulticast_ = other.setIsMulticast_;
       deviceId0_ = other.deviceId0_;
-      debugMatrixUart_ = other.debugMatrixUart_;
-      debugFragmentUart_ = other.debugFragmentUart_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1110,8 +1111,20 @@ namespace LoRa {
       }
     }
 
+    /// <summary>Field number for the "receptionRateConfig" field.</summary>
+    public const int ReceptionRateConfigFieldNumber = 3;
+    private global::LoRa.ReceptionRateConfig receptionRateConfig_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LoRa.ReceptionRateConfig ReceptionRateConfig {
+      get { return receptionRateConfig_; }
+      set {
+        receptionRateConfig_ = value;
+      }
+    }
+
     /// <summary>Field number for the "TimerDelay" field.</summary>
-    public const int TimerDelayFieldNumber = 3;
+    public const int TimerDelayFieldNumber = 4;
     private uint timerDelay_;
     /// <summary>
     /// Timer delay between each packet
@@ -1126,7 +1139,7 @@ namespace LoRa {
     }
 
     /// <summary>Field number for the "SetIsMulticast" field.</summary>
-    public const int SetIsMulticastFieldNumber = 4;
+    public const int SetIsMulticastFieldNumber = 5;
     private bool setIsMulticast_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1138,7 +1151,7 @@ namespace LoRa {
     }
 
     /// <summary>Field number for the "DeviceId0" field.</summary>
-    public const int DeviceId0FieldNumber = 5;
+    public const int DeviceId0FieldNumber = 6;
     private uint deviceId0_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1146,30 +1159,6 @@ namespace LoRa {
       get { return deviceId0_; }
       set {
         deviceId0_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "DebugMatrixUart" field.</summary>
-    public const int DebugMatrixUartFieldNumber = 6;
-    private bool debugMatrixUart_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool DebugMatrixUart {
-      get { return debugMatrixUart_; }
-      set {
-        debugMatrixUart_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "DebugFragmentUart" field.</summary>
-    public const int DebugFragmentUartFieldNumber = 7;
-    private bool debugFragmentUart_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool DebugFragmentUart {
-      get { return debugFragmentUart_; }
-      set {
-        debugFragmentUart_ = value;
       }
     }
 
@@ -1189,11 +1178,10 @@ namespace LoRa {
         return true;
       }
       if (!object.Equals(TransmitConfiguration, other.TransmitConfiguration)) return false;
+      if (!object.Equals(ReceptionRateConfig, other.ReceptionRateConfig)) return false;
       if (TimerDelay != other.TimerDelay) return false;
       if (SetIsMulticast != other.SetIsMulticast) return false;
       if (DeviceId0 != other.DeviceId0) return false;
-      if (DebugMatrixUart != other.DebugMatrixUart) return false;
-      if (DebugFragmentUart != other.DebugFragmentUart) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1202,11 +1190,10 @@ namespace LoRa {
     public override int GetHashCode() {
       int hash = 1;
       if (transmitConfiguration_ != null) hash ^= TransmitConfiguration.GetHashCode();
+      if (receptionRateConfig_ != null) hash ^= ReceptionRateConfig.GetHashCode();
       if (TimerDelay != 0) hash ^= TimerDelay.GetHashCode();
       if (SetIsMulticast != false) hash ^= SetIsMulticast.GetHashCode();
       if (DeviceId0 != 0) hash ^= DeviceId0.GetHashCode();
-      if (DebugMatrixUart != false) hash ^= DebugMatrixUart.GetHashCode();
-      if (DebugFragmentUart != false) hash ^= DebugFragmentUart.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1229,25 +1216,21 @@ namespace LoRa {
         output.WriteRawTag(18);
         output.WriteMessage(TransmitConfiguration);
       }
+      if (receptionRateConfig_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(ReceptionRateConfig);
+      }
       if (TimerDelay != 0) {
-        output.WriteRawTag(24);
+        output.WriteRawTag(32);
         output.WriteUInt32(TimerDelay);
       }
       if (SetIsMulticast != false) {
-        output.WriteRawTag(32);
+        output.WriteRawTag(40);
         output.WriteBool(SetIsMulticast);
       }
       if (DeviceId0 != 0) {
-        output.WriteRawTag(40);
-        output.WriteUInt32(DeviceId0);
-      }
-      if (DebugMatrixUart != false) {
         output.WriteRawTag(48);
-        output.WriteBool(DebugMatrixUart);
-      }
-      if (DebugFragmentUart != false) {
-        output.WriteRawTag(56);
-        output.WriteBool(DebugFragmentUart);
+        output.WriteUInt32(DeviceId0);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -1263,25 +1246,21 @@ namespace LoRa {
         output.WriteRawTag(18);
         output.WriteMessage(TransmitConfiguration);
       }
+      if (receptionRateConfig_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(ReceptionRateConfig);
+      }
       if (TimerDelay != 0) {
-        output.WriteRawTag(24);
+        output.WriteRawTag(32);
         output.WriteUInt32(TimerDelay);
       }
       if (SetIsMulticast != false) {
-        output.WriteRawTag(32);
+        output.WriteRawTag(40);
         output.WriteBool(SetIsMulticast);
       }
       if (DeviceId0 != 0) {
-        output.WriteRawTag(40);
-        output.WriteUInt32(DeviceId0);
-      }
-      if (DebugMatrixUart != false) {
         output.WriteRawTag(48);
-        output.WriteBool(DebugMatrixUart);
-      }
-      if (DebugFragmentUart != false) {
-        output.WriteRawTag(56);
-        output.WriteBool(DebugFragmentUart);
+        output.WriteUInt32(DeviceId0);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -1296,6 +1275,9 @@ namespace LoRa {
       if (transmitConfiguration_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(TransmitConfiguration);
       }
+      if (receptionRateConfig_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(ReceptionRateConfig);
+      }
       if (TimerDelay != 0) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(TimerDelay);
       }
@@ -1304,12 +1286,6 @@ namespace LoRa {
       }
       if (DeviceId0 != 0) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(DeviceId0);
-      }
-      if (DebugMatrixUart != false) {
-        size += 1 + 1;
-      }
-      if (DebugFragmentUart != false) {
-        size += 1 + 1;
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1329,6 +1305,12 @@ namespace LoRa {
         }
         TransmitConfiguration.MergeFrom(other.TransmitConfiguration);
       }
+      if (other.receptionRateConfig_ != null) {
+        if (receptionRateConfig_ == null) {
+          ReceptionRateConfig = new global::LoRa.ReceptionRateConfig();
+        }
+        ReceptionRateConfig.MergeFrom(other.ReceptionRateConfig);
+      }
       if (other.TimerDelay != 0) {
         TimerDelay = other.TimerDelay;
       }
@@ -1337,12 +1319,6 @@ namespace LoRa {
       }
       if (other.DeviceId0 != 0) {
         DeviceId0 = other.DeviceId0;
-      }
-      if (other.DebugMatrixUart != false) {
-        DebugMatrixUart = other.DebugMatrixUart;
-      }
-      if (other.DebugFragmentUart != false) {
-        DebugFragmentUart = other.DebugFragmentUart;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1366,24 +1342,23 @@ namespace LoRa {
             input.ReadMessage(TransmitConfiguration);
             break;
           }
-          case 24: {
-            TimerDelay = input.ReadUInt32();
+          case 26: {
+            if (receptionRateConfig_ == null) {
+              ReceptionRateConfig = new global::LoRa.ReceptionRateConfig();
+            }
+            input.ReadMessage(ReceptionRateConfig);
             break;
           }
           case 32: {
-            SetIsMulticast = input.ReadBool();
+            TimerDelay = input.ReadUInt32();
             break;
           }
           case 40: {
-            DeviceId0 = input.ReadUInt32();
+            SetIsMulticast = input.ReadBool();
             break;
           }
           case 48: {
-            DebugMatrixUart = input.ReadBool();
-            break;
-          }
-          case 56: {
-            DebugFragmentUart = input.ReadBool();
+            DeviceId0 = input.ReadUInt32();
             break;
           }
         }
@@ -1408,24 +1383,23 @@ namespace LoRa {
             input.ReadMessage(TransmitConfiguration);
             break;
           }
-          case 24: {
-            TimerDelay = input.ReadUInt32();
+          case 26: {
+            if (receptionRateConfig_ == null) {
+              ReceptionRateConfig = new global::LoRa.ReceptionRateConfig();
+            }
+            input.ReadMessage(ReceptionRateConfig);
             break;
           }
           case 32: {
-            SetIsMulticast = input.ReadBool();
+            TimerDelay = input.ReadUInt32();
             break;
           }
           case 40: {
-            DeviceId0 = input.ReadUInt32();
+            SetIsMulticast = input.ReadBool();
             break;
           }
           case 48: {
-            DebugMatrixUart = input.ReadBool();
-            break;
-          }
-          case 56: {
-            DebugFragmentUart = input.ReadBool();
+            DeviceId0 = input.ReadUInt32();
             break;
           }
         }
@@ -2238,6 +2212,7 @@ namespace LoRa {
       lfsrPoly_ = other.lfsrPoly_;
       debugMatrixUart_ = other.debugMatrixUart_;
       debugFragmentUart_ = other.debugFragmentUart_;
+      receptionRateConfig_ = other.receptionRateConfig_ != null ? other.receptionRateConfig_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -2379,6 +2354,18 @@ namespace LoRa {
       }
     }
 
+    /// <summary>Field number for the "receptionRateConfig" field.</summary>
+    public const int ReceptionRateConfigFieldNumber = 12;
+    private global::LoRa.ReceptionRateConfig receptionRateConfig_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LoRa.ReceptionRateConfig ReceptionRateConfig {
+      get { return receptionRateConfig_; }
+      set {
+        receptionRateConfig_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -2405,6 +2392,7 @@ namespace LoRa {
       if (LfsrPoly != other.LfsrPoly) return false;
       if (DebugMatrixUart != other.DebugMatrixUart) return false;
       if (DebugFragmentUart != other.DebugFragmentUart) return false;
+      if (!object.Equals(ReceptionRateConfig, other.ReceptionRateConfig)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -2423,6 +2411,7 @@ namespace LoRa {
       if (LfsrPoly != 0) hash ^= LfsrPoly.GetHashCode();
       if (DebugMatrixUart != false) hash ^= DebugMatrixUart.GetHashCode();
       if (DebugFragmentUart != false) hash ^= DebugFragmentUart.GetHashCode();
+      if (receptionRateConfig_ != null) hash ^= ReceptionRateConfig.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -2485,6 +2474,10 @@ namespace LoRa {
         output.WriteRawTag(88);
         output.WriteBool(DebugFragmentUart);
       }
+      if (receptionRateConfig_ != null) {
+        output.WriteRawTag(98);
+        output.WriteMessage(ReceptionRateConfig);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -2539,6 +2532,10 @@ namespace LoRa {
         output.WriteRawTag(88);
         output.WriteBool(DebugFragmentUart);
       }
+      if (receptionRateConfig_ != null) {
+        output.WriteRawTag(98);
+        output.WriteMessage(ReceptionRateConfig);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -2581,6 +2578,9 @@ namespace LoRa {
       }
       if (DebugFragmentUart != false) {
         size += 1 + 1;
+      }
+      if (receptionRateConfig_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(ReceptionRateConfig);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -2626,6 +2626,12 @@ namespace LoRa {
       }
       if (other.DebugFragmentUart != false) {
         DebugFragmentUart = other.DebugFragmentUart;
+      }
+      if (other.receptionRateConfig_ != null) {
+        if (receptionRateConfig_ == null) {
+          ReceptionRateConfig = new global::LoRa.ReceptionRateConfig();
+        }
+        ReceptionRateConfig.MergeFrom(other.ReceptionRateConfig);
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -2686,6 +2692,13 @@ namespace LoRa {
             DebugFragmentUart = input.ReadBool();
             break;
           }
+          case 98: {
+            if (receptionRateConfig_ == null) {
+              ReceptionRateConfig = new global::LoRa.ReceptionRateConfig();
+            }
+            input.ReadMessage(ReceptionRateConfig);
+            break;
+          }
         }
       }
     #endif
@@ -2743,6 +2756,13 @@ namespace LoRa {
           }
           case 88: {
             DebugFragmentUart = input.ReadBool();
+            break;
+          }
+          case 98: {
+            if (receptionRateConfig_ == null) {
+              ReceptionRateConfig = new global::LoRa.ReceptionRateConfig();
+            }
+            input.ReadMessage(ReceptionRateConfig);
             break;
           }
         }
