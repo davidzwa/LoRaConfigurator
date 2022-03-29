@@ -48,7 +48,7 @@
       "HardwareId": "6488128-876106005-825374777",
       "Id": 6488128,
       "NickName": "H2",
-      "FirmwareVersion": "3.3.0.0",
+      "FirmwareVersion": "3.3.1.0",
       "RegisteredAt": "132907664125525158",
       "LastPortName": "COM4",
       "Meta": null
@@ -86,7 +86,7 @@
       "NickName": "A2",
       "FirmwareVersion": "3.3.1.0",
       "RegisteredAt": "132848144244789782",
-      "LastPortName": "COM3",
+      "LastPortName": "COM9",
       "Meta": null
     },
     {
