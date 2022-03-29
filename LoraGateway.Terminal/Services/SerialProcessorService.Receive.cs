@@ -72,6 +72,7 @@ public partial class SerialProcessorService
             "RAMFUNC",
             "FLASH",
             "RLNC",
+            "RLNC_ERR",
             "DevConfStop",
             "PUSH-BUTTON"
         };

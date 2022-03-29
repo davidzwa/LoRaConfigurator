@@ -78,7 +78,7 @@ public class FuotaSessionHostedService : IHostedService
 
                     await Process();
 
-                    var cappedPeriod = Math.Max((int)fuotaConfig.UpdateIntervalMilliSeconds, 100);
+                    var cappedPeriod = Math.Max((int)fuotaConfig.LocalUpdateIntervalMs, 100);
                     await Task.Delay(cappedPeriod, cancellationToken);
                 }
 

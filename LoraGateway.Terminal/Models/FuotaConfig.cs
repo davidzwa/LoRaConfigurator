@@ -19,7 +19,7 @@ public class FuotaConfig : ICloneable
     public uint RemoteDeviceId0 { get; set; } = 0;
     public bool RemoteIsMulticast { get; set; } = true;
     public uint RemoteUpdateIntervalMs { get; set; } = 500;
-    public uint UpdateIntervalMilliSeconds { get; set; } = 500;
+    public uint LocalUpdateIntervalMs { get; set; } = 500;
     public bool DebugMatrixUart { get; set; } = false;
     public bool DebugFragmentUart { get; set; } = false;
     // Not checked

@@ -260,8 +260,8 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
 
     public void SaveFuotaDebuggingProgress(string source, DecodingUpdate update, ByteString payload)
     {
-        var encodedPacket = _rlncEncodingService.GetLastEncodedPacket();
-        var encodingLength = encodedPacket.EncodingVector.Count;
+        // var encodedPacket = _rlncEncodingService.GetLastEncodedPacket();
+        var encodingLength = 4; // encodedPacket.EncodingVector.Count;
         var rank = update.RankProgress;
 
         var arrayPayload = payload.ToArray();
