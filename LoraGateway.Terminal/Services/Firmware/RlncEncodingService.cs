@@ -13,7 +13,7 @@ public class RlncEncodingService
     /// <summary>
     ///     TODO apply custom size symbol 2,4,8 bits
     /// </summary>
-    public const int SymbolSize = 1;
+    private const int SymbolSize = 8;
 
     private readonly LinearFeedbackShiftRegister _generator = new(0x08);
 

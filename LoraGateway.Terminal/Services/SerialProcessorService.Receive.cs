@@ -15,6 +15,7 @@ public partial class SerialProcessorService
         var measurementCount = response.BootMessage.MeasurementCount;
         var measurementDisabled = response.BootMessage.MeasurementsDisabled;
         var flashState = response.BootMessage.RlncFlashState;
+        var sessionState = response.BootMessage.RlncSessionState;
         var device = await _deviceStore.GetOrAddDevice(new Device
         {
             HardwareId = deviceId,
@@ -23,11 +24,12 @@ public partial class SerialProcessorService
             LastPortName = portName
         });
 
-        _logger.LogInformation("[{Port} {Name}, MC:{Count}, MD:{Disabled}, FS:{FlashState}] heart beat {DeviceId}", 
+        _logger.LogInformation("[{Port} {Name}, MC:{Count}, MD:{Disabled}, RLNC:{RlncSessionState}-{FlashState}] heart beat {DeviceId}",
             portName,
             device?.NickName,
-            measurementCount, 
-            measurementDisabled, 
+            measurementCount,
+            measurementDisabled,
+            sessionState,
             flashState,
             deviceId);
     }
@@ -60,14 +62,19 @@ public partial class SerialProcessorService
 
         string[] inclusions =
         {
-            "LORATX-DONE",
+            // "LORATX-DONE",
             "PeriodTX",
             "PROTO-FAIL",
             "CRC-FAIL",
             "RLNC_TERMINATE",
             "INSERT_ROW",
+            "LORATX-TIMEOUT",
             "RAMFUNC",
             "FLASH",
+            // "RLNC",
+            "RLNC_RNG",
+            "RLNC_PER_SEED",
+            "RLNC_ERR",
             "DevConfStop",
             "PUSH-BUTTON"
         };
@@ -140,6 +147,8 @@ public partial class SerialProcessorService
 
     async Task ReceiveLoRaMeasurement(string portName, UartResponse response)
     {
+        // Suppress
+        return; 
         if (!response.LoraMeasurement.Success)
         {
             _logger.LogInformation("[{Name}] LoRa RX error!", portName);
@@ -160,7 +169,7 @@ public partial class SerialProcessorService
         var result = await _measurementsService.AddMeasurement(sequenceNumber, snr, rssi);
         if (sequenceNumber > 60000) _measurementsService.SetLocationText("");
 
-        InnerLoRaPacketHandler(response?.LoraMeasurement?.DownlinkPayload);
+        InnerLoRaPacketHandler(portName, response?.LoraMeasurement?.DownlinkPayload);
 
         // Debug for now
         _logger.LogInformation(
@@ -170,14 +179,33 @@ public partial class SerialProcessorService
         // }
     }
 
-    private void InnerLoRaPacketHandler(LoRaMessage? message)
+    private void InnerLoRaPacketHandler(string portName, LoRaMessage? message)
     {
         if (message == null) return;
 
-        if (message.BodyCase == LoRaMessage.BodyOneofCase.ExperimentResponse)
+        var messageType = message.BodyCase;
+        if (messageType == LoRaMessage.BodyOneofCase.ExperimentResponse)
         {
             var flashMeasureCount = message.ExperimentResponse.MeasurementCount;
-            _logger.LogInformation("Flash {FlashMeasureCount}", flashMeasureCount);
+            _logger.LogInformation("[{PortName}] Flash {FlashMeasureCount}", portName, flashMeasureCount);
+        }
+        else if (messageType == LoRaMessage.BodyOneofCase.RlncRemoteFlashResponse)
+        {
+            var body = message.RlncRemoteFlashResponse;
+            var txPower = body.CurrentTxPower;
+            var bandwidth = body.CurrentTxBandwidth;
+            var spreadingFactor = body.CurrentTxDataRate;
+            var delay = body.CurrentTimerDelay;
+            var flashState = body.RlncFlashState;
+            var sessionState = body.RlncSessionState;
+            var mc = body.CurrentSetIsMulticast;
+            var deviceId0 = body.CurrentDeviceId0;
+            _logger.LogInformation("[{PortName}] RLNC Response\n TxPower:{TXPower} BW:{BW} SF{SF}\n Period:{Delay} Session:{SessionState} Flash:{FlashState} MC:{MC} DeviceId0:{DeviceId0}", 
+                portName, txPower, bandwidth, spreadingFactor, delay, sessionState, flashState, mc, deviceId0);
+        }
+        else
+        {
+            _logger.LogInformation("[{PortName}] LoRa message {Type}", portName, messageType);
         }
     }
 }

@@ -22,6 +22,9 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
     private FuotaSession? _currentFuotaSession;
     private List<UnencodedPacket> _firmwarePackets = new();
 
+    // Whether we attempted to start a remote session
+    public bool IsRemoteSessionStarted = false;
+
     public FuotaManagerService(
         ILogger<FuotaManagerService> logger,
         IEventPublisher eventPublisher,
@@ -96,7 +99,7 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         int remainingFragments = (int)_currentFuotaSession.TotalFragmentCount -
                                  (int)config.GenerationSize * (int)_currentFuotaSession.CurrentGenerationIndex;
         var minimumFragmentsRemaining = Math.Min(maxGenerationFragments, remainingFragments + redundancy);
-        
+
         var fragmentIndex = _currentFuotaSession.CurrentFragmentIndex;
         return fragmentIndex >= minimumFragmentsRemaining;
     }
@@ -257,8 +260,10 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
 
     public void SaveFuotaDebuggingProgress(string source, DecodingUpdate update, ByteString payload)
     {
-        var encodedPacket = _rlncEncodingService.GetLastEncodedPacket();
-        var encodingLength = encodedPacket.EncodingVector.Count;
+        // TODO test the min input
+        var encodingLength = (int)Math.Min(Store.GenerationSize,
+            Store.FakeFragmentCount -
+            update.CurrentGenerationIndex * Store.GenerationSize); // encodedPacket.EncodingVector.Count;
         var rank = update.RankProgress;
 
         var arrayPayload = payload.ToArray();

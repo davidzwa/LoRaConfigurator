@@ -48,7 +48,7 @@
       "HardwareId": "6488128-876106005-825374777",
       "Id": 6488128,
       "NickName": "H2",
-      "FirmwareVersion": "3.2.0.0",
+      "FirmwareVersion": "3.3.1.0",
       "RegisteredAt": "132907664125525158",
       "LastPortName": "COM4",
       "Meta": null
@@ -66,7 +66,7 @@
       "HardwareId": "4784163-808997123-808661810",
       "Id": 4784163,
       "NickName": "A0",
-      "FirmwareVersion": "3.0.0.1",
+      "FirmwareVersion": "3.3.2.0",
       "RegisteredAt": "132848143947603040",
       "LastPortName": "COM4",
       "Meta": null
@@ -75,7 +75,7 @@
       "HardwareId": "5832774-876106005-825374777",
       "Id": 5832774,
       "NickName": "A1",
-      "FirmwareVersion": "3.0.0.1",
+      "FirmwareVersion": "3.3.0.0",
       "RegisteredAt": "132911431153208074",
       "LastPortName": "COM11",
       "Meta": null
@@ -84,16 +84,16 @@
       "HardwareId": "5570643-859328791-892940854",
       "Id": 5570643,
       "NickName": "A2",
-      "FirmwareVersion": "3.0.0.1",
+      "FirmwareVersion": "3.3.2.0",
       "RegisteredAt": "132848144244789782",
-      "LastPortName": "COM3",
+      "LastPortName": "COM9",
       "Meta": null
     },
     {
       "HardwareId": "5046343-876106006-825374777",
       "Id": 5046343,
       "NickName": "A3",
-      "FirmwareVersion": "3.0.0.1",
+      "FirmwareVersion": "3.3.0.0",
       "RegisteredAt": "132913055127166434",
       "LastPortName": "COM12",
       "Meta": null
@@ -102,7 +102,7 @@
       "HardwareId": "4784212-876106006-825374777",
       "Id": 4784212,
       "NickName": "A4",
-      "FirmwareVersion": "3.2.0.0",
+      "FirmwareVersion": "3.3.0.0",
       "RegisteredAt": "132913102713712512",
       "LastPortName": "COM8",
       "Meta": null

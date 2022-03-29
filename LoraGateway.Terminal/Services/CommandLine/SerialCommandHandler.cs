@@ -1,6 +1,5 @@
 using System.CommandLine;
 using System.CommandLine.Invocation;
-using System.CommandLine.Parsing;
 using LoRa;
 using LoraGateway.Services.Extensions;
 using LoraGateway.Services.Firmware;
@@ -21,7 +20,7 @@ public class SerialCommandHandler
         SelectedDeviceService selectedDeviceService,
         MeasurementsService measurementsService,
         FuotaManagerService fuotaManagerService,
-        RlncFlashBlobService rlncFlashBlobService, 
+        RlncFlashBlobService rlncFlashBlobService,
         SerialProcessorService serialProcessorService
     )
     {
@@ -61,21 +60,74 @@ public class SerialCommandHandler
     {
         var command = new Command("rlnc-blob");
         command.Handler = CommandHandler.Create(
-            async () =>
-            {
-                await _rlncFlashBlobService.GenerateFlashBlob();
-            });
+            async () => { await _rlncFlashBlobService.GenerateFlashBlob(); });
         return command;
     }
-    
+
     public Command GetRlncInitCommand()
     {
         var command = new Command("rlnc-init");
         command.AddAlias("rlnc");
+        command.AddOption(new Option("--local"));
+        command.AddOption(new Option("--info"));
         command.Handler = CommandHandler.Create(
-            async () =>
+            async (string d, bool info, bool local) =>
             {
-                await _fuotaManagerService.HandleRlncConsoleCommand();
+                if (local)
+                {
+                    await _fuotaManagerService.HandleRlncConsoleCommand();
+                    return;
+                }
+
+                var config = _fuotaManagerService.GetStore();
+
+                // We trigger a remote RLNC session stored in flash
+                var loraMessage = new LoRaMessage();
+
+                if (info)
+                {
+                    loraMessage.RlncQueryRemoteFlashCommand = new();
+                }
+                else if (_fuotaManagerService.IsRemoteSessionStarted)
+                {
+                    loraMessage.RlncRemoteFlashStopCommand = new();
+                    _fuotaManagerService.IsRemoteSessionStarted = false;
+                }
+                else
+                {
+                    loraMessage.RlncRemoteFlashStartCommand = new()
+                    {
+                        DeviceId0 = config.RemoteDeviceId0,
+                        SetIsMulticast = config.RemoteIsMulticast,
+                        TimerDelay = config.RemoteUpdateIntervalMs,
+                        TransmitConfiguration = new TransmitConfiguration()
+                        {
+                            TxBandwidth = config.TxBandwidth,
+                            TxPower = config.TxPower,
+                            TxDataRate = config.TxDataRate
+                        },
+                        ReceptionRateConfig = new ()
+                        {
+                            PacketErrorRate = config.ApproxPacketErrorRate,
+                            OverrideSeed = config.OverridePacketErrorSeed,
+                            DropUpdateCommands = config.DropUpdateCommands,
+                            Seed = config.PacketErrorSeed
+                        }
+                    };
+                    _fuotaManagerService.IsRemoteSessionStarted = true;
+                }
+
+                // Store multicast context
+                _serialProcessorService.SetDeviceFilter(d);
+
+                var isMulticast = _serialProcessorService.IsDeviceFilterMulticast();
+                var selectedPortName = _selectedDeviceService.SelectedPortName;
+                _logger.LogInformation("Unicast RLNC command {Port} MC:{MC} Type:{CommandType}",
+                    selectedPortName,
+                    isMulticast,
+                    loraMessage.BodyCase);
+
+                _serialProcessorService.SendUnicastTransmitCommand(loraMessage, GetDoNotProxyConfig());
             });
         return command;
     }
@@ -85,10 +137,7 @@ public class SerialCommandHandler
         var command = new Command("rlnc-load");
         command.AddAlias("rl");
         command.Handler = CommandHandler.Create(
-            async () =>
-            {
-                await _fuotaManagerService.ReloadStore();
-            });
+            async () => { await _fuotaManagerService.ReloadStore(); });
         return command;
     }
 
@@ -137,19 +186,19 @@ public class SerialCommandHandler
             async (string d, bool clc, bool q, bool conf) =>
             {
                 var loraMessage = new LoRaMessage();
-
-                // We will be transmitted a device conf
                 if (conf || q)
                 {
+                    // We will be transmitting a device/tx conf
                     await _fuotaManagerService.ReloadStore();
 
                     var store = _fuotaManagerService.GetStore();
                     loraMessage.DeviceConfiguration = new DeviceConfiguration();
 
                     var devConf = loraMessage.DeviceConfiguration;
-                    devConf.TxBandwidth = store!.TxBandwidth;
-                    devConf.TxPower = store.TxPower;
-                    devConf.TxDataRate = store.TxDataRate;
+                    var txConf = devConf.TransmitConfiguration;
+                    txConf.TxBandwidth = store!.TxBandwidth;
+                    txConf.TxPower = store.TxPower;
+                    txConf.TxDataRate = store.TxDataRate;
                     if (q)
                     {
                         _logger.LogInformation("Stopping all transmitters");
@@ -179,12 +228,12 @@ public class SerialCommandHandler
 
                 // Store multicast context
                 _serialProcessorService.SetDeviceFilter(d);
-                
+
                 var isMulticast = _serialProcessorService.IsDeviceFilterMulticast();
                 var selectedPortName = _selectedDeviceService.SelectedPortName;
                 _logger.LogInformation("Unicast command {Port} MC:{MC} ClearFlash:{Clc}", selectedPortName, isMulticast,
                     clc);
-                
+
                 _serialProcessorService.SendUnicastTransmitCommand(loraMessage, GetDoNotProxyConfig());
             });
 
