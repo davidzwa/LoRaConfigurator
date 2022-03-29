@@ -28,46 +28,46 @@ namespace LoRa {
             "bmZpZy5wcm90byJICgdWZXJzaW9uEg0KBU1ham9yGAEgASgNEg0KBU1pbm9y",
             "GAIgASgNEg0KBVBhdGNoGAMgASgNEhAKCFJldmlzaW9uGAQgASgNIjEKCERl",
             "dmljZUlkEgsKA0lkMBgBIAEoDRILCgNJZDEYAiABKA0SCwoDSWQyGAMgASgN",
-            "IqUBCgtCb290TWVzc2FnZRIjChBEZXZpY2VJZGVudGlmaWVyGAEgASgLMgku",
+            "Ir8BCgtCb290TWVzc2FnZRIjChBEZXZpY2VJZGVudGlmaWVyGAEgASgLMgku",
             "RGV2aWNlSWQSIQoPRmlybXdhcmVWZXJzaW9uGAIgASgLMgguVmVyc2lvbhIY",
             "ChBNZWFzdXJlbWVudENvdW50GAMgASgNEhwKFE1lYXN1cmVtZW50c0Rpc2Fi",
-            "bGVkGAQgASgIEhYKDlJsbmNGbGFzaFN0YXRlGAUgASgNIpMBChtSbG5jUmVt",
-            "b3RlRmxhc2hTdGFydENvbW1hbmQSNQoVdHJhbnNtaXRDb25maWd1cmF0aW9u",
-            "GAIgASgLMhYuVHJhbnNtaXRDb25maWd1cmF0aW9uEhIKClRpbWVyRGVsYXkY",
-            "AyABKA0SFgoOU2V0SXNNdWx0aWNhc3QYBCABKAgSEQoJRGV2aWNlSWQwGAUg",
-            "ASgNIhwKGlJsbmNSZW1vdGVGbGFzaFN0b3BDb21tYW5kIhsKGVJsbmNRdWVy",
-            "eVJlbW90ZUZsYXNoU3RhdGUi7gEKF1JsbmNSZW1vdGVGbGFzaFJlc3BvbnNl",
-            "EhYKDlJsbmNGbGFzaFN0YXRlGAEgASgNEhgKEFJsbmNTZXNzaW9uU3RhdGUY",
-            "AiABKA0SFgoOQ3VycmVudFR4UG93ZXIYAyABKAUSGgoSQ3VycmVudFR4QmFu",
-            "ZHdpZHRoGAQgASgNEhkKEUN1cnJlbnRUeERhdGFSYXRlGAUgASgNEhkKEUN1",
-            "cnJlbnRUaW1lckRlbGF5GAYgASgNEh0KFUN1cnJlbnRTZXRJc011bHRpY2Fz",
-            "dBgHIAEoCBIYChBDdXJyZW50RGV2aWNlSWQwGAggASgNIpYCChVSbG5jSW5p",
-            "dENvbmZpZ0NvbW1hbmQSFgoOR2VuZXJhdGlvblNpemUYASABKA0SIAoYR2Vu",
-            "ZXJhdGlvblJlZHVuZGFuY3lTaXplGAIgASgNEhcKD0dlbmVyYXRpb25Db3Vu",
-            "dBgDIAEoDRIRCglGcmFtZVNpemUYBCABKA0SFwoPVG90YWxGcmFtZUNvdW50",
-            "GAUgASgNEhMKC0ZpZWxkRGVncmVlGAYgASgNEhEKCUZpZWxkUG9seRgHIAEo",
-            "DRIQCghMZnNyU2VlZBgIIAEoDRIQCghMZnNyUG9seRgJIAEoDRIXCg9EZWJ1",
-            "Z01hdHJpeFVhcnQYCiABKAgSGQoRRGVidWdGcmFnbWVudFVhcnQYCyABKAgi",
-            "KAoTUmxuY0VuY29kZWRGcmFnbWVudBIRCglMZnNyU3RhdGUYASABKA0iOQoY",
-            "UmxuY0ZsYXNoRW5jb2RlZEZyYWdtZW50EgwKBE1ldGEYASABKAwSDwoHUGF5",
-            "bG9hZBgCIAEoDCIqCg9SbG5jU3RhdGVVcGRhdGUSFwoPR2VuZXJhdGlvbklu",
-            "ZGV4GAEgASgNIhgKFlJsbmNUZXJtaW5hdGlvbkNvbW1hbmQibAoORGVjb2Rp",
-            "bmdSZXN1bHQSDwoHU3VjY2VzcxgBIAEoCBISCgpNYXRyaXhSYW5rGAIgASgN",
-            "EhoKEkZpcnN0RGVjb2RlZE51bWJlchgDIAEoDRIZChFMYXN0RGVjb2RlZE51",
-            "bWJlchgEIAEoDSIsCg5EZWNvZGluZ01hdHJpeBIMCgRDb2xzGAEgASgNEgwK",
-            "BFJvd3MYAiABKA0i+gEKDkRlY29kaW5nVXBkYXRlEhIKCk1hdHJpeENyYzgY",
-            "ASABKA0SFAoMRmlyc3RSb3dDcmM4GAIgASgNEhMKC0xhc3RSb3dDcmM4GAMg",
-            "ASgNEhQKDExhc3RSb3dJbmRleBgEIAEoDRIUCgxSYW5rUHJvZ3Jlc3MYBSAB",
-            "KA0SGQoRUmVjZWl2ZWRGcmFnbWVudHMYBiABKA0SHgoWQ3VycmVudEdlbmVy",
-            "YXRpb25JbmRleBgHIAEoDRIRCglJc1J1bm5pbmcYCCABKAgSFQoNVXNlZExm",
-            "c3JTdGF0ZRgJIAEoDRIYChBDdXJyZW50TGZzclN0YXRlGAogASgNQgeqAgRM",
-            "b1JhYgZwcm90bzM="));
+            "bGVkGAQgASgIEhYKDlJsbmNGbGFzaFN0YXRlGAUgASgNEhgKEFJsbmNTZXNz",
+            "aW9uU3RhdGUYBiABKA0ikwEKG1JsbmNSZW1vdGVGbGFzaFN0YXJ0Q29tbWFu",
+            "ZBI1ChV0cmFuc21pdENvbmZpZ3VyYXRpb24YAiABKAsyFi5UcmFuc21pdENv",
+            "bmZpZ3VyYXRpb24SEgoKVGltZXJEZWxheRgDIAEoDRIWCg5TZXRJc011bHRp",
+            "Y2FzdBgEIAEoCBIRCglEZXZpY2VJZDAYBSABKA0iHAoaUmxuY1JlbW90ZUZs",
+            "YXNoU3RvcENvbW1hbmQiGwoZUmxuY1F1ZXJ5UmVtb3RlRmxhc2hTdGF0ZSLu",
+            "AQoXUmxuY1JlbW90ZUZsYXNoUmVzcG9uc2USFgoOUmxuY0ZsYXNoU3RhdGUY",
+            "ASABKA0SGAoQUmxuY1Nlc3Npb25TdGF0ZRgCIAEoDRIWCg5DdXJyZW50VHhQ",
+            "b3dlchgDIAEoBRIaChJDdXJyZW50VHhCYW5kd2lkdGgYBCABKA0SGQoRQ3Vy",
+            "cmVudFR4RGF0YVJhdGUYBSABKA0SGQoRQ3VycmVudFRpbWVyRGVsYXkYBiAB",
+            "KA0SHQoVQ3VycmVudFNldElzTXVsdGljYXN0GAcgASgIEhgKEEN1cnJlbnRE",
+            "ZXZpY2VJZDAYCCABKA0ilgIKFVJsbmNJbml0Q29uZmlnQ29tbWFuZBIWCg5H",
+            "ZW5lcmF0aW9uU2l6ZRgBIAEoDRIgChhHZW5lcmF0aW9uUmVkdW5kYW5jeVNp",
+            "emUYAiABKA0SFwoPR2VuZXJhdGlvbkNvdW50GAMgASgNEhEKCUZyYW1lU2l6",
+            "ZRgEIAEoDRIXCg9Ub3RhbEZyYW1lQ291bnQYBSABKA0SEwoLRmllbGREZWdy",
+            "ZWUYBiABKA0SEQoJRmllbGRQb2x5GAcgASgNEhAKCExmc3JTZWVkGAggASgN",
+            "EhAKCExmc3JQb2x5GAkgASgNEhcKD0RlYnVnTWF0cml4VWFydBgKIAEoCBIZ",
+            "ChFEZWJ1Z0ZyYWdtZW50VWFydBgLIAEoCCIoChNSbG5jRW5jb2RlZEZyYWdt",
+            "ZW50EhEKCUxmc3JTdGF0ZRgBIAEoDSI5ChhSbG5jRmxhc2hFbmNvZGVkRnJh",
+            "Z21lbnQSDAoETWV0YRgBIAEoDBIPCgdQYXlsb2FkGAIgASgMIioKD1JsbmNT",
+            "dGF0ZVVwZGF0ZRIXCg9HZW5lcmF0aW9uSW5kZXgYASABKA0iGAoWUmxuY1Rl",
+            "cm1pbmF0aW9uQ29tbWFuZCJsCg5EZWNvZGluZ1Jlc3VsdBIPCgdTdWNjZXNz",
+            "GAEgASgIEhIKCk1hdHJpeFJhbmsYAiABKA0SGgoSRmlyc3REZWNvZGVkTnVt",
+            "YmVyGAMgASgNEhkKEUxhc3REZWNvZGVkTnVtYmVyGAQgASgNIiwKDkRlY29k",
+            "aW5nTWF0cml4EgwKBENvbHMYASABKA0SDAoEUm93cxgCIAEoDSL6AQoORGVj",
+            "b2RpbmdVcGRhdGUSEgoKTWF0cml4Q3JjOBgBIAEoDRIUCgxGaXJzdFJvd0Ny",
+            "YzgYAiABKA0SEwoLTGFzdFJvd0NyYzgYAyABKA0SFAoMTGFzdFJvd0luZGV4",
+            "GAQgASgNEhQKDFJhbmtQcm9ncmVzcxgFIAEoDRIZChFSZWNlaXZlZEZyYWdt",
+            "ZW50cxgGIAEoDRIeChZDdXJyZW50R2VuZXJhdGlvbkluZGV4GAcgASgNEhEK",
+            "CUlzUnVubmluZxgIIAEoCBIVCg1Vc2VkTGZzclN0YXRlGAkgASgNEhgKEEN1",
+            "cnJlbnRMZnNyU3RhdGUYCiABKA1CB6oCBExvUmFiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LoRa.ExperimentConfigReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.Version), global::LoRa.Version.Parser, new[]{ "Major", "Minor", "Patch", "Revision" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DeviceId), global::LoRa.DeviceId.Parser, new[]{ "Id0", "Id1", "Id2" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.BootMessage), global::LoRa.BootMessage.Parser, new[]{ "DeviceIdentifier", "FirmwareVersion", "MeasurementCount", "MeasurementsDisabled", "RlncFlashState" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.BootMessage), global::LoRa.BootMessage.Parser, new[]{ "DeviceIdentifier", "FirmwareVersion", "MeasurementCount", "MeasurementsDisabled", "RlncFlashState", "RlncSessionState" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncRemoteFlashStartCommand), global::LoRa.RlncRemoteFlashStartCommand.Parser, new[]{ "TransmitConfiguration", "TimerDelay", "SetIsMulticast", "DeviceId0" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncRemoteFlashStopCommand), global::LoRa.RlncRemoteFlashStopCommand.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncQueryRemoteFlashState), global::LoRa.RlncQueryRemoteFlashState.Parser, null, null, null, null, null),
@@ -688,6 +688,7 @@ namespace LoRa {
       measurementCount_ = other.measurementCount_;
       measurementsDisabled_ = other.measurementsDisabled_;
       rlncFlashState_ = other.rlncFlashState_;
+      rlncSessionState_ = other.rlncSessionState_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -757,6 +758,18 @@ namespace LoRa {
       }
     }
 
+    /// <summary>Field number for the "RlncSessionState" field.</summary>
+    public const int RlncSessionStateFieldNumber = 6;
+    private uint rlncSessionState_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint RlncSessionState {
+      get { return rlncSessionState_; }
+      set {
+        rlncSessionState_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -777,6 +790,7 @@ namespace LoRa {
       if (MeasurementCount != other.MeasurementCount) return false;
       if (MeasurementsDisabled != other.MeasurementsDisabled) return false;
       if (RlncFlashState != other.RlncFlashState) return false;
+      if (RlncSessionState != other.RlncSessionState) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -789,6 +803,7 @@ namespace LoRa {
       if (MeasurementCount != 0) hash ^= MeasurementCount.GetHashCode();
       if (MeasurementsDisabled != false) hash ^= MeasurementsDisabled.GetHashCode();
       if (RlncFlashState != 0) hash ^= RlncFlashState.GetHashCode();
+      if (RlncSessionState != 0) hash ^= RlncSessionState.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -827,6 +842,10 @@ namespace LoRa {
         output.WriteRawTag(40);
         output.WriteUInt32(RlncFlashState);
       }
+      if (RlncSessionState != 0) {
+        output.WriteRawTag(48);
+        output.WriteUInt32(RlncSessionState);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -857,6 +876,10 @@ namespace LoRa {
         output.WriteRawTag(40);
         output.WriteUInt32(RlncFlashState);
       }
+      if (RlncSessionState != 0) {
+        output.WriteRawTag(48);
+        output.WriteUInt32(RlncSessionState);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -881,6 +904,9 @@ namespace LoRa {
       }
       if (RlncFlashState != 0) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(RlncFlashState);
+      }
+      if (RlncSessionState != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(RlncSessionState);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -914,6 +940,9 @@ namespace LoRa {
       }
       if (other.RlncFlashState != 0) {
         RlncFlashState = other.RlncFlashState;
+      }
+      if (other.RlncSessionState != 0) {
+        RlncSessionState = other.RlncSessionState;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -956,6 +985,10 @@ namespace LoRa {
             RlncFlashState = input.ReadUInt32();
             break;
           }
+          case 48: {
+            RlncSessionState = input.ReadUInt32();
+            break;
+          }
         }
       }
     #endif
@@ -995,6 +1028,10 @@ namespace LoRa {
           }
           case 40: {
             RlncFlashState = input.ReadUInt32();
+            break;
+          }
+          case 48: {
+            RlncSessionState = input.ReadUInt32();
             break;
           }
         }
