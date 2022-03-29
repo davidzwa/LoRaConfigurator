@@ -34,9 +34,10 @@ namespace LoRa {
             "CCIzChhNZWFzdXJlbWVudFN0cmVhbVJlcXVlc3QSFwoPRnJhZ21lbnRTaXpl",
             "TWF4GAEgASgNIhsKGU1lYXN1cmVtZW50U3RyZWFtRnJhZ21lbnQiUQoVVHJh",
             "bnNtaXRDb25maWd1cmF0aW9uEg8KB1R4UG93ZXIYASABKAUSEwoLVHhCYW5k",
-            "d2lkdGgYAiABKA0SEgoKVHhEYXRhUmF0ZRgDIAEoDSJSChNSZWNlcHRpb25S",
+            "d2lkdGgYAiABKA0SEgoKVHhEYXRhUmF0ZRgDIAEoDSJuChNSZWNlcHRpb25S",
             "YXRlQ29uZmlnEhcKD1BhY2tldEVycm9yUmF0ZRgBIAEoAhIUCgxPdmVycmlk",
-            "ZVNlZWQYAiABKAgSDAoEU2VlZBgDIAEoDUIHqgIETG9SYWIGcHJvdG8z"));
+            "ZVNlZWQYAiABKAgSDAoEU2VlZBgDIAEoDRIaChJEcm9wVXBkYXRlQ29tbWFu",
+            "ZHMYBCABKAhCB6oCBExvUmFiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -45,7 +46,7 @@ namespace LoRa {
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.MeasurementStreamRequest), global::LoRa.MeasurementStreamRequest.Parser, new[]{ "FragmentSizeMax" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.MeasurementStreamFragment), global::LoRa.MeasurementStreamFragment.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.TransmitConfiguration), global::LoRa.TransmitConfiguration.Parser, new[]{ "TxPower", "TxBandwidth", "TxDataRate" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.ReceptionRateConfig), global::LoRa.ReceptionRateConfig.Parser, new[]{ "PacketErrorRate", "OverrideSeed", "Seed" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.ReceptionRateConfig), global::LoRa.ReceptionRateConfig.Parser, new[]{ "PacketErrorRate", "OverrideSeed", "Seed", "DropUpdateCommands" }, null, null, null, null)
           }));
     }
     #endregion
@@ -1183,6 +1184,7 @@ namespace LoRa {
       packetErrorRate_ = other.packetErrorRate_;
       overrideSeed_ = other.overrideSeed_;
       seed_ = other.seed_;
+      dropUpdateCommands_ = other.dropUpdateCommands_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1228,6 +1230,18 @@ namespace LoRa {
       }
     }
 
+    /// <summary>Field number for the "DropUpdateCommands" field.</summary>
+    public const int DropUpdateCommandsFieldNumber = 4;
+    private bool dropUpdateCommands_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool DropUpdateCommands {
+      get { return dropUpdateCommands_; }
+      set {
+        dropUpdateCommands_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -1246,6 +1260,7 @@ namespace LoRa {
       if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(PacketErrorRate, other.PacketErrorRate)) return false;
       if (OverrideSeed != other.OverrideSeed) return false;
       if (Seed != other.Seed) return false;
+      if (DropUpdateCommands != other.DropUpdateCommands) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1256,6 +1271,7 @@ namespace LoRa {
       if (PacketErrorRate != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(PacketErrorRate);
       if (OverrideSeed != false) hash ^= OverrideSeed.GetHashCode();
       if (Seed != 0) hash ^= Seed.GetHashCode();
+      if (DropUpdateCommands != false) hash ^= DropUpdateCommands.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1286,6 +1302,10 @@ namespace LoRa {
         output.WriteRawTag(24);
         output.WriteUInt32(Seed);
       }
+      if (DropUpdateCommands != false) {
+        output.WriteRawTag(32);
+        output.WriteBool(DropUpdateCommands);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -1308,6 +1328,10 @@ namespace LoRa {
         output.WriteRawTag(24);
         output.WriteUInt32(Seed);
       }
+      if (DropUpdateCommands != false) {
+        output.WriteRawTag(32);
+        output.WriteBool(DropUpdateCommands);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -1326,6 +1350,9 @@ namespace LoRa {
       }
       if (Seed != 0) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Seed);
+      }
+      if (DropUpdateCommands != false) {
+        size += 1 + 1;
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1347,6 +1374,9 @@ namespace LoRa {
       }
       if (other.Seed != 0) {
         Seed = other.Seed;
+      }
+      if (other.DropUpdateCommands != false) {
+        DropUpdateCommands = other.DropUpdateCommands;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1375,6 +1405,10 @@ namespace LoRa {
             Seed = input.ReadUInt32();
             break;
           }
+          case 32: {
+            DropUpdateCommands = input.ReadBool();
+            break;
+          }
         }
       }
     #endif
@@ -1400,6 +1434,10 @@ namespace LoRa {
           }
           case 24: {
             Seed = input.ReadUInt32();
+            break;
+          }
+          case 32: {
+            DropUpdateCommands = input.ReadBool();
             break;
           }
         }

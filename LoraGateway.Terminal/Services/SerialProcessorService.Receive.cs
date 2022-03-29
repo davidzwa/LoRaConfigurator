@@ -62,7 +62,7 @@ public partial class SerialProcessorService
 
         string[] inclusions =
         {
-            "LORATX-DONE",
+            // "LORATX-DONE",
             "PeriodTX",
             "PROTO-FAIL",
             "CRC-FAIL",
@@ -71,7 +71,9 @@ public partial class SerialProcessorService
             "LORATX-TIMEOUT",
             "RAMFUNC",
             "FLASH",
-            "RLNC",
+            // "RLNC",
+            "RLNC_RNG",
+            "RLNC_PER_SEED",
             "RLNC_ERR",
             "DevConfStop",
             "PUSH-BUTTON"
@@ -145,6 +147,8 @@ public partial class SerialProcessorService
 
     async Task ReceiveLoRaMeasurement(string portName, UartResponse response)
     {
+        // Suppress
+        return; 
         if (!response.LoraMeasurement.Success)
         {
             _logger.LogInformation("[{Name}] LoRa RX error!", portName);

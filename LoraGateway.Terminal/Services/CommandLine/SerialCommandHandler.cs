@@ -110,6 +110,7 @@ public class SerialCommandHandler
                         {
                             PacketErrorRate = config.ApproxPacketErrorRate,
                             OverrideSeed = config.OverridePacketErrorSeed,
+                            DropUpdateCommands = config.DropUpdateCommands,
                             Seed = config.PacketErrorSeed
                         }
                     };

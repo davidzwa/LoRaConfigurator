@@ -167,6 +167,7 @@ public partial class SerialProcessorService
                     ReceptionRateConfig = new ()
                     {
                         PacketErrorRate = config.ApproxPacketErrorRate,
+                        DropUpdateCommands = config.DropUpdateCommands,
                         OverrideSeed = config.OverridePacketErrorSeed,
                         Seed = config.PacketErrorSeed
                     }
