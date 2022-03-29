@@ -177,7 +177,7 @@ public class SerialCommandHandler
         command.AddOption(new Option("--q"));
         command.AddOption(new Option("--conf"));
         command.Handler = CommandHandler.Create(
-            async (string d, bool clc, bool q, bool rlnc, bool conf) =>
+            async (string d, bool clc, bool q, bool conf) =>
             {
                 var loraMessage = new LoRaMessage();
                 if (conf || q)
