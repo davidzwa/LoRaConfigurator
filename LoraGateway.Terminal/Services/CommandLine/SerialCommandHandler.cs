@@ -100,6 +100,8 @@ public class SerialCommandHandler
                         DeviceId0 = config.RemoteDeviceId0,
                         SetIsMulticast = config.RemoteIsMulticast,
                         TimerDelay = config.RemoteUpdateIntervalMs,
+                        DebugFragmentUart = config.DebugFragmentUart,
+                        DebugMatrixUart = config.DebugMatrixUart,
                         TransmitConfiguration = new TransmitConfiguration()
                         {
                             TxBandwidth = config.TxBandwidth,
