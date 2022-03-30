@@ -61,5 +61,9 @@ public class FuotaEventHandler : IEventHandler<InitFuotaSession>, IEventHandler<
         {
             _fuotaManagerService.ClearFuotaSession();
         }
+        else if (_fuotaManagerService.IsRemoteSessionStarted)
+        {
+            _fuotaManagerService.IsRemoteSessionStarted = false;
+        }
     }
 }

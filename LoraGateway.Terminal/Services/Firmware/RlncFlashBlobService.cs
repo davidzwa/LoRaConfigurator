@@ -211,8 +211,6 @@ public class RlncFlashBlobService
     {
         return new LoRaMessage
         {
-            CorrelationCode = 0x01,
-            DeviceId = 0x01,
             IsMulticast = true,
             RlncTerminationCommand = new RlncTerminationCommand()
         };

@@ -32,46 +32,47 @@ namespace LoRa {
             "RGV2aWNlSWQSIQoPRmlybXdhcmVWZXJzaW9uGAIgASgLMgguVmVyc2lvbhIY",
             "ChBNZWFzdXJlbWVudENvdW50GAMgASgNEhwKFE1lYXN1cmVtZW50c0Rpc2Fi",
             "bGVkGAQgASgIEhYKDlJsbmNGbGFzaFN0YXRlGAUgASgNEhgKEFJsbmNTZXNz",
-            "aW9uU3RhdGUYBiABKA0ixgEKG1JsbmNSZW1vdGVGbGFzaFN0YXJ0Q29tbWFu",
+            "aW9uU3RhdGUYBiABKA0i+gEKG1JsbmNSZW1vdGVGbGFzaFN0YXJ0Q29tbWFu",
             "ZBI1ChV0cmFuc21pdENvbmZpZ3VyYXRpb24YAiABKAsyFi5UcmFuc21pdENv",
             "bmZpZ3VyYXRpb24SMQoTcmVjZXB0aW9uUmF0ZUNvbmZpZxgDIAEoCzIULlJl",
             "Y2VwdGlvblJhdGVDb25maWcSEgoKVGltZXJEZWxheRgEIAEoDRIWCg5TZXRJ",
-            "c011bHRpY2FzdBgFIAEoCBIRCglEZXZpY2VJZDAYBiABKA0iHAoaUmxuY1Jl",
-            "bW90ZUZsYXNoU3RvcENvbW1hbmQiGwoZUmxuY1F1ZXJ5UmVtb3RlRmxhc2hT",
-            "dGF0ZSLuAQoXUmxuY1JlbW90ZUZsYXNoUmVzcG9uc2USFgoOUmxuY0ZsYXNo",
-            "U3RhdGUYASABKA0SGAoQUmxuY1Nlc3Npb25TdGF0ZRgCIAEoDRIWCg5DdXJy",
-            "ZW50VHhQb3dlchgDIAEoBRIaChJDdXJyZW50VHhCYW5kd2lkdGgYBCABKA0S",
-            "GQoRQ3VycmVudFR4RGF0YVJhdGUYBSABKA0SGQoRQ3VycmVudFRpbWVyRGVs",
-            "YXkYBiABKA0SHQoVQ3VycmVudFNldElzTXVsdGljYXN0GAcgASgIEhgKEEN1",
-            "cnJlbnREZXZpY2VJZDAYCCABKA0i5gIKFVJsbmNJbml0Q29uZmlnQ29tbWFu",
-            "ZBIWCg5HZW5lcmF0aW9uU2l6ZRgBIAEoDRIgChhHZW5lcmF0aW9uUmVkdW5k",
-            "YW5jeVNpemUYAiABKA0SFwoPR2VuZXJhdGlvbkNvdW50GAMgASgNEhEKCUZy",
-            "YW1lU2l6ZRgEIAEoDRIXCg9Ub3RhbEZyYW1lQ291bnQYBSABKA0SEwoLRmll",
-            "bGREZWdyZWUYBiABKA0SEQoJRmllbGRQb2x5GAcgASgNEhAKCExmc3JTZWVk",
-            "GAggASgNEhAKCExmc3JQb2x5GAkgASgNEhcKD0RlYnVnTWF0cml4VWFydBgK",
-            "IAEoCBIZChFEZWJ1Z0ZyYWdtZW50VWFydBgLIAEoCBI2ChNyZWNlcHRpb25S",
-            "YXRlQ29uZmlnGAwgASgLMhQuUmVjZXB0aW9uUmF0ZUNvbmZpZ0gAiAEBQhYK",
-            "FF9yZWNlcHRpb25SYXRlQ29uZmlnIigKE1JsbmNFbmNvZGVkRnJhZ21lbnQS",
-            "EQoJTGZzclN0YXRlGAEgASgNIjkKGFJsbmNGbGFzaEVuY29kZWRGcmFnbWVu",
-            "dBIMCgRNZXRhGAEgASgMEg8KB1BheWxvYWQYAiABKAwiKgoPUmxuY1N0YXRl",
-            "VXBkYXRlEhcKD0dlbmVyYXRpb25JbmRleBgBIAEoDSIYChZSbG5jVGVybWlu",
-            "YXRpb25Db21tYW5kImwKDkRlY29kaW5nUmVzdWx0Eg8KB1N1Y2Nlc3MYASAB",
-            "KAgSEgoKTWF0cml4UmFuaxgCIAEoDRIaChJGaXJzdERlY29kZWROdW1iZXIY",
-            "AyABKA0SGQoRTGFzdERlY29kZWROdW1iZXIYBCABKA0iLAoORGVjb2RpbmdN",
-            "YXRyaXgSDAoEQ29scxgBIAEoDRIMCgRSb3dzGAIgASgNIvoBCg5EZWNvZGlu",
-            "Z1VwZGF0ZRISCgpNYXRyaXhDcmM4GAEgASgNEhQKDEZpcnN0Um93Q3JjOBgC",
-            "IAEoDRITCgtMYXN0Um93Q3JjOBgDIAEoDRIUCgxMYXN0Um93SW5kZXgYBCAB",
-            "KA0SFAoMUmFua1Byb2dyZXNzGAUgASgNEhkKEVJlY2VpdmVkRnJhZ21lbnRz",
-            "GAYgASgNEh4KFkN1cnJlbnRHZW5lcmF0aW9uSW5kZXgYByABKA0SEQoJSXNS",
-            "dW5uaW5nGAggASgIEhUKDVVzZWRMZnNyU3RhdGUYCSABKA0SGAoQQ3VycmVu",
-            "dExmc3JTdGF0ZRgKIAEoDUIHqgIETG9SYWIGcHJvdG8z"));
+            "c011bHRpY2FzdBgFIAEoCBIRCglEZXZpY2VJZDAYBiABKA0SFwoPRGVidWdN",
+            "YXRyaXhVYXJ0GAcgASgIEhkKEURlYnVnRnJhZ21lbnRVYXJ0GAggASgIIhwK",
+            "GlJsbmNSZW1vdGVGbGFzaFN0b3BDb21tYW5kIhsKGVJsbmNRdWVyeVJlbW90",
+            "ZUZsYXNoU3RhdGUi7gEKF1JsbmNSZW1vdGVGbGFzaFJlc3BvbnNlEhYKDlJs",
+            "bmNGbGFzaFN0YXRlGAEgASgNEhgKEFJsbmNTZXNzaW9uU3RhdGUYAiABKA0S",
+            "FgoOQ3VycmVudFR4UG93ZXIYAyABKAUSGgoSQ3VycmVudFR4QmFuZHdpZHRo",
+            "GAQgASgNEhkKEUN1cnJlbnRUeERhdGFSYXRlGAUgASgNEhkKEUN1cnJlbnRU",
+            "aW1lckRlbGF5GAYgASgNEh0KFUN1cnJlbnRTZXRJc011bHRpY2FzdBgHIAEo",
+            "CBIYChBDdXJyZW50RGV2aWNlSWQwGAggASgNIuYCChVSbG5jSW5pdENvbmZp",
+            "Z0NvbW1hbmQSFgoOR2VuZXJhdGlvblNpemUYASABKA0SIAoYR2VuZXJhdGlv",
+            "blJlZHVuZGFuY3lTaXplGAIgASgNEhcKD0dlbmVyYXRpb25Db3VudBgDIAEo",
+            "DRIRCglGcmFtZVNpemUYBCABKA0SFwoPVG90YWxGcmFtZUNvdW50GAUgASgN",
+            "EhMKC0ZpZWxkRGVncmVlGAYgASgNEhEKCUZpZWxkUG9seRgHIAEoDRIQCghM",
+            "ZnNyU2VlZBgIIAEoDRIQCghMZnNyUG9seRgJIAEoDRIXCg9EZWJ1Z01hdHJp",
+            "eFVhcnQYCiABKAgSGQoRRGVidWdGcmFnbWVudFVhcnQYCyABKAgSNgoTcmVj",
+            "ZXB0aW9uUmF0ZUNvbmZpZxgMIAEoCzIULlJlY2VwdGlvblJhdGVDb25maWdI",
+            "AIgBAUIWChRfcmVjZXB0aW9uUmF0ZUNvbmZpZyIoChNSbG5jRW5jb2RlZEZy",
+            "YWdtZW50EhEKCUxmc3JTdGF0ZRgBIAEoDSI5ChhSbG5jRmxhc2hFbmNvZGVk",
+            "RnJhZ21lbnQSDAoETWV0YRgBIAEoDBIPCgdQYXlsb2FkGAIgASgMIioKD1Js",
+            "bmNTdGF0ZVVwZGF0ZRIXCg9HZW5lcmF0aW9uSW5kZXgYASABKA0iGAoWUmxu",
+            "Y1Rlcm1pbmF0aW9uQ29tbWFuZCJsCg5EZWNvZGluZ1Jlc3VsdBIPCgdTdWNj",
+            "ZXNzGAEgASgIEhIKCk1hdHJpeFJhbmsYAiABKA0SGgoSRmlyc3REZWNvZGVk",
+            "TnVtYmVyGAMgASgNEhkKEUxhc3REZWNvZGVkTnVtYmVyGAQgASgNIiwKDkRl",
+            "Y29kaW5nTWF0cml4EgwKBENvbHMYASABKA0SDAoEUm93cxgCIAEoDSL6AQoO",
+            "RGVjb2RpbmdVcGRhdGUSEgoKTWF0cml4Q3JjOBgBIAEoDRIUCgxGaXJzdFJv",
+            "d0NyYzgYAiABKA0SEwoLTGFzdFJvd0NyYzgYAyABKA0SFAoMTGFzdFJvd0lu",
+            "ZGV4GAQgASgNEhQKDFJhbmtQcm9ncmVzcxgFIAEoDRIZChFSZWNlaXZlZEZy",
+            "YWdtZW50cxgGIAEoDRIeChZDdXJyZW50R2VuZXJhdGlvbkluZGV4GAcgASgN",
+            "EhEKCUlzUnVubmluZxgIIAEoCBIVCg1Vc2VkTGZzclN0YXRlGAkgASgNEhgK",
+            "EEN1cnJlbnRMZnNyU3RhdGUYCiABKA1CB6oCBExvUmFiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LoRa.ExperimentConfigReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.Version), global::LoRa.Version.Parser, new[]{ "Major", "Minor", "Patch", "Revision" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DeviceId), global::LoRa.DeviceId.Parser, new[]{ "Id0", "Id1", "Id2" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.BootMessage), global::LoRa.BootMessage.Parser, new[]{ "DeviceIdentifier", "FirmwareVersion", "MeasurementCount", "MeasurementsDisabled", "RlncFlashState", "RlncSessionState" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncRemoteFlashStartCommand), global::LoRa.RlncRemoteFlashStartCommand.Parser, new[]{ "TransmitConfiguration", "ReceptionRateConfig", "TimerDelay", "SetIsMulticast", "DeviceId0" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncRemoteFlashStartCommand), global::LoRa.RlncRemoteFlashStartCommand.Parser, new[]{ "TransmitConfiguration", "ReceptionRateConfig", "TimerDelay", "SetIsMulticast", "DeviceId0", "DebugMatrixUart", "DebugFragmentUart" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncRemoteFlashStopCommand), global::LoRa.RlncRemoteFlashStopCommand.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncQueryRemoteFlashState), global::LoRa.RlncQueryRemoteFlashState.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncRemoteFlashResponse), global::LoRa.RlncRemoteFlashResponse.Parser, new[]{ "RlncFlashState", "RlncSessionState", "CurrentTxPower", "CurrentTxBandwidth", "CurrentTxDataRate", "CurrentTimerDelay", "CurrentSetIsMulticast", "CurrentDeviceId0" }, null, null, null, null),
@@ -1087,6 +1088,8 @@ namespace LoRa {
       timerDelay_ = other.timerDelay_;
       setIsMulticast_ = other.setIsMulticast_;
       deviceId0_ = other.deviceId0_;
+      debugMatrixUart_ = other.debugMatrixUart_;
+      debugFragmentUart_ = other.debugFragmentUart_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1162,6 +1165,33 @@ namespace LoRa {
       }
     }
 
+    /// <summary>Field number for the "DebugMatrixUart" field.</summary>
+    public const int DebugMatrixUartFieldNumber = 7;
+    private bool debugMatrixUart_;
+    /// <summary>
+    /// Not implemented
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool DebugMatrixUart {
+      get { return debugMatrixUart_; }
+      set {
+        debugMatrixUart_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "DebugFragmentUart" field.</summary>
+    public const int DebugFragmentUartFieldNumber = 8;
+    private bool debugFragmentUart_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool DebugFragmentUart {
+      get { return debugFragmentUart_; }
+      set {
+        debugFragmentUart_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -1182,6 +1212,8 @@ namespace LoRa {
       if (TimerDelay != other.TimerDelay) return false;
       if (SetIsMulticast != other.SetIsMulticast) return false;
       if (DeviceId0 != other.DeviceId0) return false;
+      if (DebugMatrixUart != other.DebugMatrixUart) return false;
+      if (DebugFragmentUart != other.DebugFragmentUart) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1194,6 +1226,8 @@ namespace LoRa {
       if (TimerDelay != 0) hash ^= TimerDelay.GetHashCode();
       if (SetIsMulticast != false) hash ^= SetIsMulticast.GetHashCode();
       if (DeviceId0 != 0) hash ^= DeviceId0.GetHashCode();
+      if (DebugMatrixUart != false) hash ^= DebugMatrixUart.GetHashCode();
+      if (DebugFragmentUart != false) hash ^= DebugFragmentUart.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1232,6 +1266,14 @@ namespace LoRa {
         output.WriteRawTag(48);
         output.WriteUInt32(DeviceId0);
       }
+      if (DebugMatrixUart != false) {
+        output.WriteRawTag(56);
+        output.WriteBool(DebugMatrixUart);
+      }
+      if (DebugFragmentUart != false) {
+        output.WriteRawTag(64);
+        output.WriteBool(DebugFragmentUart);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -1262,6 +1304,14 @@ namespace LoRa {
         output.WriteRawTag(48);
         output.WriteUInt32(DeviceId0);
       }
+      if (DebugMatrixUart != false) {
+        output.WriteRawTag(56);
+        output.WriteBool(DebugMatrixUart);
+      }
+      if (DebugFragmentUart != false) {
+        output.WriteRawTag(64);
+        output.WriteBool(DebugFragmentUart);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -1286,6 +1336,12 @@ namespace LoRa {
       }
       if (DeviceId0 != 0) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(DeviceId0);
+      }
+      if (DebugMatrixUart != false) {
+        size += 1 + 1;
+      }
+      if (DebugFragmentUart != false) {
+        size += 1 + 1;
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1319,6 +1375,12 @@ namespace LoRa {
       }
       if (other.DeviceId0 != 0) {
         DeviceId0 = other.DeviceId0;
+      }
+      if (other.DebugMatrixUart != false) {
+        DebugMatrixUart = other.DebugMatrixUart;
+      }
+      if (other.DebugFragmentUart != false) {
+        DebugFragmentUart = other.DebugFragmentUart;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1361,6 +1423,14 @@ namespace LoRa {
             DeviceId0 = input.ReadUInt32();
             break;
           }
+          case 56: {
+            DebugMatrixUart = input.ReadBool();
+            break;
+          }
+          case 64: {
+            DebugFragmentUart = input.ReadBool();
+            break;
+          }
         }
       }
     #endif
@@ -1400,6 +1470,14 @@ namespace LoRa {
           }
           case 48: {
             DeviceId0 = input.ReadUInt32();
+            break;
+          }
+          case 56: {
+            DebugMatrixUart = input.ReadBool();
+            break;
+          }
+          case 64: {
+            DebugFragmentUart = input.ReadBool();
             break;
           }
         }

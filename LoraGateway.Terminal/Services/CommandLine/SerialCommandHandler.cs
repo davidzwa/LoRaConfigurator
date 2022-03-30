@@ -73,6 +73,8 @@ public class SerialCommandHandler
         command.Handler = CommandHandler.Create(
             async (string d, bool info, bool local) =>
             {
+                await _fuotaManagerService.ReloadStore();
+                
                 if (local)
                 {
                     await _fuotaManagerService.HandleRlncConsoleCommand();
@@ -100,6 +102,8 @@ public class SerialCommandHandler
                         DeviceId0 = config.RemoteDeviceId0,
                         SetIsMulticast = config.RemoteIsMulticast,
                         TimerDelay = config.RemoteUpdateIntervalMs,
+                        DebugFragmentUart = config.DebugFragmentUart,
+                        DebugMatrixUart = config.DebugMatrixUart,
                         TransmitConfiguration = new TransmitConfiguration()
                         {
                             TxBandwidth = config.TxBandwidth,

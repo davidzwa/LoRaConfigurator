@@ -55,22 +55,21 @@ public partial class SerialProcessorService
             await _eventPublisher.PublishEventAsync(new StopFuotaSession {Message = "End-device succeeded generation"});
         }
 
-        if (payload!.Contains("MC") || payload!.Contains("UC"))
-        {
-            return 1;
-        }
-
         string[] inclusions =
         {
-            // "LORATX-DONE",
             "PeriodTX",
             "PROTO-FAIL",
+            "PROTO-LORA-FAIL",
             "CRC-FAIL",
             "RLNC_TERMINATE",
             "INSERT_ROW",
             "LORATX-TIMEOUT",
             "RAMFUNC",
             "FLASH",
+            // "UC",
+            // "MC",            
+            // "LORARX-DONE",
+            // "LORATX-DONE",
             // "RLNC",
             "RLNC_RNG",
             "RLNC_PER_SEED",
@@ -147,7 +146,13 @@ public partial class SerialProcessorService
 
     async Task ReceiveLoRaMeasurement(string portName, UartResponse response)
     {
-        // Suppress
+        var bodyCase = response.LoraMeasurement.DownlinkPayload.BodyCase;
+        if (bodyCase is LoRaMessage.BodyOneofCase.ExperimentResponse or LoRaMessage.BodyOneofCase.RlncRemoteFlashResponse or LoRaMessage.BodyOneofCase.None)
+        {
+            InnerLoRaPacketHandler(portName, response.LoraMeasurement?.DownlinkPayload);
+        }
+        
+        // Suppress anything else   
         return; 
         if (!response.LoraMeasurement.Success)
         {
