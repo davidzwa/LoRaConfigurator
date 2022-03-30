@@ -71,7 +71,7 @@ public partial class SerialProcessorService
             // "LORARX-DONE",
             // "LORATX-DONE",
             // "RLNC",
-            "RLNC_RNG",
+            // "RLNC_RNG",
             "RLNC_LAG_GEN",
             "RLNC_LAG_FRAG",
             "RLNC_PER_SEED",
