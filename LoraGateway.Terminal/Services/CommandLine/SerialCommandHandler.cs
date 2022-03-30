@@ -73,6 +73,8 @@ public class SerialCommandHandler
         command.Handler = CommandHandler.Create(
             async (string d, bool info, bool local) =>
             {
+                await _fuotaManagerService.ReloadStore();
+                
                 if (local)
                 {
                     await _fuotaManagerService.HandleRlncConsoleCommand();
