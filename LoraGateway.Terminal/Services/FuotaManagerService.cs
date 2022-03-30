@@ -281,11 +281,12 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         }
 
         _logger.LogInformation(
-            "[{Name}, DecodingType] Rank: {Rank} GenIndex: {MatrixRank} FragRx: {ReceivedFragments} FirstRowCrc: {FirstRowCrc} LastAppendedRowCrc({LastRowIndex}): {LastRowCrc} LFSR {Lfsr1} -> {Lfsr2} IsRunning: {IsRunning}",
+            "[{Name}, DecodingType] Rank: {Rank} GenIndex: {MatrixRank} FragRx: {ReceivedFragments} FragMiss: {MissedFragments} FirstRowCrc: {FirstRowCrc} LastAppendedRowCrc({LastRowIndex}): {LastRowCrc} LFSR {Lfsr1} -> {Lfsr2} IsRunning: {IsRunning}",
             source,
             rank,
             update.CurrentGenerationIndex,
             update.ReceivedFragments,
+            update.MissedGenFragments,
             update.FirstRowCrc8,
             update.LastRowIndex,
             update.LastRowCrc8,
