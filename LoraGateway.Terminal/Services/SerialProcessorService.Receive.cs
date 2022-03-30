@@ -72,6 +72,8 @@ public partial class SerialProcessorService
             // "LORATX-DONE",
             // "RLNC",
             "RLNC_RNG",
+            "RLNC_LAG_GEN",
+            "RLNC_LAG_FRAG",
             "RLNC_PER_SEED",
             "RLNC_ERR",
             "DevConfStop",
