@@ -9,6 +9,7 @@ namespace LoraGateway.Services.CommandLine;
 public class SerialCommandHandler
 {
     private readonly FuotaManagerService _fuotaManagerService;
+    private readonly ExperimentService _experimentService;
     private readonly RlncFlashBlobService _rlncFlashBlobService;
     private readonly ILogger _logger;
     private readonly MeasurementsService _measurementsService;
@@ -20,6 +21,7 @@ public class SerialCommandHandler
         SelectedDeviceService selectedDeviceService,
         MeasurementsService measurementsService,
         FuotaManagerService fuotaManagerService,
+        ExperimentService experimentService,
         RlncFlashBlobService rlncFlashBlobService,
         SerialProcessorService serialProcessorService
     )
@@ -28,6 +30,7 @@ public class SerialCommandHandler
         _selectedDeviceService = selectedDeviceService;
         _measurementsService = measurementsService;
         _fuotaManagerService = fuotaManagerService;
+        _experimentService = experimentService;
         _rlncFlashBlobService = rlncFlashBlobService;
         _serialProcessorService = serialProcessorService;
     }
@@ -43,6 +46,7 @@ public class SerialCommandHandler
         rootCommand.Add(GenerateBlobCommand());
         rootCommand.Add(GetRlncStoreReloadCommand());
         rootCommand.Add(SetTxPowerCommand());
+        rootCommand.Add(RunExperiments());
 
         // Fluent structure
         return rootCommand;
@@ -56,6 +60,14 @@ public class SerialCommandHandler
         return store.UartFakeLoRaRxMode;
     }
 
+    public Command RunExperiments()
+    {
+        var command = new Command("exp");
+        command.Handler = CommandHandler.Create(
+            async () => { await _experimentService.RunExperiments(); });
+        return command;
+    }
+    
     public Command GenerateBlobCommand()
     {
         var command = new Command("rlnc-blob");
@@ -92,33 +104,11 @@ public class SerialCommandHandler
                 }
                 else if (_fuotaManagerService.IsRemoteSessionStarted)
                 {
-                    loraMessage.RlncRemoteFlashStopCommand = new();
-                    _fuotaManagerService.IsRemoteSessionStarted = false;
+                    loraMessage = _fuotaManagerService.RemoteSessionStopCommand();
                 }
                 else
                 {
-                    loraMessage.RlncRemoteFlashStartCommand = new()
-                    {
-                        DeviceId0 = config.RemoteDeviceId0,
-                        SetIsMulticast = config.RemoteIsMulticast,
-                        TimerDelay = config.RemoteUpdateIntervalMs,
-                        DebugFragmentUart = config.DebugFragmentUart,
-                        DebugMatrixUart = config.DebugMatrixUart,
-                        TransmitConfiguration = new TransmitConfiguration()
-                        {
-                            TxBandwidth = config.TxBandwidth,
-                            TxPower = config.TxPower,
-                            TxDataRate = config.TxDataRate
-                        },
-                        ReceptionRateConfig = new ()
-                        {
-                            PacketErrorRate = config.ApproxPacketErrorRate,
-                            OverrideSeed = config.OverridePacketErrorSeed,
-                            DropUpdateCommands = config.DropUpdateCommands,
-                            Seed = config.PacketErrorSeed
-                        }
-                    };
-                    _fuotaManagerService.IsRemoteSessionStarted = true;
+                    loraMessage = _fuotaManagerService.RemoteSessionStartCommand();
                 }
 
                 // Store multicast context

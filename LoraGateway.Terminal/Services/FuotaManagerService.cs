@@ -47,6 +47,51 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         return _currentFuotaSession!.Acks.Count < expectedAcksCount;
     }
 
+    public void SetPacketErrorRate(float per)
+    {
+        Store.ApproxPacketErrorRate = per;
+        WriteStore();
+    }
+
+    public LoRaMessage RemoteSessionStopCommand()
+    {
+        var loraMessage = new LoRaMessage();
+        loraMessage.RlncRemoteFlashStopCommand = new();
+        IsRemoteSessionStarted = false;
+        return loraMessage;
+    }
+    
+    public LoRaMessage RemoteSessionStartCommand()
+    {
+        var config = GetStore();
+        var loraMessage = new LoRaMessage();
+        loraMessage.RlncRemoteFlashStartCommand = new()
+        {
+            DeviceId0 = config.RemoteDeviceId0,
+            SetIsMulticast = config.RemoteIsMulticast,
+            TimerDelay = config.RemoteUpdateIntervalMs,
+            DebugFragmentUart = config.DebugFragmentUart,
+            DebugMatrixUart = config.DebugMatrixUart,
+            TransmitConfiguration = new TransmitConfiguration()
+            {
+                TxBandwidth = config.TxBandwidth,
+                TxPower = config.TxPower,
+                TxDataRate = config.TxDataRate
+            },
+            ReceptionRateConfig = new ()
+            {
+                PacketErrorRate = config.ApproxPacketErrorRate,
+                OverrideSeed = config.OverridePacketErrorSeed,
+                DropUpdateCommands = config.DropUpdateCommands,
+                Seed = config.PacketErrorSeed
+            }
+        };
+        
+        IsRemoteSessionStarted = true;
+
+        return loraMessage;
+    }
+
     public bool IsAwaitAckEnabled()
     {
         return GetCurrentSession().Config.UartFakeAwaitAck;
