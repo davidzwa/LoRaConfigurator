@@ -166,7 +166,7 @@ public class RlncFlashBlobService
     private LoRaMessage GenerateInitCommand(FuotaSession fuotaSession)
     {
         var config = fuotaSession.Config;
-        return new LoRaMessage()
+        return new ()
         {
             CorrelationCode = 0,
             RlncInitConfigCommand = new RlncInitConfigCommand
