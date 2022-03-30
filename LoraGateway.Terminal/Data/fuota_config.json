@@ -11,7 +11,7 @@
   "RemoteIsMulticast": true,
   "RemoteUpdateIntervalMs": 75,
   "LocalUpdateIntervalMs": 50,
-  "ApproxPacketErrorRate": 0.3,
+  "ApproxPacketErrorRate": 0.1,
   "OverridePacketErrorSeed": true,
   "DropUpdateCommands": true,
   "PacketErrorSeed": 1963,

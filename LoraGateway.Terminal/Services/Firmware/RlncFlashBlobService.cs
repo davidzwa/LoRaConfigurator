@@ -19,9 +19,10 @@ public class RlncGeneration
 public class RlncFlashBlobService
 {
     private readonly FuotaManagerService _fuotaManagerService;
-    private int _packetsGenerated = 0;
-    private int _bytesWritten = 0;
-    public const string FileName = "../../../../rlnc.bin";
+    private int _packetsGenerated;
+    private int _bytesWritten;
+    public const string Formatter = "*!*";
+    public const string FileName = "../../../../*!*.bin";
 
     public RlncFlashBlobService(FuotaManagerService fuotaManagerService)
     {
@@ -42,7 +43,10 @@ public class RlncFlashBlobService
         await _fuotaManagerService.LoadStore();
         await _fuotaManagerService.StartFuotaSession(false);
 
-        var initCommand = GenerateInitCommand(_fuotaManagerService.GetCurrentSession());
+        var session = _fuotaManagerService.GetCurrentSession();
+        var config = session.Config;
+
+        var initCommand = GenerateInitCommand(session);
         AnalyseBlob(initCommand);
         var terminationCommand = GenerateTerminationCommand();
         AnalyseBlob(terminationCommand);
@@ -55,7 +59,12 @@ public class RlncFlashBlobService
             while (!_fuotaManagerService.IsCurrentGenerationComplete())
             {
                 var fragmentWithMeta = _fuotaManagerService.FetchNextRlncPayloadWithGenerator(false);
-                fragmentWithMeta.SequenceNumber = (byte)_packetsGenerated;
+                if (_packetsGenerated > Math.Pow(2, 16))
+                {
+                    throw new OverflowException("Byte cannot fit more than 2^16 sequence numbers without overrun");
+                }
+
+                fragmentWithMeta.SequenceNumber = (UInt16)_packetsGenerated;
                 _packetsGenerated++;
                 var optimizedFragmentCommand = GenerateOptimizedFragmentCommand(fragmentWithMeta);
                 AnalyseOptimalBlob(optimizedFragmentCommand);
@@ -76,15 +85,22 @@ public class RlncFlashBlobService
             rlncGenerations.Add(newRlncGeneration);
         }
 
+        var fragCount = config.FakeFragmentCount;
+        var fragSize = config.FakeFragmentSize;
+        var genCount = rlncGenerations.Count;
+        var redCount = config.GenerationSizeRedundancy;
+        var templateFileName = $"rlnc_{fragCount}f_{fragSize}b_fake_{genCount}g_{redCount}r";
+        var fullFileName = FileName.Replace(Formatter, templateFileName);
         Log.Information("Writing blob with {PacketsGenerated} fragments to file {File} using {Bytes} bytes",
-            _packetsGenerated, FileName, _bytesWritten);
-        WriteRlncBlob(initCommand, terminationCommand, rlncGenerations);
+            _packetsGenerated, fullFileName, _bytesWritten);
+        WriteRlncBlob(fullFileName, initCommand, terminationCommand, rlncGenerations);
 
         Log.Information("Cleanup blob generator");
         await _fuotaManagerService.StopFuotaSession(false);
     }
 
     public void WriteRlncBlob(
+        string fullFileName,
         LoRaMessage initMessage,
         LoRaMessage terminationMessage,
         List<RlncGeneration> generations
@@ -92,7 +108,7 @@ public class RlncFlashBlobService
     {
         var initCommand = initMessage.ToByteArray();
         var termCommand = terminationMessage.ToByteArray();
-        using (var stream = File.Open(FileName, FileMode.Create))
+        using (var stream = File.Open(fullFileName, FileMode.Create))
         {
             using (var writer = new BinaryWriter(stream, Encoding.UTF8, false))
             {
@@ -166,7 +182,7 @@ public class RlncFlashBlobService
     private LoRaMessage GenerateInitCommand(FuotaSession fuotaSession)
     {
         var config = fuotaSession.Config;
-        return new ()
+        return new()
         {
             CorrelationCode = 0,
             RlncInitConfigCommand = new RlncInitConfigCommand
@@ -197,13 +213,16 @@ public class RlncFlashBlobService
 
     private RlncFlashEncodedFragment GenerateOptimizedFragmentCommand(FragmentWithGenerator fragment)
     {
+        var fragmentBytesWithMeta = new[]
+            {
+                fragment.UsedGenerator, fragment.GenerationIndex
+            }
+            .Concat(BitConverter.GetBytes(fragment.SequenceNumber).Reverse()).ToArray();
+
         return new RlncFlashEncodedFragment
         {
             Payload = ByteString.CopyFrom(fragment.Fragment),
-            Meta = ByteString.CopyFrom(new[]
-            {
-                fragment.UsedGenerator, fragment.SequenceNumber, fragment.GenerationIndex
-            })
+            Meta = ByteString.CopyFrom(fragmentBytesWithMeta)
         };
     }
 
