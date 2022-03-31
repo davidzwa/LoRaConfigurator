@@ -56,17 +56,19 @@ namespace LoRa {
             "YWdtZW50EhEKCUxmc3JTdGF0ZRgBIAEoDSI5ChhSbG5jRmxhc2hFbmNvZGVk",
             "RnJhZ21lbnQSDAoETWV0YRgBIAEoDBIPCgdQYXlsb2FkGAIgASgMIioKD1Js",
             "bmNTdGF0ZVVwZGF0ZRIXCg9HZW5lcmF0aW9uSW5kZXgYASABKA0iGAoWUmxu",
-            "Y1Rlcm1pbmF0aW9uQ29tbWFuZCJsCg5EZWNvZGluZ1Jlc3VsdBIPCgdTdWNj",
-            "ZXNzGAEgASgIEhIKCk1hdHJpeFJhbmsYAiABKA0SGgoSRmlyc3REZWNvZGVk",
-            "TnVtYmVyGAMgASgNEhkKEUxhc3REZWNvZGVkTnVtYmVyGAQgASgNIiwKDkRl",
-            "Y29kaW5nTWF0cml4EgwKBENvbHMYASABKA0SDAoEUm93cxgCIAEoDSKWAgoO",
-            "RGVjb2RpbmdVcGRhdGUSEgoKTWF0cml4Q3JjOBgBIAEoDRIUCgxGaXJzdFJv",
-            "d0NyYzgYAiABKA0SEwoLTGFzdFJvd0NyYzgYAyABKA0SFAoMTGFzdFJvd0lu",
-            "ZGV4GAQgASgNEhQKDFJhbmtQcm9ncmVzcxgFIAEoDRIZChFSZWNlaXZlZEZy",
-            "YWdtZW50cxgGIAEoDRIeChZDdXJyZW50R2VuZXJhdGlvbkluZGV4GAcgASgN",
-            "EhEKCUlzUnVubmluZxgIIAEoCBIVCg1Vc2VkTGZzclN0YXRlGAkgASgNEhgK",
-            "EEN1cnJlbnRMZnNyU3RhdGUYCiABKA0SGgoSTWlzc2VkR2VuRnJhZ21lbnRz",
-            "GAsgASgNQgeqAgRMb1JhYgZwcm90bzM="));
+            "Y1Rlcm1pbmF0aW9uQ29tbWFuZCLDAQoORGVjb2RpbmdSZXN1bHQSDwoHU3Vj",
+            "Y2VzcxgBIAEoCBISCgpNYXRyaXhSYW5rGAIgASgNEhoKEkZpcnN0RGVjb2Rl",
+            "ZE51bWJlchgDIAEoDRIZChFMYXN0RGVjb2RlZE51bWJlchgEIAEoDRIZChFS",
+            "ZWNlaXZlZEZyYWdtZW50cxgFIAEoDRIaChJNaXNzZWRHZW5GcmFnbWVudHMY",
+            "BiABKA0SHgoWQ3VycmVudEdlbmVyYXRpb25JbmRleBgHIAEoDSIsCg5EZWNv",
+            "ZGluZ01hdHJpeBIMCgRDb2xzGAEgASgNEgwKBFJvd3MYAiABKA0ilgIKDkRl",
+            "Y29kaW5nVXBkYXRlEhIKCk1hdHJpeENyYzgYASABKA0SFAoMRmlyc3RSb3dD",
+            "cmM4GAIgASgNEhMKC0xhc3RSb3dDcmM4GAMgASgNEhQKDExhc3RSb3dJbmRl",
+            "eBgEIAEoDRIUCgxSYW5rUHJvZ3Jlc3MYBSABKA0SGQoRUmVjZWl2ZWRGcmFn",
+            "bWVudHMYBiABKA0SHgoWQ3VycmVudEdlbmVyYXRpb25JbmRleBgHIAEoDRIR",
+            "CglJc1J1bm5pbmcYCCABKAgSFQoNVXNlZExmc3JTdGF0ZRgJIAEoDRIYChBD",
+            "dXJyZW50TGZzclN0YXRlGAogASgNEhoKEk1pc3NlZEdlbkZyYWdtZW50cxgL",
+            "IAEoDUIHqgIETG9SYWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LoRa.ExperimentConfigReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -82,7 +84,7 @@ namespace LoRa {
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncFlashEncodedFragment), global::LoRa.RlncFlashEncodedFragment.Parser, new[]{ "Meta", "Payload" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncStateUpdate), global::LoRa.RlncStateUpdate.Parser, new[]{ "GenerationIndex" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncTerminationCommand), global::LoRa.RlncTerminationCommand.Parser, null, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DecodingResult), global::LoRa.DecodingResult.Parser, new[]{ "Success", "MatrixRank", "FirstDecodedNumber", "LastDecodedNumber" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DecodingResult), global::LoRa.DecodingResult.Parser, new[]{ "Success", "MatrixRank", "FirstDecodedNumber", "LastDecodedNumber", "ReceivedFragments", "MissedGenFragments", "CurrentGenerationIndex" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DecodingMatrix), global::LoRa.DecodingMatrix.Parser, new[]{ "Cols", "Rows" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DecodingUpdate), global::LoRa.DecodingUpdate.Parser, new[]{ "MatrixCrc8", "FirstRowCrc8", "LastRowCrc8", "LastRowIndex", "RankProgress", "ReceivedFragments", "CurrentGenerationIndex", "IsRunning", "UsedLfsrState", "CurrentLfsrState", "MissedGenFragments" }, null, null, null, null)
           }));
@@ -3655,6 +3657,9 @@ namespace LoRa {
       matrixRank_ = other.matrixRank_;
       firstDecodedNumber_ = other.firstDecodedNumber_;
       lastDecodedNumber_ = other.lastDecodedNumber_;
+      receivedFragments_ = other.receivedFragments_;
+      missedGenFragments_ = other.missedGenFragments_;
+      currentGenerationIndex_ = other.currentGenerationIndex_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -3715,6 +3720,45 @@ namespace LoRa {
       }
     }
 
+    /// <summary>Field number for the "ReceivedFragments" field.</summary>
+    public const int ReceivedFragmentsFieldNumber = 5;
+    private uint receivedFragments_;
+    /// <summary>
+    /// Copy from DecodingUpdate
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint ReceivedFragments {
+      get { return receivedFragments_; }
+      set {
+        receivedFragments_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "MissedGenFragments" field.</summary>
+    public const int MissedGenFragmentsFieldNumber = 6;
+    private uint missedGenFragments_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint MissedGenFragments {
+      get { return missedGenFragments_; }
+      set {
+        missedGenFragments_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "CurrentGenerationIndex" field.</summary>
+    public const int CurrentGenerationIndexFieldNumber = 7;
+    private uint currentGenerationIndex_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint CurrentGenerationIndex {
+      get { return currentGenerationIndex_; }
+      set {
+        currentGenerationIndex_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -3734,6 +3778,9 @@ namespace LoRa {
       if (MatrixRank != other.MatrixRank) return false;
       if (FirstDecodedNumber != other.FirstDecodedNumber) return false;
       if (LastDecodedNumber != other.LastDecodedNumber) return false;
+      if (ReceivedFragments != other.ReceivedFragments) return false;
+      if (MissedGenFragments != other.MissedGenFragments) return false;
+      if (CurrentGenerationIndex != other.CurrentGenerationIndex) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -3745,6 +3792,9 @@ namespace LoRa {
       if (MatrixRank != 0) hash ^= MatrixRank.GetHashCode();
       if (FirstDecodedNumber != 0) hash ^= FirstDecodedNumber.GetHashCode();
       if (LastDecodedNumber != 0) hash ^= LastDecodedNumber.GetHashCode();
+      if (ReceivedFragments != 0) hash ^= ReceivedFragments.GetHashCode();
+      if (MissedGenFragments != 0) hash ^= MissedGenFragments.GetHashCode();
+      if (CurrentGenerationIndex != 0) hash ^= CurrentGenerationIndex.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -3779,6 +3829,18 @@ namespace LoRa {
         output.WriteRawTag(32);
         output.WriteUInt32(LastDecodedNumber);
       }
+      if (ReceivedFragments != 0) {
+        output.WriteRawTag(40);
+        output.WriteUInt32(ReceivedFragments);
+      }
+      if (MissedGenFragments != 0) {
+        output.WriteRawTag(48);
+        output.WriteUInt32(MissedGenFragments);
+      }
+      if (CurrentGenerationIndex != 0) {
+        output.WriteRawTag(56);
+        output.WriteUInt32(CurrentGenerationIndex);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -3805,6 +3867,18 @@ namespace LoRa {
         output.WriteRawTag(32);
         output.WriteUInt32(LastDecodedNumber);
       }
+      if (ReceivedFragments != 0) {
+        output.WriteRawTag(40);
+        output.WriteUInt32(ReceivedFragments);
+      }
+      if (MissedGenFragments != 0) {
+        output.WriteRawTag(48);
+        output.WriteUInt32(MissedGenFragments);
+      }
+      if (CurrentGenerationIndex != 0) {
+        output.WriteRawTag(56);
+        output.WriteUInt32(CurrentGenerationIndex);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -3826,6 +3900,15 @@ namespace LoRa {
       }
       if (LastDecodedNumber != 0) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(LastDecodedNumber);
+      }
+      if (ReceivedFragments != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(ReceivedFragments);
+      }
+      if (MissedGenFragments != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(MissedGenFragments);
+      }
+      if (CurrentGenerationIndex != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(CurrentGenerationIndex);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -3850,6 +3933,15 @@ namespace LoRa {
       }
       if (other.LastDecodedNumber != 0) {
         LastDecodedNumber = other.LastDecodedNumber;
+      }
+      if (other.ReceivedFragments != 0) {
+        ReceivedFragments = other.ReceivedFragments;
+      }
+      if (other.MissedGenFragments != 0) {
+        MissedGenFragments = other.MissedGenFragments;
+      }
+      if (other.CurrentGenerationIndex != 0) {
+        CurrentGenerationIndex = other.CurrentGenerationIndex;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -3882,6 +3974,18 @@ namespace LoRa {
             LastDecodedNumber = input.ReadUInt32();
             break;
           }
+          case 40: {
+            ReceivedFragments = input.ReadUInt32();
+            break;
+          }
+          case 48: {
+            MissedGenFragments = input.ReadUInt32();
+            break;
+          }
+          case 56: {
+            CurrentGenerationIndex = input.ReadUInt32();
+            break;
+          }
         }
       }
     #endif
@@ -3911,6 +4015,18 @@ namespace LoRa {
           }
           case 32: {
             LastDecodedNumber = input.ReadUInt32();
+            break;
+          }
+          case 40: {
+            ReceivedFragments = input.ReadUInt32();
+            break;
+          }
+          case 48: {
+            MissedGenFragments = input.ReadUInt32();
+            break;
+          }
+          case 56: {
+            CurrentGenerationIndex = input.ReadUInt32();
             break;
           }
         }

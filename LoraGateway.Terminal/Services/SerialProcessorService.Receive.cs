@@ -41,17 +41,17 @@ public partial class SerialProcessorService
         var payload = response.Payload.ToStringUtf8();
         var code = response.DebugMessage.Code;
 
-        if (payload!.Contains("CRC-FAIL"))
+        if (payload!.Contains("CRC_FAIL"))
         {
             await _eventPublisher.PublishEventAsync(new StopFuotaSession {Message = "CRC failure"});
         }
 
-        if (payload!.Contains("PROTO-FAIL"))
+        if (payload.Contains("PROTO_FAIL"))
         {
             await _eventPublisher.PublishEventAsync(new StopFuotaSession {Message = "PROTO failure"});
         }
 
-        if (payload!.Contains("RLNC_TERMINATE"))
+        if (payload.Contains("RLNC_TERMINATE"))
         {
             await _eventPublisher.PublishEventAsync(new StopFuotaSession
                 {Message = "End-device succeeded generation", SuccessfulTermination = true});
@@ -60,23 +60,23 @@ public partial class SerialProcessorService
         string[] inclusions =
         {
             "PeriodTX",
-            "PROTO-FAIL",
-            "PROTO-LORA-FAIL",
-            "CRC-FAIL",
+            "PROTO_FAIL",
+            "PROTO_FAIL_TX",
+            "PROTO_LORA_FAIL",
+            "CRC_FAIL",
             "RLNC_TERMINATE",
-            "INSERT_ROW",
-            "LORATX-TIMEOUT",
+            "LORATX_TIMEOUT",
             "RAMFUNC",
             "FLASH",
             // "UC",
-            // "MC",            
-            // "LORARX-DONE",
-            // "LORATX-DONE",
+            // "MC",
+            // "LORARX_DONE",
+            // "LORATX_DONE",
             // "RLNC",
             // "RLNC_RNG",
             "RLNC_LAG_GEN",
             "RLNC_LAG_FRAG",
-            "RLNC_PER_SEED",
+            // "RLNC_PER_SEED",
             "RLNC_ERR",
             "DevConfStop",
             "PUSH-BUTTON"
@@ -138,11 +138,19 @@ public partial class SerialProcessorService
     {
         var decodingResult = response.DecodingResult;
         var success = decodingResult.Success;
+        var missedGenFragments = decodingResult.MissedGenFragments;
+        var receivedGenFragments = decodingResult.ReceivedFragments;
+        var total = receivedGenFragments + missedGenFragments;
+        var perReal = (float) missedGenFragments / total;
+         
         _logger.LogInformation(
-            "[{Name}, DecodingResult] Success: {Payload} Rank: {MatrixRank} FirstNumber: {FirstNumber} LastNumber: {LastNumber}",
+            "[{Name}, DecodingResult] Success: {Payload} Rank: {MatrixRank} PER {Rx}/{Total}={Per:F1} FirstNumber: {FirstNumber} LastNumber: {LastNumber}",
             portName,
             success,
             decodingResult.MatrixRank,
+            decodingResult.MissedGenFragments,
+            decodingResult.ReceivedFragments,
+            perReal,
             decodingResult.FirstDecodedNumber,
             decodingResult.LastDecodedNumber
         );

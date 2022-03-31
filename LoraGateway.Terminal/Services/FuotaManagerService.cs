@@ -53,6 +53,12 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         WriteStore();
     }
 
+    public void SetPacketErrorSeed(UInt16 seed)
+    {
+        Store.PacketErrorSeed = seed;
+        WriteStore();
+    }
+
     public LoRaMessage RemoteSessionStopCommand()
     {
         var loraMessage = new LoRaMessage();
@@ -325,7 +331,7 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
             );
         }
 
-        _logger.LogInformation(
+        _logger.LogDebug(
             "[{Name}, DecodingType] Rank: {Rank} GenIndex: {MatrixRank} FragRx: {ReceivedFragments} FragMiss: {MissedFragments} FirstRowCrc: {FirstRowCrc} LastAppendedRowCrc({LastRowIndex}): {LastRowCrc} LFSR {Lfsr1} -> {Lfsr2} IsRunning: {IsRunning}",
             source,
             rank,

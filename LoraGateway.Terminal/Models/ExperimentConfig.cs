@@ -10,9 +10,9 @@ public class ExperimentConfig : ICloneable
     // private int RssiAvgWindow { get; set; } = 10;
     // Not implemented yet
     // private int SnrAvgWindow { get; set; } = 10;
+    public int ExperimentTimeout { get; set; }= 30000;
 
-    public bool AwaitUartAck { get; set; } = false;
-    public int ExperimentTimeout = 30000;
+    public bool RandomPerSeed { get; set; } = true;
 
     public object Clone()
     {

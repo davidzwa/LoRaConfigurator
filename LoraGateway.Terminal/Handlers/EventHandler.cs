@@ -31,14 +31,17 @@ public class FuotaEventHandler : IEventHandler<InitFuotaSession>, IEventHandler<
 {
     private readonly FuotaSessionHostedService _fuotaSessionHostedService;
     private readonly FuotaManagerService _fuotaManagerService;
+    private readonly ExperimentService _experimentService;
 
     public FuotaEventHandler(
-        FuotaSessionHostedService fuotaSessionHostedService  ,
-        FuotaManagerService fuotaManagerService
+        FuotaSessionHostedService fuotaSessionHostedService,
+        FuotaManagerService fuotaManagerService,
+        ExperimentService experimentService
     )
     {
         _fuotaSessionHostedService = fuotaSessionHostedService;
         _fuotaManagerService = fuotaManagerService;
+        _experimentService = experimentService;
     }
     
     public async Task HandleEventAsync(InitFuotaSession @event)
@@ -65,6 +68,11 @@ public class FuotaEventHandler : IEventHandler<InitFuotaSession>, IEventHandler<
         else if (_fuotaManagerService.IsRemoteSessionStarted)
         {
             _fuotaManagerService.IsRemoteSessionStarted = false;
+        }
+
+        if (@event.SuccessfulTermination)
+        {
+            _experimentService.MarkTerminationReceived();
         }
     }
 }
