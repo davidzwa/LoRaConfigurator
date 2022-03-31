@@ -149,7 +149,7 @@ public partial class SerialProcessorService
             success,
             decodingResult.MatrixRank,
             decodingResult.MissedGenFragments,
-            decodingResult.ReceivedFragments,
+            total,
             perReal,
             decodingResult.FirstDecodedNumber,
             decodingResult.LastDecodedNumber
