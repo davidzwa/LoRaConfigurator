@@ -47,6 +47,57 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         return _currentFuotaSession!.Acks.Count < expectedAcksCount;
     }
 
+    public void SetPacketErrorRate(float per)
+    {
+        Store.ApproxPacketErrorRate = per;
+        WriteStore();
+    }
+
+    public void SetPacketErrorSeed(UInt16 seed)
+    {
+        Store.PacketErrorSeed = seed;
+        WriteStore();
+    }
+
+    public LoRaMessage RemoteSessionStopCommand()
+    {
+        var loraMessage = new LoRaMessage();
+        loraMessage.RlncRemoteFlashStopCommand = new();
+        IsRemoteSessionStarted = false;
+        return loraMessage;
+    }
+    
+    public LoRaMessage RemoteSessionStartCommand()
+    {
+        var config = GetStore();
+        var loraMessage = new LoRaMessage();
+        loraMessage.RlncRemoteFlashStartCommand = new()
+        {
+            DeviceId0 = config.RemoteDeviceId0,
+            SetIsMulticast = config.RemoteIsMulticast,
+            TimerDelay = config.RemoteUpdateIntervalMs,
+            DebugFragmentUart = config.DebugFragmentUart,
+            DebugMatrixUart = config.DebugMatrixUart,
+            TransmitConfiguration = new TransmitConfiguration()
+            {
+                TxBandwidth = config.TxBandwidth,
+                TxPower = config.TxPower,
+                TxDataRate = config.TxDataRate
+            },
+            ReceptionRateConfig = new ()
+            {
+                PacketErrorRate = config.ApproxPacketErrorRate,
+                OverrideSeed = config.OverridePacketErrorSeed,
+                DropUpdateCommands = config.DropUpdateCommands,
+                Seed = config.PacketErrorSeed
+            }
+        };
+        
+        IsRemoteSessionStarted = true;
+
+        return loraMessage;
+    }
+
     public bool IsAwaitAckEnabled()
     {
         return GetCurrentSession().Config.UartFakeAwaitAck;
@@ -280,12 +331,13 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
             );
         }
 
-        _logger.LogInformation(
-            "[{Name}, DecodingType] Rank: {Rank} GenIndex: {MatrixRank} FragRx: {ReceivedFragments} FirstRowCrc: {FirstRowCrc} LastAppendedRowCrc({LastRowIndex}): {LastRowCrc} LFSR {Lfsr1} -> {Lfsr2} IsRunning: {IsRunning}",
+        _logger.LogDebug(
+            "[{Name}, DecodingType] Rank: {Rank} GenIndex: {MatrixRank} FragRx: {ReceivedFragments} FragMiss: {MissedFragments} FirstRowCrc: {FirstRowCrc} LastAppendedRowCrc({LastRowIndex}): {LastRowCrc} LFSR {Lfsr1} -> {Lfsr2} IsRunning: {IsRunning}",
             source,
             rank,
             update.CurrentGenerationIndex,
             update.ReceivedFragments,
+            update.MissedGenFragments,
             update.FirstRowCrc8,
             update.LastRowIndex,
             update.LastRowCrc8,
