@@ -8,6 +8,9 @@ public class ExperimentConfig : ICloneable
     private int RssiAvgWindow { get; set; } = 10;
     private int SnrAvgWindow { get; set; } = 10;
 
+    public bool AwaitUartAck { get; set; } = false;
+    public int ExperimentTimeout = 30000;
+
     public object Clone()
     {
         return MemberwiseClone();

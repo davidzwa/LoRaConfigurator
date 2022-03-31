@@ -24,7 +24,8 @@ public partial class SerialProcessorService
             LastPortName = portName
         });
 
-        _logger.LogInformation("[{Port} {Name}, MC:{Count}, MD:{Disabled}, RLNC:{RlncSessionState}-{FlashState}] heart beat {DeviceId}",
+        _logger.LogInformation(
+            "[{Port} {Name}, MC:{Count}, MD:{Disabled}, RLNC:{RlncSessionState}-{FlashState}] heart beat {DeviceId}",
             portName,
             device?.NickName,
             measurementCount,
@@ -52,7 +53,8 @@ public partial class SerialProcessorService
 
         if (payload!.Contains("RLNC_TERMINATE"))
         {
-            await _eventPublisher.PublishEventAsync(new StopFuotaSession {Message = "End-device succeeded generation"});
+            await _eventPublisher.PublishEventAsync(new StopFuotaSession
+                {Message = "End-device succeeded generation", SuccessfulTermination = true});
         }
 
         string[] inclusions =
@@ -149,13 +151,14 @@ public partial class SerialProcessorService
     async Task ReceiveLoRaMeasurement(string portName, UartResponse response)
     {
         var bodyCase = response.LoraMeasurement.DownlinkPayload.BodyCase;
-        if (bodyCase is LoRaMessage.BodyOneofCase.ExperimentResponse or LoRaMessage.BodyOneofCase.RlncRemoteFlashResponse or LoRaMessage.BodyOneofCase.None)
+        if (bodyCase is LoRaMessage.BodyOneofCase.ExperimentResponse
+            or LoRaMessage.BodyOneofCase.RlncRemoteFlashResponse or LoRaMessage.BodyOneofCase.None)
         {
             InnerLoRaPacketHandler(portName, response.LoraMeasurement?.DownlinkPayload);
         }
-        
+
         // Suppress anything else   
-        return; 
+        return;
         if (!response.LoraMeasurement.Success)
         {
             _logger.LogInformation("[{Name}] LoRa RX error!", portName);
@@ -207,7 +210,8 @@ public partial class SerialProcessorService
             var sessionState = body.RlncSessionState;
             var mc = body.CurrentSetIsMulticast;
             var deviceId0 = body.CurrentDeviceId0;
-            _logger.LogInformation("[{PortName}] RLNC Response\n TxPower:{TXPower} BW:{BW} SF{SF}\n Period:{Delay} Session:{SessionState} Flash:{FlashState} MC:{MC} DeviceId0:{DeviceId0}", 
+            _logger.LogInformation(
+                "[{PortName}] RLNC Response\n TxPower:{TXPower} BW:{BW} SF{SF}\n Period:{Delay} Session:{SessionState} Flash:{FlashState} MC:{MC} DeviceId0:{DeviceId0}",
                 portName, txPower, bandwidth, spreadingFactor, delay, sessionState, flashState, mc, deviceId0);
         }
         else

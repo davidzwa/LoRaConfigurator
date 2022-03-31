@@ -10,7 +10,7 @@
   "RemoteDeviceId0": 0,
   "RemoteIsMulticast": true,
   "RemoteUpdateIntervalMs": 50,
-  "ApproxPacketErrorRate": 0.45000005,
+  "ApproxPacketErrorRate": 0.0,
   "OverridePacketErrorSeed": true,
   "DropUpdateCommands": false,
   "PacketErrorSeed": 1967,
@@ -20,7 +20,7 @@
   "FakeFirmware": true,
   "FakeFragmentCount": 50,
   "FakeFragmentSize": 10,
-  "GenerationSize": 5,
+  "GenerationSize": 6,
   "GenerationSizeRedundancy": 3,
   "FieldDegree": 8,
   "LfsrSeed": 8

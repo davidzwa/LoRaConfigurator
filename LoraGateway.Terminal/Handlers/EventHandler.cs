@@ -23,6 +23,7 @@ public class DecodingUpdateEvent
 public class StopFuotaSession
 {
     public CancellationToken Token { get; set; }
+    public bool SuccessfulTermination { get; set; } = false;
     public string Message { get; set; }
 }
 

@@ -3,5 +3,7 @@
   "MaxPer": 0.50,
   "PerStep": 0.05,
   "RssiAvgWindow": 10,
-  "SnrAvgWindow": 10
+  "SnrAvgWindow": 10,
+  "AwaitUartAck": true,
+  "ExperimentTimeout": 30000
 }
