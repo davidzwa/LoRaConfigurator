@@ -20,6 +20,11 @@ public class DecodingUpdateEvent
     public ByteString Payload { get; set; }
 }
 
+public class DecodingResultEvent
+{
+    public DecodingResult DecodingResult { get; set; }
+}
+
 public class StopFuotaSession
 {
     public CancellationToken Token { get; set; }
@@ -27,7 +32,7 @@ public class StopFuotaSession
     public string Message { get; set; }
 }
 
-public class FuotaEventHandler : IEventHandler<InitFuotaSession>, IEventHandler<StopFuotaSession>, IEventHandler<DecodingUpdateEvent>
+public class FuotaEventHandler : IEventHandler<InitFuotaSession>, IEventHandler<StopFuotaSession>, IEventHandler<DecodingUpdateEvent>, IEventHandler<DecodingResultEvent>
 {
     private readonly FuotaSessionHostedService _fuotaSessionHostedService;
     private readonly FuotaManagerService _fuotaManagerService;
@@ -54,6 +59,11 @@ public class FuotaEventHandler : IEventHandler<InitFuotaSession>, IEventHandler<
         if (@event.DecodingUpdate != null) {
             _fuotaManagerService.SaveFuotaDebuggingProgress(@event.Source, @event.DecodingUpdate, @event.Payload);
         }
+    }
+
+    public async Task HandleEventAsync(DecodingResultEvent @event)
+    {
+        _experimentService.ProcessResult(@event.DecodingResult);
     }
     
     public async Task HandleEventAsync(StopFuotaSession @event)

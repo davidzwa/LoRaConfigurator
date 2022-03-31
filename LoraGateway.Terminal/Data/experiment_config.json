@@ -4,7 +4,6 @@
   "PerStep": 0.05,
   "RssiAvgWindow": 10,
   "SnrAvgWindow": 10,
-  "AwaitUartAck": true,
   "ExperimentTimeout": 10000,
   "RandomPerSeed": true
 }

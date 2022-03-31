@@ -1,4 +1,7 @@
-﻿using System.Timers;
+﻿using System.Globalization;
+using System.Timers;
+using CsvHelper.Configuration;
+using LoRa;
 using LoraGateway.Models;
 using LoraGateway.Services.Contracts;
 
@@ -13,6 +16,8 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
     private bool IsStarted = false;
     private bool DeviceRlncRoundTerminated = false;
     private CancellationTokenSource _cancellationTokenSource;
+
+    private List<ExperimentDataEntry>? dataPoints;
 
     public ExperimentService(
         ILogger<ExperimentService> logger,
@@ -42,6 +47,19 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
         _logger.LogInformation("Stopped due to externally received termination");
     }
 
+    public void ProcessResult(DecodingResult result)
+    {
+        // if 
+    }
+
+    private void WriteData()
+    {
+        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+        {
+            NewLine = Environment.NewLine,
+        };
+    }
+    
     private async Task AwaitTermination(CancellationToken ct)
     {
         DeviceRlncRoundTerminated = false;
@@ -56,6 +74,8 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
     public async Task RunExperiments()
     {
         var experimentConfig = await LoadStore();
+
+        dataPoints = new();
 
         var min = experimentConfig.MinPer;
         var max = experimentConfig.MaxPer;
@@ -101,5 +121,7 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
         }
 
         _logger.LogInformation("Experiment done");
+        dataPoints = null;
     }
+
 }
