@@ -140,8 +140,15 @@ public partial class SerialProcessorService
         var success = decodingResult.Success;
         var missedGenFragments = decodingResult.MissedGenFragments;
         var receivedGenFragments = decodingResult.ReceivedFragments;
+       
+        _eventPublisher.PublishEventAsync(new DecodingResultEvent()
+        {
+            DecodingResult = decodingResult
+        });
+
         var total = receivedGenFragments + missedGenFragments;
         var perReal = (float)missedGenFragments / total;
+        
         _logger.LogInformation(
             "[{Name}, DecodingResult] Success: {Payload} GenIndex {GenIndex} Rank: {MatrixRank} PER {Rx}/{Total}={Per:F1} FirstNumber: {FirstNumber} LastNumber: {LastNumber}",
             portName,
@@ -154,11 +161,6 @@ public partial class SerialProcessorService
             decodingResult.FirstDecodedNumber,
             decodingResult.LastDecodedNumber
         );
-        
-        _eventPublisher.PublishEventAsync(new DecodingResultEvent()
-        {
-            DecodingResult = decodingResult
-        });
     }
 
     async Task ReceiveLoRaMeasurement(string portName, UartResponse response)

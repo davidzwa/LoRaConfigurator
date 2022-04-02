@@ -90,7 +90,7 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
             return;
         }
         
-        // First generation(s) failed to succeed, adminster those 
+        // First generation(s) failed to succeed, administer those 
         if (_lastGenerationIndexReceived == null && currentGenIndex > 0)
         {
             if (currentGenIndex > 4)
@@ -117,7 +117,11 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
                     ConfiguredPacketErrorRate = _currentPer
                 });
             }
-
+        }
+        
+        // Now set it straight
+        if (_lastGenerationIndexReceived == null)
+        {
             _lastGenerationIndexReceived = currentGenIndex - 1;
         }
 
@@ -126,7 +130,7 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
         if (_lastGenerationIndexReceived != null && missedGens > 1)
         {
             var missedGenerations = missedGens - 1;
-            _logger.LogWarning("Missed generations {MissedGens} after start - PER {Per}", missedGenerations, _currentPer);
+            _logger.LogWarning("Missed {MissedGens} generations after start - PER {Per}", missedGenerations, _currentPer);
 
             if (missedGenerations > 4)
             {
