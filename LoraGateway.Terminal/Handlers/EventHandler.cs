@@ -63,7 +63,7 @@ public class FuotaEventHandler : IEventHandler<InitFuotaSession>, IEventHandler<
 
     public async Task HandleEventAsync(DecodingResultEvent @event)
     {
-        _experimentService.ProcessResult(@event.DecodingResult);
+        await _experimentService.ProcessResult(@event.DecodingResult);
     }
     
     public async Task HandleEventAsync(StopFuotaSession @event)

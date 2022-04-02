@@ -44,20 +44,6 @@ public static class LoraGateway
                 .WriteTo.File(GetUniqueLogFile("_serial"), LogEventLevel.Debug))
             .CreateLogger();
 
-        // byte[,] inputBytes = {
-        //     { 0x04, 0x82, 0x41, 0xa0, 0xd0, 0x00, 0x00, 0x00, 0x9a, 0x78 },
-        //     { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },
-        //     { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },
-        //     { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },
-        //     { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }
-        // };
-        // var resultingMatrix = inputBytes.BytesToMatrix();
-        // var matrixString = SerialUtil.MatrixToString(resultingMatrix);
-        // Log.Information("\n{MatrixRow}", matrixString);
-        // var matrix = RlncDecodingService.DecodeMatrix(resultingMatrix, 5);
-        // var gfString = SerialUtil.MatrixToString(matrix);
-        // Log.Information("\n{MatrixRow}", gfString);
-
         await CreateHostBuilder(args).RunConsoleAsync();
     }
 
@@ -91,6 +77,7 @@ public static class LoraGateway
                     {
                         subscriber.Subscribe<InitFuotaSession, FuotaEventHandler>();
                         subscriber.Subscribe<DecodingUpdateEvent, FuotaEventHandler>();
+                        subscriber.Subscribe<DecodingResultEvent, FuotaEventHandler>();
                         subscriber.Subscribe<StopFuotaSession, FuotaEventHandler>();
                     });
                 });

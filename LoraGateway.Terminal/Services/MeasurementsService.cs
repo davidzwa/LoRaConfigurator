@@ -25,7 +25,7 @@ public class MeasurementsService : IDisposable
 
     public string GetMeasurementFile()
     {
-        var rootPath = JsonDataStoreExtensions.BasePath;
+        var rootPath = DataStoreExtensions.BasePath;
         return Path.GetFullPath($"{rootPath}/measurements{_location}.json", Directory.GetCurrentDirectory());
     }
 
