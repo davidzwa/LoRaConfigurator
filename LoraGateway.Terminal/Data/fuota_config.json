@@ -13,7 +13,7 @@
   "ApproxPacketErrorRate": 0.45000005,
   "OverridePacketErrorSeed": true,
   "DropUpdateCommands": true,
-  "PacketErrorSeed": 44280,
+  "PacketErrorSeed": 27801,
   "LocalUpdateIntervalMs": 50,
   "DebugMatrixUart": false,
   "DebugFragmentUart": false,

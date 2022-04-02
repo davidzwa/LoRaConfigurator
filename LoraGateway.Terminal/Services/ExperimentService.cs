@@ -84,6 +84,12 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
         var fuotaConfig = _fuotaManagerService.GetStore();
         var generationPacketsCount = fuotaConfig.GenerationSize + fuotaConfig.GenerationSizeRedundancy;
         
+        if (_lastGenerationIndexReceived == result.CurrentGenerationIndex)
+        {
+            _logger.LogWarning("Skipping already processed generation");
+            return;
+        }
+        
         // First generation(s) failed to succeed, adminster those 
         if (_lastGenerationIndexReceived == null && currentGenIndex > 0)
         {
@@ -120,7 +126,7 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
         if (_lastGenerationIndexReceived != null && missedGens > 1)
         {
             var missedGenerations = missedGens - 1;
-            _logger.LogWarning("Missed generations {MissedGens} after start - PER {Per}", currentGenIndex, _currentPer);
+            _logger.LogWarning("Missed generations {MissedGens} after start - PER {Per}", missedGenerations, _currentPer);
 
             if (missedGenerations > 4)
             {
@@ -145,7 +151,7 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
                 });
             }
         }
-        
+
         var success = result.Success;
         var missedFrags = result.MissedGenFragments;
         var receivedFrags = result.ReceivedFragments;
