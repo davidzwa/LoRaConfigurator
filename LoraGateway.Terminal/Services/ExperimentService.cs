@@ -4,6 +4,7 @@ using CsvHelper.Configuration;
 using LoRa;
 using LoraGateway.Models;
 using LoraGateway.Services.Contracts;
+using LoraGateway.Utils;
 
 namespace LoraGateway.Services;
 
@@ -153,9 +154,22 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
             foreach (var index in missedGenerationIndices)
             {
                 var foundGenUpdates = groupedDecodingUpdatesByGenIndex.FirstOrDefault(d => d.Key == index);
+                var wasLostGeneration = false;
                 if (foundGenUpdates == null)
                 {
-                    throw new Exception($"Could not find missed gen update for index {index}");
+                    foundGenUpdates = new Grouping<uint, DecodingUpdate>(index)
+                    {
+                        new ()
+                        {
+                            RankProgress = 0,
+                            CurrentGenerationIndex = index,
+                            ReceivedFragments = 0,
+                            MissedGenFragments = generationPacketsCount,
+                            IsRunning = false // Sneaky way to indicate this was a passive data point
+                        }
+                    };
+                    wasLostGeneration = true;
+                    _logger.LogWarning("Could not find missed gen update for index {Index} - inserted fake one with 100% loss", index);
                 }
 
                 var maxTotalPackets = foundGenUpdates.Max(g => g.ReceivedFragments + g.MissedGenFragments);
@@ -165,34 +179,31 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
                 {
                     throw new Exception($"Last gen update for index {index} with {totalPacketsFound} total was not newest ({maxTotalPackets})");
                 }
-                    
+                var total = lastGenUpdate.ReceivedFragments + lastGenUpdate.MissedGenFragments;
+                _logger.LogWarning("Appending loss {MissedGenFragments} out of {TotalFragments}", lastGenUpdate.MissedGenFragments, total);
+                
+                var per = (float)lastGenUpdate.MissedGenFragments / total;
+                _dataPoints.Add(new()
+                {
+                    Rank = 0,
+                    Success = false,
+                    GenerationIndex = lastGenUpdate.CurrentGenerationIndex,
+                    GenerationTotalPackets = total,
+                    GenerationRedundancyUsed = fuotaConfig.GenerationSizeRedundancy,
+                    MissedPackets = lastGenUpdate.MissedGenFragments,
+                    ReceivedPackets = lastGenUpdate.ReceivedFragments,
+                    RngResolution = total,
+                    TriggeredByDecodingResult = false,
+                    TriggeredByCompleteLoss = wasLostGeneration,
+                    PacketErrorRate = per,
+                    ConfiguredPacketErrorRate = _currentPer
+                });
                 missedDecodingUpdates.Add(lastGenUpdate);
             }
                 
             _logger.LogWarning(
                 "Missed generations during run - Experiment failure RecvGen:{LastGenUpdate} MissedGens:{MissedGens} PER:{CurrentPer}",
                 currentGenIndex, missedDecodingUpdates.Count(), _currentPer);
-
-            // F.e. we received index 2, so 1 and 0 were missed => 2x missed
-            foreach (var missedDecodingUpdate in missedDecodingUpdates)
-            {
-                var total = missedDecodingUpdate.ReceivedFragments + missedDecodingUpdate.MissedGenFragments;
-                _logger.LogWarning("Appending loss {MissedGenFragments} out of {TotalFragments}", missedDecodingUpdate.MissedGenFragments, total);
-                var per = (float)missedDecodingUpdate.MissedGenFragments / total;
-                _dataPoints.Add(new()
-                {
-                    Rank = 0,
-                    Success = false,
-                    GenerationIndex = missedDecodingUpdate.CurrentGenerationIndex,
-                    GenerationTotalPackets = total,
-                    GenerationRedundancyUsed = fuotaConfig.GenerationSizeRedundancy,
-                    MissedPackets = missedDecodingUpdate.MissedGenFragments,
-                    ReceivedPackets = missedDecodingUpdate.ReceivedFragments,
-                    RngResolution = total,
-                    PacketErrorRate = per,
-                    ConfiguredPacketErrorRate = _currentPer
-                });
-            }
         }
 
         // Now set it straight
@@ -216,6 +227,8 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
             GenerationRedundancyUsed = fuotaConfig.GenerationSizeRedundancy,
             MissedPackets = result.MissedGenFragments,
             ReceivedPackets = result.ReceivedFragments,
+            TriggeredByDecodingResult = true,
+            TriggeredByCompleteLoss = false,
             RngResolution = totalFrags,
             PacketErrorRate = packetErrorRate,
             ConfiguredPacketErrorRate = _currentPer
@@ -261,7 +274,6 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
         var step = experimentConfig.PerStep;
 
         _cancellationTokenSource = new CancellationTokenSource();
-        _lastResultGenerationIndex = null;
         _hasCrashed = false;
 
         var per = min;
@@ -269,6 +281,7 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
         {
             var result = _cancellationTokenSource.TryReset();
             _decodingUpdatesReceived.Clear();
+            _lastResultGenerationIndex = null;
 
             _logger.LogInformation("Next gen started. CT: {CT}", result);
             _fuotaManagerService.SetPacketErrorRate(per);
