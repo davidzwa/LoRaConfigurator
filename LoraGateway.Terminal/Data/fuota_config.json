@@ -18,10 +18,10 @@
   "DebugMatrixUart": false,
   "DebugFragmentUart": false,
   "FakeFirmware": true,
-  "FakeFragmentCount": 50,
+  "FakeFragmentCount": 200,
   "FakeFragmentSize": 10,
-  "GenerationSize": 6,
-  "GenerationSizeRedundancy": 3,
+  "GenerationSize": 10,
+  "GenerationSizeRedundancy": 10,
   "FieldDegree": 8,
   "LfsrSeed": 8
 }
