@@ -59,11 +59,17 @@ public class FuotaEventHandler : IEventHandler<InitFuotaSession>, IEventHandler<
         if (@event.DecodingUpdate != null) {
             _fuotaManagerService.SaveFuotaDebuggingProgress(@event.Source, @event.DecodingUpdate, @event.Payload);
         }
+        
+        if (_fuotaManagerService.IsRemoteSessionStarted) {
+            await _experimentService.ProcessUpdate(@event.DecodingUpdate!);
+        }
     }
 
     public async Task HandleEventAsync(DecodingResultEvent @event)
     {
-        await _experimentService.ProcessResult(@event.DecodingResult);
+        if (_fuotaManagerService.IsRemoteSessionStarted) {
+            await _experimentService.ProcessResult(@event.DecodingResult);
+        }
     }
     
     public async Task HandleEventAsync(StopFuotaSession @event)

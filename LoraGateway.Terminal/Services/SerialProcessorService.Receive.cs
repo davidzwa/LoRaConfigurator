@@ -77,7 +77,7 @@ public partial class SerialProcessorService
             "RLNC_RNG_DROP",
             "RLNC_RNG_ACPT",
             "RLNC_LAG_GEN",
-            "RLNC_LAG_FRAG",
+            // "RLNC_LAG_FRAG",
             // "RLNC_PER_SEED",
             "RLNC_ERR",
             "DevConfStop",
