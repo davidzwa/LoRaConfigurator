@@ -1,10 +1,12 @@
 ﻿using System.Globalization;
 using CsvHelper;
 using CsvHelper.Configuration;
+using Google.Protobuf.Reflection;
 using LoRa;
 using LoraGateway.Models;
 using LoraGateway.Services.Contracts;
 using LoraGateway.Utils;
+using ScottPlot;
 
 namespace LoraGateway.Services;
 
@@ -54,6 +56,11 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
     {
         return "experiment.png";
     }
+    
+    public string GetErrorPlotFileName()
+    {
+        return "experiment_err.png";
+    }
 
     public string GetCsvFilePath()
     {
@@ -62,10 +69,10 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
         return Path.Join(dataFolderAbsolute, fileName);
     }
 
-    public string GetPlotFilePath()
+    public string GetPlotFilePath(bool isErrorPlot = false)
     {
         var dataFolderAbsolute = GetDataFolderFullPath();
-        var fileName = GetPlotFileName();
+        var fileName = isErrorPlot ? GetErrorPlotFileName() : GetPlotFileName();
         return Path.Join(dataFolderAbsolute, fileName);
     }
 
@@ -267,23 +274,48 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
         var dataBuckets = _dataPoints.GroupBy(d => d.ConfiguredPacketErrorRate);
         var perBuckets = dataBuckets.Select(b =>
         {
+            var iqr = Statistics.Quartiles(b.Select(b => b.PacketErrorRate).ToArray());
             return new
             {
                 PerAvg = b.Average(d => d.PacketErrorRate),
+                PerIQR = iqr.IQR,
                 ConfiguredPer = b.Key
             };
         });
 
         _logger.LogInformation("Saving experiment plot");
         var configuredPerArray = perBuckets.Select(p => (double)p.ConfiguredPer).ToArray();
-        var avgPerArray = perBuckets.Select(p => (double)p.PerAvg).ToArray();
+        var averagePerArray = perBuckets.Select(p => (double)p.PerAvg).ToArray();
+        var iqrPerArray = perBuckets.Select(p => (double)p.PerIQR).ToArray();
+        
+        var maxPer = Math.Min(1.0f, Math.Round(configuredPerArray.Max()+0.1f, 1));
+        var minPer = Math.Max(0.0f, Math.Round(configuredPerArray.Min()-0.1f, 1));
 
-        var plt = new ScottPlot.Plot(400, 300);
-        plt.AddScatter(configuredPerArray, avgPerArray);
-        plt.Title("Packet-Error-Rate (PER) vs avg. realised PER");
+        var plt = new Plot(400, 300);
+        plt.AddScatter(configuredPerArray, averagePerArray, label: "Real PER");
+        plt.AddScatter(configuredPerArray, configuredPerArray, label: "Input PER");
+        plt.Legend();
+        plt.SetAxisLimits(minPer, maxPer, minPer, maxPer);
+        plt.Title("Packet-Error-Rate (PER) vs median realised PER");
         plt.YLabel("Averaged realised PER");
         plt.XLabel("Configured PER");
-        plt.SaveFig(GetPlotFilePath());
+        plt.SaveFig(GetPlotFilePath(false));
+        
+        var plt2 = new Plot(400, 300);
+        var scatter2 = plt2.AddScatter(configuredPerArray, averagePerArray, label: "Real PER");
+        scatter2.YError = iqrPerArray;
+        scatter2.ErrorCapSize = 3;
+        scatter2.ErrorLineWidth = 1;
+        scatter2.LineStyle = LineStyle.Dot;
+        plt2.AddErrorBars(configuredPerArray, averagePerArray, null, iqrPerArray);
+        plt2.AddScatter(configuredPerArray, configuredPerArray, label: "Input PER");
+        plt2.Legend();
+        
+        plt2.SetAxisLimits(minPer, maxPer, minPer, maxPer);
+        plt2.Title("Packet-Error-Rate (PER) vs avg. realised PER");
+        plt2.YLabel("Averaged realised PER");
+        plt2.XLabel("Configured PER");
+        plt2.SaveFig(GetPlotFilePath(true));
     }
 
     private List<uint> CalculateLostGenerationIndices(uint currentGenIndex)

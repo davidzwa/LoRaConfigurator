@@ -8,6 +8,7 @@ using LoraGateway.Services.Firmware.Utils;
 using LoraGateway.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ScottPlot;
 using Serilog;
 using Serilog.Events;
 using Serilog.Filters;
@@ -43,7 +44,7 @@ public static class LoraGateway
                 .Filter.ByIncludingOnly(Matching.FromSource<SerialProcessorService>())
                 .WriteTo.File(GetUniqueLogFile("_serial"), LogEventLevel.Debug))
             .CreateLogger();
-
+        
         await CreateHostBuilder(args).RunConsoleAsync();
     }
 
