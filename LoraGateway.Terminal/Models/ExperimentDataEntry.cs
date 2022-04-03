@@ -11,5 +11,7 @@ public class ExperimentDataEntry
     public float PacketErrorRate { get; set; }
     public float ConfiguredPacketErrorRate { get; set; }
     public bool Success { get; set; }
+    public bool TriggeredByDecodingResult { get; set; }
+    public bool TriggeredByCompleteLoss { get; set; }
     public uint Rank { get; set; }
 }

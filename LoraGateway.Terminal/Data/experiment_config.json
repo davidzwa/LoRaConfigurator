@@ -1,7 +1,7 @@
 {
-  "MinPer": 0.25,
-  "MaxPer": 0.45,
-  "PerStep": 0.05,
+  "MinPer": 0.0,
+  "MaxPer": 0.90,
+  "PerStep": 0.02,
   "RssiAvgWindow": 10,
   "SnrAvgWindow": 10,
   "ExperimentTimeout": 10000,
