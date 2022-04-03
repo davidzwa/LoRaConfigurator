@@ -43,18 +43,18 @@ public partial class SerialProcessorService
 
         if (payload!.Contains("CRC_FAIL"))
         {
-            await _eventPublisher.PublishEventAsync(new StopFuotaSession {Message = "CRC failure"});
+            await _eventPublisher.PublishEventAsync(new StopFuotaSession { Message = "CRC failure" });
         }
 
         if (payload.Contains("PROTO_FAIL"))
         {
-            await _eventPublisher.PublishEventAsync(new StopFuotaSession {Message = "PROTO failure"});
+            await _eventPublisher.PublishEventAsync(new StopFuotaSession { Message = "PROTO failure" });
         }
 
         if (payload.Contains("RLNC_TERMINATE"))
         {
             await _eventPublisher.PublishEventAsync(new StopFuotaSession
-                {Message = "End-device succeeded generation", SuccessfulTermination = true});
+                { Message = "End-device succeeded generation", SuccessfulTermination = true });
         }
 
         string[] inclusions =
@@ -72,10 +72,12 @@ public partial class SerialProcessorService
             // "MC",
             // "LORARX_DONE",
             // "LORATX_DONE",
-            // "RLNC",
-            // "RLNC_RNG",
+            "RLNC_NVM",
+            "RLNC_PARSED_SEQ",
+            "RLNC_RNG_DROP",
+            "RLNC_RNG_ACPT",
             "RLNC_LAG_GEN",
-            "RLNC_LAG_FRAG",
+            // "RLNC_LAG_FRAG",
             // "RLNC_PER_SEED",
             "RLNC_ERR",
             "DevConfStop",
@@ -129,7 +131,7 @@ public partial class SerialProcessorService
 
         for (uint i = 0; i < sizes.Rows; i++)
         {
-            var matrixRow = SerialUtil.ArrayToStringLim(matrix, (int) (i * sizes.Cols), (int) (sizes.Cols));
+            var matrixRow = SerialUtil.ArrayToStringLim(matrix, (int)(i * sizes.Cols), (int)(sizes.Cols));
             _logger.LogInformation("\t{MatrixRow}", matrixRow);
         }
     }
@@ -140,13 +142,20 @@ public partial class SerialProcessorService
         var success = decodingResult.Success;
         var missedGenFragments = decodingResult.MissedGenFragments;
         var receivedGenFragments = decodingResult.ReceivedFragments;
+       
+        _eventPublisher.PublishEventAsync(new DecodingResultEvent()
+        {
+            DecodingResult = decodingResult
+        });
+
         var total = receivedGenFragments + missedGenFragments;
-        var perReal = (float) missedGenFragments / total;
-         
+        var perReal = (float)missedGenFragments / total;
+        
         _logger.LogInformation(
-            "[{Name}, DecodingResult] Success: {Payload} Rank: {MatrixRank} PER {Rx}/{Total}={Per:F1} FirstNumber: {FirstNumber} LastNumber: {LastNumber}",
+            "[{Name}, DecodingResult] Success: {Payload} GenIndex {GenIndex} Rank: {MatrixRank} PER {Rx}/{Total}={Per:F1} FirstNumber: {FirstNumber} LastNumber: {LastNumber}",
             portName,
             success,
+            decodingResult.CurrentGenerationIndex,
             decodingResult.MatrixRank,
             decodingResult.MissedGenFragments,
             total,

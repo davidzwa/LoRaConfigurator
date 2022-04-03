@@ -1,6 +1,6 @@
 ﻿namespace LoraGateway.Services.Contracts;
 
-public static class JsonDataStoreExtensions
+public static class DataStoreExtensions
 {
     public static string BasePath = "../../../Data";
 }

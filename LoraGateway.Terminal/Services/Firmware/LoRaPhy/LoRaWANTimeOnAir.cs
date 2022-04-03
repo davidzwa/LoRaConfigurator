@@ -30,7 +30,7 @@ public static class LoRaWanTimeOnAir
 {
     public static readonly int SF = 7;
     public static readonly int CR = 1;
-    public static readonly int BW = 125 * (int) Math.Pow(10, 3);
+    public static readonly int BW = 500 * (int) Math.Pow(10, 3);
     public static readonly int PreSymb = 8;
 
     public static readonly int PayloadMax = 22; // bytes
