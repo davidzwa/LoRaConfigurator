@@ -6,7 +6,7 @@
   "SeqCount": 0,
   "UartFakeLoRaRxMode": false,
   "UartFakeAwaitAck": true,
-  "TargetedNickname": "A0",
+  "TargetedNickname": "A2",
   "RemoteDeviceId0": 0,
   "RemoteIsMulticast": true,
   "RemoteUpdateIntervalMs": 60,
