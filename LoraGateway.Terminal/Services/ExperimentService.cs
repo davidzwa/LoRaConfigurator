@@ -14,14 +14,15 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
     private readonly SerialProcessorService _serialProcessorService;
 
     private bool _isStarted = false;
+    private bool _hasCrashed = false;
     private bool _deviceRlncRoundTerminated;
     private uint? _lastGenerationIndexReceived;
     private float _currentPer = 0.0f;
     private CancellationTokenSource _cancellationTokenSource = new();
 
     private List<ExperimentDataEntry> _dataPoints = new();
-    
-    private CsvConfiguration csvConfig = new (CultureInfo.InvariantCulture)
+
+    private CsvConfiguration csvConfig = new(CultureInfo.InvariantCulture)
     {
         NewLine = Environment.NewLine,
     };
@@ -46,12 +47,12 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
     {
         return "experiment.csv";
     }
-    
+
     public string GetPlotFileName()
     {
         return "experiment.png";
     }
-    
+
     public string GetCsvFilePath()
     {
         var dataFolderAbsolute = GetDataFolderFullPath();
@@ -80,30 +81,44 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
 
     public async Task ProcessResult(DecodingResult result)
     {
+        try
+        {
+            await ProcessResultInner(result);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.ToString());
+            _cancellationTokenSource.Cancel();
+            _hasCrashed = true;
+        }
+    }
+    
+    private async Task ProcessResultInner(DecodingResult result)
+    {
         var currentGenIndex = result.CurrentGenerationIndex;
         var fuotaConfig = _fuotaManagerService.GetStore();
         var generationPacketsCount = fuotaConfig.GenerationSize + fuotaConfig.GenerationSizeRedundancy;
-        
+
         if (_lastGenerationIndexReceived == result.CurrentGenerationIndex)
         {
+            throw new InvalidOperationException(
+                "Generations already received - Experiment failure");
             _logger.LogWarning("Skipping already processed generation");
             return;
         }
-        
+
         // First generation(s) failed to succeed, administer those 
         if (_lastGenerationIndexReceived == null && currentGenIndex > 0)
         {
-            if (currentGenIndex > 4)
-            {
-                throw new InvalidOperationException(
-                    "Missed generations overflowed or was out of bounds - Experiment failure");
-            }
+            throw new InvalidOperationException(
+                "Missed generations at start - Experiment failure");
+
             _logger.LogWarning("Missed generations {MissedGens} at start - PER {Per}", currentGenIndex, _currentPer);
             // F.e. we received index 2, so 1 and 0 were missed => 2x missed
             var missedGenerationsStart = currentGenIndex;
             for (uint i = 0; i < missedGenerationsStart; i++)
             {
-                _dataPoints.Add(new ()
+                _dataPoints.Add(new()
                 {
                     Rank = 0,
                     Success = false,
@@ -118,7 +133,7 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
                 });
             }
         }
-        
+
         // Now set it straight
         if (_lastGenerationIndexReceived == null)
         {
@@ -129,18 +144,22 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
         var missedGens = (int)(currentGenIndex - _lastGenerationIndexReceived!);
         if (_lastGenerationIndexReceived != null && missedGens > 1)
         {
+            throw new InvalidOperationException(
+                "Missed generations during run - Experiment failure");
             var missedGenerations = missedGens - 1;
-            _logger.LogWarning("Missed {MissedGens} generations after start - PER {Per}", missedGenerations, _currentPer);
+            _logger.LogWarning("Missed {MissedGens} generations after start - PER {Per}", missedGenerations,
+                _currentPer);
 
             if (missedGenerations > 4)
             {
                 throw new InvalidOperationException(
                     "Missed generations overflowed or was out of bounds - Experiment failure");
             }
+
             // F.e. we received index 2 and last 0, so 1 and 0 were missed => 2x missed
             for (uint i = 0; i < missedGenerations; i++)
             {
-                _dataPoints.Add(new ()
+                _dataPoints.Add(new()
                 {
                     Rank = 0,
                     Success = false,
@@ -160,9 +179,9 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
         var missedFrags = result.MissedGenFragments;
         var receivedFrags = result.ReceivedFragments;
         var totalFrags = result.MissedGenFragments + receivedFrags;
-        var packetErrorRate = (float)missedFrags / totalFrags; 
-        
-        _dataPoints.Add(new ()
+        var packetErrorRate = (float)missedFrags / totalFrags;
+
+        _dataPoints.Add(new()
         {
             Rank = result.MatrixRank,
             Success = success,
@@ -175,7 +194,7 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
             PacketErrorRate = packetErrorRate,
             ConfiguredPacketErrorRate = _currentPer
         });
-        
+
         await WriteData();
 
         _lastGenerationIndexReceived = result.CurrentGenerationIndex;
@@ -183,6 +202,8 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
 
     private async Task WriteData()
     {
+        if (_dataPoints.Count == 0) return;
+        
         var filePath = GetCsvFilePath();
         using (var writer = new StreamWriter(filePath))
         {
@@ -216,9 +237,10 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
 
         _cancellationTokenSource = new CancellationTokenSource();
         _lastGenerationIndexReceived = null;
+        _hasCrashed = false;
 
         var per = min;
-        while (per < max)
+        while (per < max && !_hasCrashed)
         {
             var result = _cancellationTokenSource.TryReset();
 
@@ -263,8 +285,14 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
 
     private void ExportPlot()
     {
+        if (_dataPoints.Count == 0)
+        {
+            _logger.LogWarning("No data points cannot export plot");
+            return;
+        }
+        
         var dataBuckets = _dataPoints.GroupBy(d => d.ConfiguredPacketErrorRate);
-        var perBuckets  = dataBuckets.Select(b =>
+        var perBuckets = dataBuckets.Select(b =>
         {
             return new
             {
@@ -274,7 +302,7 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
         });
         var configuredPerArray = perBuckets.Select(p => (double)p.ConfiguredPer).ToArray();
         var avgPerArray = perBuckets.Select(p => (double)p.PerAvg).ToArray();
-        
+
         var plt = new ScottPlot.Plot(400, 300);
         plt.AddScatter(configuredPerArray, avgPerArray);
         plt.Title("Packet-Error-Rate (PER) vs avg. realised PER");
