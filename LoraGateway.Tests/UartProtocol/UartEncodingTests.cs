@@ -130,7 +130,7 @@ public class UartEncodingTests
         };
         var result = UartResponse.Parser.ParseFrom(payload);
         result.BodyCase.ShouldBe(UartResponse.BodyOneofCase.BootMessage);
-        result.BootMessage.MeasurementsDisabled.ShouldBeTrue();
+        result.BootMessage.MeasurementsDisabled.ShouldBeFalse();
     }
 
     [Fact]
