@@ -21,18 +21,6 @@ public class RlncDecodingFailureSelfTestService
         _logger = logger;
         _fuotaManagerService = fuotaManagerService;
     }
-
-    private byte[] GeneratePseudoRandomBytes(uint length)
-    {
-        List<byte> rngBytes = new ();
-        var rng = new Random();
-        for (int i = 0; i < length; i++)
-        {
-            rngBytes.Add((byte)rng.Next(0, 256));
-        }
-
-        return rngBytes.ToArray();
-    }
     
     public async Task RunSelfTest()
     {
@@ -40,7 +28,7 @@ public class RlncDecodingFailureSelfTestService
         _fuotaManagerService.SetLfsrSeed((byte)byteValue);
         
         var config = await _fuotaManagerService.LoadStore();
-        var rngBytes = GeneratePseudoRandomBytes(config.GenerationSize);
+        // var rngBytes = GeneratePseudoRandomBytes(config.GenerationSize);
         
         
         await _fuotaManagerService.StartFuotaSession(false);
