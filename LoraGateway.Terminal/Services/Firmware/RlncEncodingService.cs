@@ -165,20 +165,20 @@ public class RlncEncodingService
         return currentGeneration;
     }
 
-    public EncodedPacket GetLastEncodedPacket()
+    public IEncodedPacket GetLastEncodedPacket()
     {
         return _generations!.Last().EncodedPackets.Last();
     }
 
-    public List<EncodedPacket> PrecodeNumberOfPackets(uint packetCount, bool resetGenerationPackets = false)
+    public List<IEncodedPacket> PrecodeNumberOfPackets(uint packetCount, bool resetGenerationPackets = false)
     {
         ValidateGenerationsState();
 
         var currentGeneration = _generations![CurrentGenerationIndex];
 
-        if (resetGenerationPackets) currentGeneration.EncodedPackets = new List<EncodedPacket>();
+        if (resetGenerationPackets) currentGeneration.EncodedPackets = new List<IEncodedPacket>();
 
-        var packetsGenerated = new List<EncodedPacket>();
+        var packetsGenerated = new List<IEncodedPacket>();
         long generatorSamplesTaken = 0;
         foreach (var unused in Enumerable.Range(1, (int) packetCount))
         {

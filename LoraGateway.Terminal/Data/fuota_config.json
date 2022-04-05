@@ -20,7 +20,7 @@
   "FakeFirmware": true,
   "FakeFragmentCount": 200,
   "FakeFragmentSize": 10,
-  "GenerationSize": 8,
+  "GenerationSize": 9,
   "GenerationSizeRedundancy": 10,
   "FieldDegree": 8,
   "LfsrSeed": 12

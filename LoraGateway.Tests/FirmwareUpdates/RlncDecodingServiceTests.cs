@@ -49,7 +49,7 @@ public class RlncDecodingServiceTests
         var encodedPackets = encodingService.PrecodeCurrentGeneration(generationExtra).EncodedPackets;
 
         // Simulate a dropped packet
-        var lossyChannelPackets = new List<EncodedPacket>(encodedPackets);
+        var lossyChannelPackets = new List<IEncodedPacket>(encodedPackets);
         lossyChannelPackets.RemoveAt(0);
         lossyChannelPackets.Count.ShouldBe((int)totalPacketsOutput - 1);
 

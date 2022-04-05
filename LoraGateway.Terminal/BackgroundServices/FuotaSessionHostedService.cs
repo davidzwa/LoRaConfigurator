@@ -63,7 +63,7 @@ public class FuotaSessionHostedService : IHostedService
                 {
                     _logger.LogError(e, e.Message);
 
-                    await _fuotaManagerService.StopFuotaSession();
+                    await _fuotaManagerService.StopFuotaSession(true);
 
                     return;
                 }
@@ -98,7 +98,7 @@ public class FuotaSessionHostedService : IHostedService
             if (_fuotaManagerService.IsFuotaSessionDone())
             {
                 _logger.LogDebug("FuotaManager indicated stoppage - Stop Fired: {Stopped}", _stopFired);
-                await _fuotaManagerService.StopFuotaSession();
+                await _fuotaManagerService.StopFuotaSession(true);
 
                 return;
             }
@@ -133,7 +133,7 @@ public class FuotaSessionHostedService : IHostedService
         catch (Exception e)
         {
             _logger.LogError(e, e.Message);
-            await _fuotaManagerService.StopFuotaSession();
+            await _fuotaManagerService.StopFuotaSession(true);
         }
     }
 

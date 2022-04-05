@@ -105,7 +105,7 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
 
     public async Task ReloadStore()
     {
-        await StopFuotaSession();
+        await StopFuotaSession(true);
         await LoadStore();
     }
 
@@ -114,9 +114,9 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         if (Store == null) await LoadStore();
 
         if (!IsFuotaSessionEnabled())
-            await StartFuotaSession();
+            await StartFuotaSession(true);
         else
-            await StopFuotaSession();
+            await StopFuotaSession(true);
     }
 
     public override string GetJsonFileName()
@@ -166,7 +166,7 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         return _currentFuotaSession;
     }
 
-    public async Task StartFuotaSession(bool publishEvent = true)
+    public async Task StartFuotaSession(bool publishEvent)
     {
         _logger.LogInformation("Starting FUOTA session");
 
@@ -179,7 +179,7 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
             await _eventPublisher.PublishEventAsync(new InitFuotaSession { Message = "Initiating" });
     }
 
-    public async Task StopFuotaSession(bool publishEvent = true)
+    public async Task StopFuotaSession(bool publishEvent)
     {
         _logger.LogInformation("Stopping FUOTA session");
         _cancellation.Cancel();
@@ -214,8 +214,13 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
                 var packetSerialized = SerialUtil.ByteArrayToString(packet.Payload
                     .Select(b => b.GetValue())
                     .ToArray());
-                _logger.LogInformation("OriginalPacket {Packet}", packetSerialized);
+                _logger.LogDebug("OriginalPacket {Packet}", packetSerialized);
             }
+        }
+        else
+        {
+            throw new NotImplementedException(
+                "Non-fake firmware generation is not implemented - please turn on the FakeFirmware setting");
         }
 
         // Prepare 
@@ -305,7 +310,8 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         {
             GenerationIndex = (byte)_currentFuotaSession.CurrentGenerationIndex,
             Fragment = fragmentBytes.ToArray(),
-            UsedGenerator = currentLfsrState
+            UsedGenerator = currentLfsrState,
+            OriginalPacket = encodedPacket
         };
     }
 

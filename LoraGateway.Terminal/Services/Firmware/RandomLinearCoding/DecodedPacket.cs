@@ -1,6 +1,6 @@
 ﻿namespace LoraGateway.Services.Firmware.RandomLinearCoding;
 
-public class DecodedPacket : UnencodedPacket
+public class DecodedPacket : UnencodedPacket, IEncodedPacket
 {
     public bool DecodingSuccess { get; set; }
     public bool IsRedundant { get; set; }

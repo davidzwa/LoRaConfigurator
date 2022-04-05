@@ -4,7 +4,7 @@ namespace LoraGateway.Services.Firmware.Utils;
 
 public static class MatrixUtils
 {
-    public static GFSymbol[,] ToAugmentedMatrix(this IList<EncodedPacket> source)
+    public static GFSymbol[,] ToAugmentedMatrix(this IList<IEncodedPacket> source)
     {
         if (source == null) throw new ArgumentNullException(nameof(source));
 
@@ -25,7 +25,7 @@ public static class MatrixUtils
         return result;
     }
 
-    public static GFSymbol[,] ToEncodingMatrix(this IList<EncodedPacket> source)
+    public static GFSymbol[,] ToEncodingMatrix(this IList<IEncodedPacket> source)
     {
         if (source == null) throw new ArgumentNullException("source");
 
@@ -40,7 +40,7 @@ public static class MatrixUtils
         return result;
     }
 
-    public static GFSymbol[,] ToPayloadMatrix(this IList<EncodedPacket> source)
+    public static GFSymbol[,] ToPayloadMatrix(this IList<IPacket> source)
     {
         if (source == null) throw new ArgumentNullException("source");
 

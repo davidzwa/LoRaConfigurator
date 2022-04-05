@@ -1,6 +1,6 @@
 ﻿namespace LoraGateway.Services.Firmware.RandomLinearCoding;
 
-public class EncodedPacket : UnencodedPacket
+public class EncodedPacket : UnencodedPacket, IEncodedPacket
 {
     /// <summary>
     ///     The binary encoding vector represented by the GF(256) degree 8 or byte per packet
