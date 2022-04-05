@@ -89,13 +89,14 @@ public class RlncFlashBlobService
         var fragSize = config.FakeFragmentSize;
         var genCount = rlncGenerations.Count;
         var redCount = config.GenerationSizeRedundancy;
-        var templateFileName = $"rlnc_{fragCount}f_{fragSize}b_fake_{genCount}g_{redCount}r";
+        var lfsrSeed = config.LfsrSeed;
+        var templateFileName = $"rlnc_{fragCount}f_{fragSize}b_fake_{genCount}g_{redCount}r_{lfsrSeed}lfsr";
         var fullFileName = FileName.Replace(Formatter, templateFileName);
         Log.Information("Writing blob with {PacketsGenerated} fragments to file {File} using {Bytes} bytes",
             _packetsGenerated, fullFileName, _bytesWritten);
         WriteRlncBlob(fullFileName, initCommand, terminationCommand, rlncGenerations);
 
-        Log.Information("Cleanup blob generator");
+        Log.Information("Cleanup blob generator with LFSR seed {Seed}", lfsrSeed);
         await _fuotaManagerService.StopFuotaSession(false);
     }
 

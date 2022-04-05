@@ -70,6 +70,7 @@ public static class LoraGateway
                 services.AddTransient<SelectDeviceCommandHandler>();
                 services.AddTransient<ListDeviceCommandHandler>();
                 services.AddSingleton<ConsoleProcessorService>();
+                services.AddTransient<RlncDecodingFailureSelfTestService>();
                 services.AddHostedService<ConsoleHostedService>();
 
                 services.AddEventBus(builder =>

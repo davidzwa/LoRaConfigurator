@@ -53,8 +53,12 @@ public class LinearFeedbackShiftRegister
         // var p = new [] {0, 2, 3, 7}; // 4 entries for GF 2^8 
         // 8 6 5 1
         var p = new[] {0, 1, 2, 7};
-        Bit = (byte) ((State >> p[0]) ^ (State >> p[1]) ^ (State >> p[2]) ^ (State >> p[3])); /* & 1u */
-        State = (byte) ((State >> 1) | (Bit << (int) (Taps - 1))); // Shift the output and cap off
+
+        for (int i = 0; i < Taps; i++)
+        {
+            Bit = (byte) ((State >> p[0]) ^ (State >> p[1]) ^ (State >> p[2]) ^ (State >> p[3])); /* & 1u */
+            State = (byte) ((State >> 1) | (Bit << (int) (Taps - 1))); // Shift the output and cap off
+        }
 
         GeneratedValuesCount++;
         return State;

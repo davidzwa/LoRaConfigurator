@@ -11,6 +11,7 @@ public class SerialCommandHandler
     private readonly FuotaManagerService _fuotaManagerService;
     private readonly ExperimentService _experimentService;
     private readonly RlncFlashBlobService _rlncFlashBlobService;
+    private readonly RlncDecodingFailureSelfTestService _rlncDecodingFailureSelfTestService;
     private readonly ILogger _logger;
     private readonly MeasurementsService _measurementsService;
     private readonly SelectedDeviceService _selectedDeviceService;
@@ -23,6 +24,7 @@ public class SerialCommandHandler
         FuotaManagerService fuotaManagerService,
         ExperimentService experimentService,
         RlncFlashBlobService rlncFlashBlobService,
+        RlncDecodingFailureSelfTestService rlncDecodingFailureSelfTestService,
         SerialProcessorService serialProcessorService
     )
     {
@@ -32,6 +34,7 @@ public class SerialCommandHandler
         _fuotaManagerService = fuotaManagerService;
         _experimentService = experimentService;
         _rlncFlashBlobService = rlncFlashBlobService;
+        _rlncDecodingFailureSelfTestService = rlncDecodingFailureSelfTestService;
         _serialProcessorService = serialProcessorService;
     }
 
@@ -47,6 +50,7 @@ public class SerialCommandHandler
         rootCommand.Add(GetRlncStoreReloadCommand());
         rootCommand.Add(SetTxPowerCommand());
         rootCommand.Add(RunExperiments());
+        rootCommand.Add(RunCodecSelfTest());
 
         // Fluent structure
         return rootCommand;
@@ -60,6 +64,17 @@ public class SerialCommandHandler
         return store.UartFakeLoRaRxMode;
     }
 
+    public Command RunCodecSelfTest()
+    {
+        var command = new Command("test");
+        command.Handler = CommandHandler.Create(async () =>
+        {
+            await _rlncDecodingFailureSelfTestService.RunSelfTest();
+        });
+
+        return command;
+    }
+    
     public Command RunExperiments()
     {
         var command = new Command("exp");

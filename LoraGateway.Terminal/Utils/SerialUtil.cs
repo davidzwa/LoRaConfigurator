@@ -63,7 +63,7 @@ public static class SerialUtil
         var hex = new StringBuilder(array.Length * 2);
         var subArray = new ArraySegment<byte>(array, start, limit);
         foreach (var b in subArray)
-            hex.AppendFormat("{0:x2} ", b);
+            hex.AppendFormat("{0:X2} ", b);
         return hex.ToString();
     }
     

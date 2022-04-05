@@ -6,7 +6,7 @@ namespace LoraGateway.Services.Firmware;
 public static class RlncDecodingService
 {
     // https://github.com/elsheimy/Elsheimy.Components.Linears/tree/main/Matrix
-    public static List<DecodedPacket> DecodePackets(List<EncodedPacket> encodedPackets)
+    public static List<DecodedPacket> DecodePackets(List<IEncodedPacket> encodedPackets)
     {
         var generationSize = encodedPackets.First().EncodingVector.Count;
         var frameSize = encodedPackets.First().Payload.Count;
@@ -35,7 +35,7 @@ public static class RlncDecodingService
         return innovativePackets;
     }
 
-    public static List<DecodedPacket> DecodeGeneration(List<EncodedPacket> generationPackets)
+    public static List<DecodedPacket> DecodeGeneration(List<IEncodedPacket> generationPackets)
     {
         var result = DecodePackets(generationPackets);
 

@@ -63,7 +63,7 @@ public class FuotaSessionHostedService : IHostedService
                 {
                     _logger.LogError(e, e.Message);
 
-                    await _fuotaManagerService.StopFuotaSession();
+                    await _fuotaManagerService.StopFuotaSession(true);
 
                     return;
                 }
@@ -98,7 +98,7 @@ public class FuotaSessionHostedService : IHostedService
             if (_fuotaManagerService.IsFuotaSessionDone())
             {
                 _logger.LogDebug("FuotaManager indicated stoppage - Stop Fired: {Stopped}", _stopFired);
-                await _fuotaManagerService.StopFuotaSession();
+                await _fuotaManagerService.StopFuotaSession(true);
 
                 return;
             }
@@ -133,11 +133,11 @@ public class FuotaSessionHostedService : IHostedService
         catch (Exception e)
         {
             _logger.LogError(e, e.Message);
-            await _fuotaManagerService.StopFuotaSession();
+            await _fuotaManagerService.StopFuotaSession(true);
         }
     }
 
-    public Task StopAsync(CancellationToken cancellationToken)
+    public async Task StopAsync(CancellationToken cancellationToken)
     {
         _logger.LogDebug("FUOTA background service stopping - CanceledByToken: {Canceled}",
             cancellationToken.IsCancellationRequested);
@@ -145,11 +145,17 @@ public class FuotaSessionHostedService : IHostedService
         if (_fuotaManagerService.IsFuotaSessionEnabled())
         {
             _logger.LogInformation("FUOTA termination sent");
-            _serialProcessorService.SendRlncTermination(_fuotaManagerService.GetCurrentSession());
+            try
+            {
+                _serialProcessorService.SendRlncTermination(_fuotaManagerService.GetCurrentSession());
+            }
+            catch
+            {
+                _logger.LogInformation("FUOTA force stop (Serial processor failure)");
+                await _fuotaManagerService.StopFuotaSession(false);
+            }
         }
         
         _stopFired = true;
-
-        return Task.CompletedTask;
     }
 }

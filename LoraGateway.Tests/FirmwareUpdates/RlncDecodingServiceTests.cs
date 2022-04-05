@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using LoraGateway.Services.Firmware;
 using LoraGateway.Services.Firmware.RandomLinearCoding;
@@ -50,7 +49,7 @@ public class RlncDecodingServiceTests
         var encodedPackets = encodingService.PrecodeCurrentGeneration(generationExtra).EncodedPackets;
 
         // Simulate a dropped packet
-        var lossyChannelPackets = new List<EncodedPacket>(encodedPackets);
+        var lossyChannelPackets = new List<IEncodedPacket>(encodedPackets);
         lossyChannelPackets.RemoveAt(0);
         lossyChannelPackets.Count.ShouldBe((int)totalPacketsOutput - 1);
 
@@ -174,11 +173,11 @@ public class RlncDecodingServiceTests
         fullAugmentedMatrix[0, 10].ShouldNotBeNull();
 
         var result = MatrixFunctions.Eliminate(fullAugmentedMatrix, frameSize);
-        result[0, 0].ShouldBe(new GFSymbol(0x01));
-        result[1, 1].ShouldBe(new GFSymbol(0x01));
-        result[2, 2].ShouldBe(new GFSymbol(0x01));
-        result[3, 3].ShouldBe(new GFSymbol(0x01));
-        result[4, 4].ShouldBe(new GFSymbol(0x01));
+        for (int i = 0; i < 5; i++)
+        {
+            result[i, i].ShouldBe(new GFSymbol(0x01), $"Pivot number {i}");
+        }
+
         result[5, 4].ShouldBe(new GFSymbol(0x00)); // Redundant packet
 
         var decodedPackets = result.ToDecodedPackets((int)generationSize, frameSize);
@@ -221,18 +220,19 @@ public class RlncDecodingServiceTests
 
         // We have not augmented the matrix - 0 augmentation
         var result = MatrixFunctions.Eliminate(encodingMatrix, 0);
-        result[0, 0].ShouldBe(new GFSymbol(0x01));
-        result[1, 1].ShouldBe(new GFSymbol(0x01));
-        result[2, 2].ShouldBe(new GFSymbol(0x01));
-        result[3, 3].ShouldBe(new GFSymbol(0x01));
-        result[4, 4].ShouldBe(new GFSymbol(0x01));
+        for (int i = 0; i < 5; i++)
+        {
+            result[i, i].ShouldBe(new GFSymbol(0x01), $"Pivot number {i}");
+        }
+
         result[5, 4].ShouldBe(new GFSymbol(0x00)); // Redundant packet
     }
 
     [Fact]
     public void DebugDecodingMatrixReduction()
     {
-        byte[,] inputBytes = {
+        byte[,] inputBytes =
+        {
             { 0x04, 0x82, 0x41, 0xa0, 0xd0, 0x00, 0x00, 0x00, 0x9a, 0x78 },
             { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },
             { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },
@@ -241,8 +241,9 @@ public class RlncDecodingServiceTests
         };
         var inputMatrix = inputBytes.BytesToMatrix();
         var decodedResultMatrix = RlncDecodingService.DecodeMatrix(inputMatrix, 5);
-        
-        byte[,] decodingBytes = {
+
+        byte[,] decodingBytes =
+        {
             { 0x01, 0xae, 0x57, 0x28, 0x34, 0x00, 0x00, 0x00, 0xa8, 0x1e },
             { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },
             { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },
@@ -252,12 +253,137 @@ public class RlncDecodingServiceTests
         var comparedOutputMatrix = decodingBytes.BytesToMatrix();
 
         // This shows the C# implementation is not faulty and equivalent to the C++ implementation
-        for(int i = 0; i < decodedResultMatrix.GetLength(0); i++)
+        for (int i = 0; i < decodedResultMatrix.GetLength(0); i++)
         {
-            for(int j = 0; j < decodedResultMatrix.GetLength(1); j++)
+            for (int j = 0; j < decodedResultMatrix.GetLength(1); j++)
             {
-                decodedResultMatrix[i,j].ShouldBe(comparedOutputMatrix[i,j], $"Row {i} col {j}"); 
+                decodedResultMatrix[i, j].ShouldBe(comparedOutputMatrix[i, j], $"Row {i} col {j}");
             }
-        }   
+        }
+    }
+
+    [Fact(DisplayName = "Test for specific C++ RREF failure for 10g/10r")]
+    public void DebugDecodingMatrixReductionBigGeneration()
+    {
+        // We found a breaking bug at gen size 10
+        byte[,] inputBytes =
+        {
+            {
+                0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0x00, 0x00, 0x00, 0x01, 0xff, 0xff, 0xff,
+                0xff, 0xff, 0xff
+            },
+            {
+                0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x09, 0x00, 0x00, 0x00,
+                0x00, 0x00, 0x00
+            },
+            {
+                0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x0a, 0x00, 0x00, 0x00,
+                0x00, 0x00, 0x00
+            },
+            {
+                0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x0a, 0x00, 0x00, 0x00,
+                0x00, 0x00, 0x00
+            },
+            {
+                0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0xff, 0xff, 0xff,
+                0xff, 0xff, 0xff
+            },
+            {
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, 0xff, 0xff, 0xff,
+                0xff, 0xff, 0xff
+            },
+            {
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0xff, 0xff, 0xff,
+                0xff, 0xff, 0xff
+            },
+            {
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x06, 0xff, 0xff, 0xff,
+                0xff, 0xff, 0xff
+            },
+            {
+                0x1d, 0x0e, 0x07, 0x83, 0xc1, 0x60, 0x30, 0x18, 0x0c, 0x86, 0x00, 0x00, 0x00, 0x0c, 0xf2, 0xf2, 0xf2,
+                0xf2, 0xf2, 0xf2
+            },
+            { // Empty row
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                0x00, 0x00, 0x00
+            }
+        };
+        var inputMatrix = inputBytes.BytesToMatrix();
+        var decodedResultMatrix = RlncDecodingService.DecodeMatrix(inputMatrix, 5);
+        
+        // We only get 0-8, which is expected with only 9 packets
+        for (int i = 0; i < 9; i++)
+        {
+            decodedResultMatrix[i, i].ShouldBe(new GFSymbol(0x01), $"Pivot number {i}");
+        }
+    }
+
+    [Fact(DisplayName = "Codec test for specific C++ failure for 200f/15b/8gen/10r")]
+    public async Task DecodeMatrixTestInternallyBigGeneration()
+    {
+        var firmwareSize = 200;
+        var frameSize = 15; // 10 symbols per packet
+        var generationSize = (uint)8; // 5 packets (= 5 enc vectors)
+        var generationExtra = (uint)10; // 1 packet overhead
+        var totalPacketsOutput = generationExtra + generationSize;
+
+        var unencodedPackets = await new BlobFragmentationService().GenerateFakeFirmwareAsync(firmwareSize, frameSize);
+        var service = new RlncEncodingService();
+        service.PreprocessGenerations(unencodedPackets, generationSize);
+        var generation = service.PrecodeCurrentGeneration(generationExtra);
+
+        var fullAugmentedMatrix = generation.EncodedPackets.ToAugmentedMatrix();
+        // 6 * (5+10) = 30
+        fullAugmentedMatrix.Length.ShouldBe((int)(totalPacketsOutput * (generationSize + frameSize)));
+        fullAugmentedMatrix[0, 10].ShouldNotBeNull();
+
+        var result = MatrixFunctions.Eliminate(fullAugmentedMatrix, frameSize);
+        for (int i = 0; i < 5; i++)
+        {
+            result[i, i].ShouldBe(new GFSymbol(0x01), $"Pivot number {i}");
+        }
+
+        result[5, 4].ShouldBe(new GFSymbol(0x00)); // Redundant packet
+
+        var decodedPackets = result.ToDecodedPackets((int)generationSize, frameSize);
+        decodedPackets.Count.ShouldBe((int)totalPacketsOutput);
+        decodedPackets.Last().DecodingSuccess.ShouldBeFalse();
+        decodedPackets.ShouldAllBe(p => p.DecodingSuccess == true || p.IsRedundant == true);
+        decodedPackets.FindAll(p => p.DecodingSuccess).Count.ShouldBe((int)generationSize);
+    }
+
+    [Fact(DisplayName = "Codec test for specific C++ failure for 200f/15b/9gen/20r")]
+    public async Task DecodeMatrixTestInternallyBiggerGeneration()
+    {
+        var firmwareSize = 200;
+        var frameSize = 15; // 10 symbols per packet
+        var generationSize = (uint)9; // 5 packets (= 5 enc vectors)
+        var generationExtra = (uint)10; // 1 packet overhead
+        var totalPacketsOutput = generationExtra + generationSize;
+
+        var unencodedPackets = await new BlobFragmentationService().GenerateFakeFirmwareAsync(firmwareSize, frameSize);
+        var service = new RlncEncodingService();
+        service.PreprocessGenerations(unencodedPackets, generationSize);
+        var generation = service.PrecodeCurrentGeneration(generationExtra);
+
+        var fullAugmentedMatrix = generation.EncodedPackets.ToAugmentedMatrix();
+        // 6 * (5+10) = 30
+        fullAugmentedMatrix.Length.ShouldBe((int)(totalPacketsOutput * (generationSize + frameSize)));
+        fullAugmentedMatrix[0, 10].ShouldNotBeNull();
+
+        var result = MatrixFunctions.Eliminate(fullAugmentedMatrix, frameSize);
+        for (int i = 0; i < 5; i++)
+        {
+            result[i, i].ShouldBe(new GFSymbol(0x01), $"Pivot number {i}");
+        }
+
+        result[5, 4].ShouldBe(new GFSymbol(0x00)); // Redundant packet
+
+        var decodedPackets = result.ToDecodedPackets((int)generationSize, frameSize);
+        decodedPackets.Count.ShouldBe((int)totalPacketsOutput);
+        decodedPackets.Last().DecodingSuccess.ShouldBeFalse();
+        decodedPackets.ShouldAllBe(p => p.DecodingSuccess == true || p.IsRedundant == true);
+        decodedPackets.FindAll(p => p.DecodingSuccess).Count.ShouldBe((int)generationSize);
     }
 }
