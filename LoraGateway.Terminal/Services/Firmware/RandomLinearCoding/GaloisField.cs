@@ -14,6 +14,12 @@ public class GFSymbol
 
     // Generator to be used in Exp & Log table generation
     public const byte Generator = 0x2;
+    
+    // Some reused symbols
+    public static GFSymbol Nil = new(0);
+    public static GFSymbol Unity = new(1);
+    
+    // Stored tables
     public static readonly byte[] Exp;
     public static readonly byte[] Log;
 

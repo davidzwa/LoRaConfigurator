@@ -47,6 +47,11 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         return _currentFuotaSession!.Acks.Count < expectedAcksCount;
     }
 
+    public void SetGeneratorType(RlncEncodingService.RandomGeneratorType type)
+    {
+        _rlncEncodingService.GeneratorType = type;
+    }
+
     public void SetLfsrSeed(byte seed)
     {
         Store.LfsrSeed = seed;
@@ -174,7 +179,7 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
 
     public async Task StartFuotaSession(bool publishEvent)
     {
-        _logger.LogInformation("Starting FUOTA session");
+        _logger.LogDebug("Starting FUOTA session");
 
         await PrepareFuotaSession();
 
@@ -187,7 +192,7 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
 
     public async Task StopFuotaSession(bool publishEvent)
     {
-        _logger.LogInformation("Stopping FUOTA session");
+        _logger.LogDebug("Stopping FUOTA session");
         _cancellation.Cancel();
 
         // Termination imminent - clear the session and terminate the hosted service
@@ -214,14 +219,14 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
             var frameSize = (int)Store.FakeFragmentSize;
             var firmwareSize = Store.FakeFragmentCount * frameSize;
             _firmwarePackets = await _blobFragmentationService.GenerateFakeFirmwareAsync(firmwareSize, frameSize);
-            foreach (var packetIndex in Enumerable.Range(0, _firmwarePackets.Count))
-            {
-                var packet = _firmwarePackets[packetIndex];
-                var packetSerialized = SerialUtil.ByteArrayToString(packet.Payload
-                    .Select(b => b.GetValue())
-                    .ToArray());
-                _logger.LogInformation("OriginalPacket {Packet}", packetSerialized);
-            }
+            // foreach (var packetIndex in Enumerable.Range(0, _firmwarePackets.Count))
+            // {
+                // var packet = _firmwarePackets[packetIndex];
+                // var packetSerialized = SerialUtil.ByteArrayToString(packet.Payload
+                //     .Select(b => b.GetValue())
+                //     .ToArray());
+                // _logger.LogInformation("OriginalPacket {Packet}", packetSerialized);
+            // }
         }
         else
         {
@@ -301,15 +306,15 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         var currentLfsrState = _rlncEncodingService.GetGeneratorState();
         var encodedPacket = _rlncEncodingService.PrecodeNumberOfPackets(1).First();
         var fragmentBytes = encodedPacket.Payload.Select(p => p.GetValue());
-        var encodingVector = encodedPacket.EncodingVector.Select(p => p.GetValue()).ToArray();
+        // var encodingVector = encodedPacket.EncodingVector.Select(p => p.GetValue()).ToArray();
 
-        if (logPacket)
-            _logger.LogInformation("Vector {Vector}| Packet {Message}| Gen {Generator} -> {CurrentGenerator}",
-                SerialUtil.ByteArrayToString(encodingVector),
-                SerialUtil.ByteArrayToString(fragmentBytes.ToArray()),
-                currentLfsrState,
-                _rlncEncodingService.GetGeneratorState()
-            );
+        // if (logPacket)
+        //     _logger.LogInformation("Vector {Vector}| Packet {Message}| Gen {Generator} -> {CurrentGenerator}",
+        //         SerialUtil.ByteArrayToString(encodingVector),
+        //         SerialUtil.ByteArrayToString(fragmentBytes.ToArray()),
+        //         currentLfsrState,
+        //         _rlncEncodingService.GetGeneratorState()
+        //     );
 
         // Next fragment index to be sent is 1 higher
         _currentFuotaSession.IncrementFragmentIndex();

@@ -214,28 +214,24 @@ public class RlncEncodingService
      */
     public List<GFSymbol> GenerateRandomBytes(int randomSymbolCount)
     {
-        var encodingCoeffs = new List<GFSymbol>();
+        var encodingCoeffs = new byte[] {};
         if (GeneratorType == RandomGeneratorType.Lfsr)
         {
             encodingCoeffs = _generator
-                .GenerateMany(randomSymbolCount)
-                .Select(b => new GFSymbol(b))
-                .ToList();
+                .GenerateMany(randomSymbolCount).ToArray();
         }
         else if (GeneratorType == RandomGeneratorType.System)
         {
             encodingCoeffs = RandomVector
-                .GeneratePseudoRandomBytes(randomSymbolCount)
-                .BytesToGfSymbols()
-                .ToList();
+                .GeneratePseudoRandomBytes(randomSymbolCount).ToArray();
         }
 
-        if (encodingCoeffs.Count != randomSymbolCount)
+        if (encodingCoeffs.Length != randomSymbolCount)
         {
             throw new InvalidOperationException("Cannot encode with empty pseudo-random-generator output");
         }
 
-        return encodingCoeffs;
+        return encodingCoeffs.BytesToGfSymbols().ToList();
     }
 
     private EncodedPacket EncodeNextPacket(List<GFSymbol> encodingCoefficients, int currentEncodedPacketIndex)

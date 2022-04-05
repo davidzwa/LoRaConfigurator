@@ -7,9 +7,6 @@ namespace LoraGateway.Services.Firmware.Utils;
 /// </summary>
 public static class MatrixFunctions
 {
-    private static readonly GFSymbol Unity = new(1);
-    private static readonly GFSymbol Nil = new(0);
-
     /// <summary>
     ///     Reduces matrix to row-echelon (REF/Gauss) or reduced row-echelon (RREF/Gauss-Jordan) form and solves for augmented
     ///     columns (if any.)
@@ -58,7 +55,7 @@ public static class MatrixFunctions
     private static int? FindPivot(GFSymbol[,] input, int startRow, int col, int rowCount)
     {
         for (var i = startRow; i < rowCount; i++)
-            if (input[i, col] != Nil)
+            if (input[i, col] != GFSymbol.Nil)
                 return i;
 
         return null;
@@ -75,9 +72,9 @@ public static class MatrixFunctions
 
     private static void ReduceRow(GFSymbol[,] input, int row, int col, int colCount)
     {
-        var coefficient = Unity / input[row, col];
+        var coefficient = GFSymbol.Unity / input[row, col];
 
-        if (coefficient == Unity)
+        if (coefficient == GFSymbol.Unity)
             return;
 
         for (; col < colCount; col++)
@@ -92,7 +89,7 @@ public static class MatrixFunctions
         if (pivotRow == row)
             return;
 
-        if (input[row, pivotCol] == Nil)
+        if (input[row, pivotCol] == GFSymbol.Nil)
             return;
 
         var coefficient = input[row, pivotCol];
