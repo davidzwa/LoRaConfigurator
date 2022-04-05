@@ -10,7 +10,7 @@ public class RandomVectorTests
     [Fact]
     public void TestSystemRandomBytes()
     {
-        var output = RandomVector.GeneratePseudoRandomBytes(10);
+        var output = Rng.GeneratePseudoRandomBytes(10);
         output.Distinct().Count().ShouldBe(output.Length);
     }
 }

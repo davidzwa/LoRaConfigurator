@@ -1,17 +1,16 @@
-﻿using LoRa;
-using LoraGateway.BackgroundServices;
+﻿using LoraGateway.BackgroundServices;
 using LoraGateway.Handlers;
 using LoraGateway.Services;
 using LoraGateway.Services.CommandLine;
 using LoraGateway.Services.Firmware;
-using LoraGateway.Services.Firmware.Utils;
+using LoraGateway.Services.Firmware.RandomLinearCoding;
 using LoraGateway.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ScottPlot;
 using Serilog;
 using Serilog.Events;
 using Serilog.Filters;
+using Shouldly;
 
 namespace LoraGateway;
 
@@ -44,12 +43,36 @@ public static class LoraGateway
                 .Filter.ByIncludingOnly(Matching.FromSource<SerialProcessorService>())
                 .WriteTo.File(GetUniqueLogFile("_serial"), LogEventLevel.Debug))
             .CreateLogger();
+
+        var offset = (byte)0x32;
+        var seed = new ulong[]
+        {
+            (ulong)0x01d353e5f3993bb0 + offset,
+            0x7b9c0df6cb193b20 * (ulong)(offset + 1),
+            (ulong)0x7b9c0df6cb193b20 - offset,
+            0x7b9c0df6cb193b20 * (ulong)(offset - 1)
+        };
+        var rng = new XoshiroImpl2(seed);
+        byte[] data = new byte[1];
+        rng.NextBytes(data);
+        Log.Information("{Byte}",data[0]);
         
+        // var lcg = new LCG();
+        // Log.Information("{Byte}",lcg.Next());
+        // Log.Information("{Byte}",lcg.Next());
+        // Log.Information("{Byte}",lcg.Next());
+        // Log.Information("{Byte}",lcg.Next());
+        // Log.Information("{Byte}",lcg.Next());
+        // Log.Information("{Byte}",lcg.Next());
+        // Log.Information("{Byte}",lcg.Next());
+        // Log.Information("{Byte}",lcg.Next());
+
         await CreateHostBuilder(args).RunConsoleAsync();
     }
 
-    public static IHostBuilder CreateHostBuilder(string[] args) =>
-        Host.CreateDefaultBuilder(args)
+    public static IHostBuilder CreateHostBuilder(string[] args)
+    {
+        return Host.CreateDefaultBuilder(args)
             .UseSerilog()
             .ConfigureServices((_, services) =>
             {
@@ -84,4 +107,5 @@ public static class LoraGateway
                     });
                 });
             });
+    }
 }

@@ -222,7 +222,7 @@ public class RlncEncodingService
         }
         else if (GeneratorType == RandomGeneratorType.System)
         {
-            encodingCoeffs = RandomVector
+            encodingCoeffs = Rng
                 .GeneratePseudoRandomBytes(randomSymbolCount).ToArray();
         }
 
