@@ -119,9 +119,10 @@ public class RlncEncodingService
 
     public void ResetEncoding()
     {
+        var oldSeed = _generator.Seed;
         ConfigureEncoding(new EncodingConfiguration
         {
-            Seed = 0x08,
+            Seed = oldSeed,
             FieldDegree = 8,
             GenerationSize = 0,
             CurrentGeneration = 0

@@ -52,6 +52,7 @@ public class RlncDecodingFailureSelfTestService
             generationFragments.Add(wireFragment);
         }
 
+        // INPUT
         var encodedPackets = generationFragments.Select(f => f.OriginalPacket).ToList();
         _logger.LogInformation("{EncodedPackets} Packets encoded", encodedPackets.Count);
 
@@ -65,7 +66,7 @@ public class RlncDecodingFailureSelfTestService
             EncodingVector = (new byte[9] { 0, 0, 0, 0, 0, 0, 0, 0, 1 }).BytesToGfSymbols().ToList(),
             PacketIndex = 8
         };
-        encodedPackets.Add(dummyPacket);
+        // encodedPackets.Add(dummyPacket);
         
         var decodedPackets = RlncDecodingService.DecodeGeneration(encodedPackets)
             .Cast<IEncodedPacket>()
@@ -90,16 +91,18 @@ public class RlncDecodingFailureSelfTestService
             config.GenerationSize,
             matrixRowDecode1);
 
-        var roundTwoDecode = RlncDecodingService.DecodeGeneration(decodedPackets);
-        PrintMatrixSize(roundTwoDecode.ToEncodingMatrix());
-        var rows = symbolMatrix.GetLength(0);
-        var cols = symbolMatrix.GetLength(1);
-        _logger.LogInformation("Decoded Cols {Cols} Rows {Rows}", cols, rows);
-        var matrixRow = SerialUtil.MatrixToString(symbolMatrix);
-        var success = rows == config.GenerationSize;
+        decodedPackets.Add(dummyPacket);
+        var roundTwoDecodedPacket5s = RlncDecodingService.DecodeGeneration(decodedPackets);
+        var symbolMatrixRoundTwo = roundTwoDecodedPacket5s.ToEncodingMatrix();
+        PrintMatrixSize(roundTwoDecodedPacket5s.ToEncodingMatrix());
+        var rows2 = symbolMatrixRoundTwo.GetLength(0);
+        var cols2 = symbolMatrixRoundTwo.GetLength(1);
+        _logger.LogInformation("Decoded Cols {Cols} Rows {Rows}", cols2, rows2);
+        var matrixRow = SerialUtil.MatrixToString(symbolMatrixRoundTwo);
+        var success2 = rows2 == config.GenerationSize;
         _logger.LogInformation("Decoded Matrix (Success: {Success}, Rank: {Rank} vs {GenSize}) \n{MatrixRow}", 
-            success, 
-            rows,
+            success2, 
+            rows2,
             config.GenerationSize,
             matrixRow);
         
