@@ -41,12 +41,14 @@ public static class MatrixFunctions
             pivotRow = numPivots;
             numPivots++;
 
-            for (var tmpRow = 0; tmpRow < pivotRow; tmpRow++)
+            for (var tmpRow = 0; tmpRow < pivotRow; tmpRow++) {
                 EliminateRow(output, tmpRow, pivotRow.Value, col, totalColCount);
+            }
 
             // Eliminate Next Rows
-            for (var tmpRow = pivotRow.Value; tmpRow < totalRowCount; tmpRow++)
+            for (var tmpRow = pivotRow.Value; tmpRow < totalRowCount; tmpRow++) {
                 EliminateRow(output, tmpRow, pivotRow.Value, col, totalColCount);
+            }
         }
 
         return output;

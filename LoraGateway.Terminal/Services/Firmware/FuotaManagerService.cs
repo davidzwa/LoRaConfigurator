@@ -220,7 +220,7 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
                 var packetSerialized = SerialUtil.ByteArrayToString(packet.Payload
                     .Select(b => b.GetValue())
                     .ToArray());
-                _logger.LogDebug("OriginalPacket {Packet}", packetSerialized);
+                _logger.LogInformation("OriginalPacket {Packet}", packetSerialized);
             }
         }
         else
