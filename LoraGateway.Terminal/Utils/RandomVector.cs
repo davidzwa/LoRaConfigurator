@@ -2,7 +2,7 @@
 
 public static class RandomVector
 {
-    public static byte[] GeneratePseudoRandomBytes(uint length)
+    public static byte[] GeneratePseudoRandomBytes(int length)
     {
         List<byte> rngBytes = new ();
         var rng = new Random();

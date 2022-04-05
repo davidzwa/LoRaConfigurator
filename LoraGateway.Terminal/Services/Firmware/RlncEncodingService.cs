@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using LoraGateway.Services.Firmware.RandomLinearCoding;
+using LoraGateway.Services.Firmware.Utils;
+using LoraGateway.Utils;
 using Serilog;
 
 namespace LoraGateway.Services.Firmware;
@@ -10,6 +12,14 @@ namespace LoraGateway.Services.Firmware;
 /// </summary>
 public class RlncEncodingService
 {
+    public enum RandomGeneratorType
+    {
+        Lfsr,
+        System
+    }
+
+    public RandomGeneratorType GeneratorType { get; set; } = RandomGeneratorType.Lfsr;
+
     /// <summary>
     ///     TODO apply custom size symbol 2,4,8 bits
     /// </summary>
@@ -39,7 +49,7 @@ public class RlncEncodingService
     {
         _settings = settings;
         _generations = null;
-        _generator = new (settings.Seed);
+        _generator = new(settings.Seed);
         PacketSymbols = 0;
         CurrentGenerationIndex = 0;
     }
@@ -96,7 +106,7 @@ public class RlncEncodingService
 
         // Collect the payloads in generation chunks
         _generations = null;
-        var generationChunks = unencodedPackets.Chunk((int) _settings!.GenerationSize);
+        var generationChunks = unencodedPackets.Chunk((int)_settings!.GenerationSize);
 
         // This deals with underrun generation size well (f.e. when less packets were chunked than gen size)
         _generations = generationChunks.Select((packetChunk, index) => new Generation
@@ -131,7 +141,7 @@ public class RlncEncodingService
         _generations?.Clear();
         _generator.Reset();
     }
-    
+
     public bool HasNextGeneration()
     {
         return _generations != null && _generations.Count - 1 > CurrentGenerationIndex;
@@ -142,7 +152,7 @@ public class RlncEncodingService
         if (HasNextGeneration()) CurrentGenerationIndex++;
 
         ValidateGenerationsState();
-        
+
         _generator.Reset();
     }
 
@@ -162,14 +172,9 @@ public class RlncEncodingService
 
         var sourcePackets = currentGeneration.OriginalPackets;
         var encodedPackets = sourcePackets.Count + precodeExtra;
-        PrecodeNumberOfPackets((uint) encodedPackets, true);
+        PrecodeNumberOfPackets((uint)encodedPackets, true);
 
         return currentGeneration;
-    }
-
-    public IEncodedPacket GetLastEncodedPacket()
-    {
-        return _generations!.Last().EncodedPackets.Last();
     }
 
     public List<IEncodedPacket> PrecodeNumberOfPackets(uint packetCount, bool resetGenerationPackets = false)
@@ -177,22 +182,19 @@ public class RlncEncodingService
         ValidateGenerationsState();
 
         var currentGeneration = _generations![CurrentGenerationIndex];
-
         if (resetGenerationPackets) currentGeneration.EncodedPackets = new List<IEncodedPacket>();
-
         var packetsGenerated = new List<IEncodedPacket>();
         long generatorSamplesTaken = 0;
-        foreach (var unused in Enumerable.Range(1, (int) packetCount))
+
+        foreach (var unused in Enumerable.Range(1, (int)packetCount))
         {
+            // Check samples required from LFSR and validate count does not overrun
             generatorSamplesTaken += currentGeneration.OriginalPackets.Count;
-            if (generatorSamplesTaken >= 256) throw new Exception("LFSR overrun");
+            if (generatorSamplesTaken >= 256) throw new Exception("LFSR will overrun");
 
             // Array of coeffs used to loop over all symbols and packets
-            var encodingCoeffs = _generator
-                .GenerateMany(currentGeneration.OriginalPackets.Count)
-                .Select(b => new GFSymbol(b))
-                .ToList();
-            
+            var randomSymbolCount = currentGeneration.OriginalPackets.Count;
+            List<GFSymbol> encodingCoeffs = GenerateRandomBytes(randomSymbolCount);
             Log.Debug("Precode resulted in LFSR state {State}", _generator.State);
 
             // Generate packet using coefficients
@@ -205,6 +207,35 @@ public class RlncEncodingService
         }
 
         return packetsGenerated;
+    }
+
+    /**
+     * RNG which can switch generator source on-the-fly 
+     */
+    public List<GFSymbol> GenerateRandomBytes(int randomSymbolCount)
+    {
+        var encodingCoeffs = new List<GFSymbol>();
+        if (GeneratorType == RandomGeneratorType.Lfsr)
+        {
+            encodingCoeffs = _generator
+                .GenerateMany(randomSymbolCount)
+                .Select(b => new GFSymbol(b))
+                .ToList();
+        }
+        else if (GeneratorType == RandomGeneratorType.System)
+        {
+            encodingCoeffs = RandomVector
+                .GeneratePseudoRandomBytes(randomSymbolCount)
+                .BytesToGfSymbols()
+                .ToList();
+        }
+
+        if (encodingCoeffs.Count != randomSymbolCount)
+        {
+            throw new InvalidOperationException("Cannot encode with empty pseudo-random-generator output");
+        }
+
+        return encodingCoeffs;
     }
 
     private EncodedPacket EncodeNextPacket(List<GFSymbol> encodingCoefficients, int currentEncodedPacketIndex)
