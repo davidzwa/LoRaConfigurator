@@ -47,6 +47,12 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         return _currentFuotaSession!.Acks.Count < expectedAcksCount;
     }
 
+    public void SetLfsrSeed(byte seed)
+    {
+        Store.LfsrSeed = seed;
+        WriteStore();
+    }
+    
     public void SetPacketErrorRate(float per)
     {
         Store.ApproxPacketErrorRate = per;
@@ -231,6 +237,8 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
             FieldDegree = Store.FieldDegree,
             GenerationSize = Store.GenerationSize
         });
+
+        _logger.LogWarning("Using new LFSR seed/state {Seed}", _rlncEncodingService.GetGeneratorState());
         var genCountResult =
             (uint)_rlncEncodingService.PreprocessGenerations(_firmwarePackets, Store.GenerationSize);
 

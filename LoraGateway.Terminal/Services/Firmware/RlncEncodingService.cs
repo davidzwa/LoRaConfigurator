@@ -15,7 +15,7 @@ public class RlncEncodingService
     /// </summary>
     private const int SymbolSize = 8;
 
-    private readonly LinearFeedbackShiftRegister _generator = new(0x08);
+    private LinearFeedbackShiftRegister _generator = new(0x08);
 
     // Encoding vectors using implicit mode (regeneration on receiving side)
     private List<Generation>? _generations;
@@ -39,6 +39,7 @@ public class RlncEncodingService
     {
         _settings = settings;
         _generations = null;
+        _generator = new (settings.Seed);
         PacketSymbols = 0;
         CurrentGenerationIndex = 0;
     }

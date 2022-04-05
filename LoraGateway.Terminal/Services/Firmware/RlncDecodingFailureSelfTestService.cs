@@ -24,6 +24,10 @@ public class RlncDecodingFailureSelfTestService
 
     public async Task RunSelfTest()
     {
+        var byteValue = new Random().Next(0, 256);
+        
+        _fuotaManagerService.SetLfsrSeed((byte)byteValue);
+        
         var config = await _fuotaManagerService.LoadStore();
         await _fuotaManagerService.StartFuotaSession(false);
 
