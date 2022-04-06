@@ -15,6 +15,7 @@ public class RlncEncodingService
     public enum RandomGeneratorType
     {
         Lfsr,
+        XoShiRoStarStar8,
         System
     }
 
@@ -224,6 +225,10 @@ public class RlncEncodingService
         {
             encodingCoeffs = Rng
                 .GeneratePseudoRandomBytes(randomSymbolCount).ToArray();
+        }
+        else if (GeneratorType == RandomGeneratorType.XoShiRoStarStar8)
+        {
+            encodingCoeffs = XoshiroStarStar.XoShiRo8.NextBytes(randomSymbolCount);
         }
 
         if (encodingCoeffs.Length != randomSymbolCount)

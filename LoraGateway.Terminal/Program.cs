@@ -43,30 +43,15 @@ public static class LoraGateway
                 .Filter.ByIncludingOnly(Matching.FromSource<SerialProcessorService>())
                 .WriteTo.File(GetUniqueLogFile("_serial"), LogEventLevel.Debug))
             .CreateLogger();
-
-        var offset = (byte)0x32;
-        var seed = new ulong[]
-        {
-            (ulong)0x01d353e5f3993bb0 + offset,
-            0x7b9c0df6cb193b20 * (ulong)(offset + 1),
-            (ulong)0x7b9c0df6cb193b20 - offset,
-            0x7b9c0df6cb193b20 * (ulong)(offset - 1)
-        };
-        var rng = new XoshiroImpl2(seed);
-        byte[] data = new byte[1];
-        rng.NextBytes(data);
-        Log.Information("{Byte}",data[0]);
         
-        // var lcg = new LCG();
-        // Log.Information("{Byte}",lcg.Next());
-        // Log.Information("{Byte}",lcg.Next());
-        // Log.Information("{Byte}",lcg.Next());
-        // Log.Information("{Byte}",lcg.Next());
-        // Log.Information("{Byte}",lcg.Next());
-        // Log.Information("{Byte}",lcg.Next());
-        // Log.Information("{Byte}",lcg.Next());
-        // Log.Information("{Byte}",lcg.Next());
+        var rng = new XoshiroStarStar(new byte [] {0x32, 0x33, 0x34, 0x35});
 
+        var data = rng.NextBytes(32);
+        foreach (var entry in data)
+        {
+            Log.Information("{Byte}", entry);
+        }
+        
         await CreateHostBuilder(args).RunConsoleAsync();
     }
 

@@ -16,8 +16,8 @@ public class LCG
 
     public UInt32 Next()
     {
+        // Inconsistent with 32-bit architecture C++ implementation?
         return (UInt32)((State = (UInt32)(State * 1103515245L + 12345L)) % RandLocalMax);
-        // return State = (UInt32)((State * 1103515245L + 12345L) % RandLocalMax);
     }
 
     public byte NextByte()
