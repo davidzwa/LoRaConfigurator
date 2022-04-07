@@ -215,7 +215,7 @@ public class RlncFlashBlobService
     private RlncFlashEncodedFragment GenerateOptimizedFragmentCommand(FragmentWithSeed fragment)
     {
         var seedStateBytes = fragment.PrngSeedState;
-        var fragmentBytesWithMeta = seedStateBytes.Reverse()
+        var fragmentBytesWithMeta = seedStateBytes
             .Concat(new[]
             {
                 fragment.GenerationIndex

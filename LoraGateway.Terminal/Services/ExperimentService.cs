@@ -132,7 +132,8 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
         _hasCrashed = false;
 
         var per = min;
-        while (per <= max && !_hasCrashed)
+        var cappedMax = Math.Min(0.99999f, max);
+        while (per <= cappedMax && !_hasCrashed)
         {
             var result = _cancellationTokenSource.TryReset();
             _decodingUpdatesReceived.Clear();
