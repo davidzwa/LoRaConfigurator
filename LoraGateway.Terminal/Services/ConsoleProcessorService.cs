@@ -7,7 +7,7 @@ namespace LoraGateway.Services;
 
 public class ConsoleProcessorService
 {
-    private readonly ListDeviceCommandHandler _listDeviceCommandHandler;
+    private readonly ListDeviceCommandHandler _managementCommandHandler;
     private readonly ILogger _logger;
     private readonly SelectDeviceCommandHandler _selectDeviceCommandHandler;
     private readonly SerialCommandHandler _serialCommandHandler;
@@ -17,13 +17,13 @@ public class ConsoleProcessorService
         ILogger<ConsoleProcessorService> logger,
         SerialCommandHandler serialCommandHandler,
         SelectDeviceCommandHandler selectDeviceCommandHandler,
-        ListDeviceCommandHandler listDeviceCommandHandler
+        ListDeviceCommandHandler managementCommandHandler
     )
     {
         _logger = logger;
         _serialCommandHandler = serialCommandHandler;
         _selectDeviceCommandHandler = selectDeviceCommandHandler;
-        _listDeviceCommandHandler = listDeviceCommandHandler;
+        _managementCommandHandler = managementCommandHandler;
     }
 
     public async Task ProcessCommandLine()
@@ -38,7 +38,7 @@ public class ConsoleProcessorService
             rootCommand.Add(_selectDeviceCommandHandler.GetSelectCommand());
             rootCommand.Add(_selectDeviceCommandHandler.GetCurrentSelectedCommand());
             _serialCommandHandler.ApplyCommands(rootCommand);
-            rootCommand.Add(_listDeviceCommandHandler.GetHandler());
+            _managementCommandHandler.ApplyCommands(rootCommand);
 
             await rootCommand.InvokeAsync(message);
         }
