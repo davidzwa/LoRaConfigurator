@@ -361,8 +361,8 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
             update.FirstRowCrc8,
             update.LastRowIndex,
             update.LastRowCrc8,
-            update.UsedLfsrState,
-            update.CurrentLfsrState,
+            update.UsedPrngSeedState,
+            update.CurrentPrngState,
             update.IsRunning
         );
 
