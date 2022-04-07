@@ -3,6 +3,7 @@ using System.Text;
 using Google.Protobuf;
 using LoRa;
 using LoraGateway.Models;
+using LoraGateway.Services.Firmware.Packets;
 using LoraGateway.Services.Firmware.RandomLinearCoding;
 using LoraGateway.Utils;
 using Serilog;
@@ -89,7 +90,7 @@ public class RlncFlashBlobService
         var fragSize = config.FakeFragmentSize;
         var genCount = rlncGenerations.Count;
         var redCount = config.GenerationSizeRedundancy;
-        var lfsrSeed = config.LfsrSeed;
+        var lfsrSeed = config.PRngSeedState;
         var templateFileName = $"rlnc_{fragCount}f_{fragSize}b_fake_{genCount}g_{redCount}r_{lfsrSeed}lfsr";
         var fullFileName = FileName.Replace(Formatter, templateFileName);
         Log.Information("Writing blob with {PacketsGenerated} fragments to file {File} using {Bytes} bytes",
@@ -198,9 +199,8 @@ public class RlncFlashBlobService
                 GenerationCount = fuotaSession.GenerationCount,
                 GenerationSize = config.GenerationSize,
                 GenerationRedundancySize = config.GenerationSizeRedundancy,
-                // Wont send poly as its highly static
-                // LfsrPoly = ,
-                LfsrSeed = config.LfsrSeed,
+                // We dont have the LFSR_32 implemented and thus do not offer this option yet
+                // PRngImplementation = PRngImplementation.XoShiRo32,
                 ReceptionRateConfig = new()
                 {
                     PacketErrorRate = config.ApproxPacketErrorRate,
@@ -212,13 +212,18 @@ public class RlncFlashBlobService
         };
     }
 
-    private RlncFlashEncodedFragment GenerateOptimizedFragmentCommand(FragmentWithGenerator fragment)
+    private RlncFlashEncodedFragment GenerateOptimizedFragmentCommand(FragmentWithSeed fragment)
     {
-        var fragmentBytesWithMeta = new[]
+        var seedStateBytes = fragment.PrngSeedState;
+        var fragmentBytesWithMeta = seedStateBytes.Reverse()
+            .Concat(new[]
             {
-                fragment.UsedGenerator, fragment.GenerationIndex
-            }
-            .Concat(BitConverter.GetBytes(fragment.SequenceNumber).Reverse()).ToArray();
+                fragment.GenerationIndex
+            })
+            .Concat(
+                BitConverter.GetBytes(fragment.SequenceNumber).Reverse()
+            )
+            .ToArray();
 
         return new RlncFlashEncodedFragment
         {

@@ -1,4 +1,5 @@
-﻿using LoraGateway.Services.Firmware.RandomLinearCoding;
+﻿using LoraGateway.Services.Firmware.Packets;
+using LoraGateway.Services.Firmware.RandomLinearCoding;
 using LoraGateway.Services.Firmware.Utils;
 
 namespace LoraGateway.Services.Firmware;

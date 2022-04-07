@@ -1,6 +1,7 @@
 ﻿using Google.Protobuf;
 using LoRa;
 using LoraGateway.Models;
+using LoraGateway.Services.Firmware.Packets;
 using LoraGateway.Services.Firmware.RandomLinearCoding;
 using LoraGateway.Utils;
 
@@ -161,9 +162,8 @@ public partial class SerialProcessorService
                     GenerationCount = fuotaSession.GenerationCount,
                     GenerationRedundancySize = config.GenerationSizeRedundancy,
                     GenerationSize = config.GenerationSize,
-                    // Wont send poly as its highly static
-                    // LfsrPoly = ,
-                    LfsrSeed = config.LfsrSeed,
+                    // We dont support dynamic switching yet
+                    // PRngImplementation = PRngImplementation.XoShiRo32,
                     ReceptionRateConfig = new ()
                     {
                         PacketErrorRate = config.ApproxPacketErrorRate,
@@ -178,7 +178,7 @@ public partial class SerialProcessorService
         WriteMessage(command);
     }
 
-    public void SendNextRlncFragment(FuotaSession fuotaSession, FragmentWithGenerator fragment)
+    public void SendNextRlncFragment(FuotaSession fuotaSession, FragmentWithSeed fragment)
     {
         var config = fuotaSession.Config;
         SetDeviceFilterFromFuotaConfig(config);
@@ -195,7 +195,8 @@ public partial class SerialProcessorService
                 Payload = byteString,
                 RlncEncodedFragment = new RlncEncodedFragment()
                 {
-                    LfsrState = fragment.UsedGenerator
+                    // Test if this reverses order
+                    PRngSeedState = config.PRngSeedState
                 }
             })
         };

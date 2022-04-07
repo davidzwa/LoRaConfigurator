@@ -1,8 +1,8 @@
-﻿namespace LoraGateway.Services.Firmware.RandomLinearCoding;
+﻿namespace LoraGateway.Services.Firmware.Packets;
 
-public class FragmentWithGenerator
+public class FragmentWithSeed
 {
-    public byte UsedGenerator { get; set; }
+    public byte[] PrngSeedState { get; set; }
     public UInt16 SequenceNumber { get; set; }
     public byte GenerationIndex { get; set; }
     public byte[] Fragment { get; set; }

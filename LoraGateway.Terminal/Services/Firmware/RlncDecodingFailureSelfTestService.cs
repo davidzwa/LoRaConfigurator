@@ -1,4 +1,5 @@
-﻿using LoraGateway.Services.Firmware.RandomLinearCoding;
+﻿using LoraGateway.Services.Firmware.Packets;
+using LoraGateway.Services.Firmware.RandomLinearCoding;
 using LoraGateway.Services.Firmware.Utils;
 using LoraGateway.Utils;
 
@@ -30,8 +31,8 @@ public class RlncDecodingFailureSelfTestService
         List<bool> resultsLfsr = new List<bool>();
         for (int i = 0; i < 1000; i++)
         {
-            var resultLfsr = await RunSelfTestRound(RlncEncodingService.RandomGeneratorType.Lfsr);
-            resultsLfsr.Add(resultLfsr);
+            // var resultLfsr = await RunSelfTestRound(RlncEncodingService.RandomGeneratorType.Lfsr);
+            // resultsLfsr.Add(resultLfsr);
             var resultXoshiro = await RunSelfTestRound(RlncEncodingService.RandomGeneratorType.System);
             resultsXoshiro.Add(resultXoshiro);
             var resultXoshiro8 = await RunSelfTestRound(RlncEncodingService.RandomGeneratorType.XoShiRoStarStar8);
@@ -65,16 +66,16 @@ public class RlncDecodingFailureSelfTestService
 
     public async Task<bool> RunSelfTestRound(RlncEncodingService.RandomGeneratorType prngType)
     {
-        if (prngType == RlncEncodingService.RandomGeneratorType.Lfsr)
-        {
-            _fuotaManagerService.SetLfsrSeed((byte)rng.Next(1, 256));
-        }
+        // if (prngType == RlncEncodingService.RandomGeneratorType.Lfsr)
+        // {
+        //     _fuotaManagerService.SetPrngSeed((byte)rng.Next(1, 256));
+        // }
 
         var config = await _fuotaManagerService.LoadStore();
         _fuotaManagerService.SetGeneratorType(prngType);
 
         await _fuotaManagerService.StartFuotaSession(false);
-        var generationFragments = new List<FragmentWithGenerator>();
+        var generationFragments = new List<FragmentWithSeed>();
         while (!_fuotaManagerService.IsCurrentGenerationComplete())
         {
             var wireFragment = _fuotaManagerService.FetchNextRlncPayloadWithGenerator();

@@ -2,39 +2,59 @@
 
 public class XoshiroStarStar
 {
-    public static XoshiroStarStar XoShiRo8 = new(new byte[] { 0x32, 0x33, 0x34, 0x35 });
-    
-// NextUInt64 is based on the algorithm from http://prng.di.unimi.it/xoshiro256starstar.c:
-    //
-    //     Written in 2018 by David Blackman and Sebastiano Vigna (vigna@acm.org)
-    //
-    //     To the extent possible under law, the author has dedicated all copyright
-    //     and related and neighboring rights to this software to the public domain
-    //     worldwide. This software is distributed without any warranty.
-    //
-    //     See <http://creativecommons.org/publicdomain/zero/1.0/>.
-    
+    public static XoshiroStarStar XoShiRo8 = new(new byte[] { 0x00,0x00,0x00,0x01 });
+
     private const byte _orot = 7;
     private const byte _mult1 = 5;
     private const byte _mult2 = 9;
     private const byte _a = 3;
     private const byte _b = 7;
-    
+
+    private readonly byte[] _seed = {};
     private byte _s0, _s1, _s2, _s3;
 
     public XoshiroStarStar(byte[] seed)
     {
-        _s0 = seed[0];
-        _s1 = seed[1];
-        _s2 = seed[2];
-        _s3 = seed[3];
+        _seed = seed;
+        Reset();
+    }
+
+    public void Reset()
+    {
+        _s0 = _seed[0];
+        _s1 = _seed[1];
+        _s2 = _seed[2];
+        _s3 = _seed[3];
         if ((_s0 | _s1 | _s2 | _s3) == 0)
             // at least one value must be non-zero
             throw new InvalidOperationException(
                 "Seeds do not OR to non-zero value");
     }
+
+    public void SetState(byte[] state)
+    {
+        _s0 = state[0];
+        _s1 = state[1];
+        _s2 = state[2];
+        _s3 = state[3];
+        if ((_s0 | _s1 | _s2 | _s3) == 0)
+            // at least one value must be non-zero
+            throw new InvalidOperationException(
+                "Seeds do not OR to non-zero value");
+    }
+
+    public byte[] GetSeed()
+    {
+        return (byte[])_seed.Clone();
+    }
     
-    private static byte Rotl(byte x, int k) {
+    public byte[] GetState()
+    {
+        return new[] { _s0, _s1, _s2, _s3 };
+    }
+
+    private static byte Rotl(byte x, int k)
+    {
         return (byte)((x << k) | (x >> (8 - k)));
     }
 
@@ -42,7 +62,7 @@ public class XoshiroStarStar
     {
         return Enumerable.Range(0, length).Select(v => NextByte()).ToArray();
     }
-    
+
     public byte NextByte()
     {
         byte s0 = _s0, s1 = _s1, s2 = _s2, s3 = _s3;
@@ -56,7 +76,7 @@ public class XoshiroStarStar
         s0 ^= s3;
         s2 ^= (byte)t;
         s3 = Rotl(s3, _b);
-        
+
         _s0 = s0;
         _s1 = s1;
         _s2 = s2;

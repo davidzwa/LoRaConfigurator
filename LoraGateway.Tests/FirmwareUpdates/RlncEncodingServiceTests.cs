@@ -34,13 +34,13 @@ public class RlncEncodingServiceTests
             .SelectMany(x => Enumerable.Range(0, symbolMatrix.GetLength(1))
                 .Select(y => symbolMatrix[x, y]));
         
-        // Check all values in the encoding matrix are unique (as promised by LFSR properties)
+        // Check all values in the encoding matrix are non-unique (probability that this is not the case is low)
         var distinct = flattened.Distinct().ToList();
-        distinct.Count.ShouldBe(flattened.Count());
+        distinct.Count.ShouldBeLessThan(flattened.Count());
     }
 
     [Fact]
-    public async Task EncodeOneGenerationWithExtraTest()
+    public async Task EncodeOneGenerationWithRedundancy()
     {
         // 103 / 12 -> 9 packets which is less than generation size 12 (on purpose)
         var unencodedPackets = await new BlobFragmentationService().GenerateFakeFirmwareAsync(103, 12);
@@ -52,40 +52,25 @@ public class RlncEncodingServiceTests
     }
 
     [Fact]
-    public async Task EncodeOneGenerationLfsrOverrunTests()
-    {
-        // Generate 9 packets of size 12
-        var unencodedPackets = await new BlobFragmentationService().GenerateFakeFirmwareAsync(103, 12);
-        unencodedPackets.Count.ShouldBe(9);
-        // Check that the 103/12 division resulted in whole packets
-        unencodedPackets[unencodedPackets.Count - 1].Payload.Count.ShouldBe(12);
-
-        var service = new RlncEncodingService();
-        service.PreprocessGenerations(unencodedPackets, 12);
-        // Check that the generator is in deterministic state
-        service.GetGeneratorState().ShouldBe((byte)0x08);
-        // Generates 9 original packets (103/12 => 9) with extra prematurely
-        // 255 / 9 = 29 max => 20 extra at most
-        Should.Throw<Exception>(() => service.PrecodeCurrentGeneration(29 - 9));
-
-        service.PreprocessGenerations(unencodedPackets, 12);
-        // Check that the generator has been reset
-        service.GetGeneratorState().ShouldBe((byte)0x08);
-        service.PrecodeCurrentGeneration(28 - 9);
-    }
-
-    [Fact]
-    public async Task EncodeOneGenerationLfsrNoOverrunTests()
+    public async Task EncodeOneGenerationCheckPrngChange()
     {
         // Generate 9 packets of size 12
         var unencodedPackets = await new BlobFragmentationService().GenerateFakeFirmwareAsync(103, 12);
         var service = new RlncEncodingService();
         service.PreprocessGenerations(unencodedPackets, 12);
+        
         // Check that the generator is in deterministic state
-        service.GetGeneratorState().ShouldBe((byte)0x08);
+        var seedBytes = service.GetGeneratorState();
+        var seedUInt = BitConverter.ToUInt32(seedBytes);
+        seedUInt.ShouldBe(16777216U);
+        
         // Generates 9 original packets (103/12 => 9) with extra prematurely
         // 255 / 9 = 29 max => 20 extra at most
         service.PrecodeCurrentGeneration(28 - 9);
+        
+        seedBytes = service.GetGeneratorState();
+        seedUInt = BitConverter.ToUInt32(seedBytes);
+        seedUInt.ShouldBe(2483403624U);
     }
 
     [Fact]

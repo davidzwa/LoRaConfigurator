@@ -3,7 +3,7 @@
 public class EncodingConfiguration
 {
     public uint FieldDegree { get; set; }
-    public byte Seed { get; set; }
+    public UInt32 PRngSeedState { get; set; }
     public uint GenerationSize { get; set; }
 
     /// <summary>

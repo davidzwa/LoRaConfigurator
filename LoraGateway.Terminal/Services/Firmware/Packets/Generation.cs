@@ -1,4 +1,6 @@
-﻿namespace LoraGateway.Services.Firmware.RandomLinearCoding;
+﻿using LoraGateway.Services.Firmware.RandomLinearCoding;
+
+namespace LoraGateway.Services.Firmware.Packets;
 
 public class Generation
 {

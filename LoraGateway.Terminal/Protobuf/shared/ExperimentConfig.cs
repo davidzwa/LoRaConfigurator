@@ -37,10 +37,11 @@ namespace LoRa {
             "d2lkdGgYAiABKA0SEgoKVHhEYXRhUmF0ZRgDIAEoDSJuChNSZWNlcHRpb25S",
             "YXRlQ29uZmlnEhcKD1BhY2tldEVycm9yUmF0ZRgBIAEoAhIUCgxPdmVycmlk",
             "ZVNlZWQYAiABKAgSDAoEU2VlZBgDIAEoDRIaChJEcm9wVXBkYXRlQ29tbWFu",
-            "ZHMYBCABKAhCB6oCBExvUmFiBnByb3RvMw=="));
+            "ZHMYBCABKAgqMQoSUFJuZ0ltcGxlbWVudGF0aW9uEgsKB0xGU1JfMzIQABIO",
+            "CgpYb1NoaVJvXzMyEAFCB6oCBExvUmFiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LoRa.PRngImplementation), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.ForwardExperimentCommand), global::LoRa.ForwardExperimentCommand.Parser, new[]{ "SlaveCommand" }, new[]{ "SlaveCommand" }, new[]{ typeof(global::LoRa.ForwardExperimentCommand.Types.SlaveCommand) }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.ExperimentResponse), global::LoRa.ExperimentResponse.Parser, new[]{ "MeasurementCount", "MeasurementsDisabled", "WasCleared" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.MeasurementStreamRequest), global::LoRa.MeasurementStreamRequest.Parser, new[]{ "FragmentSizeMax" }, null, null, null, null),
@@ -52,6 +53,14 @@ namespace LoRa {
     #endregion
 
   }
+  #region Enums
+  public enum PRngImplementation {
+    [pbr::OriginalName("LFSR_32")] Lfsr32 = 0,
+    [pbr::OriginalName("XoShiRo_32")] XoShiRo32 = 1,
+  }
+
+  #endregion
+
   #region Messages
   public sealed partial class ForwardExperimentCommand : pb::IMessage<ForwardExperimentCommand>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
