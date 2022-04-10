@@ -9,15 +9,10 @@ public abstract class JsonDataStore<T> : IDataStore<T> where T : class, ICloneab
     public abstract T GetDefaultJson();
 
     public abstract string GetJsonFileName();
-
-    protected string GetDataFolder()
-    {
-        return DataStoreExtensions.BasePath;
-    }
     
     protected string GetDataFolderFullPath()
     {
-        var folder = GetDataFolder();
+        var folder = DataStoreExtensions.BasePath;
         return Path.GetFullPath(folder, Directory.GetCurrentDirectory());
     }
     

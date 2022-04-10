@@ -1,4 +1,6 @@
-﻿namespace LoraGateway.Services.Firmware.RandomLinearCoding;
+﻿using LoraGateway.Services.Firmware.Packets;
+
+namespace LoraGateway.Services.Firmware.RandomLinearCoding;
 
 public class EncodedPacket : UnencodedPacket, IEncodedPacket
 {

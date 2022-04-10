@@ -14,6 +14,7 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
 {
     private readonly ILogger<ExperimentService> _logger;
     private readonly FuotaManagerService _fuotaManagerService;
+    private readonly ExperimentPlotService _experimentPlotService;
     private readonly SerialProcessorService _serialProcessorService;
 
     private bool _isStarted = false;
@@ -26,19 +27,16 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
 
     private List<ExperimentDataEntry> _dataPoints = new();
 
-    private CsvConfiguration csvConfig = new(CultureInfo.InvariantCulture)
-    {
-        NewLine = Environment.NewLine,
-    };
-
     public ExperimentService(
         ILogger<ExperimentService> logger,
         FuotaManagerService fuotaManagerService,
+        ExperimentPlotService experimentPlotService,
         SerialProcessorService serialProcessorService
     )
     {
         _logger = logger;
         _fuotaManagerService = fuotaManagerService;
+        _experimentPlotService = experimentPlotService;
         _serialProcessorService = serialProcessorService;
     }
 
@@ -52,27 +50,10 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
         return "experiment.csv";
     }
 
-    public string GetPlotFileName()
-    {
-        return "experiment.png";
-    }
-    
-    public string GetErrorPlotFileName()
-    {
-        return "experiment_err.png";
-    }
-
     public string GetCsvFilePath()
     {
         var dataFolderAbsolute = GetDataFolderFullPath();
         var fileName = GetCsvFileName();
-        return Path.Join(dataFolderAbsolute, fileName);
-    }
-
-    public string GetPlotFilePath(bool isErrorPlot = false)
-    {
-        var dataFolderAbsolute = GetDataFolderFullPath();
-        var fileName = isErrorPlot ? GetErrorPlotFileName() : GetPlotFileName();
         return Path.Join(dataFolderAbsolute, fileName);
     }
 
@@ -118,7 +99,6 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
         }
     }
 
-
     public async Task RunExperiments()
     {
         var experimentConfig = await LoadStore();
@@ -132,7 +112,8 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
         _hasCrashed = false;
 
         var per = min;
-        while (per <= max && !_hasCrashed)
+        var cappedMax = Math.Min(0.99999f, max);
+        while (per <= cappedMax && !_hasCrashed)
         {
             var result = _cancellationTokenSource.TryReset();
             _decodingUpdatesReceived.Clear();
@@ -192,7 +173,7 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
     {
         var currentGenIndex = result.CurrentGenerationIndex;
         var fuotaConfig = _fuotaManagerService.GetStore();
-        
+
 
         if (_lastResultGenerationIndex == result.CurrentGenerationIndex)
         {
@@ -201,7 +182,8 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
 
         // We detect skipped generations which need to be accounted
         var lostIndices = CalculateLostGenerationIndices(currentGenIndex);
-        if (lostIndices.Count > 0) {
+        if (lostIndices.Count > 0)
+        {
             AppendLostGenerationsToDataPoints(lostIndices, currentGenIndex);
         }
 
@@ -245,7 +227,7 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
         var filePath = GetCsvFilePath();
         using (var writer = new StreamWriter(filePath))
         {
-            using (var csv = new CsvWriter(writer, csvConfig))
+            using (var csv = new CsvWriter(writer, _experimentPlotService.CsvConfig))
             {
                 await csv.WriteRecordsAsync(_dataPoints);
             }
@@ -271,51 +253,7 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
             return;
         }
 
-        var dataBuckets = _dataPoints.GroupBy(d => d.ConfiguredPacketErrorRate);
-        var perBuckets = dataBuckets.Select(b =>
-        {
-            var iqr = Statistics.Quartiles(b.Select(b => b.PacketErrorRate).ToArray());
-            return new
-            {
-                PerAvg = b.Average(d => d.PacketErrorRate),
-                PerIQR = iqr.IQR,
-                ConfiguredPer = b.Key
-            };
-        });
-
-        _logger.LogInformation("Saving experiment plot");
-        var configuredPerArray = perBuckets.Select(p => (double)p.ConfiguredPer).ToArray();
-        var averagePerArray = perBuckets.Select(p => (double)p.PerAvg).ToArray();
-        var iqrPerArray = perBuckets.Select(p => (double)p.PerIQR).ToArray();
-        
-        var maxPer = Math.Min(1.0f, Math.Round(configuredPerArray.Max()+0.1f, 1));
-        var minPer = Math.Max(0.0f, Math.Round(configuredPerArray.Min()-0.1f, 1));
-
-        var plt = new Plot(400, 300);
-        plt.AddScatter(configuredPerArray, averagePerArray, label: "Real PER");
-        plt.AddScatter(configuredPerArray, configuredPerArray, label: "Input PER");
-        plt.Legend();
-        plt.SetAxisLimits(minPer, maxPer, minPer, maxPer);
-        plt.Title("Packet-Error-Rate (PER) vs median realised PER");
-        plt.YLabel("Averaged realised PER");
-        plt.XLabel("Configured PER");
-        plt.SaveFig(GetPlotFilePath(false));
-        
-        var plt2 = new Plot(400, 300);
-        var scatter2 = plt2.AddScatter(configuredPerArray, averagePerArray, label: "Real PER");
-        scatter2.YError = iqrPerArray;
-        scatter2.ErrorCapSize = 3;
-        scatter2.ErrorLineWidth = 1;
-        scatter2.LineStyle = LineStyle.Dot;
-        plt2.AddErrorBars(configuredPerArray, averagePerArray, null, iqrPerArray);
-        plt2.AddScatter(configuredPerArray, configuredPerArray, label: "Input PER");
-        plt2.Legend();
-        
-        plt2.SetAxisLimits(minPer, maxPer, minPer, maxPer);
-        plt2.Title("Packet-Error-Rate (PER) vs avg. realised PER");
-        plt2.YLabel("Averaged realised PER");
-        plt2.XLabel("Configured PER");
-        plt2.SaveFig(GetPlotFilePath(true));
+        _experimentPlotService.SavePlotsFromLiveData(_dataPoints);
     }
 
     private List<uint> CalculateLostGenerationIndices(uint currentGenIndex)
@@ -350,13 +288,14 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
 
         return missedGenerationIndices;
     }
-        
-    private List<DecodingUpdate> AppendLostGenerationsToDataPoints(List<uint> missedGenerationIndices, uint? currentGenIndex)
+
+    private List<DecodingUpdate> AppendLostGenerationsToDataPoints(List<uint> missedGenerationIndices,
+        uint? currentGenIndex)
     {
         var missedDecodingUpdates = new List<DecodingUpdate>();
         var fuotaConfig = _fuotaManagerService.GetStore();
         var generationPacketsCount = fuotaConfig.GenerationSize + fuotaConfig.GenerationSizeRedundancy;
-        
+
         var groupedDecodingUpdatesByGenIndex = _decodingUpdatesReceived.GroupBy(d => d.CurrentGenerationIndex);
         foreach (var index in missedGenerationIndices)
         {

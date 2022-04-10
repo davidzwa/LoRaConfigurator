@@ -1,4 +1,5 @@
-﻿using LoraGateway.Services.Firmware.RandomLinearCoding;
+﻿using LoraGateway.Services.Firmware.Packets;
+using LoraGateway.Services.Firmware.RandomLinearCoding;
 using LoraGateway.Services.Firmware.Utils;
 using LoraGateway.Utils;
 
@@ -26,13 +27,16 @@ public class RlncDecodingFailureSelfTestService
     public async Task RunSelfTest()
     {
         List<bool> resultsXoshiro = new List<bool>();
+        List<bool> resultsXoshiro8 = new List<bool>();
         List<bool> resultsLfsr = new List<bool>();
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 1000; i++)
         {
-            var resultLfsr = await RunSelfTestRound(RlncEncodingService.RandomGeneratorType.Lfsr);
-            resultsLfsr.Add(resultLfsr);
+            // var resultLfsr = await RunSelfTestRound(RlncEncodingService.RandomGeneratorType.Lfsr);
+            // resultsLfsr.Add(resultLfsr);
             var resultXoshiro = await RunSelfTestRound(RlncEncodingService.RandomGeneratorType.System);
             resultsXoshiro.Add(resultXoshiro);
+            var resultXoshiro8 = await RunSelfTestRound(RlncEncodingService.RandomGeneratorType.XoShiRoStarStar8);
+            resultsXoshiro8.Add(resultXoshiro8);
         }
 
         var successSystem = resultsXoshiro.Count(b => b);
@@ -50,20 +54,28 @@ public class RlncDecodingFailureSelfTestService
             successLfsr,
             failedLfsr,
             totalLfsr);
+        
+        var successXoShiro8 = resultsXoshiro8.Count(b => b);
+        var failedXoShiro8 = resultsXoshiro8.Count(b => !b);
+        var totalXoShiro8 = resultsXoshiro8.Count;
+        _logger.LogInformation("Results XoShiro8 Success {Succeeded} vs Failed {Failed} out of {Total} Total",
+            successXoShiro8,
+            failedXoShiro8,
+            totalXoShiro8);
     }
 
     public async Task<bool> RunSelfTestRound(RlncEncodingService.RandomGeneratorType prngType)
     {
-        if (prngType == RlncEncodingService.RandomGeneratorType.Lfsr)
-        {
-            _fuotaManagerService.SetLfsrSeed((byte)rng.Next(1, 256));
-        }
+        // if (prngType == RlncEncodingService.RandomGeneratorType.Lfsr)
+        // {
+        //     _fuotaManagerService.SetPrngSeed((byte)rng.Next(1, 256));
+        // }
 
         var config = await _fuotaManagerService.LoadStore();
         _fuotaManagerService.SetGeneratorType(prngType);
 
         await _fuotaManagerService.StartFuotaSession(false);
-        var generationFragments = new List<FragmentWithGenerator>();
+        var generationFragments = new List<FragmentWithSeed>();
         while (!_fuotaManagerService.IsCurrentGenerationComplete())
         {
             var wireFragment = _fuotaManagerService.FetchNextRlncPayloadWithGenerator();
@@ -72,7 +84,7 @@ public class RlncDecodingFailureSelfTestService
 
         // INPUT
         var encodedPackets = generationFragments.Select(f => f.OriginalPacket).ToList();
-        _logger.LogInformation("{EncodedPackets} Packets encoded", encodedPackets.Count);
+        // _logger.LogDebug("{EncodedPackets} Packets encoded", encodedPackets.Count);
 
         // Simulate droppage
         // encodedPackets.RemoveAt(7);
@@ -107,7 +119,7 @@ public class RlncDecodingFailureSelfTestService
         var colsDecode1 = symbolMatrix.GetLength(1);
         var matrixRowDecode1 = SerialUtil.MatrixToString(symbolMatrix);
         var successDecode1 = rowsDecode1 == config.GenerationSize;
-        _logger.LogInformation("Decoded Matrix (Success: {Success}, Rank: {Rank} vs {GenSize})",
+        _logger.LogDebug("Decoded Matrix (Success: {Success}, Rank: {Rank} vs {GenSize})",
             successDecode1,
             colsDecode1,
             config.GenerationSize);

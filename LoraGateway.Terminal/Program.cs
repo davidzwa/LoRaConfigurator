@@ -1,17 +1,16 @@
-﻿using LoRa;
-using LoraGateway.BackgroundServices;
+﻿using LoraGateway.BackgroundServices;
 using LoraGateway.Handlers;
 using LoraGateway.Services;
 using LoraGateway.Services.CommandLine;
 using LoraGateway.Services.Firmware;
-using LoraGateway.Services.Firmware.Utils;
+using LoraGateway.Services.Firmware.RandomLinearCoding;
 using LoraGateway.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ScottPlot;
 using Serilog;
 using Serilog.Events;
 using Serilog.Filters;
+using Shouldly;
 
 namespace LoraGateway;
 
@@ -45,11 +44,20 @@ public static class LoraGateway
                 .WriteTo.File(GetUniqueLogFile("_serial"), LogEventLevel.Debug))
             .CreateLogger();
         
+        // var rng = new XoshiroStarStar(new byte [] {0x32, 0x33, 0x34, 0x35});
+        //
+        // var data = rng.NextBytes(32);
+        // foreach (var entry in data)
+        // {
+        //     Log.Information("{Byte}", entry);
+        // }
+        
         await CreateHostBuilder(args).RunConsoleAsync();
     }
 
-    public static IHostBuilder CreateHostBuilder(string[] args) =>
-        Host.CreateDefaultBuilder(args)
+    public static IHostBuilder CreateHostBuilder(string[] args)
+    {
+        return Host.CreateDefaultBuilder(args)
             .UseSerilog()
             .ConfigureServices((_, services) =>
             {
@@ -62,6 +70,7 @@ public static class LoraGateway
                 services.AddSingleton<BlobFragmentationService>();
                 services.AddSingleton<RlncEncodingService>();
                 services.AddSingleton<ExperimentService>();
+                services.AddSingleton<ExperimentPlotService>();
                 services.AddSingleton<RlncFlashBlobService>();
                 services.AddSingleton<FuotaSessionHostedService>();
                 services.AddHostedService<FuotaSessionHostedService>(p => p.GetService<FuotaSessionHostedService>());
@@ -84,4 +93,5 @@ public static class LoraGateway
                     });
                 });
             });
+    }
 }

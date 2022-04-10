@@ -1,5 +1,8 @@
 ﻿namespace LoraGateway.Services.Firmware.RandomLinearCoding;
 
+/**
+ * DEPRECATED This byte-form LFSR should not be implemented
+ */
 public class LinearFeedbackShiftRegister
 {
     public static byte DefaultSeed = 0x08;

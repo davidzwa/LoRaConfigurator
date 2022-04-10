@@ -6,6 +6,7 @@ using LoraGateway.Handlers;
 using LoraGateway.Models;
 using LoraGateway.Services.Contracts;
 using LoraGateway.Services.Firmware;
+using LoraGateway.Services.Firmware.Packets;
 using LoraGateway.Services.Firmware.RandomLinearCoding;
 using LoraGateway.Utils;
 
@@ -52,9 +53,9 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         _rlncEncodingService.GeneratorType = type;
     }
 
-    public void SetLfsrSeed(byte seed)
+    public void SetPrngSeed(UInt32 seed)
     {
-        Store.LfsrSeed = seed;
+        Store.PRngSeedState = seed;
         WriteStore();
     }
     
@@ -237,13 +238,13 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         // Prepare 
         _rlncEncodingService.ConfigureEncoding(new EncodingConfiguration
         {
-            Seed = (byte)Store.LfsrSeed,
+            PRngSeedState = Store.PRngSeedState,
             CurrentGeneration = 0,
             FieldDegree = Store.FieldDegree,
             GenerationSize = Store.GenerationSize
         });
 
-        _logger.LogWarning("Using new LFSR seed/state {Seed}", _rlncEncodingService.GetGeneratorState());
+        _logger.LogWarning("Using new PRNG seed/state {Seed}", _rlncEncodingService.GetGeneratorState());
         var genCountResult =
             (uint)_rlncEncodingService.PreprocessGenerations(_firmwarePackets, Store.GenerationSize);
 
@@ -291,7 +292,7 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         _rlncEncodingService.MoveNextGeneration();
     }
 
-    public FragmentWithGenerator FetchNextRlncPayloadWithGenerator(bool logPacket = true)
+    public FragmentWithSeed FetchNextRlncPayloadWithGenerator(bool logPacket = true)
     {
         if (_currentFuotaSession == null) throw new ValidationException("Cant fetch RLNC payload when session is null");
 
@@ -303,7 +304,7 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
             throw new ValidationException("Generation packets have run out");
         }
 
-        var currentLfsrState = _rlncEncodingService.GetGeneratorState();
+        var currentPrngSeedState = _rlncEncodingService.GetGeneratorState();
         var encodedPacket = _rlncEncodingService.PrecodeNumberOfPackets(1).First();
         var fragmentBytes = encodedPacket.Payload.Select(p => p.GetValue());
         // var encodingVector = encodedPacket.EncodingVector.Select(p => p.GetValue()).ToArray();
@@ -323,7 +324,7 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         {
             GenerationIndex = (byte)_currentFuotaSession.CurrentGenerationIndex,
             Fragment = fragmentBytes.ToArray(),
-            UsedGenerator = currentLfsrState,
+            PrngSeedState = currentPrngSeedState,
             OriginalPacket = encodedPacket
         };
     }
@@ -360,8 +361,8 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
             update.FirstRowCrc8,
             update.LastRowIndex,
             update.LastRowCrc8,
-            update.UsedLfsrState,
-            update.CurrentLfsrState,
+            update.UsedPrngSeedState,
+            update.CurrentPrngState,
             update.IsRunning
         );
 

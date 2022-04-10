@@ -53,11 +53,7 @@ public class FuotaConfig : ICloneable
     // public int FieldPoly { get; set; }
     // Static degree, might become dynamic later
     public uint FieldDegree { get; set; } = 8;
-
-    // Changing poly of LFSR is not seemingly interesting
-    // public int LfsrPoly { get; set; }
-    // Static seed might change to dynamic later
-    public uint LfsrSeed { get; set; } = LinearFeedbackShiftRegister.DefaultSeed;
+    public UInt32 PRngSeedState { get; set; }
 
     public object Clone()
     {

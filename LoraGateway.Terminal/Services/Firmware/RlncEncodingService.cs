@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using LoraGateway.Services.Firmware.Packets;
 using LoraGateway.Services.Firmware.RandomLinearCoding;
 using LoraGateway.Services.Firmware.Utils;
 using LoraGateway.Utils;
@@ -14,18 +15,16 @@ public class RlncEncodingService
 {
     public enum RandomGeneratorType
     {
-        Lfsr,
+        // Lfsr,
+        XoShiRoStarStar8,
         System
     }
 
-    public RandomGeneratorType GeneratorType { get; set; } = RandomGeneratorType.Lfsr;
+    public RandomGeneratorType GeneratorType { get; set; } = RandomGeneratorType.XoShiRoStarStar8;
 
-    /// <summary>
-    ///     TODO apply custom size symbol 2,4,8 bits
-    /// </summary>
     private const int SymbolSize = 8;
 
-    private LinearFeedbackShiftRegister _generator = new(0x08);
+    // private LinearFeedbackShiftRegister _generator = new(0x08);
 
     // Encoding vectors using implicit mode (regeneration on receiving side)
     private List<Generation>? _generations;
@@ -40,16 +39,49 @@ public class RlncEncodingService
 
     public int PacketSymbols { get; private set; }
 
-    public byte GetGeneratorState()
+    public byte[] GetGeneratorState()
     {
-        return _generator.State;
+        // if (GeneratorType == RandomGeneratorType.Lfsr)
+        // {
+        //     throw new NotImplementedException("LFSR with 32 bits state is not implemented yet");
+        //     // encodingCoeffs = _generator
+        //     //     .GenerateMany(randomSymbolCount).ToArray();
+        // }
+        // else 
+        if (GeneratorType == RandomGeneratorType.System)
+        {
+            throw new NotImplementedException("System XoShiRo RNG is not supported to be extracted");
+            // encodingCoeffs = Rng
+            //     .GeneratePseudoRandomBytes(randomSymbolCount).ToArray();
+        }
+        else if (GeneratorType == RandomGeneratorType.XoShiRoStarStar8)
+        {
+            return XoshiroStarStar.XoShiRo8.GetState();
+        }
+
+        throw new NotImplementedException("Unkonwn generator state");
+        // return _generator.State;
     }
 
     public void ConfigureEncoding(EncodingConfiguration settings)
     {
         _settings = settings;
         _generations = null;
-        _generator = new(settings.Seed);
+        // if (GeneratorType == RandomGeneratorType.Lfsr)
+        // {
+        //     _generator = new(settings.PRngSeedState[0]);
+        // }
+        // else 
+        if (GeneratorType == RandomGeneratorType.XoShiRoStarStar8)
+        {
+            var seedBytes = BitConverter.GetBytes(settings.PRngSeedState);
+            XoshiroStarStar.XoShiRo8.SetState(seedBytes);
+        }
+        else
+        {
+            throw new Exception("System RNG cannot be used yet in combination with EncodingService");
+        }
+
         PacketSymbols = 0;
         CurrentGenerationIndex = 0;
     }
@@ -120,8 +152,10 @@ public class RlncEncodingService
             _generations.First().OriginalPackets.First().Payload.Count; // divide by encoding symbol size
 
         // Reset state
-        _generator.Reset();
+        // _generator.Reset();
+        XoshiroStarStar.XoShiRo8.Reset();
         CurrentGenerationIndex = 0;
+        
         if (PacketSymbols == 0) throw new ValidationException("PacketSymbols was 0, unencoded packet list was empty");
 
         return _generations.Count;
@@ -129,17 +163,18 @@ public class RlncEncodingService
 
     public void ResetEncoding()
     {
-        var oldSeed = _generator.Seed;
+        var oldSeed = XoshiroStarStar.XoShiRo8.GetSeed();
+        var seedUint32 = BitConverter.ToUInt32(oldSeed);
         ConfigureEncoding(new EncodingConfiguration
         {
-            Seed = oldSeed,
+            PRngSeedState = seedUint32,
             FieldDegree = 8,
             GenerationSize = 0,
             CurrentGeneration = 0
         });
 
         _generations?.Clear();
-        _generator.Reset();
+        XoshiroStarStar.XoShiRo8.Reset();
     }
 
     public bool HasNextGeneration()
@@ -153,7 +188,8 @@ public class RlncEncodingService
 
         ValidateGenerationsState();
 
-        _generator.Reset();
+        // _generator.Reset();
+        XoshiroStarStar.XoShiRo8.Reset();
     }
 
     /// <summary>
@@ -188,14 +224,14 @@ public class RlncEncodingService
 
         foreach (var unused in Enumerable.Range(1, (int)packetCount))
         {
-            // Check samples required from LFSR and validate count does not overrun
+            // PRNG state checks
             generatorSamplesTaken += currentGeneration.OriginalPackets.Count;
-            if (generatorSamplesTaken >= 256) throw new Exception("LFSR will overrun");
 
             // Array of coeffs used to loop over all symbols and packets
             var randomSymbolCount = currentGeneration.OriginalPackets.Count;
             List<GFSymbol> encodingCoeffs = GenerateRandomBytes(randomSymbolCount);
-            Log.Debug("Precode resulted in LFSR state {State}", _generator.State);
+            var state = XoshiroStarStar.XoShiRo8.GetState();
+            Log.Debug("Precode resulted in PRNG state {State}", state);
 
             // Generate packet using coefficients
             var nextEncodedPacketIndex = currentGeneration.EncodedPackets.Count;
@@ -214,16 +250,21 @@ public class RlncEncodingService
      */
     public List<GFSymbol> GenerateRandomBytes(int randomSymbolCount)
     {
-        var encodingCoeffs = new byte[] {};
-        if (GeneratorType == RandomGeneratorType.Lfsr)
+        var encodingCoeffs = new byte[] { };
+        // if (GeneratorType == RandomGeneratorType.Lfsr)
+        // {
+        //     encodingCoeffs = _generator
+        //         .GenerateMany(randomSymbolCount).ToArray();
+        // }
+        // else 
+        if (GeneratorType == RandomGeneratorType.System)
         {
-            encodingCoeffs = _generator
-                .GenerateMany(randomSymbolCount).ToArray();
-        }
-        else if (GeneratorType == RandomGeneratorType.System)
-        {
-            encodingCoeffs = RandomVector
+            encodingCoeffs = Rng
                 .GeneratePseudoRandomBytes(randomSymbolCount).ToArray();
+        }
+        else if (GeneratorType == RandomGeneratorType.XoShiRoStarStar8)
+        {
+            encodingCoeffs = XoshiroStarStar.XoShiRo8.NextBytes(randomSymbolCount);
         }
 
         if (encodingCoeffs.Length != randomSymbolCount)

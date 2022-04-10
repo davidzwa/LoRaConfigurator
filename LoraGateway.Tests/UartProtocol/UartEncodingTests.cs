@@ -50,6 +50,7 @@ public class UartEncodingTests
     public async Task SerialProcessorReceiveDebugTest()
     {
         var serialProcessor = _services.GetRequiredService<SerialProcessorService>();
+        // TODO apply CRC in payload
         var result = await serialProcessor.ProcessMessage("test", _cobsPayload);
         result.ShouldBe(0);
 

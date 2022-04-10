@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using LoraGateway.Services.Firmware;
+using LoraGateway.Services.Firmware.Packets;
 using LoraGateway.Services.Firmware.RandomLinearCoding;
 using LoraGateway.Services.Firmware.Utils;
 using Shouldly;
@@ -313,7 +314,7 @@ public class RlncDecodingServiceTests
         var decodedResultMatrix = RlncDecodingService.DecodeMatrix(inputMatrix, 5);
         
         // We only get 0-8, which is expected with only 9 packets
-        for (int i = 0; i < 9; i++)
+        for (int i = 0; i < 8; i++)
         {
             decodedResultMatrix[i, i].ShouldBe(new GFSymbol(0x01), $"Pivot number {i}");
         }
@@ -323,9 +324,9 @@ public class RlncDecodingServiceTests
     public async Task DecodeMatrixTestInternallyBigGeneration()
     {
         var firmwareSize = 200;
-        var frameSize = 15; // 10 symbols per packet
-        var generationSize = (uint)8; // 5 packets (= 5 enc vectors)
-        var generationExtra = (uint)10; // 1 packet overhead
+        var frameSize = 15; // 15 symbols per packet
+        var generationSize = (uint)8; // x frames in window (=> x enc vectors of x symbols each)
+        var generationExtra = (uint)10; // x frames redundancy
         var totalPacketsOutput = generationExtra + generationSize;
 
         var unencodedPackets = await new BlobFragmentationService().GenerateFakeFirmwareAsync(firmwareSize, frameSize);
@@ -334,7 +335,6 @@ public class RlncDecodingServiceTests
         var generation = service.PrecodeCurrentGeneration(generationExtra);
 
         var fullAugmentedMatrix = generation.EncodedPackets.ToAugmentedMatrix();
-        // 6 * (5+10) = 30
         fullAugmentedMatrix.Length.ShouldBe((int)(totalPacketsOutput * (generationSize + frameSize)));
         fullAugmentedMatrix[0, 10].ShouldNotBeNull();
 
