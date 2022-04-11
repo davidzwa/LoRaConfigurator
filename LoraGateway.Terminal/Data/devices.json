@@ -68,7 +68,7 @@
       "NickName": "A0",
       "FirmwareVersion": "3.4.1.0",
       "RegisteredAt": "132848143947603040",
-      "LastPortName": "COM4",
+      "LastPortName": "COM5",
       "Meta": null
     },
     {
@@ -86,7 +86,7 @@
       "NickName": "A2",
       "FirmwareVersion": "3.4.1.0",
       "RegisteredAt": "132848144244789782",
-      "LastPortName": "COM3",
+      "LastPortName": "COM9",
       "Meta": null
     },
     {
