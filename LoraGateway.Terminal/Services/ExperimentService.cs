@@ -1,12 +1,8 @@
-﻿using System.Globalization;
-using CsvHelper;
-using CsvHelper.Configuration;
-using Google.Protobuf.Reflection;
+﻿using CsvHelper;
 using LoRa;
 using LoraGateway.Models;
 using LoraGateway.Services.Contracts;
 using LoraGateway.Utils;
-using ScottPlot;
 
 namespace LoraGateway.Services;
 
@@ -19,6 +15,7 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
 
     private bool _isStarted = false;
     private bool _hasCrashed = false;
+    private bool _initReceived = false;
     private bool _deviceRlncRoundTerminated;
     private uint? _lastResultGenerationIndex;
     private DateTime _lastUpdateReceived = DateTime.Now;
@@ -72,11 +69,13 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
 
     public async Task ProcessInitAck(string deviceSource, RlncRemoteFlashResponse response)
     {
-        _logger.LogInformation("Source {Source} init command Frags{FragCount} Gens{GenCount}", 
+        _logger.LogInformation("Source {Source} init command Frags{FragCount} Gens{GenCount}",
             deviceSource,
             response.TotalFrameCount,
             response.GenerationCount);
 
+        _initReceived = true;
+        
         var store = _fuotaManagerService.GetStore();
         store.GenerationSize = response.GenerationSize;
         store.GenerationSizeRedundancy = response.GenerationRedundancySize;
@@ -105,8 +104,11 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
         {
             _lastUpdateReceived = DateTime.Now;
             _decodingUpdatesReceived.Add(update);
-            _logger.LogInformation("Update RX {Dropped} {Received} Gen{Gen}", update.MissedGenFragments,
-                update.ReceivedFragments, update.CurrentGenerationIndex);
+            _logger.LogInformation("Update RX {Dropped} {Received} Gen{Gen} Success {Success}",
+                update.MissedGenFragments,
+                update.ReceivedFragments,
+                update.CurrentGenerationIndex,
+                update.Success);
         }
         catch (Exception e)
         {
@@ -133,11 +135,10 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
         _lastUpdateReceived = DateTime.Now;
         while (per <= cappedMax && !_hasCrashed)
         {
-            var result = _cancellationTokenSource.TryReset();
             _decodingUpdatesReceived.Clear();
             _lastResultGenerationIndex = null;
 
-            _logger.LogInformation("Next gen started. CT: {CT}", result);
+            _logger.LogInformation("Next gen started");
             _fuotaManagerService.SetPacketErrorRate(per);
             _currentPer = per;
 
@@ -153,18 +154,25 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
             _serialProcessorService.SetDeviceFilter(fuotaConfig.TargetedNickname);
             _deviceRlncRoundTerminated = false;
 
-            _logger.LogInformation("PER {Per} - Awaiting {Ms} Ms", per, experimentConfig.ExperimentUpdateTimeout);
-            _serialProcessorService.SendUnicastTransmitCommand(loraMessageStart, fuotaConfig.UartFakeLoRaRxMode);
-
             // Await initial response with used config (so we can dynamically update FuotaManager)
-            // await Task.WhenAny(Task.Delay(experimentConfig.ExperimentUpdateTimeout);
+            _initReceived = false;
+            _serialProcessorService.SendUnicastTransmitCommand(loraMessageStart, fuotaConfig.UartFakeLoRaRxMode);
+            _logger.LogInformation("PER {Per} - Awaiting {Ms} Ms", per, experimentConfig.ExperimentInitAckTimeout);
+            await Task.Delay(experimentConfig.ExperimentInitAckTimeout, _cancellationTokenSource.Token);
 
+            if (!_initReceived)
+            {
+                _cancellationTokenSource.Cancel();
+                _logger.LogInformation("Init not received, exiting experiment");
+                _hasCrashed = true;
+                break;
+            }
 
             // Await any update or failure
             var timeDiff = DateTime.Now - _lastUpdateReceived;
             while (timeDiff.Milliseconds < experimentConfig.ExperimentUpdateTimeout && !_deviceRlncRoundTerminated)
             {
-                _logger.LogInformation("Awaiting...");
+                _cancellationTokenSource.TryReset();
                 await Task.WhenAny(Task.Delay(experimentConfig.ExperimentUpdateTimeout, _cancellationTokenSource.Token),
                     AwaitTermination(_cancellationTokenSource.Token));
                 timeDiff = DateTime.Now - _lastUpdateReceived;
@@ -189,7 +197,10 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
             await Task.Delay(2000);
         }
 
-        ExportPlot();
+        if (!_hasCrashed)
+        {
+            ExportPlot();
+        }
 
         _logger.LogInformation("Experiment done");
         _dataPoints = null;
@@ -259,8 +270,6 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
         {
             await Task.Delay(500, ct).ConfigureAwait(true);
         }
-
-        _logger.LogInformation("Cancelled termination");
     }
 
     private void ExportPlot()
@@ -346,14 +355,16 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
             }
 
             var total = lastGenUpdate.ReceivedFragments + lastGenUpdate.MissedGenFragments;
-            _logger.LogWarning("Appending loss {MissedGenFragments} out of {TotalFragments}",
+            _logger.LogWarning(
+                "Appending missed result (Success:{Success}) PER {MissedGenFragments} out of {TotalFragments}",
+                lastGenUpdate.Success,
                 lastGenUpdate.MissedGenFragments, total);
 
             var per = (float)lastGenUpdate.MissedGenFragments / total;
             _dataPoints.Add(new()
             {
                 Rank = 0,
-                Success = false,
+                Success = lastGenUpdate.Success,
                 GenerationIndex = lastGenUpdate.CurrentGenerationIndex,
                 GenerationTotalPackets = total,
                 GenerationRedundancyUsed = fuotaConfig.GenerationSizeRedundancy,
