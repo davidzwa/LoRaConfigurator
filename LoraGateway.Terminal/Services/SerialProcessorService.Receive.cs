@@ -168,7 +168,7 @@ public partial class SerialProcessorService
 
     private async Task ReceiveLoRaMeasurement(string portName, UartResponse response)
     {
-        var bodyCase = response.LoraMeasurement.DownlinkPayload.BodyCase;
+        var bodyCase = response.LoraMeasurement?.DownlinkPayload.BodyCase;
         if (bodyCase is LoRaMessage.BodyOneofCase.ExperimentResponse
             or LoRaMessage.BodyOneofCase.RlncRemoteFlashResponse or LoRaMessage.BodyOneofCase.None)
         {

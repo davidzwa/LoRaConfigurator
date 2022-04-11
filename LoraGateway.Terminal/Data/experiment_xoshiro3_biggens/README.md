@@ -6,3 +6,7 @@ rlnc_200f_10b_fake_14g_15r_1409709959rng_notused.bin is therefore marked `_notus
 
 Observations:
 11/04 I notice bad performance for 10g, also I see that beyond PER 0.5 there is almost no use in measuring
+11/04 Ok I found that beyond gen 12 we get consistent failures: this does not make any sense as those generations should succeed given the Update messages saying 17 dropped vs 23 received for 20/21 required.
+
+Conclusion:
+Have to dig for runtime bugs for gen12+ or PRNG issues....
