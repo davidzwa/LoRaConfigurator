@@ -244,7 +244,7 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
             GenerationSize = Store.GenerationSize
         });
 
-        _logger.LogWarning("Using new PRNG seed/state {Seed}", _rlncEncodingService.GetGeneratorState());
+        _logger.LogDebug("Using new PRNG seed/state {Seed}", _rlncEncodingService.GetGeneratorState());
         var genCountResult =
             (uint)_rlncEncodingService.PreprocessGenerations(_firmwarePackets, Store.GenerationSize);
 

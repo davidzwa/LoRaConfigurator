@@ -139,7 +139,7 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
             _logger.LogInformation("PER {Per} - Awaiting {Ms} Ms", per, experimentConfig.ExperimentTimeout);
             _serialProcessorService.SendUnicastTransmitCommand(loraMessageStart, fuotaConfig.UartFakeLoRaRxMode);
 
-            // Await completion            
+            // Await any update or failure            
             await Task.WhenAny(Task.Delay(experimentConfig.ExperimentTimeout, _cancellationTokenSource.Token),
                 AwaitTermination(_cancellationTokenSource.Token));
 

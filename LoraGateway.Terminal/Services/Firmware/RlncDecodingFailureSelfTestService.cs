@@ -26,34 +26,35 @@ public class RlncDecodingFailureSelfTestService
 
     public async Task RunSelfTest()
     {
-        List<bool> resultsXoshiro = new List<bool>();
+        // List<bool> resultsXoshiro = new List<bool>();
+        // List<bool> resultsLfsr = new List<bool>();
         List<bool> resultsXoshiro8 = new List<bool>();
-        List<bool> resultsLfsr = new List<bool>();
         for (int i = 0; i < 1000; i++)
         {
             // var resultLfsr = await RunSelfTestRound(RlncEncodingService.RandomGeneratorType.Lfsr);
             // resultsLfsr.Add(resultLfsr);
-            var resultXoshiro = await RunSelfTestRound(RlncEncodingService.RandomGeneratorType.System);
-            resultsXoshiro.Add(resultXoshiro);
+            // var resultXoshiro = await RunSelfTestRound(RlncEncodingService.RandomGeneratorType.System);
+            // resultsXoshiro.Add(resultXoshiro);
+            _fuotaManagerService.SetPrngSeed((uint)rng.Next());
             var resultXoshiro8 = await RunSelfTestRound(RlncEncodingService.RandomGeneratorType.XoShiRoStarStar8);
             resultsXoshiro8.Add(resultXoshiro8);
         }
 
-        var successSystem = resultsXoshiro.Count(b => b);
-        var failedSystem = resultsXoshiro.Count(b => !b);
-        var totalSystem = resultsXoshiro.Count;
-        _logger.LogInformation("Result Xoshiro Success {Succeeded} vs Failed {Failed} out of {Total} Total",
-            successSystem,
-            failedSystem,
-            totalSystem);
-
-        var successLfsr = resultsLfsr.Count(b => b);
-        var failedLfsr = resultsLfsr.Count(b => !b);
-        var totalLfsr = resultsLfsr.Count;
-        _logger.LogInformation("Results LFSR Success {Succeeded} vs Failed {Failed} out of {Total} Total",
-            successLfsr,
-            failedLfsr,
-            totalLfsr);
+        // var successSystem = resultsXoshiro.Count(b => b);
+        // var failedSystem = resultsXoshiro.Count(b => !b);
+        // var totalSystem = resultsXoshiro.Count;
+        // _logger.LogInformation("Result Xoshiro Success {Succeeded} vs Failed {Failed} out of {Total} Total",
+        //     successSystem,
+        //     failedSystem,
+        //     totalSystem);
+        //
+        // var successLfsr = resultsLfsr.Count(b => b);
+        // var failedLfsr = resultsLfsr.Count(b => !b);
+        // var totalLfsr = resultsLfsr.Count;
+        // _logger.LogInformation("Results LFSR Success {Succeeded} vs Failed {Failed} out of {Total} Total",
+        //     successLfsr,
+        //     failedLfsr,
+        //     totalLfsr);
         
         var successXoShiro8 = resultsXoshiro8.Count(b => b);
         var failedXoShiro8 = resultsXoshiro8.Count(b => !b);

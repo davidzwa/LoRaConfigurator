@@ -61,14 +61,14 @@ namespace LoRa {
             "IAEoDRIZChFMYXN0RGVjb2RlZE51bWJlchgEIAEoDRIZChFSZWNlaXZlZEZy",
             "YWdtZW50cxgFIAEoDRIaChJNaXNzZWRHZW5GcmFnbWVudHMYBiABKA0SHgoW",
             "Q3VycmVudEdlbmVyYXRpb25JbmRleBgHIAEoDSIsCg5EZWNvZGluZ01hdHJp",
-            "eBIMCgRDb2xzGAEgASgNEgwKBFJvd3MYAiABKA0imgIKDkRlY29kaW5nVXBk",
+            "eBIMCgRDb2xzGAEgASgNEgwKBFJvd3MYAiABKA0iqwIKDkRlY29kaW5nVXBk",
             "YXRlEhIKCk1hdHJpeENyYzgYASABKA0SFAoMRmlyc3RSb3dDcmM4GAIgASgN",
             "EhMKC0xhc3RSb3dDcmM4GAMgASgNEhQKDExhc3RSb3dJbmRleBgEIAEoDRIU",
             "CgxSYW5rUHJvZ3Jlc3MYBSABKA0SGQoRUmVjZWl2ZWRGcmFnbWVudHMYBiAB",
             "KA0SHgoWQ3VycmVudEdlbmVyYXRpb25JbmRleBgHIAEoDRIRCglJc1J1bm5p",
             "bmcYCCABKAgSGQoRVXNlZFBybmdTZWVkU3RhdGUYCSABKA0SGAoQQ3VycmVu",
-            "dFBybmdTdGF0ZRgKIAEoDRIaChJNaXNzZWRHZW5GcmFnbWVudHMYCyABKA1C",
-            "B6oCBExvUmFiBnByb3RvMw=="));
+            "dFBybmdTdGF0ZRgKIAEoDRIaChJNaXNzZWRHZW5GcmFnbWVudHMYCyABKA0S",
+            "DwoHU3VjY2VzcxgMIAEoCEIHqgIETG9SYWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LoRa.ExperimentConfigReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -86,7 +86,7 @@ namespace LoRa {
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncTerminationCommand), global::LoRa.RlncTerminationCommand.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DecodingResult), global::LoRa.DecodingResult.Parser, new[]{ "Success", "MatrixRank", "FirstDecodedNumber", "LastDecodedNumber", "ReceivedFragments", "MissedGenFragments", "CurrentGenerationIndex" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DecodingMatrix), global::LoRa.DecodingMatrix.Parser, new[]{ "Cols", "Rows" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DecodingUpdate), global::LoRa.DecodingUpdate.Parser, new[]{ "MatrixCrc8", "FirstRowCrc8", "LastRowCrc8", "LastRowIndex", "RankProgress", "ReceivedFragments", "CurrentGenerationIndex", "IsRunning", "UsedPrngSeedState", "CurrentPrngState", "MissedGenFragments" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DecodingUpdate), global::LoRa.DecodingUpdate.Parser, new[]{ "MatrixCrc8", "FirstRowCrc8", "LastRowCrc8", "LastRowIndex", "RankProgress", "ReceivedFragments", "CurrentGenerationIndex", "IsRunning", "UsedPrngSeedState", "CurrentPrngState", "MissedGenFragments", "Success" }, null, null, null, null)
           }));
     }
     #endregion
@@ -4280,6 +4280,7 @@ namespace LoRa {
       usedPrngSeedState_ = other.usedPrngSeedState_;
       currentPrngState_ = other.currentPrngState_;
       missedGenFragments_ = other.missedGenFragments_;
+      success_ = other.success_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -4421,6 +4422,18 @@ namespace LoRa {
       }
     }
 
+    /// <summary>Field number for the "Success" field.</summary>
+    public const int SuccessFieldNumber = 12;
+    private bool success_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Success {
+      get { return success_; }
+      set {
+        success_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -4447,6 +4460,7 @@ namespace LoRa {
       if (UsedPrngSeedState != other.UsedPrngSeedState) return false;
       if (CurrentPrngState != other.CurrentPrngState) return false;
       if (MissedGenFragments != other.MissedGenFragments) return false;
+      if (Success != other.Success) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -4465,6 +4479,7 @@ namespace LoRa {
       if (UsedPrngSeedState != 0) hash ^= UsedPrngSeedState.GetHashCode();
       if (CurrentPrngState != 0) hash ^= CurrentPrngState.GetHashCode();
       if (MissedGenFragments != 0) hash ^= MissedGenFragments.GetHashCode();
+      if (Success != false) hash ^= Success.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -4527,6 +4542,10 @@ namespace LoRa {
         output.WriteRawTag(88);
         output.WriteUInt32(MissedGenFragments);
       }
+      if (Success != false) {
+        output.WriteRawTag(96);
+        output.WriteBool(Success);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -4581,6 +4600,10 @@ namespace LoRa {
         output.WriteRawTag(88);
         output.WriteUInt32(MissedGenFragments);
       }
+      if (Success != false) {
+        output.WriteRawTag(96);
+        output.WriteBool(Success);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -4623,6 +4646,9 @@ namespace LoRa {
       }
       if (MissedGenFragments != 0) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(MissedGenFragments);
+      }
+      if (Success != false) {
+        size += 1 + 1;
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -4668,6 +4694,9 @@ namespace LoRa {
       }
       if (other.MissedGenFragments != 0) {
         MissedGenFragments = other.MissedGenFragments;
+      }
+      if (other.Success != false) {
+        Success = other.Success;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -4728,6 +4757,10 @@ namespace LoRa {
             MissedGenFragments = input.ReadUInt32();
             break;
           }
+          case 96: {
+            Success = input.ReadBool();
+            break;
+          }
         }
       }
     #endif
@@ -4785,6 +4818,10 @@ namespace LoRa {
           }
           case 88: {
             MissedGenFragments = input.ReadUInt32();
+            break;
+          }
+          case 96: {
+            Success = input.ReadBool();
             break;
           }
         }

@@ -42,6 +42,7 @@ public class RlncFlashBlobService
         _packetsGenerated = 0;
         _bytesWritten = 0;
         await _fuotaManagerService.LoadStore();
+        _fuotaManagerService.SetPrngSeed((uint)new Random().Next());
         await _fuotaManagerService.StartFuotaSession(false);
 
         var session = _fuotaManagerService.GetCurrentSession();

@@ -80,7 +80,7 @@ public partial class SerialProcessorService
             // "RLNC_LAG_FRAG",
             // "RLNC_PER_SEED",
             "RLNC_ERR",
-            "RNG",
+            // "RNG",
             "DevConfStop",
             "PUSH-BUTTON"
         };
