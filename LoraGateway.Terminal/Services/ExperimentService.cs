@@ -21,6 +21,7 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
     private bool _hasCrashed = false;
     private bool _deviceRlncRoundTerminated;
     private uint? _lastResultGenerationIndex;
+    private DateTime _lastUpdateReceived = DateTime.Now;
     private List<DecodingUpdate> _decodingUpdatesReceived = new();
     private float _currentPer = 0.0f;
     private CancellationTokenSource _cancellationTokenSource = new();
@@ -69,6 +70,21 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
         _logger.LogInformation("Stopped due to externally received termination");
     }
 
+    public async Task ProcessInitAck(string deviceSource, RlncRemoteFlashResponse response)
+    {
+        _logger.LogInformation("Source {Source} init command Frags{FragCount} Gens{GenCount}", 
+            deviceSource,
+            response.TotalFrameCount,
+            response.GenerationCount);
+
+        var store = _fuotaManagerService.GetStore();
+        store.GenerationSize = response.GenerationSize;
+        store.GenerationSizeRedundancy = response.GenerationRedundancySize;
+        store.FakeFragmentSize = response.FrameSize;
+        store.FakeFragmentCount = response.TotalFrameCount;
+        _fuotaManagerService.UpdateConfig(store);
+    }
+
     public async Task ProcessResult(DecodingResult result)
     {
         try
@@ -87,6 +103,7 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
     {
         try
         {
+            _lastUpdateReceived = DateTime.Now;
             _decodingUpdatesReceived.Add(update);
             _logger.LogInformation("Update RX {Dropped} {Received} Gen{Gen}", update.MissedGenFragments,
                 update.ReceivedFragments, update.CurrentGenerationIndex);
@@ -113,6 +130,7 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
 
         var per = min;
         var cappedMax = Math.Min(0.99999f, max);
+        _lastUpdateReceived = DateTime.Now;
         while (per <= cappedMax && !_hasCrashed)
         {
             var result = _cancellationTokenSource.TryReset();
@@ -131,17 +149,26 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
             }
 
             var fuotaConfig = _fuotaManagerService.GetStore();
-
             var loraMessageStart = _fuotaManagerService.RemoteSessionStartCommand();
             _serialProcessorService.SetDeviceFilter(fuotaConfig.TargetedNickname);
             _deviceRlncRoundTerminated = false;
 
-            _logger.LogInformation("PER {Per} - Awaiting {Ms} Ms", per, experimentConfig.ExperimentTimeout);
+            _logger.LogInformation("PER {Per} - Awaiting {Ms} Ms", per, experimentConfig.ExperimentUpdateTimeout);
             _serialProcessorService.SendUnicastTransmitCommand(loraMessageStart, fuotaConfig.UartFakeLoRaRxMode);
 
-            // Await any update or failure            
-            await Task.WhenAny(Task.Delay(experimentConfig.ExperimentTimeout, _cancellationTokenSource.Token),
-                AwaitTermination(_cancellationTokenSource.Token));
+            // Await initial response with used config (so we can dynamically update FuotaManager)
+            // await Task.WhenAny(Task.Delay(experimentConfig.ExperimentUpdateTimeout);
+
+
+            // Await any update or failure
+            var timeDiff = DateTime.Now - _lastUpdateReceived;
+            while (timeDiff.Milliseconds < experimentConfig.ExperimentUpdateTimeout && !_deviceRlncRoundTerminated)
+            {
+                _logger.LogInformation("Awaiting...");
+                await Task.WhenAny(Task.Delay(experimentConfig.ExperimentUpdateTimeout, _cancellationTokenSource.Token),
+                    AwaitTermination(_cancellationTokenSource.Token));
+                timeDiff = DateTime.Now - _lastUpdateReceived;
+            }
 
             _logger.LogInformation("Await completed");
 
@@ -149,7 +176,6 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
             _serialProcessorService.SendUnicastTransmitCommand(loraMessageStop, fuotaConfig.UartFakeLoRaRxMode);
 
             per += step;
-            await Task.Delay(500);
 
             // Check if some generations were not registered
             var genCount = fuotaConfig.GetGenerationCount();
@@ -173,8 +199,6 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
     {
         var currentGenIndex = result.CurrentGenerationIndex;
         var fuotaConfig = _fuotaManagerService.GetStore();
-
-
         if (_lastResultGenerationIndex == result.CurrentGenerationIndex)
         {
             throw new InvalidOperationException("Generations already received - Experiment failure");
@@ -187,12 +211,6 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
             AppendLostGenerationsToDataPoints(lostIndices, currentGenIndex);
         }
 
-        // Now set it straight
-        if (_lastResultGenerationIndex == null)
-        {
-            _lastResultGenerationIndex = currentGenIndex - 1;
-        }
-
         var success = result.Success;
         var missedFrags = result.MissedGenFragments;
         var receivedFrags = result.ReceivedFragments;
@@ -203,7 +221,7 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
         {
             Rank = result.MatrixRank,
             Success = success,
-            GenerationIndex = result.CurrentGenerationIndex,
+            GenerationIndex = currentGenIndex,
             GenerationTotalPackets = fuotaConfig.GenerationSize,
             GenerationRedundancyUsed = fuotaConfig.GenerationSizeRedundancy,
             MissedPackets = result.MissedGenFragments,

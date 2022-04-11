@@ -10,7 +10,7 @@ public class ExperimentConfig : ICloneable
     // private int RssiAvgWindow { get; set; } = 10;
     // Not implemented yet
     // private int SnrAvgWindow { get; set; } = 10;
-    public int ExperimentTimeout { get; set; }= 30000;
+    public int ExperimentUpdateTimeout { get; set; }= 2000;
 
     public bool RandomPerSeed { get; set; } = true;
 

@@ -13,6 +13,12 @@ public class InitFuotaSession
     public string Message { get; set; }
 }
 
+public class RlncRemoteFlashResponseEvent
+{
+    public string Source { get; set; }
+    public RlncRemoteFlashResponse FlashResponse { get; set; }
+}
+
 public class DecodingUpdateEvent
 {
     public string Source { get; set; }
@@ -32,7 +38,8 @@ public class StopFuotaSession
     public string Message { get; set; }
 }
 
-public class FuotaEventHandler : IEventHandler<InitFuotaSession>, IEventHandler<StopFuotaSession>, IEventHandler<DecodingUpdateEvent>, IEventHandler<DecodingResultEvent>
+public class FuotaEventHandler : IEventHandler<InitFuotaSession>, IEventHandler<RlncRemoteFlashResponseEvent>,
+    IEventHandler<StopFuotaSession>, IEventHandler<DecodingUpdateEvent>, IEventHandler<DecodingResultEvent>
 {
     private readonly FuotaSessionHostedService _fuotaSessionHostedService;
     private readonly FuotaManagerService _fuotaManagerService;
@@ -48,34 +55,42 @@ public class FuotaEventHandler : IEventHandler<InitFuotaSession>, IEventHandler<
         _fuotaManagerService = fuotaManagerService;
         _experimentService = experimentService;
     }
-    
+
     public async Task HandleEventAsync(InitFuotaSession @event)
     {
         await _fuotaSessionHostedService.StartAsync(@event.Token);
     }
-    
+
+    public async Task HandleEventAsync(RlncRemoteFlashResponseEvent @event)
+    {
+        await _experimentService.ProcessInitAck(@event.Source, @event.FlashResponse);
+    }
+
     public async Task HandleEventAsync(DecodingUpdateEvent @event)
     {
-        if (@event.DecodingUpdate != null) {
+        if (@event.DecodingUpdate != null)
+        {
             _fuotaManagerService.SaveFuotaDebuggingProgress(@event.Source, @event.DecodingUpdate, @event.Payload);
         }
-        
-        if (_fuotaManagerService.IsRemoteSessionStarted) {
+
+        if (_fuotaManagerService.IsRemoteSessionStarted)
+        {
             await _experimentService.ProcessUpdate(@event.DecodingUpdate!);
         }
     }
 
     public async Task HandleEventAsync(DecodingResultEvent @event)
     {
-        if (_fuotaManagerService.IsRemoteSessionStarted) {
+        if (_fuotaManagerService.IsRemoteSessionStarted)
+        {
             await _experimentService.ProcessResult(@event.DecodingResult);
         }
     }
-    
+
     public async Task HandleEventAsync(StopFuotaSession @event)
     {
         await _fuotaSessionHostedService.StopAsync(@event.Token);
-        
+
         // An external factor caused FUOTA cancellation
         if (_fuotaManagerService.IsFuotaSessionEnabled())
         {

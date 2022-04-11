@@ -39,36 +39,40 @@ namespace LoRa {
             "c011bHRpY2FzdBgFIAEoCBIRCglEZXZpY2VJZDAYBiABKA0SFwoPRGVidWdN",
             "YXRyaXhVYXJ0GAcgASgIEhkKEURlYnVnRnJhZ21lbnRVYXJ0GAggASgIIhwK",
             "GlJsbmNSZW1vdGVGbGFzaFN0b3BDb21tYW5kIhsKGVJsbmNRdWVyeVJlbW90",
-            "ZUZsYXNoU3RhdGUi7gEKF1JsbmNSZW1vdGVGbGFzaFJlc3BvbnNlEhYKDlJs",
+            "ZUZsYXNoU3RhdGUioAMKF1JsbmNSZW1vdGVGbGFzaFJlc3BvbnNlEhYKDlJs",
             "bmNGbGFzaFN0YXRlGAEgASgNEhgKEFJsbmNTZXNzaW9uU3RhdGUYAiABKA0S",
             "FgoOQ3VycmVudFR4UG93ZXIYAyABKAUSGgoSQ3VycmVudFR4QmFuZHdpZHRo",
             "GAQgASgNEhkKEUN1cnJlbnRUeERhdGFSYXRlGAUgASgNEhkKEUN1cnJlbnRU",
             "aW1lckRlbGF5GAYgASgNEh0KFUN1cnJlbnRTZXRJc011bHRpY2FzdBgHIAEo",
-            "CBIYChBDdXJyZW50RGV2aWNlSWQwGAggASgNIsICChVSbG5jSW5pdENvbmZp",
-            "Z0NvbW1hbmQSFgoOR2VuZXJhdGlvblNpemUYASABKA0SIAoYR2VuZXJhdGlv",
-            "blJlZHVuZGFuY3lTaXplGAIgASgNEhcKD0dlbmVyYXRpb25Db3VudBgDIAEo",
-            "DRIRCglGcmFtZVNpemUYBCABKA0SFwoPVG90YWxGcmFtZUNvdW50GAUgASgN",
-            "EhMKC0ZpZWxkRGVncmVlGAYgASgNEhEKCUZpZWxkUG9seRgHIAEoDRIXCg9E",
-            "ZWJ1Z01hdHJpeFVhcnQYCiABKAgSGQoRRGVidWdGcmFnbWVudFVhcnQYCyAB",
-            "KAgSNgoTcmVjZXB0aW9uUmF0ZUNvbmZpZxgMIAEoCzIULlJlY2VwdGlvblJh",
-            "dGVDb25maWdIAIgBAUIWChRfcmVjZXB0aW9uUmF0ZUNvbmZpZyIsChNSbG5j",
-            "RW5jb2RlZEZyYWdtZW50EhUKDVBSbmdTZWVkU3RhdGUYASABKA0iUAoYUmxu",
-            "Y0ZsYXNoRW5jb2RlZEZyYWdtZW50EhUKDVBSbmdTZWVkU3RhdGUYASABKA0S",
-            "DAoETWV0YRgCIAEoDBIPCgdQYXlsb2FkGAMgASgMIioKD1JsbmNTdGF0ZVVw",
-            "ZGF0ZRIXCg9HZW5lcmF0aW9uSW5kZXgYASABKA0iGAoWUmxuY1Rlcm1pbmF0",
-            "aW9uQ29tbWFuZCLDAQoORGVjb2RpbmdSZXN1bHQSDwoHU3VjY2VzcxgBIAEo",
-            "CBISCgpNYXRyaXhSYW5rGAIgASgNEhoKEkZpcnN0RGVjb2RlZE51bWJlchgD",
-            "IAEoDRIZChFMYXN0RGVjb2RlZE51bWJlchgEIAEoDRIZChFSZWNlaXZlZEZy",
-            "YWdtZW50cxgFIAEoDRIaChJNaXNzZWRHZW5GcmFnbWVudHMYBiABKA0SHgoW",
-            "Q3VycmVudEdlbmVyYXRpb25JbmRleBgHIAEoDSIsCg5EZWNvZGluZ01hdHJp",
-            "eBIMCgRDb2xzGAEgASgNEgwKBFJvd3MYAiABKA0iqwIKDkRlY29kaW5nVXBk",
-            "YXRlEhIKCk1hdHJpeENyYzgYASABKA0SFAoMRmlyc3RSb3dDcmM4GAIgASgN",
-            "EhMKC0xhc3RSb3dDcmM4GAMgASgNEhQKDExhc3RSb3dJbmRleBgEIAEoDRIU",
-            "CgxSYW5rUHJvZ3Jlc3MYBSABKA0SGQoRUmVjZWl2ZWRGcmFnbWVudHMYBiAB",
-            "KA0SHgoWQ3VycmVudEdlbmVyYXRpb25JbmRleBgHIAEoDRIRCglJc1J1bm5p",
-            "bmcYCCABKAgSGQoRVXNlZFBybmdTZWVkU3RhdGUYCSABKA0SGAoQQ3VycmVu",
-            "dFBybmdTdGF0ZRgKIAEoDRIaChJNaXNzZWRHZW5GcmFnbWVudHMYCyABKA0S",
-            "DwoHU3VjY2VzcxgMIAEoCEIHqgIETG9SYWIGcHJvdG8z"));
+            "CBIYChBDdXJyZW50RGV2aWNlSWQwGAggASgNEhYKDkdlbmVyYXRpb25TaXpl",
+            "GAkgASgNEiAKGEdlbmVyYXRpb25SZWR1bmRhbmN5U2l6ZRgKIAEoDRIXCg9H",
+            "ZW5lcmF0aW9uQ291bnQYCyABKA0SEQoJRnJhbWVTaXplGAwgASgNEhcKD1Rv",
+            "dGFsRnJhbWVDb3VudBgNIAEoDRIxChNyZWNlcHRpb25SYXRlQ29uZmlnGA4g",
+            "ASgLMhQuUmVjZXB0aW9uUmF0ZUNvbmZpZyLCAgoVUmxuY0luaXRDb25maWdD",
+            "b21tYW5kEhYKDkdlbmVyYXRpb25TaXplGAEgASgNEiAKGEdlbmVyYXRpb25S",
+            "ZWR1bmRhbmN5U2l6ZRgCIAEoDRIXCg9HZW5lcmF0aW9uQ291bnQYAyABKA0S",
+            "EQoJRnJhbWVTaXplGAQgASgNEhcKD1RvdGFsRnJhbWVDb3VudBgFIAEoDRIT",
+            "CgtGaWVsZERlZ3JlZRgGIAEoDRIRCglGaWVsZFBvbHkYByABKA0SFwoPRGVi",
+            "dWdNYXRyaXhVYXJ0GAogASgIEhkKEURlYnVnRnJhZ21lbnRVYXJ0GAsgASgI",
+            "EjYKE3JlY2VwdGlvblJhdGVDb25maWcYDCABKAsyFC5SZWNlcHRpb25SYXRl",
+            "Q29uZmlnSACIAQFCFgoUX3JlY2VwdGlvblJhdGVDb25maWciLAoTUmxuY0Vu",
+            "Y29kZWRGcmFnbWVudBIVCg1QUm5nU2VlZFN0YXRlGAEgASgNIlAKGFJsbmNG",
+            "bGFzaEVuY29kZWRGcmFnbWVudBIVCg1QUm5nU2VlZFN0YXRlGAEgASgNEgwK",
+            "BE1ldGEYAiABKAwSDwoHUGF5bG9hZBgDIAEoDCIqCg9SbG5jU3RhdGVVcGRh",
+            "dGUSFwoPR2VuZXJhdGlvbkluZGV4GAEgASgNIhgKFlJsbmNUZXJtaW5hdGlv",
+            "bkNvbW1hbmQiwwEKDkRlY29kaW5nUmVzdWx0Eg8KB1N1Y2Nlc3MYASABKAgS",
+            "EgoKTWF0cml4UmFuaxgCIAEoDRIaChJGaXJzdERlY29kZWROdW1iZXIYAyAB",
+            "KA0SGQoRTGFzdERlY29kZWROdW1iZXIYBCABKA0SGQoRUmVjZWl2ZWRGcmFn",
+            "bWVudHMYBSABKA0SGgoSTWlzc2VkR2VuRnJhZ21lbnRzGAYgASgNEh4KFkN1",
+            "cnJlbnRHZW5lcmF0aW9uSW5kZXgYByABKA0iLAoORGVjb2RpbmdNYXRyaXgS",
+            "DAoEQ29scxgBIAEoDRIMCgRSb3dzGAIgASgNIqsCCg5EZWNvZGluZ1VwZGF0",
+            "ZRISCgpNYXRyaXhDcmM4GAEgASgNEhQKDEZpcnN0Um93Q3JjOBgCIAEoDRIT",
+            "CgtMYXN0Um93Q3JjOBgDIAEoDRIUCgxMYXN0Um93SW5kZXgYBCABKA0SFAoM",
+            "UmFua1Byb2dyZXNzGAUgASgNEhkKEVJlY2VpdmVkRnJhZ21lbnRzGAYgASgN",
+            "Eh4KFkN1cnJlbnRHZW5lcmF0aW9uSW5kZXgYByABKA0SEQoJSXNSdW5uaW5n",
+            "GAggASgIEhkKEVVzZWRQcm5nU2VlZFN0YXRlGAkgASgNEhgKEEN1cnJlbnRQ",
+            "cm5nU3RhdGUYCiABKA0SGgoSTWlzc2VkR2VuRnJhZ21lbnRzGAsgASgNEg8K",
+            "B1N1Y2Nlc3MYDCABKAhCB6oCBExvUmFiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LoRa.ExperimentConfigReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -78,7 +82,7 @@ namespace LoRa {
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncRemoteFlashStartCommand), global::LoRa.RlncRemoteFlashStartCommand.Parser, new[]{ "TransmitConfiguration", "ReceptionRateConfig", "TimerDelay", "SetIsMulticast", "DeviceId0", "DebugMatrixUart", "DebugFragmentUart" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncRemoteFlashStopCommand), global::LoRa.RlncRemoteFlashStopCommand.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncQueryRemoteFlashState), global::LoRa.RlncQueryRemoteFlashState.Parser, null, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncRemoteFlashResponse), global::LoRa.RlncRemoteFlashResponse.Parser, new[]{ "RlncFlashState", "RlncSessionState", "CurrentTxPower", "CurrentTxBandwidth", "CurrentTxDataRate", "CurrentTimerDelay", "CurrentSetIsMulticast", "CurrentDeviceId0" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncRemoteFlashResponse), global::LoRa.RlncRemoteFlashResponse.Parser, new[]{ "RlncFlashState", "RlncSessionState", "CurrentTxPower", "CurrentTxBandwidth", "CurrentTxDataRate", "CurrentTimerDelay", "CurrentSetIsMulticast", "CurrentDeviceId0", "GenerationSize", "GenerationRedundancySize", "GenerationCount", "FrameSize", "TotalFrameCount", "ReceptionRateConfig" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncInitConfigCommand), global::LoRa.RlncInitConfigCommand.Parser, new[]{ "GenerationSize", "GenerationRedundancySize", "GenerationCount", "FrameSize", "TotalFrameCount", "FieldDegree", "FieldPoly", "DebugMatrixUart", "DebugFragmentUart", "ReceptionRateConfig" }, new[]{ "ReceptionRateConfig" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncEncodedFragment), global::LoRa.RlncEncodedFragment.Parser, new[]{ "PRngSeedState" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncFlashEncodedFragment), global::LoRa.RlncFlashEncodedFragment.Parser, new[]{ "PRngSeedState", "Meta", "Payload" }, null, null, null, null),
@@ -1836,6 +1840,12 @@ namespace LoRa {
       currentTimerDelay_ = other.currentTimerDelay_;
       currentSetIsMulticast_ = other.currentSetIsMulticast_;
       currentDeviceId0_ = other.currentDeviceId0_;
+      generationSize_ = other.generationSize_;
+      generationRedundancySize_ = other.generationRedundancySize_;
+      generationCount_ = other.generationCount_;
+      frameSize_ = other.frameSize_;
+      totalFrameCount_ = other.totalFrameCount_;
+      receptionRateConfig_ = other.receptionRateConfig_ != null ? other.receptionRateConfig_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1947,6 +1957,81 @@ namespace LoRa {
       }
     }
 
+    /// <summary>Field number for the "GenerationSize" field.</summary>
+    public const int GenerationSizeFieldNumber = 9;
+    private uint generationSize_;
+    /// <summary>
+    /// Experiment configuration loaded from RlncInitCommand
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint GenerationSize {
+      get { return generationSize_; }
+      set {
+        generationSize_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "GenerationRedundancySize" field.</summary>
+    public const int GenerationRedundancySizeFieldNumber = 10;
+    private uint generationRedundancySize_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint GenerationRedundancySize {
+      get { return generationRedundancySize_; }
+      set {
+        generationRedundancySize_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "GenerationCount" field.</summary>
+    public const int GenerationCountFieldNumber = 11;
+    private uint generationCount_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint GenerationCount {
+      get { return generationCount_; }
+      set {
+        generationCount_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "FrameSize" field.</summary>
+    public const int FrameSizeFieldNumber = 12;
+    private uint frameSize_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint FrameSize {
+      get { return frameSize_; }
+      set {
+        frameSize_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "TotalFrameCount" field.</summary>
+    public const int TotalFrameCountFieldNumber = 13;
+    private uint totalFrameCount_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint TotalFrameCount {
+      get { return totalFrameCount_; }
+      set {
+        totalFrameCount_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "receptionRateConfig" field.</summary>
+    public const int ReceptionRateConfigFieldNumber = 14;
+    private global::LoRa.ReceptionRateConfig receptionRateConfig_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LoRa.ReceptionRateConfig ReceptionRateConfig {
+      get { return receptionRateConfig_; }
+      set {
+        receptionRateConfig_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -1970,6 +2055,12 @@ namespace LoRa {
       if (CurrentTimerDelay != other.CurrentTimerDelay) return false;
       if (CurrentSetIsMulticast != other.CurrentSetIsMulticast) return false;
       if (CurrentDeviceId0 != other.CurrentDeviceId0) return false;
+      if (GenerationSize != other.GenerationSize) return false;
+      if (GenerationRedundancySize != other.GenerationRedundancySize) return false;
+      if (GenerationCount != other.GenerationCount) return false;
+      if (FrameSize != other.FrameSize) return false;
+      if (TotalFrameCount != other.TotalFrameCount) return false;
+      if (!object.Equals(ReceptionRateConfig, other.ReceptionRateConfig)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1985,6 +2076,12 @@ namespace LoRa {
       if (CurrentTimerDelay != 0) hash ^= CurrentTimerDelay.GetHashCode();
       if (CurrentSetIsMulticast != false) hash ^= CurrentSetIsMulticast.GetHashCode();
       if (CurrentDeviceId0 != 0) hash ^= CurrentDeviceId0.GetHashCode();
+      if (GenerationSize != 0) hash ^= GenerationSize.GetHashCode();
+      if (GenerationRedundancySize != 0) hash ^= GenerationRedundancySize.GetHashCode();
+      if (GenerationCount != 0) hash ^= GenerationCount.GetHashCode();
+      if (FrameSize != 0) hash ^= FrameSize.GetHashCode();
+      if (TotalFrameCount != 0) hash ^= TotalFrameCount.GetHashCode();
+      if (receptionRateConfig_ != null) hash ^= ReceptionRateConfig.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -2035,6 +2132,30 @@ namespace LoRa {
         output.WriteRawTag(64);
         output.WriteUInt32(CurrentDeviceId0);
       }
+      if (GenerationSize != 0) {
+        output.WriteRawTag(72);
+        output.WriteUInt32(GenerationSize);
+      }
+      if (GenerationRedundancySize != 0) {
+        output.WriteRawTag(80);
+        output.WriteUInt32(GenerationRedundancySize);
+      }
+      if (GenerationCount != 0) {
+        output.WriteRawTag(88);
+        output.WriteUInt32(GenerationCount);
+      }
+      if (FrameSize != 0) {
+        output.WriteRawTag(96);
+        output.WriteUInt32(FrameSize);
+      }
+      if (TotalFrameCount != 0) {
+        output.WriteRawTag(104);
+        output.WriteUInt32(TotalFrameCount);
+      }
+      if (receptionRateConfig_ != null) {
+        output.WriteRawTag(114);
+        output.WriteMessage(ReceptionRateConfig);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -2077,6 +2198,30 @@ namespace LoRa {
         output.WriteRawTag(64);
         output.WriteUInt32(CurrentDeviceId0);
       }
+      if (GenerationSize != 0) {
+        output.WriteRawTag(72);
+        output.WriteUInt32(GenerationSize);
+      }
+      if (GenerationRedundancySize != 0) {
+        output.WriteRawTag(80);
+        output.WriteUInt32(GenerationRedundancySize);
+      }
+      if (GenerationCount != 0) {
+        output.WriteRawTag(88);
+        output.WriteUInt32(GenerationCount);
+      }
+      if (FrameSize != 0) {
+        output.WriteRawTag(96);
+        output.WriteUInt32(FrameSize);
+      }
+      if (TotalFrameCount != 0) {
+        output.WriteRawTag(104);
+        output.WriteUInt32(TotalFrameCount);
+      }
+      if (receptionRateConfig_ != null) {
+        output.WriteRawTag(114);
+        output.WriteMessage(ReceptionRateConfig);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -2110,6 +2255,24 @@ namespace LoRa {
       }
       if (CurrentDeviceId0 != 0) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(CurrentDeviceId0);
+      }
+      if (GenerationSize != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(GenerationSize);
+      }
+      if (GenerationRedundancySize != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(GenerationRedundancySize);
+      }
+      if (GenerationCount != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(GenerationCount);
+      }
+      if (FrameSize != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(FrameSize);
+      }
+      if (TotalFrameCount != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(TotalFrameCount);
+      }
+      if (receptionRateConfig_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(ReceptionRateConfig);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -2146,6 +2309,27 @@ namespace LoRa {
       }
       if (other.CurrentDeviceId0 != 0) {
         CurrentDeviceId0 = other.CurrentDeviceId0;
+      }
+      if (other.GenerationSize != 0) {
+        GenerationSize = other.GenerationSize;
+      }
+      if (other.GenerationRedundancySize != 0) {
+        GenerationRedundancySize = other.GenerationRedundancySize;
+      }
+      if (other.GenerationCount != 0) {
+        GenerationCount = other.GenerationCount;
+      }
+      if (other.FrameSize != 0) {
+        FrameSize = other.FrameSize;
+      }
+      if (other.TotalFrameCount != 0) {
+        TotalFrameCount = other.TotalFrameCount;
+      }
+      if (other.receptionRateConfig_ != null) {
+        if (receptionRateConfig_ == null) {
+          ReceptionRateConfig = new global::LoRa.ReceptionRateConfig();
+        }
+        ReceptionRateConfig.MergeFrom(other.ReceptionRateConfig);
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -2194,6 +2378,33 @@ namespace LoRa {
             CurrentDeviceId0 = input.ReadUInt32();
             break;
           }
+          case 72: {
+            GenerationSize = input.ReadUInt32();
+            break;
+          }
+          case 80: {
+            GenerationRedundancySize = input.ReadUInt32();
+            break;
+          }
+          case 88: {
+            GenerationCount = input.ReadUInt32();
+            break;
+          }
+          case 96: {
+            FrameSize = input.ReadUInt32();
+            break;
+          }
+          case 104: {
+            TotalFrameCount = input.ReadUInt32();
+            break;
+          }
+          case 114: {
+            if (receptionRateConfig_ == null) {
+              ReceptionRateConfig = new global::LoRa.ReceptionRateConfig();
+            }
+            input.ReadMessage(ReceptionRateConfig);
+            break;
+          }
         }
       }
     #endif
@@ -2239,6 +2450,33 @@ namespace LoRa {
           }
           case 64: {
             CurrentDeviceId0 = input.ReadUInt32();
+            break;
+          }
+          case 72: {
+            GenerationSize = input.ReadUInt32();
+            break;
+          }
+          case 80: {
+            GenerationRedundancySize = input.ReadUInt32();
+            break;
+          }
+          case 88: {
+            GenerationCount = input.ReadUInt32();
+            break;
+          }
+          case 96: {
+            FrameSize = input.ReadUInt32();
+            break;
+          }
+          case 104: {
+            TotalFrameCount = input.ReadUInt32();
+            break;
+          }
+          case 114: {
+            if (receptionRateConfig_ == null) {
+              ReceptionRateConfig = new global::LoRa.ReceptionRateConfig();
+            }
+            input.ReadMessage(ReceptionRateConfig);
             break;
           }
         }

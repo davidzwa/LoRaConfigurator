@@ -87,6 +87,7 @@ public static class LoraGateway
                     builder.AddInMemoryEventBus(subscriber =>
                     {
                         subscriber.Subscribe<InitFuotaSession, FuotaEventHandler>();
+                        subscriber.Subscribe<RlncRemoteFlashResponseEvent, FuotaEventHandler>();
                         subscriber.Subscribe<DecodingUpdateEvent, FuotaEventHandler>();
                         subscriber.Subscribe<DecodingResultEvent, FuotaEventHandler>();
                         subscriber.Subscribe<StopFuotaSession, FuotaEventHandler>();

@@ -90,8 +90,8 @@ public class RlncEncodingService
     {
         if (_settings == null) throw new ValidationException("Encoding settings were not provided");
 
-        if (_settings.GenerationSize > 16)
-            throw new ValidationException("Generation size greater than 16 is prohibited");
+        if (_settings.GenerationSize > 24)
+            throw new ValidationException("Generation size greater than 24 is prohibited");
 
         if (_settings.GenerationSize == 0) throw new ValidationException("Generation size 0 is prohibited");
     }

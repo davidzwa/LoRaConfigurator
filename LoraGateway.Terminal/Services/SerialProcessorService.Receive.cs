@@ -153,7 +153,7 @@ public partial class SerialProcessorService
         var perReal = (float)missedGenFragments / total;
         
         _logger.LogInformation(
-            "[{Name}, DecodingResult] Success: {Payload} GenIndex {GenIndex} Rank: {MatrixRank} PER {Rx}/{Total}={Per:F1} FirstNumber: {FirstNumber} LastNumber: {LastNumber}",
+            "[{Name}, DecodingResult] Success: {Payload} GenIndex {GenIndex} Rank: {MatrixRank} PER {Rx}/{Total}={Per:F2} FirstNumber: {FirstNumber} LastNumber: {LastNumber}",
             portName,
             success,
             decodingResult.CurrentGenerationIndex,
@@ -166,13 +166,13 @@ public partial class SerialProcessorService
         );
     }
 
-    async Task ReceiveLoRaMeasurement(string portName, UartResponse response)
+    private async Task ReceiveLoRaMeasurement(string portName, UartResponse response)
     {
         var bodyCase = response.LoraMeasurement.DownlinkPayload.BodyCase;
         if (bodyCase is LoRaMessage.BodyOneofCase.ExperimentResponse
             or LoRaMessage.BodyOneofCase.RlncRemoteFlashResponse or LoRaMessage.BodyOneofCase.None)
         {
-            InnerLoRaPacketHandler(portName, response.LoraMeasurement?.DownlinkPayload);
+            await InnerLoRaPacketHandler(portName, response.LoraMeasurement?.DownlinkPayload);
         }
 
         // Suppress anything else   
@@ -207,7 +207,7 @@ public partial class SerialProcessorService
         // }
     }
 
-    private void InnerLoRaPacketHandler(string portName, LoRaMessage? message)
+    private async Task InnerLoRaPacketHandler(string portName, LoRaMessage? message)
     {
         if (message == null) return;
 
@@ -231,6 +231,12 @@ public partial class SerialProcessorService
             _logger.LogInformation(
                 "[{PortName}] RLNC Response\n TxPower:{TXPower} BW:{BW} SF{SF}\n Period:{Delay} Session:{SessionState} Flash:{FlashState} MC:{MC} DeviceId0:{DeviceId0}",
                 portName, txPower, bandwidth, spreadingFactor, delay, sessionState, flashState, mc, deviceId0);
+            
+            await _eventPublisher.PublishEventAsync(new RlncRemoteFlashResponseEvent()
+            {
+                Source = portName,
+                FlashResponse = body
+            });
         }
         else
         {

@@ -53,6 +53,12 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         _rlncEncodingService.GeneratorType = type;
     }
 
+    public void UpdateConfig(FuotaConfig newConfig)
+    {
+        Store = newConfig;
+        WriteStore();
+    }
+    
     public void SetPrngSeed(UInt32 seed)
     {
         Store.PRngSeedState = seed;
