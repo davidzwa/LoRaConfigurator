@@ -42,6 +42,7 @@ public class RlncFlashBlobService
         _packetsGenerated = 0;
         _bytesWritten = 0;
         await _fuotaManagerService.LoadStore();
+        _fuotaManagerService.SetPrngSeed((uint)new Random().Next());
         await _fuotaManagerService.StartFuotaSession(false);
 
         var session = _fuotaManagerService.GetCurrentSession();
@@ -196,7 +197,7 @@ public class RlncFlashBlobService
                 DebugFragmentUart = config.DebugFragmentUart,
                 DebugMatrixUart = config.DebugMatrixUart,
                 // Calculated value from config store
-                GenerationCount = fuotaSession.GenerationCount,
+                GenerationCount = config.GetGenerationCount(),
                 GenerationSize = config.GenerationSize,
                 GenerationRedundancySize = config.GenerationSizeRedundancy,
                 // We dont have the LFSR_32 implemented and thus do not offer this option yet

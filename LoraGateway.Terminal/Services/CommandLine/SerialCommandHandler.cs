@@ -86,6 +86,7 @@ public class SerialCommandHandler
     public Command GenerateBlobCommand()
     {
         var command = new Command("rlnc-blob");
+        command.AddAlias("blob");
         command.Handler = CommandHandler.Create(
             async () => { await _rlncFlashBlobService.GenerateFlashBlob(); });
         return command;
@@ -146,7 +147,12 @@ public class SerialCommandHandler
         var command = new Command("rlnc-load");
         command.AddAlias("rl");
         command.Handler = CommandHandler.Create(
-            async () => { await _fuotaManagerService.ReloadStore(); });
+            async () =>
+            {
+                await _fuotaManagerService.ReloadStore();
+                await _experimentService.LoadStore();
+                _logger.LogInformation("Reloaded Fuota and Experiment config stores");
+            });
         return command;
     }
 

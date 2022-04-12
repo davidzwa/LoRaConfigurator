@@ -66,9 +66,9 @@
       "HardwareId": "4784163-808997123-808661810",
       "Id": 4784163,
       "NickName": "A0",
-      "FirmwareVersion": "3.4.1.0",
+      "FirmwareVersion": "3.5.0.0",
       "RegisteredAt": "132848143947603040",
-      "LastPortName": "COM4",
+      "LastPortName": "COM5",
       "Meta": null
     },
     {
@@ -84,9 +84,9 @@
       "HardwareId": "5570643-859328791-892940854",
       "Id": 5570643,
       "NickName": "A2",
-      "FirmwareVersion": "3.4.1.0",
+      "FirmwareVersion": "3.5.0.0",
       "RegisteredAt": "132848144244789782",
-      "LastPortName": "COM3",
+      "LastPortName": "COM9",
       "Meta": null
     },
     {

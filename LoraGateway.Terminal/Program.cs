@@ -44,14 +44,6 @@ public static class LoraGateway
                 .WriteTo.File(GetUniqueLogFile("_serial"), LogEventLevel.Debug))
             .CreateLogger();
         
-        // var rng = new XoshiroStarStar(new byte [] {0x32, 0x33, 0x34, 0x35});
-        //
-        // var data = rng.NextBytes(32);
-        // foreach (var entry in data)
-        // {
-        //     Log.Information("{Byte}", entry);
-        // }
-        
         await CreateHostBuilder(args).RunConsoleAsync();
     }
 
@@ -87,6 +79,7 @@ public static class LoraGateway
                     builder.AddInMemoryEventBus(subscriber =>
                     {
                         subscriber.Subscribe<InitFuotaSession, FuotaEventHandler>();
+                        subscriber.Subscribe<RlncRemoteFlashResponseEvent, FuotaEventHandler>();
                         subscriber.Subscribe<DecodingUpdateEvent, FuotaEventHandler>();
                         subscriber.Subscribe<DecodingResultEvent, FuotaEventHandler>();
                         subscriber.Subscribe<StopFuotaSession, FuotaEventHandler>();

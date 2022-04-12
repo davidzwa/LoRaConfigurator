@@ -1,0 +1,9 @@
+{
+  "MinPer": 0,
+  "MaxPer": 6,
+  "PerStep": 3,
+  "RssiAvgWindow": 10,
+  "SnrAvgWindow": 10,
+  "ExperimentTimeout": 100000,
+  "RandomPerSeed": true
+}
