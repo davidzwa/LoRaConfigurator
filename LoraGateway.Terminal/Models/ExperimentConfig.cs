@@ -2,9 +2,9 @@
 
 public class ExperimentConfig : ICloneable
 {
-    public float MinPer { get; set; } = 0.05f;
-    public float MaxPer { get; set; } = 0.50f;
-    public float PerStep { get; set; } = 0.05f;
+    public uint MinPer { get; set; } = 5;
+    public uint MaxPer { get; set; } = 50;
+    public uint PerStep { get; set; } = 5;
 
     // Not implemented yet
     // private int RssiAvgWindow { get; set; } = 10;

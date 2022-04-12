@@ -65,14 +65,16 @@ namespace LoRa {
             "KA0SGQoRTGFzdERlY29kZWROdW1iZXIYBCABKA0SGQoRUmVjZWl2ZWRGcmFn",
             "bWVudHMYBSABKA0SGgoSTWlzc2VkR2VuRnJhZ21lbnRzGAYgASgNEh4KFkN1",
             "cnJlbnRHZW5lcmF0aW9uSW5kZXgYByABKA0iLAoORGVjb2RpbmdNYXRyaXgS",
-            "DAoEQ29scxgBIAEoDRIMCgRSb3dzGAIgASgNIqsCCg5EZWNvZGluZ1VwZGF0",
+            "DAoEQ29scxgBIAEoDRIMCgRSb3dzGAIgASgNIugCCg5EZWNvZGluZ1VwZGF0",
             "ZRISCgpNYXRyaXhDcmM4GAEgASgNEhQKDEZpcnN0Um93Q3JjOBgCIAEoDRIT",
             "CgtMYXN0Um93Q3JjOBgDIAEoDRIUCgxMYXN0Um93SW5kZXgYBCABKA0SFAoM",
             "UmFua1Byb2dyZXNzGAUgASgNEhkKEVJlY2VpdmVkRnJhZ21lbnRzGAYgASgN",
             "Eh4KFkN1cnJlbnRHZW5lcmF0aW9uSW5kZXgYByABKA0SEQoJSXNSdW5uaW5n",
             "GAggASgIEhkKEVVzZWRQcm5nU2VlZFN0YXRlGAkgASgNEhgKEEN1cnJlbnRQ",
             "cm5nU3RhdGUYCiABKA0SGgoSTWlzc2VkR2VuRnJhZ21lbnRzGAsgASgNEg8K",
-            "B1N1Y2Nlc3MYDCABKAhCB6oCBExvUmFiBnByb3RvMw=="));
+            "B1N1Y2Nlc3MYDCABKAgSHAoUQ3VycmVudEZyYWdtZW50SW5kZXgYDSABKA0S",
+            "HQoVQ3VycmVudFNlcXVlbmNlTnVtYmVyGA4gASgNQgeqAgRMb1JhYgZwcm90",
+            "bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LoRa.ExperimentConfigReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -90,7 +92,7 @@ namespace LoRa {
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RlncTerminationCommand), global::LoRa.RlncTerminationCommand.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DecodingResult), global::LoRa.DecodingResult.Parser, new[]{ "Success", "MatrixRank", "FirstDecodedNumber", "LastDecodedNumber", "ReceivedFragments", "MissedGenFragments", "CurrentGenerationIndex" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DecodingMatrix), global::LoRa.DecodingMatrix.Parser, new[]{ "Cols", "Rows" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DecodingUpdate), global::LoRa.DecodingUpdate.Parser, new[]{ "MatrixCrc8", "FirstRowCrc8", "LastRowCrc8", "LastRowIndex", "RankProgress", "ReceivedFragments", "CurrentGenerationIndex", "IsRunning", "UsedPrngSeedState", "CurrentPrngState", "MissedGenFragments", "Success" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DecodingUpdate), global::LoRa.DecodingUpdate.Parser, new[]{ "MatrixCrc8", "FirstRowCrc8", "LastRowCrc8", "LastRowIndex", "RankProgress", "ReceivedFragments", "CurrentGenerationIndex", "IsRunning", "UsedPrngSeedState", "CurrentPrngState", "MissedGenFragments", "Success", "CurrentFragmentIndex", "CurrentSequenceNumber" }, null, null, null, null)
           }));
     }
     #endregion
@@ -4519,6 +4521,8 @@ namespace LoRa {
       currentPrngState_ = other.currentPrngState_;
       missedGenFragments_ = other.missedGenFragments_;
       success_ = other.success_;
+      currentFragmentIndex_ = other.currentFragmentIndex_;
+      currentSequenceNumber_ = other.currentSequenceNumber_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -4672,6 +4676,30 @@ namespace LoRa {
       }
     }
 
+    /// <summary>Field number for the "CurrentFragmentIndex" field.</summary>
+    public const int CurrentFragmentIndexFieldNumber = 13;
+    private uint currentFragmentIndex_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint CurrentFragmentIndex {
+      get { return currentFragmentIndex_; }
+      set {
+        currentFragmentIndex_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "CurrentSequenceNumber" field.</summary>
+    public const int CurrentSequenceNumberFieldNumber = 14;
+    private uint currentSequenceNumber_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint CurrentSequenceNumber {
+      get { return currentSequenceNumber_; }
+      set {
+        currentSequenceNumber_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -4699,6 +4727,8 @@ namespace LoRa {
       if (CurrentPrngState != other.CurrentPrngState) return false;
       if (MissedGenFragments != other.MissedGenFragments) return false;
       if (Success != other.Success) return false;
+      if (CurrentFragmentIndex != other.CurrentFragmentIndex) return false;
+      if (CurrentSequenceNumber != other.CurrentSequenceNumber) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -4718,6 +4748,8 @@ namespace LoRa {
       if (CurrentPrngState != 0) hash ^= CurrentPrngState.GetHashCode();
       if (MissedGenFragments != 0) hash ^= MissedGenFragments.GetHashCode();
       if (Success != false) hash ^= Success.GetHashCode();
+      if (CurrentFragmentIndex != 0) hash ^= CurrentFragmentIndex.GetHashCode();
+      if (CurrentSequenceNumber != 0) hash ^= CurrentSequenceNumber.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -4784,6 +4816,14 @@ namespace LoRa {
         output.WriteRawTag(96);
         output.WriteBool(Success);
       }
+      if (CurrentFragmentIndex != 0) {
+        output.WriteRawTag(104);
+        output.WriteUInt32(CurrentFragmentIndex);
+      }
+      if (CurrentSequenceNumber != 0) {
+        output.WriteRawTag(112);
+        output.WriteUInt32(CurrentSequenceNumber);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -4842,6 +4882,14 @@ namespace LoRa {
         output.WriteRawTag(96);
         output.WriteBool(Success);
       }
+      if (CurrentFragmentIndex != 0) {
+        output.WriteRawTag(104);
+        output.WriteUInt32(CurrentFragmentIndex);
+      }
+      if (CurrentSequenceNumber != 0) {
+        output.WriteRawTag(112);
+        output.WriteUInt32(CurrentSequenceNumber);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -4887,6 +4935,12 @@ namespace LoRa {
       }
       if (Success != false) {
         size += 1 + 1;
+      }
+      if (CurrentFragmentIndex != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(CurrentFragmentIndex);
+      }
+      if (CurrentSequenceNumber != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(CurrentSequenceNumber);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -4935,6 +4989,12 @@ namespace LoRa {
       }
       if (other.Success != false) {
         Success = other.Success;
+      }
+      if (other.CurrentFragmentIndex != 0) {
+        CurrentFragmentIndex = other.CurrentFragmentIndex;
+      }
+      if (other.CurrentSequenceNumber != 0) {
+        CurrentSequenceNumber = other.CurrentSequenceNumber;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -4999,6 +5059,14 @@ namespace LoRa {
             Success = input.ReadBool();
             break;
           }
+          case 104: {
+            CurrentFragmentIndex = input.ReadUInt32();
+            break;
+          }
+          case 112: {
+            CurrentSequenceNumber = input.ReadUInt32();
+            break;
+          }
         }
       }
     #endif
@@ -5060,6 +5128,14 @@ namespace LoRa {
           }
           case 96: {
             Success = input.ReadBool();
+            break;
+          }
+          case 104: {
+            CurrentFragmentIndex = input.ReadUInt32();
+            break;
+          }
+          case 112: {
+            CurrentSequenceNumber = input.ReadUInt32();
             break;
           }
         }
