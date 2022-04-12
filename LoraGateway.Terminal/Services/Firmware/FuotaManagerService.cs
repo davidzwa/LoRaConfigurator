@@ -24,7 +24,7 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
     private List<UnencodedPacket> _firmwarePackets = new();
 
     // Whether we attempted to start a remote session
-    public bool IsRemoteSessionStarted = false;
+    public bool IsRemoteSessionStarted;
 
     public FuotaManagerService(
         ILogger<FuotaManagerService> logger,
@@ -184,11 +184,11 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         return _currentFuotaSession;
     }
 
-    public async Task StartFuotaSession(bool publishEvent)
+    public async Task StartFuotaSession(bool publishEvent, uint startingGenerationIndex = 0)
     {
         _logger.LogDebug("Starting FUOTA session");
 
-        await PrepareFuotaSession();
+        await PrepareFuotaSession(startingGenerationIndex);
 
         var result = _cancellation.TryReset();
         if (!result) _logger.LogDebug("Resetting of FUOTA cancellation source failed. Continuing anyway");
@@ -209,7 +209,7 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         ClearFuotaSession();
     }
 
-    private async Task PrepareFuotaSession()
+    private async Task PrepareFuotaSession(uint startGenerationIndex = 0)
     {
         if (Store == null)
             throw new ValidationException(
@@ -245,7 +245,7 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         _rlncEncodingService.ConfigureEncoding(new EncodingConfiguration
         {
             PRngSeedState = Store.PRngSeedState,
-            CurrentGeneration = 0,
+            CurrentGeneration = startGenerationIndex,
             FieldDegree = Store.FieldDegree,
             GenerationSize = Store.GenerationSize
         });
@@ -254,7 +254,7 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         var genCountResult =
             (uint)_rlncEncodingService.PreprocessGenerations(_firmwarePackets, Store.GenerationSize);
 
-        _currentFuotaSession = new FuotaSession(Store, genCountResult)
+        _currentFuotaSession = new FuotaSession(Store, genCountResult, startGenerationIndex)
         {
             TotalFragmentCount = (uint)_firmwarePackets.Count
         };

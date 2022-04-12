@@ -29,7 +29,7 @@ public class RlncDecodingFailureSelfTestService
         // List<bool> resultsXoshiro = new List<bool>();
         // List<bool> resultsLfsr = new List<bool>();
         List<bool> resultsXoshiro8 = new List<bool>();
-        for (int i = 0; i < 1000; i++)
+        for (int i = 0; i < 10; i++)
         {
             // var resultLfsr = await RunSelfTestRound(RlncEncodingService.RandomGeneratorType.Lfsr);
             // resultsLfsr.Add(resultLfsr);
@@ -75,7 +75,7 @@ public class RlncDecodingFailureSelfTestService
         var config = await _fuotaManagerService.LoadStore();
         _fuotaManagerService.SetGeneratorType(prngType);
 
-        await _fuotaManagerService.StartFuotaSession(false);
+        await _fuotaManagerService.StartFuotaSession(false, 11);
         var generationFragments = new List<FragmentWithSeed>();
         while (!_fuotaManagerService.IsCurrentGenerationComplete())
         {
@@ -105,25 +105,29 @@ public class RlncDecodingFailureSelfTestService
         // _logger.LogInformation("{EncodedPackets} Packets decoded", encodedPackets.Count);
 
         // var eSymbolMatrix = encodedPackets.ToEncodingMatrix();
-        // PrintMatrixSize(eSymbolMatrix);
-        // var eMatrixRow = SerialUtil.MatrixToString(eSymbolMatrix);
-        // _logger.LogInformation("Encoded Enc. Matrix \n{MatrixRow}", eMatrixRow);
-
+        
         // var lastPacket = decodedPackets.Last();
         // var encVector = lastPacket.EncodingVector;
         // var lastSymb = encVector.Last();
         // var success = lastSymb.Equals(GFSymbol.Unity);
+        var fullMatrix = decodedPackets.ToAugmentedMatrix();
+        var allCols = fullMatrix.GetLength(1);
         var symbolMatrix = decodedPackets.ToEncodingMatrix();
+        var eMatrixRow = SerialUtil.MatrixToString(fullMatrix);
+        _logger.LogInformation("Encoded Enc. Matrix \n{MatrixRow}", eMatrixRow);
         // PrintMatrixSize(symbolMatrix);
 
         var rowsDecode1 = symbolMatrix.GetLength(0);
         var colsDecode1 = symbolMatrix.GetLength(1);
-        var matrixRowDecode1 = SerialUtil.MatrixToString(symbolMatrix);
+        var matrixRowDecode1 = SerialUtil.MatrixToString(fullMatrix);
         var successDecode1 = rowsDecode1 == config.GenerationSize;
-        _logger.LogDebug("Decoded Matrix (Success: {Success}, Rank: {Rank} vs {GenSize})",
+        _logger.LogInformation("Decoded Matrix (Success: {Success}, Rank: {Rank} vs {GenSize}) Pivot-1 {Pivot1} Pivot {Pivot} LastVal {LastVal}",
             successDecode1,
             colsDecode1,
-            config.GenerationSize);
+            config.GenerationSize,
+            symbolMatrix[rowsDecode1-2, colsDecode1-2],
+            symbolMatrix[rowsDecode1-1, colsDecode1-1],
+            fullMatrix[rowsDecode1-1, allCols-1]);
 
         await _fuotaManagerService.StopFuotaSession(false);
 

@@ -35,6 +35,11 @@ public class RlncEncodingService
         ResetEncoding();
     }
 
+    public int GetGenerationCount()
+    {
+        return _generations.Count;
+    }
+    
     public int CurrentGenerationIndex { get; private set; }
 
     public int PacketSymbols { get; private set; }
@@ -83,7 +88,7 @@ public class RlncEncodingService
         }
 
         PacketSymbols = 0;
-        CurrentGenerationIndex = 0;
+        CurrentGenerationIndex = (int)settings.CurrentGeneration;
     }
 
     private void ValidateEncodingConfig()

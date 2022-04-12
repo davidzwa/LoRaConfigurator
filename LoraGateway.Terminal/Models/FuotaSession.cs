@@ -4,11 +4,12 @@ namespace LoraGateway.Models;
 
 public class FuotaSession
 {
-    public FuotaSession(FuotaConfig config, uint generationCount)
+    public FuotaSession(FuotaConfig config, uint generationCount, uint startGenerationIndex)
     {
         Config = config.Clone() as FuotaConfig;
         GenerationCount = generationCount;
         TimeStarted = DateTime.Now;
+        CurrentGenerationIndex = startGenerationIndex;
     }
 
     public void IncrementGenerationIndex()

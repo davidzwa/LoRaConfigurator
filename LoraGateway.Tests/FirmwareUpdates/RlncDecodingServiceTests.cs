@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LoraGateway.Services.Firmware;
@@ -12,6 +13,8 @@ namespace LoraGateway.Tests.FirmwareUpdates;
 
 public class RlncDecodingServiceTests
 {
+    private BlobFragmentationService blobService = new();
+
     [Fact]
     public async Task DependentFailureDecodePacketsTest()
     {
@@ -19,9 +22,8 @@ public class RlncDecodingServiceTests
         var frameSize = 10; // 10 symbols per packet
         var generationSize = (uint)5; // 5 packets (= 5 enc vectors)
         var generationExtra = (uint)0; // no packets overhead
-        var totalPacketsOutput = generationSize;
 
-        var unencodedPackets = await new BlobFragmentationService().GenerateFakeFirmwareAsync(firmwareSize, frameSize);
+        var unencodedPackets = await blobService.GenerateFakeFirmwareAsync(firmwareSize, frameSize);
         var service = new RlncEncodingService();
         service.PreprocessGenerations(unencodedPackets, generationSize);
         var encodedPackets = service.PrecodeCurrentGeneration(generationExtra).EncodedPackets;
@@ -44,7 +46,7 @@ public class RlncDecodingServiceTests
         var generationExtra = (uint)0; // no packets overhead
         var totalPacketsOutput = generationSize;
 
-        var unencodedPackets = await new BlobFragmentationService().GenerateFakeFirmwareAsync(firmwareSize, frameSize);
+        var unencodedPackets = await blobService.GenerateFakeFirmwareAsync(firmwareSize, frameSize);
         var encodingService = new RlncEncodingService();
         encodingService.PreprocessGenerations(unencodedPackets, generationSize);
         var encodedPackets = encodingService.PrecodeCurrentGeneration(generationExtra).EncodedPackets;
@@ -93,7 +95,7 @@ public class RlncDecodingServiceTests
         var generationExtra = (uint)0; // no packets overhead
         var totalPacketsOutput = generationSize;
 
-        var unencodedPackets = await new BlobFragmentationService().GenerateFakeFirmwareAsync(firmwareSize, frameSize);
+        var unencodedPackets = await blobService.GenerateFakeFirmwareAsync(firmwareSize, frameSize);
         var service = new RlncEncodingService();
         service.PreprocessGenerations(unencodedPackets, generationSize);
         var encodedPackets = service.PrecodeCurrentGeneration(generationExtra).EncodedPackets;
@@ -118,7 +120,7 @@ public class RlncDecodingServiceTests
         var generationExtra = (uint)1; // 1 packet overhead
         var totalPacketsOutput = generationExtra + generationSize;
 
-        var unencodedPackets = await new BlobFragmentationService().GenerateFakeFirmwareAsync(firmwareSize, frameSize);
+        var unencodedPackets = await blobService.GenerateFakeFirmwareAsync(firmwareSize, frameSize);
         var service = new RlncEncodingService();
         service.PreprocessGenerations(unencodedPackets, generationSize);
         var encodedPackets = service.PrecodeCurrentGeneration(generationExtra).EncodedPackets;
@@ -139,9 +141,8 @@ public class RlncDecodingServiceTests
         var frameSize = 10; // 10 symbols per packet
         var generationSize = (uint)5; // 5 packets (= 5 enc vectors)
         var generationExtra = (uint)5; // 1 packet overhead
-        var totalPacketsOutput = generationExtra + generationSize;
 
-        var unencodedPackets = await new BlobFragmentationService().GenerateFakeFirmwareAsync(firmwareSize, frameSize);
+        var unencodedPackets = await blobService.GenerateFakeFirmwareAsync(firmwareSize, frameSize);
         var service = new RlncEncodingService();
         service.PreprocessGenerations(unencodedPackets, generationSize);
         var encodedPackets = service.PrecodeCurrentGeneration(generationExtra).EncodedPackets;
@@ -163,7 +164,7 @@ public class RlncDecodingServiceTests
         var generationExtra = (uint)1; // 1 packet overhead
         var totalPacketsOutput = generationExtra + generationSize;
 
-        var unencodedPackets = await new BlobFragmentationService().GenerateFakeFirmwareAsync(firmwareSize, frameSize);
+        var unencodedPackets = await blobService.GenerateFakeFirmwareAsync(firmwareSize, frameSize);
         var service = new RlncEncodingService();
         service.PreprocessGenerations(unencodedPackets, generationSize);
         var generation = service.PrecodeCurrentGeneration(generationExtra);
@@ -210,7 +211,7 @@ public class RlncDecodingServiceTests
         var generationExtra = (uint)1;
         var totalPacketsOutput = generationExtra + generationSize;
 
-        var unencodedPackets = await new BlobFragmentationService().GenerateFakeFirmwareAsync(firmwareSize, frameSize);
+        var unencodedPackets = await blobService.GenerateFakeFirmwareAsync(firmwareSize, frameSize);
         var service = new RlncEncodingService();
         service.PreprocessGenerations(unencodedPackets, generationSize);
         var generation = service.PrecodeCurrentGeneration(generationExtra);
@@ -305,14 +306,15 @@ public class RlncDecodingServiceTests
                 0x1d, 0x0e, 0x07, 0x83, 0xc1, 0x60, 0x30, 0x18, 0x0c, 0x86, 0x00, 0x00, 0x00, 0x0c, 0xf2, 0xf2, 0xf2,
                 0xf2, 0xf2, 0xf2
             },
-            { // Empty row
+            {
+                // Empty row
                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
                 0x00, 0x00, 0x00
             }
         };
         var inputMatrix = inputBytes.BytesToMatrix();
         var decodedResultMatrix = RlncDecodingService.DecodeMatrix(inputMatrix, 5);
-        
+
         // We only get 0-8, which is expected with only 9 packets
         for (int i = 0; i < 8; i++)
         {
@@ -323,13 +325,14 @@ public class RlncDecodingServiceTests
     [Fact(DisplayName = "Codec test for specific C++ failure for 200f/15b/8gen/10r")]
     public async Task DecodeMatrixTestInternallyBigGeneration()
     {
-        var firmwareSize = 200;
+        var frameCount = 200;
         var frameSize = 15; // 15 symbols per packet
         var generationSize = (uint)8; // x frames in window (=> x enc vectors of x symbols each)
         var generationExtra = (uint)10; // x frames redundancy
         var totalPacketsOutput = generationExtra + generationSize;
 
-        var unencodedPackets = await new BlobFragmentationService().GenerateFakeFirmwareAsync(firmwareSize, frameSize);
+        var firmwareSize = frameCount * frameSize;
+        var unencodedPackets = await blobService.GenerateFakeFirmwareAsync(firmwareSize, frameSize);
         var service = new RlncEncodingService();
         service.PreprocessGenerations(unencodedPackets, generationSize);
         var generation = service.PrecodeCurrentGeneration(generationExtra);
@@ -356,13 +359,14 @@ public class RlncDecodingServiceTests
     [Fact(DisplayName = "Codec test for specific C++ failure for 200f/15b/9gen/20r")]
     public async Task DecodeMatrixTestInternallyBiggerGeneration()
     {
-        var firmwareSize = 200;
+        var frameCount = 200;
         var frameSize = 15; // 10 symbols per packet
         var generationSize = (uint)9; // 5 packets (= 5 enc vectors)
         var generationExtra = (uint)10; // 1 packet overhead
         var totalPacketsOutput = generationExtra + generationSize;
 
-        var unencodedPackets = await new BlobFragmentationService().GenerateFakeFirmwareAsync(firmwareSize, frameSize);
+        var firmwareSize = frameCount * frameSize;
+        var unencodedPackets = await blobService.GenerateFakeFirmwareAsync(firmwareSize, frameSize);
         var service = new RlncEncodingService();
         service.PreprocessGenerations(unencodedPackets, generationSize);
         var generation = service.PrecodeCurrentGeneration(generationExtra);
@@ -385,5 +389,67 @@ public class RlncDecodingServiceTests
         decodedPackets.Last().DecodingSuccess.ShouldBeFalse();
         decodedPackets.ShouldAllBe(p => p.DecodingSuccess == true || p.IsRedundant == true);
         decodedPackets.FindAll(p => p.DecodingSuccess).Count.ShouldBe((int)generationSize);
+    }
+
+    [Fact(DisplayName = "Codec test for specific C++ failure for 300f/10b/15gen/20r")]
+    public async Task DecodeMatrixTestInternallyBiggerGeneration300F()
+    {
+        var frameCount = 300;
+        var frameSize = 10; // x symbols per packet
+        var generationSize = 20; // x packets
+        var generationExtra = (uint)20; // x packet overhead
+        var totalPacketsOutput = generationExtra + generationSize;
+
+        var firmwareSize = frameCount * frameSize;
+        var frameRatio = (int)Math.Ceiling((float)firmwareSize / frameSize);
+        var genRatio = (float)firmwareSize / (generationSize * frameSize);
+        genRatio.ShouldBeLessThanOrEqualTo(15f);
+        var genCount = (int)Math.Ceiling(genRatio);
+        genCount.ShouldBe(15);
+
+        var unencodedPackets = await blobService.GenerateFakeFirmwareAsync(firmwareSize, frameSize);
+        unencodedPackets.Count().ShouldBe(frameRatio);
+        var chunks = unencodedPackets.Chunk(generationSize);
+        chunks.Count().ShouldBe(genCount);
+
+        var service = new RlncEncodingService();
+        service.PreprocessGenerations(unencodedPackets, (uint)generationSize);
+        var genCountService = service.GetGenerationCount();
+        genCountService.ShouldBe(genCount);
+        unencodedPackets.Count().ShouldBeLessThanOrEqualTo(genCount * generationSize);
+
+        var generationIndex = 0;
+        while (service.HasNextGeneration())
+        {
+            service.CurrentGenerationIndex.ShouldBe(generationIndex);
+            var generation = service.PrecodeCurrentGeneration(generationExtra);
+            var encodedFullAugmentedMatrix = generation.EncodedPackets.ToAugmentedMatrix();
+            
+            // Decode
+            var result = MatrixFunctions.Eliminate(encodedFullAugmentedMatrix, frameSize);
+            result.Length.ShouldBe((int)(totalPacketsOutput * (generationSize + frameSize)));
+            var decodedPackets = result.ToDecodedPackets(generationSize, frameSize);
+            for (int i = 0; i < generationSize; i++)
+            {
+                var sequenceNumberIndex = generationSize * generationIndex + i;
+                result[i, i].ShouldBe(new GFSymbol(0x01), $"Pivot number {i}");
+                var referencePacket = blobService.GenerateFakePacket(sequenceNumberIndex, frameSize);
+                var decodedPayload = new UnencodedPacket()
+                {
+                    Payload = decodedPackets[i].Payload
+                };
+                decodedPayload.ShouldBe(referencePacket);
+            }
+
+            decodedPackets.Count.ShouldBe((int)totalPacketsOutput);
+            decodedPackets.Last().DecodingSuccess.ShouldBeFalse();
+            decodedPackets.ShouldAllBe(p => p.DecodingSuccess == true || p.IsRedundant == true, $"GenerationIndex {generationIndex}");
+            decodedPackets.FindAll(p => p.DecodingSuccess).Count.ShouldBe((int)generationSize);
+
+            service.MoveNextGeneration();
+            generationIndex++;
+        }
+
+        generationIndex.ShouldBe(genCount - 1);
     }
 }

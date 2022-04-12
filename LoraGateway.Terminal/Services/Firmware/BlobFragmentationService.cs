@@ -41,18 +41,20 @@ public class BlobFragmentationService
 
         return Enumerable
             .Range(0, fragmentCount)
-            .Select(index =>
-            {
-                var splitInt = new IntByte {IntVal = index};
-                var payloadBytes = Enumerable.Repeat(new GFSymbol(0xFF), frameSize).ToList();
-                if (payloadBytes.Count > 0) payloadBytes[0] = new GFSymbol(splitInt.Byte3);
-                if (payloadBytes.Count > 1) payloadBytes[1] = new GFSymbol(splitInt.Byte2);
-                if (payloadBytes.Count > 2) payloadBytes[2] = new GFSymbol(splitInt.Byte1);
-                if (payloadBytes.Count > 3) payloadBytes[3] = new GFSymbol(splitInt.Byte0);
-
-                return new UnencodedPacket {Payload = payloadBytes};
-            })
+            .Select(index => GenerateFakePacket(index,frameSize))
             .ToList();
+    }
+
+    public UnencodedPacket GenerateFakePacket(int index, int frameSize)
+    {
+        var splitInt = new IntByte {IntVal = index};
+        var payloadBytes = Enumerable.Repeat(new GFSymbol(0xFF), frameSize).ToList();
+        if (payloadBytes.Count > 0) payloadBytes[0] = new GFSymbol(splitInt.Byte3);
+        if (payloadBytes.Count > 1) payloadBytes[1] = new GFSymbol(splitInt.Byte2);
+        if (payloadBytes.Count > 2) payloadBytes[2] = new GFSymbol(splitInt.Byte1);
+        if (payloadBytes.Count > 3) payloadBytes[3] = new GFSymbol(splitInt.Byte0);
+
+        return new UnencodedPacket {Payload = payloadBytes};
     }
 
     [StructLayout(LayoutKind.Explicit)]

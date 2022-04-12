@@ -9,4 +9,7 @@ Observations:
 11/04 Ok I found that beyond gen 12 we get consistent failures: this does not make any sense as those generations should succeed given the Update messages saying 17 dropped vs 23 received for 20/21 required.
 
 Conclusion:
-Have to dig for runtime bugs for gen12+ or PRNG issues....
+Have to dig for runtime bugs for gen12+ or PRNG issues.... Fixed!
+
+Conclusion 12/04:
+I found a bug in C#: it would register results with failure as permanent failure. I will stop sending Results altogether and depend on updates purely.

@@ -13,7 +13,7 @@
   "ApproxPacketErrorRate": 0.50000006,
   "OverridePacketErrorSeed": true,
   "DropUpdateCommands": true,
-  "PacketErrorSeed": 24614,
+  "PacketErrorSeed": 52524,
   "LocalUpdateIntervalMs": 50,
   "DebugMatrixUart": false,
   "DebugFragmentUart": false,
@@ -23,5 +23,5 @@
   "GenerationSize": 20,
   "GenerationSizeRedundancy": 20,
   "FieldDegree": 8,
-  "PRngSeedState": 1704028438
+  "PRngSeedState": 738331541
 }
