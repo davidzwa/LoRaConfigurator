@@ -28,6 +28,11 @@ public class ExperimentPlotService
     {
         return "experiment.png";
     }
+    
+    public string GetPlotMultiPerSuccessRateFileName()
+    {
+        return "experiment_multi_per_success_rate.png";
+    }
 
     public string GetErrorPlotFileName()
     {
@@ -108,9 +113,15 @@ public class ExperimentPlotService
 
     class GenSuccess
     {
-        public bool Success { get; set; }
-        public uint GenerationIndex { get; set; }
-        public float OriginalPer { get; set; }
+        public double Success { get; set; }
+        // public uint GenerationIndex { get; set; }
+        // public float OriginalPer { get; set; }
+    }
+
+    class PerSuccessRates
+    {
+        public float Per { get; set; }
+        public double[] SuccessRates { get; set; }
     }
     
     /**
@@ -119,11 +130,11 @@ public class ExperimentPlotService
     public void SaveMultiGenPlot(List<ExperimentDataUpdateEntry> filteredUpdateEntries, uint maxRedundancy)
     {
         // We first need to collect all Success vs Redundancy pairs for each PER
-        var plots = filteredUpdateEntries.GroupBy(f => f.PerConfig).Select(per =>
+        var perPlots = filteredUpdateEntries.GroupBy(f => f.PerConfig).Select(per =>
         {
             // Build up a histogram of redundancy vs successes
             var successRedundancyHist = new Dictionary<uint, List<GenSuccess>>();
-            foreach (var sample in per)
+            foreach (var genSample in per)
             {
                 // sample.Success
                 // if red == max => all lower have failed (successes 0)
@@ -135,27 +146,52 @@ public class ExperimentPlotService
                     {
                         successRedundancyHist.Add(i, new List<GenSuccess>());
                     }
+                    
+                    // Add the success sample for this redundancy (if succeeded)
                     successRedundancyHist[i].Add(new ()
                     {
-                        Success = sample.RedundancyUsed >= i && sample.Success,
-                        GenerationIndex = sample.GenerationIndex,
-                        OriginalPer = per.Key
+                        Success = genSample.RedundancyUsed >= i && genSample.Success ? 1.0 : 0.0
+                        // GenerationIndex = genSample.GenerationIndex,
+                        // OriginalPer = per.Key
                     });
                 }
-
             }
 
+            // Tuple of (Index: redundancy used, Value: success rate)
+            var redundancySuccessRatesTuples = successRedundancyHist.Select((k, v) => (k.Key, k.Value.Average(v => v.Success)));
+            
+            // Should validate the tuple is not incorrectly ordered
+            var redundancySuccessRates = redundancySuccessRatesTuples.Select(t => t.Item2);
+            
             // Convert histogram into rates
-            var successRates = new List<double>();
-            var redundanciesCounted = new List<double>();
-            return new
+            return new PerSuccessRates()
             {
-                Key = g.Key,
-                DataPoints = dataPoints.ToList()
+                Per = per.Key,
+                SuccessRates = redundancySuccessRates.ToArray()
             };
         });
+
+        var xAxis = Enumerable.Range(0, (int)maxRedundancy + 1).Select(v => (double)v).ToArray();
+        
+        SaveSuccessRatePerPlots(xAxis, perPlots.ToList());
     }
 
+    private void SaveSuccessRatePerPlots(double[] xAxis, List<PerSuccessRates> ySuccessRate)
+    {
+        var plt = new Plot(400, 300);
+        foreach (var perPlot in ySuccessRate)
+        {
+            var per100 = perPlot.Per * 100.0f;
+            plt.AddScatter(xAxis, perPlot.SuccessRates, label: $"PER {per100:F1}%");    
+        }
+        plt.Legend();
+        plt.SetAxisLimits(0, xAxis.Max(), 0.0f, 1.0f);
+        plt.Title("Success Rate vs Packet Redundancy");
+        plt.YLabel("Generation Success Rate");
+        plt.XLabel("Packet Redundancy");
+        plt.SaveFig(GetPlotFilePath(GetPlotMultiPerSuccessRateFileName()));
+    }
+    
     public void SavePlots(ExperimentPlotDto data)
     {
         _logger.LogInformation("Saving experiment plot");

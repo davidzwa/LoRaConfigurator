@@ -347,6 +347,8 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
         }
 
         _experimentPlotService.SavePlotsFromLiveData(_dataPoints);
+        var maxRedundancy = _filteredGenUpdates.First().RedundancyMax;
+        _experimentPlotService.SaveMultiGenPlot(_filteredGenUpdates, maxRedundancy);
     }
 
     private List<uint> CalculateLostGenerationIndices(uint currentGenIndex)
