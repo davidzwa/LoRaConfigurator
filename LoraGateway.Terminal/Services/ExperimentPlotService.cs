@@ -37,6 +37,12 @@ public class ExperimentPlotService
     {
         return "experiment_success_rate.png";
     }
+    
+    public string GetGenSuccessRateErrPlotFileName()
+    {
+        return "experiment_success_rate_err.png";
+    }
+    
     public string GetCsvFileName()
     {
         return "experiment.csv";
@@ -80,7 +86,6 @@ public class ExperimentPlotService
             };
         });
 
-        _logger.LogInformation("Saving experiment plot");
         var configuredPerArray = perBuckets.Select(p => (double)p.ConfiguredPer).ToArray();
         var averagePerArray = perBuckets.Select(p => (double)p.PerAvg).ToArray();
         var iqrPerArray = perBuckets.Select(p => (double)p.PerIQR).ToArray();
@@ -103,8 +108,9 @@ public class ExperimentPlotService
         var perErrorArray = data.ErrorArray;
 
         SaveNormalPlot(configuredPerArray, averagePerArray, configuredPerArray);
-        SaveErrorBarPlot(configuredPerArray, averagePerArray, perErrorArray, configuredPerArray);
+        SaveNormalWithErrorBarPlot(configuredPerArray, averagePerArray, perErrorArray, configuredPerArray);
         SaveGenSuccessPlot(configuredPerArray, data.GenSuccessRateArray);
+        SaveGenSuccessWithErrorPlot(configuredPerArray, data.GenSuccessRateArray, data.GenSuccessErrorArray);
     }
 
     private void SaveNormalPlot(double[] per, double[] yAxisRealPer, double[] yAxisInputPer)
@@ -123,22 +129,7 @@ public class ExperimentPlotService
         plt.SaveFig(GetPlotFilePath(GetPlotFileName()));
     }
     
-    private void SaveGenSuccessPlot(double[] per, double[] genSuccessRate /*, double[] genSuccessCount*/)
-    {
-        var maxPer = Math.Min(1.0f, Math.Round(per.Max()+0.1f, 1));
-        var minPer = Math.Max(0.0f, Math.Round(per.Min()-0.1f, 1));
-        
-        var plt = new Plot(400, 300);
-        plt.AddScatter(per, genSuccessRate, label: "Gen. success rate");
-        plt.Legend();
-        plt.SetAxisLimits(minPer, maxPer, 0.0f, 1.0f);
-        plt.Title("Generation Success Rate (GSR) vs PER");
-        plt.YLabel("Generation Success Rate (GSR)");
-        plt.XLabel("PER");
-        plt.SaveFig(GetPlotFilePath(GetGenSuccessRatePlotFileName()));
-    }
-    
-    private void SaveErrorBarPlot(double[] per, double[] yAxisRealPer, double[] yAxisRealPerError, double[] yAxisInputPer)
+    private void SaveNormalWithErrorBarPlot(double[] per, double[] yAxisRealPer, double[] yAxisRealPerError, double[] yAxisInputPer)
     {
         var maxPer = Math.Min(1.0f, Math.Round(per.Max()+0.1f, 1));
         var minPer = Math.Max(0.0f, Math.Round(per.Min()-0.1f, 1));
@@ -158,6 +149,41 @@ public class ExperimentPlotService
         plt2.YLabel("Averaged realised PER");
         plt2.XLabel("Configured PER");
         plt2.SaveFig(GetPlotFilePath(GetErrorPlotFileName()));
+    }
+    
+    private void SaveGenSuccessPlot(double[] per, double[] genSuccessRate)
+    {
+        var maxPer = Math.Min(1.0f, Math.Round(per.Max()+0.1f, 1));
+        var minPer = Math.Max(0.0f, Math.Round(per.Min()-0.1f, 1));
+        
+        var plt = new Plot(400, 300);
+        plt.AddScatter(per, genSuccessRate, label: "Gen. success rate");
+        plt.Legend();
+        plt.SetAxisLimits(minPer, maxPer, 0.0f, 1.0f);
+        plt.Title("Generation Success Rate (GSR) vs PER");
+        plt.YLabel("Generation Success Rate (GSR)");
+        plt.XLabel("PER");
+        plt.SaveFig(GetPlotFilePath(GetGenSuccessRatePlotFileName()));
+    }
+    
+    private void SaveGenSuccessWithErrorPlot(double[] per, double[] genSuccessRate, double[] yAxisSuccessRateError)
+    {
+        var maxPer = Math.Min(1.0f, Math.Round(per.Max()+0.1f, 1));
+        var minPer = Math.Max(0.0f, Math.Round(per.Min()-0.1f, 1));
+        
+        var plt = new Plot(400, 300);
+        plt.AddErrorBars(per, genSuccessRate, null, yAxisSuccessRateError);
+        var scatter = plt.AddScatter(per, genSuccessRate, label: "Gen. success rate");
+        scatter.YError = yAxisSuccessRateError;
+        scatter.ErrorCapSize = 3;
+        scatter.ErrorLineWidth = 1;
+        scatter.LineStyle = LineStyle.Dot;
+        plt.Legend();
+        plt.SetAxisLimits(minPer, maxPer, 0.0f, 1.0f);
+        plt.Title("Generation Success Rate (GSR) vs PER");
+        plt.YLabel("Generation Success Rate (GSR)");
+        plt.XLabel("PER");
+        plt.SaveFig(GetPlotFilePath(GetGenSuccessRateErrPlotFileName()));
     }
     
     private IEnumerable<ExperimentDataEntry> LoadData(string fileName)

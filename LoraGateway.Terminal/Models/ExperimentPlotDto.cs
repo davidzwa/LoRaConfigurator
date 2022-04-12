@@ -7,5 +7,8 @@ public class ExperimentPlotDto
     public double[] ErrorArray { get; set; }
     
     public double[] GenSuccessRateArray { get; set; }
-    // public uint[] GenSuccessArray { get; set; }
+    public double[] GenSuccessErrorArray { get; set; }
+    
+    public List<ExperimentDataUpdateEntry> _filteredGenUpdates { get; set; }
+    
 }
