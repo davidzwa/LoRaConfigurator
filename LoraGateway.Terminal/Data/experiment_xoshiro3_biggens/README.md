@@ -13,3 +13,5 @@ Have to dig for runtime bugs for gen12+ or PRNG issues.... Fixed!
 
 Conclusion 12/04:
 I found a bug in C#: it would register results with failure as permanent failure. I will stop sending Results altogether and depend on updates purely.
+
+12/04 22:33 300f run5 success rate with 100% red max shows breakoff beyond ~30% PER (incl.) and semi-nice downwards trend with complete flattening beyond 65% PER. Could easily verify this with a binomial plot.

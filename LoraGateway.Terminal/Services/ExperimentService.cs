@@ -1,4 +1,4 @@
-﻿using CsvHelper;
+using CsvHelper;
 using LoRa;
 using LoraGateway.Models;
 using LoraGateway.Services.Contracts;
@@ -317,19 +317,6 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
 
     private async Task WriteDataFilteredGenUpdates()
     {
-        var groupedDecodingUpdatesByGenIndex = _allDecodingUpdatesReceived.GroupBy(d => d.GenerationIndex);
-        foreach(var genIndexUpdates in groupedDecodingUpdatesByGenIndex)
-        {
-            var orderedUpdates = genIndexUpdates.OrderBy(g => g.CurrentFragmentIndex);
-            var updateOrNull = orderedUpdates.FirstOrDefault(u => u.Success);
-            if (updateOrNull == null)
-            {
-                updateOrNull = orderedUpdates.Last();
-            }
-            
-            _filteredGenUpdates.Add(updateOrNull);
-        }
-        
         if (_dataPoints.Count == 0) return;
 
         var filePath = GetCsvFilePath(GetCsvFileNameFilteredGenUpdates());
@@ -431,16 +418,17 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
                 _logger.LogWarning(
                     "Could not find missed gen update for index {Index} - inserted fake one with 100% loss", index);
             }
-
-            var maxTotalPackets = foundGenUpdates.Max(g => g.ReceivedPackets + g.MissedPackets);
-            var lastGenUpdate = foundGenUpdates.Last();
-            var totalPacketsFound = lastGenUpdate.ReceivedPackets + lastGenUpdate.MissedPackets;
-            if (lastGenUpdate.ReceivedPackets + lastGenUpdate.MissedPackets != maxTotalPackets)
+            
+            // Find the first success or take the last update (DNF)
+            var orderedUpdates = foundGenUpdates.OrderBy(g => g.CurrentFragmentIndex);
+            var lastGenUpdate = foundGenUpdates.FirstOrDefault(u => u.Success);
+            if (lastGenUpdate == null)
             {
-                throw new Exception(
-                    $"Last gen update for index {index} with {totalPacketsFound} total was not newest ({maxTotalPackets})");
+                lastGenUpdate = orderedUpdates.Last();
             }
+            _filteredGenUpdates.Add(lastGenUpdate);
 
+            // Process first successful (or the last) update
             var total = lastGenUpdate.ReceivedPackets + lastGenUpdate.MissedPackets;
             _logger.LogWarning(
                 "Appending gen result (Success:{Success}) PER {MissedGenFragments} out of {TotalFragments}",
@@ -448,7 +436,6 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
                 lastGenUpdate.MissedPackets,
                 total
             );
-
             var per = (float)lastGenUpdate.MissedPackets / total;
             _dataPoints.Add(new()
             {
@@ -470,7 +457,7 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
 
         var genIndexString = currentGenIndex != null ? currentGenIndex.ToString() : "FINAL";
         _logger.LogWarning(
-            "Missed generations during run - Experiment failure RecvGen:{LastGenUpdate} MissedGens:{MissedGens} PER:{CurrentPer}",
+            "Saving generation results during run RecvGen:{LastGenUpdate} MissedGens:{MissedGens} PER:{CurrentPer}",
             genIndexString, missedDecodingUpdates.Count(), _currentPer);
     }
 }

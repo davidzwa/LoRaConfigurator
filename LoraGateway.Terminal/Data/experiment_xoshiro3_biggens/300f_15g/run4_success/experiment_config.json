@@ -1,6 +1,6 @@
 {
   "MinPer": 0,
-  "MaxPer": 75,
+  "MaxPer": 50,
   "PerStep": 3,
   "RssiAvgWindow": 10,
   "SnrAvgWindow": 10,
