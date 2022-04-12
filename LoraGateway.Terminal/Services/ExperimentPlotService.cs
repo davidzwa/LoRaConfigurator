@@ -140,7 +140,7 @@ public class ExperimentPlotService
                 // if red == max => all lower have failed (successes 0)
                 // if red < max => lower failed, higher/equal success (partial success)
                 // if red == 0 => all higher have succeeded (successes max)
-                for (uint i = 0; i < maxRedundancy + 1; i++)
+                for (uint i = 0; i <= maxRedundancy; i++)
                 {
                     if (!successRedundancyHist.ContainsKey(i))
                     {
@@ -150,7 +150,7 @@ public class ExperimentPlotService
                     // Add the success sample for this redundancy (if succeeded)
                     successRedundancyHist[i].Add(new ()
                     {
-                        Success = genSample.RedundancyUsed >= i && genSample.Success ? 1.0 : 0.0
+                        Success = genSample.RedundancyUsed <= i && genSample.Success ? 1.0 : 0.0
                         // GenerationIndex = genSample.GenerationIndex,
                         // OriginalPer = per.Key
                     });
