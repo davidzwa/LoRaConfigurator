@@ -231,7 +231,7 @@ public class ExperimentPlotService
         plt.SetAxisLimits(0, xAxisPercentage.Max(), 0.0f, 1.0f);
         plt.Title("Success Rate vs Packet Redundancy for uniform PER");
         plt.YLabel("Generation Success Rate");
-        plt.XLabel("Packet Redundancy (%)");
+        plt.XLabel("Generation Redundancy (%)");
         plt.SaveFig(GetPlotFilePath(GetPlotMultiPerSuccessRateFileName()));
     }
 
@@ -252,7 +252,7 @@ public class ExperimentPlotService
         plt.SetAxisLimits(0, xAxis.Max(), 0.0f, 1.0f);
         plt.Title("Success Threshold Histogram vs Packet Redundancy for uniform PER");
         plt.YLabel("Generation Success Rate");
-        plt.XLabel("Packet Redundancy");
+        plt.XLabel("Generation Redundancy (%)");
         plt.SaveFig(GetPlotFilePath(GetPlotMultiPerSuccessRateFileName()));
     }
 
