@@ -30,6 +30,7 @@ public class ListDeviceCommandHandler
     {
         rootCommand.Add(GetListDeviceCommand());
         rootCommand.Add(CsvToPngProcessCommand());
+        rootCommand.Add(CsvToMultiPerPngProcessCommand());
         return rootCommand;
     }
 
@@ -42,6 +43,20 @@ public class ListDeviceCommandHandler
         cmd.Handler = CommandHandler.Create((string filePath) =>
         {
             _experimentPlotService.SavePlotsFromCsv(filePath);
+        });
+
+        return cmd;
+    }
+    
+    public Command CsvToMultiPerPngProcessCommand()
+    {
+        var cmd = new Command("csv-per-png");
+        cmd.AddAlias("per-png");
+        cmd.AddOption(new Option<string>("--path"));
+
+        cmd.Handler = CommandHandler.Create((string filePath) =>
+        {
+            _experimentPlotService.SaveSuccessRatePlotsFromCsv(filePath);
         });
 
         return cmd;
