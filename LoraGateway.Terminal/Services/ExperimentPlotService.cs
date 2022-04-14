@@ -24,11 +24,26 @@ public class ExperimentPlotService
         NewLine = Environment.NewLine,
     };
 
+    // https://colordesigner.io/gradient-generator
+    string[] customColors =
+    {
+        "#00ff4e",
+        "#6aee00",
+        "#92dc00",
+        "#afc900",
+        "#c6b500",
+        "#d99e00",
+        "#e88600",
+        "#f46a00",
+        "#fc4700",
+        "#ff0000"
+    };
+
     public string GetPlotFileName()
     {
         return "experiment.png";
     }
-    
+
     public string GetPlotMultiPerSuccessRateFileName()
     {
         return "experiment_multi_per_success_rate.png";
@@ -123,7 +138,7 @@ public class ExperimentPlotService
         public float Per { get; set; }
         public double[] SuccessRates { get; set; }
     }
-    
+
     /**
      * This will plot each PER as a scatter (X: Redundancy, Y: Success Rate)
      */
@@ -146,9 +161,9 @@ public class ExperimentPlotService
                     {
                         successRedundancyHist.Add(i, new List<GenSuccess>());
                     }
-                    
+
                     // Add the success sample for this redundancy (if succeeded)
-                    successRedundancyHist[i].Add(new ()
+                    successRedundancyHist[i].Add(new()
                     {
                         Success = genSample.RedundancyUsed <= i && genSample.Success ? 1.0 : 0.0
                         // GenerationIndex = genSample.GenerationIndex,
@@ -158,11 +173,12 @@ public class ExperimentPlotService
             }
 
             // Tuple of (Index: redundancy used, Value: success rate)
-            var redundancySuccessRatesTuples = successRedundancyHist.Select((k, v) => (k.Key, k.Value.Average(v => v.Success)));
-            
+            var redundancySuccessRatesTuples =
+                successRedundancyHist.Select((k, v) => (k.Key, k.Value.Average(v => v.Success)));
+
             // Should validate the tuple is not incorrectly ordered
             var redundancySuccessRates = redundancySuccessRatesTuples.Select(t => t.Item2);
-            
+
             // Convert histogram into rates
             return new PerSuccessRates()
             {
@@ -172,26 +188,30 @@ public class ExperimentPlotService
         });
 
         var xAxis = Enumerable.Range(0, (int)maxRedundancy + 1).Select(v => (double)v).ToArray();
-        
+
         SaveSuccessRatePerPlots(xAxis, perPlots.ToList());
     }
 
     private void SaveSuccessRatePerPlots(double[] xAxis, List<PerSuccessRates> ySuccessRate)
     {
-        var plt = new Plot(400, 300);
+        var plt = new Plot(600, 400);
         foreach (var perPlot in ySuccessRate)
         {
             var per100 = perPlot.Per * 100.0f;
-            plt.AddScatter(xAxis, perPlot.SuccessRates, label: $"PER {per100:F1}%");    
+            var c = ScottPlot.Drawing.Colormap.Viridis.GetColor(perPlot.Per);
+            plt.AddScatter(xAxis, perPlot.SuccessRates, label: $"PER {per100:F1}%", color: c);
         }
-        plt.Legend();
+
+        // plt.Legend();
+        var cmap = ScottPlot.Drawing.Colormap.Viridis;
+        plt.AddColorbar(cmap);
         plt.SetAxisLimits(0, xAxis.Max(), 0.0f, 1.0f);
         plt.Title("Success Rate vs Packet Redundancy");
         plt.YLabel("Generation Success Rate");
         plt.XLabel("Packet Redundancy");
         plt.SaveFig(GetPlotFilePath(GetPlotMultiPerSuccessRateFileName()));
     }
-    
+
     public void SavePlots(ExperimentPlotDto data)
     {
         _logger.LogInformation("Saving experiment plot");
