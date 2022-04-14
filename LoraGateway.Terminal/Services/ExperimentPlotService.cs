@@ -25,6 +25,8 @@ public class ExperimentPlotService
         NewLine = Environment.NewLine,
     };
 
+    const double MaxRedundancyScale = 3.0;
+
     public string GetPlotFileName()
     {
         return "experiment.png";
@@ -157,7 +159,7 @@ public class ExperimentPlotService
         {
             // Build up a cumulative distro and histogram of redundancy vs successes
             var successRedundancyCumul = new Dictionary<uint, List<GenSuccess>>();
-            var successThresholdHistogram = new uint [maxRedundancy];
+            var successThresholdHistogram = new uint [maxRedundancy + 1];
             foreach (var genSample in per)
             {
                 // sample.Success
@@ -205,13 +207,37 @@ public class ExperimentPlotService
             };
         });
 
-        var xAxis = Enumerable.Range(0, (int)maxRedundancy + 1).Select(v => (double)v).ToArray();
+        var xAxis = Enumerable
+            .Range(0, (int)maxRedundancy + 1)
+            .Select(v => MaxRedundancyScale * v / ((int)maxRedundancy + 1.0))
+            .ToArray();
 
         SaveSuccessRatePerPlots(xAxis, perPlotsCumul.ToList());
     }
 
-    private void SaveSuccessRatePerPlots(double[] xAxis, List<PerSuccessRates> ySuccessRate)
+    private void SaveSuccessRatePerPlots(double[] xAxisPercentage, List<PerSuccessRates> ySuccessRate)
     {
+        var plt = new Plot(600, 400);
+        foreach (var perPlot in ySuccessRate)
+        {
+            var per100 = perPlot.Per * 100.0f;
+            var c = ScottPlot.Drawing.Colormap.Viridis.GetColor(perPlot.Per);
+            plt.AddScatter(xAxisPercentage, perPlot.SuccessCumulative, label: $"PER {per100:F1}%", color: c);
+        }
+
+        // plt.Legend();
+        var cmap = ScottPlot.Drawing.Colormap.Viridis;
+        plt.AddColorbar(cmap);
+        plt.SetAxisLimits(0, xAxisPercentage.Max(), 0.0f, 1.0f);
+        plt.Title("Success Rate vs Packet Redundancy for uniform PER");
+        plt.YLabel("Generation Success Rate");
+        plt.XLabel("Packet Redundancy (%)");
+        plt.SaveFig(GetPlotFilePath(GetPlotMultiPerSuccessRateFileName()));
+    }
+
+    private void SaveSuccessThresholdPerHistograms(double[] xAxis, List<PerSuccessRates> ySuccessRate)
+    {
+        // TODO wip
         var plt = new Plot(600, 400);
         foreach (var perPlot in ySuccessRate)
         {
@@ -224,7 +250,7 @@ public class ExperimentPlotService
         var cmap = ScottPlot.Drawing.Colormap.Viridis;
         plt.AddColorbar(cmap);
         plt.SetAxisLimits(0, xAxis.Max(), 0.0f, 1.0f);
-        plt.Title("Success Rate vs Packet Redundancy for uniform PER");
+        plt.Title("Success Threshold Histogram vs Packet Redundancy for uniform PER");
         plt.YLabel("Generation Success Rate");
         plt.XLabel("Packet Redundancy");
         plt.SaveFig(GetPlotFilePath(GetPlotMultiPerSuccessRateFileName()));
