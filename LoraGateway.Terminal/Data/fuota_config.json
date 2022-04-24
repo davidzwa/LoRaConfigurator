@@ -10,18 +10,18 @@
   "RemoteDeviceId0": 0,
   "RemoteIsMulticast": true,
   "RemoteUpdateIntervalMs": 60,
-  "ApproxPacketErrorRate": 0.75,
+  "ApproxPacketErrorRate": 0.8,
   "OverridePacketErrorSeed": true,
   "DropUpdateCommands": true,
-  "PacketErrorSeed": 39332,
+  "PacketErrorSeed": 44042,
   "LocalUpdateIntervalMs": 50,
   "DebugMatrixUart": false,
   "DebugFragmentUart": false,
   "FakeFirmware": true,
-  "FakeFragmentCount": 300,
+  "FakeFragmentCount": 600,
   "FakeFragmentSize": 10,
   "GenerationSize": 20,
-  "GenerationSizeRedundancy": 20,
+  "GenerationSizeRedundancy": 60,
   "FieldDegree": 8,
-  "PRngSeedState": 738331541
+  "PRngSeedState": 293934007
 }

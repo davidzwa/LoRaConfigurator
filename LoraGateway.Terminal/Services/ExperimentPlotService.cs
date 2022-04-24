@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using CsvHelper;
 using CsvHelper.Configuration;
 using LoraGateway.Models;
@@ -24,11 +25,13 @@ public class ExperimentPlotService
         NewLine = Environment.NewLine,
     };
 
+    const double MaxRedundancyScale = 3.0;
+
     public string GetPlotFileName()
     {
         return "experiment.png";
     }
-    
+
     public string GetPlotMultiPerSuccessRateFileName()
     {
         return "experiment_multi_per_success_rate.png";
@@ -54,10 +57,14 @@ public class ExperimentPlotService
         return "experiment.csv";
     }
 
-    public string GetDefaultCsvFilePath()
+    public string GetCsvFileNameFilteredGenUpdates()
+    {
+        return "experiment_filtered_gen_updates.csv";
+    }
+
+    public string GetDefaultCsvFilePath(string fileName)
     {
         var dataFolderAbsolute = DataStoreExtensions.BasePath;
-        var fileName = GetCsvFileName();
         return Path.Join(dataFolderAbsolute, fileName);
     }
 
@@ -69,9 +76,23 @@ public class ExperimentPlotService
         return Path.Join(dataFolderAbsolute, fileName);
     }
 
+    public void SaveSuccessRatePlotsFromCsv(string csvFileName = "")
+    {
+        var path = String.IsNullOrEmpty(csvFileName)
+            ? GetDefaultCsvFilePath(GetCsvFileNameFilteredGenUpdates())
+            : csvFileName;
+        var perGenUpdateEntries = LoadSuccessRatePerData(path).ToList();
+        var maxRedundancy = perGenUpdateEntries.First().RedundancyMax;
+
+        _logger.LogInformation("Found {Entries} entries in CSV", perGenUpdateEntries.Count);
+
+        SaveMultiGenPlot(perGenUpdateEntries, maxRedundancy);
+        _logger.LogInformation("Saved plot");
+    }
+
     public void SavePlotsFromCsv(string csvFileName = "")
     {
-        var path = String.IsNullOrEmpty(csvFileName) ? GetDefaultCsvFilePath() : csvFileName;
+        var path = String.IsNullOrEmpty(csvFileName) ? GetDefaultCsvFilePath(GetCsvFileName()) : csvFileName;
         var dataEntries = LoadData(path).ToList();
 
         SavePlotsFromLiveData(dataEntries);
@@ -121,34 +142,47 @@ public class ExperimentPlotService
     class PerSuccessRates
     {
         public float Per { get; set; }
-        public double[] SuccessRates { get; set; }
+        public uint[] SuccessThresholdHistogram { get; set; }
+        public double[] SuccessCumulative { get; set; }
     }
-    
+
     /**
      * This will plot each PER as a scatter (X: Redundancy, Y: Success Rate)
      */
     public void SaveMultiGenPlot(List<ExperimentDataUpdateEntry> filteredUpdateEntries, uint maxRedundancy)
     {
         // We first need to collect all Success vs Redundancy pairs for each PER
-        var perPlots = filteredUpdateEntries.GroupBy(f => f.PerConfig).Select(per =>
+        var perGroupings = filteredUpdateEntries
+            .GroupBy(f => f.PerConfig);
+
+        var perPlotsCumul = perGroupings.Select(per =>
         {
-            // Build up a histogram of redundancy vs successes
-            var successRedundancyHist = new Dictionary<uint, List<GenSuccess>>();
+            // Build up a cumulative distro and histogram of redundancy vs successes
+            var successRedundancyCumul = new Dictionary<uint, List<GenSuccess>>();
+            var successThresholdHistogram = new uint [maxRedundancy + 1];
             foreach (var genSample in per)
             {
                 // sample.Success
+                var redundancyThreshold = genSample.Success ? genSample.RedundancyUsed : (int)genSample.RedundancyMax;
+                if (redundancyThreshold < 0)
+                {
+                    throw new InvalidOperationException("Cant finish generation with negative redundancy");
+                }
+
+                successThresholdHistogram[redundancyThreshold]++;
+
                 // if red == max => all lower have failed (successes 0)
                 // if red < max => lower failed, higher/equal success (partial success)
                 // if red == 0 => all higher have succeeded (successes max)
                 for (uint i = 0; i <= maxRedundancy; i++)
                 {
-                    if (!successRedundancyHist.ContainsKey(i))
+                    if (!successRedundancyCumul.ContainsKey(i))
                     {
-                        successRedundancyHist.Add(i, new List<GenSuccess>());
+                        successRedundancyCumul.Add(i, new List<GenSuccess>());
                     }
-                    
+
                     // Add the success sample for this redundancy (if succeeded)
-                    successRedundancyHist[i].Add(new ()
+                    successRedundancyCumul[i].Add(new()
                     {
                         Success = genSample.RedundancyUsed <= i && genSample.Success ? 1.0 : 0.0
                         // GenerationIndex = genSample.GenerationIndex,
@@ -158,40 +192,70 @@ public class ExperimentPlotService
             }
 
             // Tuple of (Index: redundancy used, Value: success rate)
-            var redundancySuccessRatesTuples = successRedundancyHist.Select((k, v) => (k.Key, k.Value.Average(v => v.Success)));
-            
+            var redundancySuccessRatesTuples =
+                successRedundancyCumul.Select((k, v) => (k.Key, k.Value.Average(v => v.Success)));
+
             // Should validate the tuple is not incorrectly ordered
             var redundancySuccessRates = redundancySuccessRatesTuples.Select(t => t.Item2);
-            
+
             // Convert histogram into rates
             return new PerSuccessRates()
             {
                 Per = per.Key,
-                SuccessRates = redundancySuccessRates.ToArray()
+                SuccessThresholdHistogram = successThresholdHistogram,
+                SuccessCumulative = redundancySuccessRates.ToArray()
             };
         });
 
-        var xAxis = Enumerable.Range(0, (int)maxRedundancy + 1).Select(v => (double)v).ToArray();
-        
-        SaveSuccessRatePerPlots(xAxis, perPlots.ToList());
+        var xAxis = Enumerable
+            .Range(0, (int)maxRedundancy + 1)
+            .Select(v => MaxRedundancyScale * v / ((int)maxRedundancy + 1.0))
+            .ToArray();
+
+        SaveSuccessRatePerPlots(xAxis, perPlotsCumul.ToList());
     }
 
-    private void SaveSuccessRatePerPlots(double[] xAxis, List<PerSuccessRates> ySuccessRate)
+    private void SaveSuccessRatePerPlots(double[] xAxisPercentage, List<PerSuccessRates> ySuccessRate)
     {
-        var plt = new Plot(400, 300);
+        var plt = new Plot(600, 400);
         foreach (var perPlot in ySuccessRate)
         {
             var per100 = perPlot.Per * 100.0f;
-            plt.AddScatter(xAxis, perPlot.SuccessRates, label: $"PER {per100:F1}%");    
+            var c = ScottPlot.Drawing.Colormap.Viridis.GetColor(perPlot.Per);
+            plt.AddScatter(xAxisPercentage, perPlot.SuccessCumulative, label: $"PER {per100:F1}%", color: c);
         }
-        plt.Legend();
-        plt.SetAxisLimits(0, xAxis.Max(), 0.0f, 1.0f);
-        plt.Title("Success Rate vs Packet Redundancy");
+
+        // plt.Legend();
+        var cmap = ScottPlot.Drawing.Colormap.Viridis;
+        plt.AddColorbar(cmap);
+        plt.SetAxisLimits(0, xAxisPercentage.Max(), 0.0f, 1.0f);
+        plt.Title("Success Rate vs Packet Redundancy for uniform PER");
         plt.YLabel("Generation Success Rate");
-        plt.XLabel("Packet Redundancy");
+        plt.XLabel("Generation Redundancy (%)");
         plt.SaveFig(GetPlotFilePath(GetPlotMultiPerSuccessRateFileName()));
     }
-    
+
+    private void SaveSuccessThresholdPerHistograms(double[] xAxis, List<PerSuccessRates> ySuccessRate)
+    {
+        // TODO wip
+        var plt = new Plot(600, 400);
+        foreach (var perPlot in ySuccessRate)
+        {
+            var per100 = perPlot.Per * 100.0f;
+            var c = ScottPlot.Drawing.Colormap.Viridis.GetColor(perPlot.Per);
+            plt.AddScatter(xAxis, perPlot.SuccessCumulative, label: $"PER {per100:F1}%", color: c);
+        }
+
+        // plt.Legend();
+        var cmap = ScottPlot.Drawing.Colormap.Viridis;
+        plt.AddColorbar(cmap);
+        plt.SetAxisLimits(0, xAxis.Max(), 0.0f, 1.0f);
+        plt.Title("Success Threshold Histogram vs Packet Redundancy for uniform PER");
+        plt.YLabel("Generation Success Rate");
+        plt.XLabel("Generation Redundancy (%)");
+        plt.SaveFig(GetPlotFilePath(GetPlotMultiPerSuccessRateFileName()));
+    }
+
     public void SavePlots(ExperimentPlotDto data)
     {
         _logger.LogInformation("Saving experiment plot");
@@ -287,6 +351,20 @@ public class ExperimentPlotService
             using (var csv = new CsvReader(reader, CsvConfig))
             {
                 data = csv.GetRecords<ExperimentDataEntry>().ToList();
+            }
+        }
+
+        return data;
+    }
+
+    private IEnumerable<ExperimentDataUpdateEntry> LoadSuccessRatePerData(string fileName)
+    {
+        var data = new List<ExperimentDataUpdateEntry>();
+        using (var reader = new StreamReader(fileName))
+        {
+            using (var csv = new CsvReader(reader, CsvConfig))
+            {
+                data = csv.GetRecords<ExperimentDataUpdateEntry>().ToList();
             }
         }
 
