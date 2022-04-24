@@ -7,6 +7,13 @@ namespace LoraGateway.Services;
 
 public partial class SerialProcessorService
 {
+    protected bool LoraRxMessageSuppressed = false;
+
+    public bool SetLoraRxMessagesSuppression(bool val)
+    {
+        return LoraRxMessageSuppressed = val;
+    }
+
     async Task ReceiveBootMessage(string portName, UartResponse response)
     {
         var deviceFullId = response.BootMessage.DeviceIdentifier;
@@ -143,7 +150,7 @@ public partial class SerialProcessorService
         var success = decodingResult.Success;
         var missedGenFragments = decodingResult.MissedGenFragments;
         var receivedGenFragments = decodingResult.ReceivedFragments;
-       
+
         _eventPublisher.PublishEventAsync(new DecodingResultEvent()
         {
             DecodingResult = decodingResult
@@ -151,7 +158,7 @@ public partial class SerialProcessorService
 
         var total = receivedGenFragments + missedGenFragments;
         var perReal = (float)missedGenFragments / total;
-        
+
         _logger.LogInformation(
             "[{Name}, DecodingResult] Success: {Payload} GenIndex {GenIndex} Rank: {MatrixRank} PER {Rx}/{Total}={Per:F2} FirstNumber: {FirstNumber} LastNumber: {LastNumber}",
             portName,
@@ -173,7 +180,7 @@ public partial class SerialProcessorService
         {
             return;
         }
-        
+
         if (bodyCase is LoRaMessage.BodyOneofCase.ExperimentResponse
             or LoRaMessage.BodyOneofCase.RlncRemoteFlashResponse or LoRaMessage.BodyOneofCase.None)
         {
@@ -181,35 +188,32 @@ public partial class SerialProcessorService
         }
 
         // Suppress anything else   
-        return;
         if (!response.LoraMeasurement.Success)
         {
-            _logger.LogInformation("[{Name}] LoRa RX error!", portName);
+            _logger.LogWarning("[{Name}] LoRa RX error!", portName);
             return;
         }
 
-        // if (response.LoraMeasurement.Rssi == -1)
-        // {
-        //     // Suppress internal message
-        // }
-        // else
-        // {
         var snr = response.LoraMeasurement.Snr;
         var rssi = response.LoraMeasurement.Rssi;
         var sequenceNumber = response.LoraMeasurement.SequenceNumber;
         var isMeasurement = response.LoraMeasurement.IsMeasurementFragment;
+        if (LoraRxMessageSuppressed)
+        {
+            _logger.LogDebug(
+                "[{Name}] LoRa RX snr: {SNR} rssi: {RSSI} sequence-id:{Index} is-measurement:{IsMeasurement}",
+                portName,
+                snr, rssi, sequenceNumber, isMeasurement);
+            return;
+        }
 
         var result = await _measurementsService.AddMeasurement(sequenceNumber, snr, rssi);
         if (sequenceNumber > 60000) _measurementsService.SetLocationText("");
-
-        InnerLoRaPacketHandler(portName, response?.LoraMeasurement?.DownlinkPayload);
-
-        // Debug for now
+        await InnerLoRaPacketHandler(portName, response?.LoraMeasurement?.DownlinkPayload);
         _logger.LogInformation(
             "[{Name}] LoRa RX snr: {SNR} rssi: {RSSI} sequence-id:{Index} is-measurement:{IsMeasurement}, skipped:{Skipped}",
             portName,
             snr, rssi, sequenceNumber, isMeasurement, result);
-        // }
     }
 
     private async Task InnerLoRaPacketHandler(string portName, LoRaMessage? message)
@@ -236,7 +240,7 @@ public partial class SerialProcessorService
             _logger.LogInformation(
                 "[{PortName}] RLNC Response\n TxPower:{TXPower} BW:{BW} SF{SF}\n Period:{Delay} Session:{SessionState} Flash:{FlashState} MC:{MC} DeviceId0:{DeviceId0}",
                 portName, txPower, bandwidth, spreadingFactor, delay, sessionState, flashState, mc, deviceId0);
-            
+
             await _eventPublisher.PublishEventAsync(new RlncRemoteFlashResponseEvent()
             {
                 Source = portName,

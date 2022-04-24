@@ -204,6 +204,7 @@ public class RlncFlashBlobService
                 // PRngImplementation = PRngImplementation.XoShiRo32,
                 ReceptionRateConfig = new()
                 {
+                    // The PER is often overwritten but can also be statically configured in flash
                     PacketErrorRate = config.ApproxPacketErrorRate,
                     DropUpdateCommands = config.DropUpdateCommands,
                     OverrideSeed = config.OverridePacketErrorSeed,

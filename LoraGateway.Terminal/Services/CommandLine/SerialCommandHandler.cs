@@ -9,7 +9,8 @@ namespace LoraGateway.Services.CommandLine;
 public class SerialCommandHandler
 {
     private readonly FuotaManagerService _fuotaManagerService;
-    private readonly ExperimentService _experimentService;
+    private readonly ExperimentPhyService _experimentPhyService;
+    private readonly ExperimentRlncService _experimentRlncService;
     private readonly RlncFlashBlobService _rlncFlashBlobService;
     private readonly RlncDecodingFailureSelfTestService _rlncDecodingFailureSelfTestService;
     private readonly ILogger _logger;
@@ -22,7 +23,8 @@ public class SerialCommandHandler
         SelectedDeviceService selectedDeviceService,
         MeasurementsService measurementsService,
         FuotaManagerService fuotaManagerService,
-        ExperimentService experimentService,
+        ExperimentPhyService experimentPhyService,
+        ExperimentRlncService experimentRlncService,
         RlncFlashBlobService rlncFlashBlobService,
         RlncDecodingFailureSelfTestService rlncDecodingFailureSelfTestService,
         SerialProcessorService serialProcessorService
@@ -32,7 +34,8 @@ public class SerialCommandHandler
         _selectedDeviceService = selectedDeviceService;
         _measurementsService = measurementsService;
         _fuotaManagerService = fuotaManagerService;
-        _experimentService = experimentService;
+        _experimentPhyService = experimentPhyService;
+        _experimentRlncService = experimentRlncService;
         _rlncFlashBlobService = rlncFlashBlobService;
         _rlncDecodingFailureSelfTestService = rlncDecodingFailureSelfTestService;
         _serialProcessorService = serialProcessorService;
@@ -45,12 +48,13 @@ public class SerialCommandHandler
         rootCommand.Add(GetUnicastSendCommand());
         rootCommand.Add(GetDeviceConfigurationCommand());
         rootCommand.Add(GetClearMeasurementsCommand());
-        rootCommand.Add(GetRlncInitCommand());
-        rootCommand.Add(GenerateBlobCommand());
-        rootCommand.Add(GetRlncStoreReloadCommand());
         rootCommand.Add(SetTxPowerCommand());
-        rootCommand.Add(RunExperiments());
+        rootCommand.Add(GetRlncInitCommand());
+        rootCommand.Add(GetRlncStoreReloadCommand());
         rootCommand.Add(RunCodecSelfTest());
+        rootCommand.Add(GenerateBlobCommand());
+        rootCommand.Add(RunRlncExperiments());
+        rootCommand.Add(RunPhyExperiments());
 
         // Fluent structure
         return rootCommand;
@@ -66,7 +70,8 @@ public class SerialCommandHandler
 
     public Command RunCodecSelfTest()
     {
-        var command = new Command("test");
+        var command = new Command("rlnc-selftest");
+        command.AddAlias("test");
         command.Handler = CommandHandler.Create(async () =>
         {
             await _rlncDecodingFailureSelfTestService.RunSelfTest();
@@ -75,14 +80,24 @@ public class SerialCommandHandler
         return command;
     }
     
-    public Command RunExperiments()
+    public Command RunPhyExperiments()
     {
-        var command = new Command("exp");
+        var command = new Command("exp-phy");
+        command.AddAlias("expp");
         command.Handler = CommandHandler.Create(
-            async () => { await _experimentService.RunExperiments(); });
+            async () => { await _experimentPhyService.RunPhyExperiments(); });
         return command;
     }
     
+    public Command RunRlncExperiments()
+    {
+        var command = new Command("exp-rlnc");
+        command.AddAlias("exp");
+        command.Handler = CommandHandler.Create(
+            async () => { await _experimentRlncService.RunRlncExperiments(); });
+        return command;
+    }
+
     public Command GenerateBlobCommand()
     {
         var command = new Command("rlnc-blob");
@@ -150,7 +165,7 @@ public class SerialCommandHandler
             async () =>
             {
                 await _fuotaManagerService.ReloadStore();
-                await _experimentService.LoadStore();
+                await _experimentRlncService.LoadStore();
                 _logger.LogInformation("Reloaded Fuota and Experiment config stores");
             });
         return command;
@@ -204,16 +219,14 @@ public class SerialCommandHandler
                 if (conf || q)
                 {
                     // We will be transmitting a device/tx conf
-                    await _fuotaManagerService.ReloadStore();
-
-                    var store = _fuotaManagerService.GetStore();
+                    var store = await _experimentPhyService.LoadStore();
                     loraMessage.DeviceConfiguration = new DeviceConfiguration();
 
                     var devConf = loraMessage.DeviceConfiguration;
                     var txConf = devConf.TransmitConfiguration;
-                    txConf.TxBandwidth = store!.TxBandwidth;
-                    txConf.TxPower = store.TxPower;
-                    txConf.TxDataRate = store.TxDataRate;
+                    txConf.TxBandwidth = store!.DefaultPhy.TxBandwidth;
+                    txConf.TxPower = store.DefaultPhy.TxPower;
+                    txConf.TxDataRate = store.DefaultPhy.TxDataRate;
                     if (q)
                     {
                         _logger.LogInformation("Stopping all transmitters");

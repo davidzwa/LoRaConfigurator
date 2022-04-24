@@ -1,0 +1,8 @@
+{
+  "ExperimentUpdateTimeout": 2000,
+  "ExperimentInitAckTimeout": 500,
+  "MinPer": 0,
+  "MaxPer": 80,
+  "PerStep": 10,
+  "RandomPerSeed": true
+}
