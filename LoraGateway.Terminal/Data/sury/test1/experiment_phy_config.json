@@ -1,7 +1,7 @@
 {
   "ExperimentAckTimeout": 2000,
   "SeqPeriodMs": 50,
-  "SeqCount": 3000,
+  "SeqCount": 300,
   "DefaultPhy": {
     "TxPower": 14,
     "TxBandwidth": 2,
