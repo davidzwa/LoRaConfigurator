@@ -18,8 +18,8 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
     {
         NewLine = Environment.NewLine,
     };
-    
-    public ExperimentPhyConfig.PhyConfig CurrentConfig { get; set; }
+
+    public ExperimentPhyConfig.PhyConfig CurrentConfig { get; set; } = new();
     
     public string GetCsvFilePath(string fileName)
     {
@@ -27,7 +27,7 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
         return Path.Join(dataFolderAbsolute, fileName);
     }
 
-    public List<ExperimentPhyDataEntry> _dataPoints = new();
+    private readonly List<ExperimentPhyDataEntry> _dataPoints = new();
 
     public ExperimentPhyService(
         ILogger<ExperimentPhyService> logger,
@@ -63,7 +63,7 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
 
     public async Task ReceivePeriodTxMessage(PeriodTxEvent transmitEvent)
     {
-        // Silenced for now
+        // Silenced for now - only required for full clarity on experiment PER/PRR
         // _logger.LogInformation("PeriodTx event triggered");
     }
 
@@ -85,6 +85,13 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
             TxPower = CurrentConfig.TxPower,
             SpreadingFactor = CurrentConfig.TxDataRate
         });
+
+        var store = GetStore();
+        if (_dataPoints.Count() % store.WriteDataCounterDivisor == 0)
+        {
+            _logger.LogInformation("Updating CSV with {points} data points", _dataPoints.Count);
+            await WriteData();
+        }
     }
 
     public async Task RunPhyExperiments()
@@ -104,6 +111,7 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
             await RunIteration();
 
             await Task.Delay((int)totalDuration + 200);
+            await WriteData();
         }
 
         _logger.LogInformation("PHY experiment done");

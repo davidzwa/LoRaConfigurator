@@ -19,6 +19,8 @@ public class ExperimentPhyConfig : ICloneable
     public uint[] TxSfSeries { get; set; } = { 7, 8, 9 };
     public int[] TxPSeries { get; set; } = { 14, 10, 6, 2, -2 };
     public PhyConfig DefaultPhy { get; set; } = PhyConfig.Default;
+    
+    public uint WriteDataCounterDivisor { get; set; }
 
     public object Clone()
     {

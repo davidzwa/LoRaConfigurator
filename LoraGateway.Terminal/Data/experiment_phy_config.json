@@ -10,5 +10,6 @@
   "TargetedReceiverNickname": "A2",
   "TxBwSeries": [2],
   "TxSfSeries": [7, 8, 9],
-  "TxPSeries": [14, 10, 6, 2, -2]
+  "TxPSeries": [14, 10, 6, 2, -2],
+  "WriteDataCounterDivisor": 20
 }
