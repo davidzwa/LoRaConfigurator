@@ -197,7 +197,7 @@ public partial class SerialProcessorService
         {
             return (int)decodingResult.DecodingResult;
         }
-
+        
         var response = decodingResult.Response;
         var bodyCase = response!.BodyCase;
         if (bodyCase.Equals(UartResponse.BodyOneofCase.BootMessage))

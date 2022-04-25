@@ -4,10 +4,10 @@ public class ExperimentPhyConfig : ICloneable
 {
     public class PhyConfig
     {
-        public static PhyConfig Default = new() { TxBandwidth = 2, TxPower = 14, TxDataRate = 11 }; 
+        public static PhyConfig Default = new() { TxBandwidth = 2, TxPower = 14, TxDataRate = 7 }; 
         public int TxPower { get; set; } = 14;
         public uint TxBandwidth { get; set; } = 2; // 0(125k),1(250k),2(500k)
-        public uint TxDataRate { get; set; } = 11; // 7-12
+        public uint TxDataRate { get; set; } = 7; // 7-12
     }
     public int ExperimentAckTimeout { get; set; } = 100;
     public string TargetedReceiverNickname { get; set; } = "";
