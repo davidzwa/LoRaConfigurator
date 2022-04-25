@@ -7,7 +7,14 @@ namespace LoraGateway.Services;
 
 public partial class SerialProcessorService
 {
-    async Task ReceiveBootMessage(string portName, UartResponse response)
+    protected bool LoraRxMessageSuppressed;
+
+    public bool SetLoraRxMessagesSuppression(bool val)
+    {
+        return LoraRxMessageSuppressed = val;
+    }
+
+    private async Task ReceiveBootMessage(string portName, UartResponse response)
     {
         var deviceFullId = response.BootMessage.DeviceIdentifier;
         var deviceId = deviceFullId.DeviceIdAsString();
@@ -35,31 +42,34 @@ public partial class SerialProcessorService
             deviceId);
     }
 
-    async Task<int> ReceiveDebugMessage(string portName, UartResponse response)
+    private async Task<int> ReceiveDebugMessage(string portName, UartResponse response)
     {
         var serialString = SerialUtil.ByteArrayToString(response.Payload.ToArray());
         var payload = response.Payload.ToStringUtf8();
         var code = response.DebugMessage.Code;
 
         if (payload!.Contains("CRC_FAIL"))
-        {
             await _eventPublisher.PublishEventAsync(new StopFuotaSession { Message = "CRC failure" });
-        }
 
         if (payload.Contains("PROTO_FAIL"))
-        {
             await _eventPublisher.PublishEventAsync(new StopFuotaSession { Message = "PROTO failure" });
-        }
 
         if (payload.Contains("RLNC_TERMINATE"))
-        {
             await _eventPublisher.PublishEventAsync(new StopFuotaSession
                 { Message = "End-device succeeded generation", SuccessfulTermination = true });
+
+        if (payload.Contains("PeriodTX"))
+        {
+            await _eventPublisher.PublishEventAsync(new PeriodTxEvent
+            {
+                PortName = portName
+            });
+            return 0;
         }
 
         string[] inclusions =
         {
-            "PeriodTX",
+            // "PeriodTX",
             "PROTO_FAIL",
             "PROTO_FAIL_TX",
             "PROTO_LORA_FAIL",
@@ -81,24 +91,21 @@ public partial class SerialProcessorService
             // "RLNC_PER_SEED",
             "RLNC_ERR",
             // "RNG",
+            "DevConf", // TODO change to device ACK
             "DevConfStop",
             "PUSH-BUTTON"
         };
         if (inclusions.Any(e => payload.Contains(e)))
-        {
             _logger.LogInformation("[{Name}, Debug] {Payload} Code:{Code} (Hex {Hex})", portName, payload, code,
                 Convert.ToString(code, 16));
-        }
         else
-        {
             _logger.LogDebug("!! [{Name}, Debug] {Payload} Code:{Code} \n\t {SerialPayload}", portName, payload, code,
                 serialString);
-        }
 
         return 0;
     }
 
-    void ReceiveExceptionMessage(string portName, UartResponse response)
+    private void ReceiveExceptionMessage(string portName, UartResponse response)
     {
         var payload = response.Payload;
         var code = response.ExceptionMessage?.Code;
@@ -106,7 +113,7 @@ public partial class SerialProcessorService
         _logger.LogError("[{Name}, Exception] {Payload} Code:{Code}", portName, payload.ToStringUtf8(), code);
     }
 
-    async Task ReceiveDecodingUpdate(string portName, UartResponse response)
+    private async Task ReceiveDecodingUpdate(string portName, UartResponse response)
     {
         var result = response.DecodingUpdate;
 
@@ -119,7 +126,7 @@ public partial class SerialProcessorService
         });
     }
 
-    void ReceiveDecodingMatrix(string portName, UartResponse response)
+    private void ReceiveDecodingMatrix(string portName, UartResponse response)
     {
         var payloadArray = response.Payload.ToArray();
         var matrix = response.DecodingMatrix;
@@ -132,26 +139,26 @@ public partial class SerialProcessorService
 
         for (uint i = 0; i < matrix.Rows; i++)
         {
-            var matrixRow = SerialUtil.ArrayToStringLim(payloadArray, (int)(i * matrix.Cols), (int)(matrix.Cols));
+            var matrixRow = SerialUtil.ArrayToStringLim(payloadArray, (int)(i * matrix.Cols), (int)matrix.Cols);
             _logger.LogInformation("\t{MatrixRow}", matrixRow);
         }
     }
 
-    void ReceiveDecodingResult(string portName, UartResponse response)
+    private void ReceiveDecodingResult(string portName, UartResponse response)
     {
         var decodingResult = response.DecodingResult;
         var success = decodingResult.Success;
         var missedGenFragments = decodingResult.MissedGenFragments;
         var receivedGenFragments = decodingResult.ReceivedFragments;
-       
-        _eventPublisher.PublishEventAsync(new DecodingResultEvent()
+
+        _eventPublisher.PublishEventAsync(new DecodingResultEvent
         {
             DecodingResult = decodingResult
         });
 
         var total = receivedGenFragments + missedGenFragments;
         var perReal = (float)missedGenFragments / total;
-        
+
         _logger.LogInformation(
             "[{Name}, DecodingResult] Success: {Payload} GenIndex {GenIndex} Rank: {MatrixRank} PER {Rx}/{Total}={Per:F2} FirstNumber: {FirstNumber} LastNumber: {LastNumber}",
             portName,
@@ -171,45 +178,54 @@ public partial class SerialProcessorService
         var bodyCase = response?.LoraMeasurement?.DownlinkPayload?.BodyCase;
         if (bodyCase == null)
         {
+            _logger.LogInformation("[{Name}] LoRa RX unknown", portName);
             return;
         }
-        
+
         if (bodyCase is LoRaMessage.BodyOneofCase.ExperimentResponse
-            or LoRaMessage.BodyOneofCase.RlncRemoteFlashResponse or LoRaMessage.BodyOneofCase.None)
+            or LoRaMessage.BodyOneofCase.RlncRemoteFlashResponse)
         {
             await InnerLoRaPacketHandler(portName, response.LoraMeasurement?.DownlinkPayload);
         }
-
-        // Suppress anything else   
-        return;
-        if (!response.LoraMeasurement.Success)
+        else if (bodyCase is LoRaMessage.BodyOneofCase.None)
         {
-            _logger.LogInformation("[{Name}] LoRa RX error!", portName);
+            // Measurement was a dummy - send to RX handler
+            await _eventPublisher.PublishEventAsync(new RxEvent
+            {
+                Message = response,
+                PortName = portName
+            });
+            
+            // Suppress
             return;
         }
 
-        // if (response.LoraMeasurement.Rssi == -1)
-        // {
-        //     // Suppress internal message
-        // }
-        // else
-        // {
+        // Suppress anything else   
+        if (!response.LoraMeasurement.Success)
+        {
+            _logger.LogWarning("[{Name}] LoRa RX error!", portName);
+            return;
+        }
+
         var snr = response.LoraMeasurement.Snr;
         var rssi = response.LoraMeasurement.Rssi;
         var sequenceNumber = response.LoraMeasurement.SequenceNumber;
         var isMeasurement = response.LoraMeasurement.IsMeasurementFragment;
+        if (LoraRxMessageSuppressed)
+        {
+            _logger.LogDebug(
+                "[{Name}] LoRa RX snr: {SNR} rssi: {RSSI} sequence-id:{Index} is-measurement:{IsMeasurement}",
+                portName,
+                snr, rssi, sequenceNumber, isMeasurement);
+            return;
+        }
 
         var result = await _measurementsService.AddMeasurement(sequenceNumber, snr, rssi);
         if (sequenceNumber > 60000) _measurementsService.SetLocationText("");
-
-        InnerLoRaPacketHandler(portName, response?.LoraMeasurement?.DownlinkPayload);
-
-        // Debug for now
         _logger.LogInformation(
             "[{Name}] LoRa RX snr: {SNR} rssi: {RSSI} sequence-id:{Index} is-measurement:{IsMeasurement}, skipped:{Skipped}",
             portName,
             snr, rssi, sequenceNumber, isMeasurement, result);
-        // }
     }
 
     private async Task InnerLoRaPacketHandler(string portName, LoRaMessage? message)
@@ -236,16 +252,12 @@ public partial class SerialProcessorService
             _logger.LogInformation(
                 "[{PortName}] RLNC Response\n TxPower:{TXPower} BW:{BW} SF{SF}\n Period:{Delay} Session:{SessionState} Flash:{FlashState} MC:{MC} DeviceId0:{DeviceId0}",
                 portName, txPower, bandwidth, spreadingFactor, delay, sessionState, flashState, mc, deviceId0);
-            
-            await _eventPublisher.PublishEventAsync(new RlncRemoteFlashResponseEvent()
+
+            await _eventPublisher.PublishEventAsync(new RlncRemoteFlashResponseEvent
             {
                 Source = portName,
                 FlashResponse = body
             });
-        }
-        else
-        {
-            _logger.LogInformation("[{PortName}] LoRa message {Type}", portName, messageType);
         }
     }
 }

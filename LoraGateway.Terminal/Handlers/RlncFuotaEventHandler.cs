@@ -43,17 +43,17 @@ public class FuotaEventHandler : IEventHandler<InitFuotaSession>, IEventHandler<
 {
     private readonly FuotaSessionHostedService _fuotaSessionHostedService;
     private readonly FuotaManagerService _fuotaManagerService;
-    private readonly ExperimentService _experimentService;
+    private readonly ExperimentRlncService _experimentRlncService;
 
     public FuotaEventHandler(
         FuotaSessionHostedService fuotaSessionHostedService,
         FuotaManagerService fuotaManagerService,
-        ExperimentService experimentService
+        ExperimentRlncService experimentRlncService
     )
     {
         _fuotaSessionHostedService = fuotaSessionHostedService;
         _fuotaManagerService = fuotaManagerService;
-        _experimentService = experimentService;
+        _experimentRlncService = experimentRlncService;
     }
 
     public async Task HandleEventAsync(InitFuotaSession @event)
@@ -63,7 +63,7 @@ public class FuotaEventHandler : IEventHandler<InitFuotaSession>, IEventHandler<
 
     public async Task HandleEventAsync(RlncRemoteFlashResponseEvent @event)
     {
-        await _experimentService.ProcessInitAck(@event.Source, @event.FlashResponse);
+        await _experimentRlncService.ProcessInitAck(@event.Source, @event.FlashResponse);
     }
 
     public async Task HandleEventAsync(DecodingUpdateEvent @event)
@@ -75,7 +75,7 @@ public class FuotaEventHandler : IEventHandler<InitFuotaSession>, IEventHandler<
 
         if (_fuotaManagerService.IsRemoteSessionStarted)
         {
-            await _experimentService.ProcessUpdate(@event.DecodingUpdate!);
+            await _experimentRlncService.ProcessUpdate(@event.DecodingUpdate!);
         }
     }
 
@@ -83,7 +83,7 @@ public class FuotaEventHandler : IEventHandler<InitFuotaSession>, IEventHandler<
     {
         if (_fuotaManagerService.IsRemoteSessionStarted)
         {
-            await _experimentService.ProcessResult(@event.DecodingResult);
+            await _experimentRlncService.ProcessResult(@event.DecodingResult);
         }
     }
 
@@ -103,7 +103,7 @@ public class FuotaEventHandler : IEventHandler<InitFuotaSession>, IEventHandler<
 
         if (@event.SuccessfulTermination)
         {
-            _experimentService.MarkTerminationReceived();
+            _experimentRlncService.MarkTerminationReceived();
         }
     }
 }

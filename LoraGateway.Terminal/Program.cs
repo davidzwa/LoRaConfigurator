@@ -61,7 +61,8 @@ public static class LoraGateway
                 services.AddSingleton<MeasurementsService>();
                 services.AddSingleton<BlobFragmentationService>();
                 services.AddSingleton<RlncEncodingService>();
-                services.AddSingleton<ExperimentService>();
+                services.AddSingleton<ExperimentRlncService>();
+                services.AddSingleton<ExperimentPhyService>();
                 services.AddSingleton<ExperimentPlotService>();
                 services.AddSingleton<RlncFlashBlobService>();
                 services.AddSingleton<FuotaSessionHostedService>();
@@ -78,11 +79,15 @@ public static class LoraGateway
                 {
                     builder.AddInMemoryEventBus(subscriber =>
                     {
+                        subscriber.Subscribe<RxEvent, ExperimentEventHandler>();
+                        subscriber.Subscribe<PeriodTxEvent, ExperimentEventHandler>();
+                        
                         subscriber.Subscribe<InitFuotaSession, FuotaEventHandler>();
                         subscriber.Subscribe<RlncRemoteFlashResponseEvent, FuotaEventHandler>();
                         subscriber.Subscribe<DecodingUpdateEvent, FuotaEventHandler>();
                         subscriber.Subscribe<DecodingResultEvent, FuotaEventHandler>();
                         subscriber.Subscribe<StopFuotaSession, FuotaEventHandler>();
+                        
                     });
                 });
             });

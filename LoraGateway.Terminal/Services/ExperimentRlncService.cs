@@ -6,9 +6,9 @@ using LoraGateway.Utils;
 
 namespace LoraGateway.Services;
 
-public class ExperimentService : JsonDataStore<ExperimentConfig>
+public class ExperimentRlncService : JsonDataStore<ExperimentConfig>
 {
-    private readonly ILogger<ExperimentService> _logger;
+    private readonly ILogger<ExperimentRlncService> _logger;
     private readonly FuotaManagerService _fuotaManagerService;
     private readonly ExperimentPlotService _experimentPlotService;
     private readonly SerialProcessorService _serialProcessorService;
@@ -26,8 +26,8 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
 
     private List<ExperimentDataEntry> _dataPoints = new();
 
-    public ExperimentService(
-        ILogger<ExperimentService> logger,
+    public ExperimentRlncService(
+        ILogger<ExperimentRlncService> logger,
         FuotaManagerService fuotaManagerService,
         ExperimentPlotService experimentPlotService,
         SerialProcessorService serialProcessorService
@@ -41,7 +41,7 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
 
     public override string GetJsonFileName()
     {
-        return "experiment_config.json";
+        return "experiment_rlnc_config.json";
     }
 
     public string GetCsvFileName()
@@ -158,9 +158,11 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
         }
     }
 
-    public async Task RunExperiments()
+    public async Task RunRlncExperiments()
     {
         var experimentConfig = await LoadStore();
+
+        _serialProcessorService.SetLoraRxMessagesSuppression(true);
 
         _dataPoints = new();
         var min100 = experimentConfig.MinPer;
@@ -248,6 +250,7 @@ public class ExperimentService : JsonDataStore<ExperimentConfig>
         }
 
         _logger.LogInformation("Experiment done");
+        _serialProcessorService.SetLoraRxMessagesSuppression(false);
         _dataPoints = null;
     }
     
