@@ -20,7 +20,7 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
     };
 
     public ExperimentPhyConfig.PhyConfig CurrentConfig { get; set; } = new();
-    
+
     public string GetCsvFilePath(string fileName)
     {
         var dataFolderAbsolute = GetDataFolderFullPath();
@@ -74,8 +74,8 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
             measurement.Rssi,
             measurement.Snr,
             measurement.SequenceNumber);
-        
-        _dataPoints.Add(new ()
+
+        _dataPoints.Add(new()
         {
             Timestamp = DateTime.Now.ToFileTimeUtc(),
             Rssi = measurement.Rssi,
@@ -98,20 +98,30 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
     {
         var config = await LoadStore();
         _logger.LogInformation("Starting PHY experiment iterations");
-        
+
         _dataPoints.Clear();
         CurrentConfig = ExperimentPhyConfig.PhyConfig.Default;
 
-        var bws = config.TxBwSeries;
-        foreach (var bandwidth in bws)
+        // var bws = config.TxBwSeries;
+        var powers = config.TxPSeries;
+        var sfs = config.TxSfSeries;
+        foreach (var txPower in powers)
         {
-            CurrentConfig.TxBandwidth = bandwidth;
-            var totalDuration = config.SeqCount * config.SeqPeriodMs;            
-            _logger.LogInformation("Iteration BW{BW} Duration{Time}", bandwidth, totalDuration);
-            await RunIteration();
+            foreach (var sf in sfs)
+            {
+                // CurrentConfig.TxBandwidth = bandwidth;
+                CurrentConfig.TxPower = txPower;
+                CurrentConfig.TxDataRate = sf;
+                var totalDuration = config.SeqCount * config.SeqPeriodMs;
+                _logger.LogInformation("Iteration P{BW} SF{SF} Duration{Time}", 
+                    txPower,
+                    sf,
+                    totalDuration);
+                await RunIteration();
 
-            await Task.Delay((int)totalDuration + 200);
-            await WriteData();
+                await Task.Delay((int)totalDuration + 200);
+                await WriteData();
+            }
         }
 
         _logger.LogInformation("PHY experiment done");
@@ -141,13 +151,13 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
         txConf.TxPower = CurrentConfig.TxPower;
         txConf.TxDataRate = CurrentConfig.TxDataRate;
 
-        _logger.LogInformation("Experiment command {Port} MC?{MC} BW{BW} P{P} SF{SF}", 
+        _logger.LogInformation("Experiment command {Port} MC?{MC} BW{BW} P{P} SF{SF}",
             selectedPortName, isMulticast,
             txConf.TxBandwidth, txConf.TxBandwidth, txConf.TxDataRate);
 
         _serialProcessorService.SendUnicastTransmitCommand(loraMessage, false);
     }
-    
+
     private async Task WriteData()
     {
         if (_dataPoints.Count == 0) return;

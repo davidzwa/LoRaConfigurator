@@ -10,6 +10,7 @@ public class ExperimentPhyConfig : ICloneable
         public uint TxDataRate { get; set; } = 7; // 7-12
     }
     public int ExperimentAckTimeout { get; set; } = 100;
+    public string TargetedTransmitterNickname { get; set; } = "";
     public string TargetedReceiverNickname { get; set; } = "";
 
     // Phy experiments

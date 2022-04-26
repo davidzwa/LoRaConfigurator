@@ -1,14 +1,13 @@
 {
   "ExperimentAckTimeout": 2000,
   "SeqPeriodMs": 100,
-  "SeqCount": 50,
+  "SeqCount": 16000,
   "DefaultPhy": {
     "TxPower": 14,
     "TxBandwidth": 2,
     "TxDataRate": 7
   },
-  "TargetedTransmitterNickname": "A2",
-  "TargetedReceiverNickname": "A0",
+  "TargetedReceiverNickname": "A2",
   "TxBwSeries": [2],
   "TxSfSeries": [7, 8, 9],
   "TxPSeries": [14, 10, 6, 2, -2],
