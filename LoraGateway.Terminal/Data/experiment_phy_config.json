@@ -1,8 +1,8 @@
 {
   "ExperimentAckTimeout": 2000,
-  "TransmitStartDelay": 3000,
-  "SeqPeriodMs": 100,
-  "SeqCount": 50,
+  "TransmitStartDelay": 500,
+  "SeqPeriodMs": 500,
+  "SeqCount": 2,
   "DefaultPhy": {
     "TxPower": 14,
     "TxBandwidth": 2,

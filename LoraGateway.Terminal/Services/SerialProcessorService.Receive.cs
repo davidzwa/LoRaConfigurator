@@ -74,6 +74,8 @@ public partial class SerialProcessorService
             "PROTO_FAIL_TX",
             "PROTO_LORA_FAIL",
             "CRC_FAIL",
+            "CRC_FAIL_UART",
+            "CRC_FAIL_UART_MAIN",
             "RLNC_TERMINATE",
             "LORATX_TIMEOUT",
             "RAMFUNC",
