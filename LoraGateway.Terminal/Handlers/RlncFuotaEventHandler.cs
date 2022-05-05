@@ -26,11 +26,6 @@ public class DecodingUpdateEvent
     public ByteString Payload { get; set; }
 }
 
-public class DecodingResultEvent
-{
-    public DecodingResult DecodingResult { get; set; }
-}
-
 public class StopFuotaSession
 {
     public CancellationToken Token { get; set; }
@@ -39,7 +34,7 @@ public class StopFuotaSession
 }
 
 public class FuotaEventHandler : IEventHandler<InitFuotaSession>, IEventHandler<RlncRemoteFlashResponseEvent>,
-    IEventHandler<StopFuotaSession>, IEventHandler<DecodingUpdateEvent>, IEventHandler<DecodingResultEvent>
+    IEventHandler<StopFuotaSession>, IEventHandler<DecodingUpdateEvent>
 {
     private readonly FuotaSessionHostedService _fuotaSessionHostedService;
     private readonly FuotaManagerService _fuotaManagerService;
@@ -76,14 +71,6 @@ public class FuotaEventHandler : IEventHandler<InitFuotaSession>, IEventHandler<
         if (_fuotaManagerService.IsRemoteSessionStarted)
         {
             await _experimentRlncService.ProcessUpdate(@event.DecodingUpdate!);
-        }
-    }
-
-    public async Task HandleEventAsync(DecodingResultEvent @event)
-    {
-        if (_fuotaManagerService.IsRemoteSessionStarted)
-        {
-            await _experimentRlncService.ProcessResult(@event.DecodingResult);
         }
     }
 

@@ -22,6 +22,7 @@ public class ExperimentRlncService : JsonDataStore<ExperimentConfig>
     private List<ExperimentDataUpdateEntry> _filteredGenUpdates = new();
     private ExperimentDataUpdateEntry[] _currentPerGenUpdates = { };
     private float _currentPer;
+    private uint _currentPer100;
     private CancellationTokenSource _cancellationTokenSource = new();
 
     private List<ExperimentDataEntry> _dataPoints = new();
@@ -94,20 +95,6 @@ public class ExperimentRlncService : JsonDataStore<ExperimentConfig>
         _fuotaManagerService.UpdateConfig(store);
     }
 
-    public async Task ProcessResult(DecodingResult result)
-    {
-        try
-        {
-            await ProcessResultInner(result);
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e.ToString());
-            _cancellationTokenSource.Cancel();
-            _hasCrashed = true;
-        }
-    }
-
     public async Task ProcessUpdate(DecodingUpdate update)
     {
         try
@@ -118,7 +105,9 @@ public class ExperimentRlncService : JsonDataStore<ExperimentConfig>
             _lastUpdateReceived = DateTime.Now;
             ExperimentDataUpdateEntry lastUpdate = new()
             {
+                Timestamp = DateTime.Now.ToFileTimeUtc(),
                 PerConfig = _currentPer,
+                Per100 = _currentPer100,
                 CurrentSequenceNumber = update.CurrentSequenceNumber,
                 GenerationIndex = update.CurrentGenerationIndex,
                 CurrentFragmentIndex = update.CurrentFragmentIndex,
@@ -172,14 +161,14 @@ public class ExperimentRlncService : JsonDataStore<ExperimentConfig>
         _cancellationTokenSource = new CancellationTokenSource();
         _hasCrashed = false;
 
-        var per100 = min100;
+        _currentPer100 = min100;
         var cappedMax = Math.Min(100, max100);
         _lastUpdateReceived = DateTime.Now;
-        while (per100 <= cappedMax && !_hasCrashed)
+        while (_currentPer100 <= cappedMax && !_hasCrashed)
         {
             _logger.LogInformation("Next gen started");
-            _fuotaManagerService.SetPacketErrorRate(per100 / 100.0f);
-            _currentPer = per100 / 100.0f;
+            _fuotaManagerService.SetPacketErrorRate(_currentPer100 / 100.0f);
+            _currentPer = _currentPer100 / 100.0f;
 
             if (experimentConfig.RandomPerSeed)
             {
@@ -194,14 +183,14 @@ public class ExperimentRlncService : JsonDataStore<ExperimentConfig>
             _deviceRlncRoundTerminated = false;
 
             // Allocate and clear results
-            _currentPerGenUpdates = new ExperimentDataUpdateEntry[fuotaConfig.GetGenerationCount()];
             _allDecodingUpdatesReceived.Clear();
+            _currentPerGenUpdates = new ExperimentDataUpdateEntry[fuotaConfig.GetGenerationCount()];
             _lastResultGenerationIndex = null;
 
             // Await initial response with used config (so we can dynamically update FuotaManager)
             _initReceived = false;
             _serialProcessorService.SendUnicastTransmitCommand(loraMessageStart, fuotaConfig.UartFakeLoRaRxMode);
-            _logger.LogInformation("PER {Per}% - Awaiting {Ms} Ms", per100, experimentConfig.ExperimentInitAckTimeout);
+            _logger.LogInformation("PER {Per}% - Awaiting {Ms} Ms", _currentPer100, experimentConfig.ExperimentInitAckTimeout);
             await Task.Delay(experimentConfig.ExperimentInitAckTimeout, _cancellationTokenSource.Token);
 
             if (!_initReceived)
@@ -227,7 +216,7 @@ public class ExperimentRlncService : JsonDataStore<ExperimentConfig>
             var loraMessageStop = _fuotaManagerService.RemoteSessionStopCommand();
             _serialProcessorService.SendUnicastTransmitCommand(loraMessageStop, fuotaConfig.UartFakeLoRaRxMode);
 
-            per100 += step;
+            _currentPer100 += step;
 
             // Check if some generations were not registered
             var genCount = fuotaConfig.GetGenerationCount();
@@ -243,6 +232,7 @@ public class ExperimentRlncService : JsonDataStore<ExperimentConfig>
 
             if (!_hasCrashed)
             {
+                await WriteData();
                 ExportPlot();
             }
 
@@ -309,14 +299,16 @@ public class ExperimentRlncService : JsonDataStore<ExperimentConfig>
         return missedGenerationIndices;
     }
 
-    private void ConvertGenerationsToDataPoints(List<uint> missedGenerationIndices,
+    private void ConvertGenerationsToDataPoints(
+        List<uint> missedGenerationIndices,
         uint? currentGenIndex)
     {
         var missedDecodingUpdates = new List<ExperimentDataUpdateEntry>();
         var fuotaConfig = _fuotaManagerService.GetStore();
         var generationPacketsCount = fuotaConfig.GenerationSize + fuotaConfig.GenerationSizeRedundancy;
 
-        var groupedDecodingUpdatesByGenIndex = _allDecodingUpdatesReceived.GroupBy(d => d.GenerationIndex);
+        var groupedDecodingUpdatesByGenIndex = _allDecodingUpdatesReceived
+            .GroupBy(d => d.GenerationIndex);
         foreach (var index in missedGenerationIndices)
         {
             // Cover for generations without any update - fill in gap with 100% PER (a DNF iteration)
@@ -364,9 +356,12 @@ public class ExperimentRlncService : JsonDataStore<ExperimentConfig>
                 lastGenUpdate.MissedPackets,
                 total
             );
+            
+            // Process the decoding result (verdict)
             var per = (float)lastGenUpdate.MissedPackets / total;
             _dataPoints.Add(new()
             {
+                Timestamp = DateTime.Now.ToFileTimeUtc(),
                 Rank = 0,
                 Success = lastGenUpdate.Success,
                 GenerationIndex = lastGenUpdate.GenerationIndex,
@@ -389,63 +384,9 @@ public class ExperimentRlncService : JsonDataStore<ExperimentConfig>
             genIndexString, missedDecodingUpdates.Count(), _currentPer);
     }
 
-    private async Task ProcessResultInner(DecodingResult result)
-    {
-        var currentGenIndex = result.CurrentGenerationIndex;
-        var fuotaConfig = _fuotaManagerService.GetStore();
-        if (_lastResultGenerationIndex == result.CurrentGenerationIndex)
-        {
-            throw new InvalidOperationException("Generations already received - Experiment failure");
-        }
-
-        // We detect skipped generations which need to be accounted
-        var lostIndices = CalculateLostGenerationIndices(currentGenIndex);
-        if (lostIndices.Count > 0)
-        {
-            ConvertGenerationsToDataPoints(lostIndices, currentGenIndex);
-        }
-
-        var success = result.Success;
-        var missedFrags = result.MissedGenFragments;
-        var receivedFrags = result.ReceivedFragments;
-        // Missing frags after the last update doesnt really matter
-        var totalFrags = result.MissedGenFragments + receivedFrags;
-        var maxFrags = fuotaConfig.GenerationSize + fuotaConfig.GenerationSizeRedundancy;
-
-        if (!success && totalFrags < maxFrags)
-        {
-            totalFrags = maxFrags;
-        }
-        // else
-        // {
-        //     // Hardware losses/bit-flips or mathematical failure (low prob.)
-        // }
-
-        var packetErrorRate = (float)missedFrags / totalFrags;
-        _dataPoints.Add(new()
-        {
-            Rank = result.MatrixRank,
-            Success = success,
-            GenerationIndex = currentGenIndex,
-            GenerationTotalPackets = fuotaConfig.GenerationSize,
-            GenerationRedundancyUsed = fuotaConfig.GenerationSizeRedundancy,
-            MissedPackets = result.MissedGenFragments,
-            ReceivedPackets = result.ReceivedFragments,
-            TriggeredByDecodingResult = true,
-            TriggeredByCompleteLoss = false,
-            RngResolution = totalFrags,
-            PacketErrorRate = packetErrorRate,
-            ConfiguredPacketErrorRate = _currentPer
-        });
-
-        await WriteData();
-
-        _lastResultGenerationIndex = result.CurrentGenerationIndex;
-    }
-
     private async Task WriteDataUpdates()
     {
-        if (_dataPoints.Count == 0) return;
+        if (_allDecodingUpdatesReceived.Count == 0) return;
 
         var filePath = GetCsvFilePath(GetCsvFileNameUpdates());
         using (var writer = new StreamWriter(filePath))
@@ -459,7 +400,7 @@ public class ExperimentRlncService : JsonDataStore<ExperimentConfig>
 
     private async Task WriteDataFilteredGenUpdates()
     {
-        if (_dataPoints.Count == 0) return;
+        if (_filteredGenUpdates.Count == 0) return;
 
         var filePath = GetCsvFilePath(GetCsvFileNameFilteredGenUpdates());
         using (var writer = new StreamWriter(filePath))

@@ -2,6 +2,7 @@
 
 public class ExperimentDataEntry
 {
+    public long Timestamp { get; set; }
     public uint GenerationIndex { get; set; }
     public uint GenerationTotalPackets { get; set; }
     public uint GenerationRedundancyUsed { get; set; }

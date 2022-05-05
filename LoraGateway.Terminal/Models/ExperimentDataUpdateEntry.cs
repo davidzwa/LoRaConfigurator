@@ -2,7 +2,9 @@
 
 public class ExperimentDataUpdateEntry
 {
+    public long Timestamp { get; set; }
     public float PerConfig { get; set; }
+    public uint Per100 {get; set; }
     public uint GenerationIndex { get; set; }
     public uint CurrentFragmentIndex { get; set; }
     public uint CurrentSequenceNumber { get; set; }
