@@ -105,7 +105,14 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
     public async Task RunPhyExperiments()
     {
         var config = await LoadStore();
-        _logger.LogInformation("Starting PHY experiment iterations");
+        if (config.ReceiverMode)
+        {
+            _logger.LogInformation("Starting in RECEIVER MODE");
+        }
+        else
+        {
+            _logger.LogInformation("Starting in TRANSMITTER MODE");
+        }
 
         _dataPoints.Clear();
         CurrentConfig = ExperimentPhyConfig.PhyConfig.Default;
@@ -121,15 +128,45 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
                 CurrentConfig.TxPower = txPower;
                 CurrentConfig.TxDataRate = sf;
                 var periodMs = config.SeqCount * config.SeqPeriodMs;
-                _logger.LogInformation("Iteration T{Time}ms P{BW}dBm SF{SF}",
+                _logger.LogInformation("NEW RadioConfig T{Time}ms P{BW}dBm SF{SF}",
                     periodMs,
                     txPower,
                     sf);
 
-                // Sent iteration start and await RX for human intervention in case of failure
-                await SendAckedRadioConfigProgressive(Store.TargetedTransmitterNickname);
+                // Wait for keyboard confirmation to start
+                _logger.LogInformation("AWAITING KEYPRESS to START");
+                Console.ReadLine();
 
-                await Task.Delay((int)periodMs + 500);
+                
+                
+                var devConf = GetDevConf(true, true);
+                devConf.EnableSequenceTransmit = false;
+
+                // Send the start command 
+                if (!config.ReceiverMode)
+                {
+                    // Transmitter must configure start
+                    devConf.EnableSequenceTransmit = true;
+                    SendConfig(devConf, config.DeviceIsRemote, config.DeviceTargetNickName);
+                 
+                    var sleepTimeMs = (int)periodMs + 500;
+                    _logger.LogInformation("Sleeping for {time}ms (round duration)", sleepTimeMs);
+                    await Task.Delay(sleepTimeMs);
+                    
+                    _logger.LogInformation("AWAITING KEYPRESS to END ROUND");
+                    Console.ReadLine();
+                }
+                else
+                {
+                    // Receiver must just wait
+                    var sleepTimeMs = (int)periodMs + 500;
+                    _logger.LogInformation("Sleeping for {time}ms (wait)", sleepTimeMs);
+                    await Task.Delay(sleepTimeMs);
+                    
+                    _logger.LogInformation("AWAITING KEYPRESS to END ROUND + SAVE DATA");
+                    Console.ReadLine();
+                }
+                
                 await WriteData();
             }
         }
@@ -137,38 +174,18 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
         _logger.LogInformation("PHY experiment done");
     }
 
-    private async Task SendAckedRadioConfigProgressive(string targetTransmitter)
+    public void SendConfig(DeviceConfiguration deviceConfiguration, bool usingLoRa, string targetName)
     {
-        var devConf = GetDevConf(true, false);
-
-        // Configure proxy node radio config RX to new setting
-        SendRadioConfigUart(devConf);
-
-        // Send unicast radio configs
-        devConf.TransmitConfiguration.SetTx = true;
-        devConf.TransmitConfiguration.SetRx = true;
-
-        // Get target device to configure
-        var store = GetStore();
-        _serialProcessorService.SetDeviceFilter(store.TargetedTransmitterNickname);
-        SendRadioConfigUnicastLora(targetTransmitter, devConf);
-
-        // TODO await specific console input -- communicate with other side
-        // _logger.LogInformation("-- Awaiting keypress to continue with this mode");
-
-        await Task.Delay(3000);
-
-        // Now enable transmitter (with delay!)
-        devConf.EnableSequenceTransmit = true;
-        SendRadioConfigUnicastLora(targetTransmitter, devConf);
-
-        // Configure proxy node radio config TX to new setting
-        devConf.TransmitConfiguration.SetTx = true;
-        SendRadioConfigUart(devConf);
-
-        // Done
-    }
-
+        _logger.LogInformation("RadioConf START {Start}", deviceConfiguration.EnableSequenceTransmit);
+        if (usingLoRa)
+        {
+            SendRadioConfigUnicastLora(targetName, deviceConfiguration);
+        }
+        else {
+            SendRadioConfigUart(deviceConfiguration);
+        }
+    } 
+    
     private void SendRadioConfigUart(DeviceConfiguration deviceConfiguration)
     {
         _serialProcessorService.SendDeviceConfiguration(deviceConfiguration, false);

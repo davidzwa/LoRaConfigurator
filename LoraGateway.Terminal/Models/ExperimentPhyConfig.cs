@@ -10,10 +10,10 @@ public class ExperimentPhyConfig : ICloneable
         public uint TxDataRate { get; set; } = 7; // 7-12
     }
 
-    public int ExperimentAckTimeout { get; set; } = 100;
     public uint TransmitStartDelay { get; set; } = 3000;
-    public string TargetedTransmitterNickname { get; set; } = "";
-    public string[] AcksRequired { get; set; } = Array.Empty<string>();
+    public string DeviceTargetNickName { get; set; } = "";
+    public bool ReceiverMode { get; set; } = false;
+    public bool DeviceIsRemote { get; set; } = false;
 
     // Phy experiments
     public uint SeqPeriodMs { get; set; } = 2000;
