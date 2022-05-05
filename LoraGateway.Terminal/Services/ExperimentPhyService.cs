@@ -137,8 +137,6 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
                 _logger.LogInformation("AWAITING KEYPRESS to START");
                 Console.ReadLine();
 
-                
-                
                 var devConf = GetDevConf(true, true);
                 devConf.EnableSequenceTransmit = false;
 

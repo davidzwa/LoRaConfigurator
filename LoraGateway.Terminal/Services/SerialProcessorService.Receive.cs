@@ -162,7 +162,7 @@ public partial class SerialProcessorService
         {
             await InnerLoRaPacketHandler(portName, response.LoraMeasurement?.DownlinkPayload);
         }
-        else if (bodyCase is LoRaMessage.BodyOneofCase.None)
+        else if (bodyCase is LoRaMessage.BodyOneofCase.None or LoRaMessage.BodyOneofCase.DummyConfig)
         {
             // Measurement was a dummy - send to RX handler
             await _eventPublisher.PublishEventAsync(new RxEvent
