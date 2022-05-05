@@ -133,10 +133,6 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
                     txPower,
                     sf);
 
-                // Wait for keyboard confirmation to start
-                _logger.LogInformation("AWAITING KEYPRESS to START");
-                Console.ReadLine();
-
                 var devConf = GetDevConf(true, true);
                 devConf.EnableSequenceTransmit = false;
 
@@ -148,9 +144,8 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
                     SendConfig(devConf, config.DeviceIsRemote, config.DeviceTargetNickName);
                  
                     var sleepTimeMs = (int)periodMs + 500;
-                    _logger.LogInformation("Sleeping for {time}ms (round duration)", sleepTimeMs);
-                    await Task.Delay(sleepTimeMs);
                     
+                    await Task.Delay(sleepTimeMs);
                     _logger.LogInformation("AWAITING KEYPRESS to END ROUND");
                     Console.ReadLine();
                 }
@@ -158,9 +153,8 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
                 {
                     // Receiver must just wait
                     var sleepTimeMs = (int)periodMs + 500;
-                    _logger.LogInformation("Sleeping for {time}ms (wait)", sleepTimeMs);
-                    await Task.Delay(sleepTimeMs);
                     
+                    await Task.Delay(sleepTimeMs);
                     _logger.LogInformation("AWAITING KEYPRESS to END ROUND + SAVE DATA");
                     Console.ReadLine();
                 }
