@@ -96,11 +96,11 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
             TimerDelay = config.RemoteUpdateIntervalMs,
             DebugFragmentUart = config.DebugFragmentUart,
             DebugMatrixUart = config.DebugMatrixUart,
-            TransmitConfiguration = new TransmitConfiguration()
+            TransmitConfiguration = new TransmitReceiveConfiguration()
             {
-                TxBandwidth = config.TxBandwidth,
                 TxPower = config.TxPower,
-                TxDataRate = config.TxDataRate
+                TxRxBandwidth = config.TxBandwidth,
+                TxRxDataRate = config.TxDataRate
             },
             ReceptionRateConfig = new ()
             {

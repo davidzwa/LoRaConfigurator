@@ -32,13 +32,17 @@ namespace LoRa {
             "ZXJpbWVudFJlc3BvbnNlEhgKEE1lYXN1cmVtZW50Q291bnQYASABKA0SHAoU",
             "TWVhc3VyZW1lbnRzRGlzYWJsZWQYAiABKAgSEgoKV2FzQ2xlYXJlZBgDIAEo",
             "CCIzChhNZWFzdXJlbWVudFN0cmVhbVJlcXVlc3QSFwoPRnJhZ21lbnRTaXpl",
-            "TWF4GAEgASgNIhsKGU1lYXN1cmVtZW50U3RyZWFtRnJhZ21lbnQiUQoVVHJh",
-            "bnNtaXRDb25maWd1cmF0aW9uEg8KB1R4UG93ZXIYASABKAUSEwoLVHhCYW5k",
-            "d2lkdGgYAiABKA0SEgoKVHhEYXRhUmF0ZRgDIAEoDSJuChNSZWNlcHRpb25S",
-            "YXRlQ29uZmlnEhcKD1BhY2tldEVycm9yUmF0ZRgBIAEoAhIUCgxPdmVycmlk",
-            "ZVNlZWQYAiABKAgSDAoEU2VlZBgDIAEoDRIaChJEcm9wVXBkYXRlQ29tbWFu",
-            "ZHMYBCABKAgqMQoSUFJuZ0ltcGxlbWVudGF0aW9uEgsKB0xGU1JfMzIQABIO",
-            "CgpYb1NoaVJvXzMyEAFCB6oCBExvUmFiBnByb3RvMw=="));
+            "TWF4GAEgASgNIhsKGU1lYXN1cmVtZW50U3RyZWFtRnJhZ21lbnQidAoVU2Vx",
+            "dWVuY2VDb25maWd1cmF0aW9uEhgKEEVuYWJsZUFsd2F5c1NlbmQYASABKAgS",
+            "GAoQQWx3YXlzU2VuZFBlcmlvZBgCIAEoDRIYChBMaW1pdGVkU2VuZENvdW50",
+            "GAMgASgNEg0KBURlbGF5GAQgASgNInoKHFRyYW5zbWl0UmVjZWl2ZUNvbmZp",
+            "Z3VyYXRpb24SDwoHVHhQb3dlchgBIAEoBRIVCg1UeFJ4QmFuZHdpZHRoGAIg",
+            "ASgNEhQKDFR4UnhEYXRhUmF0ZRgDIAEoDRINCgVTZXRSeBgEIAEoCBINCgVT",
+            "ZXRUeBgFIAEoCCJuChNSZWNlcHRpb25SYXRlQ29uZmlnEhcKD1BhY2tldEVy",
+            "cm9yUmF0ZRgBIAEoAhIUCgxPdmVycmlkZVNlZWQYAiABKAgSDAoEU2VlZBgD",
+            "IAEoDRIaChJEcm9wVXBkYXRlQ29tbWFuZHMYBCABKAgqMQoSUFJuZ0ltcGxl",
+            "bWVudGF0aW9uEgsKB0xGU1JfMzIQABIOCgpYb1NoaVJvXzMyEAFCB6oCBExv",
+            "UmFiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LoRa.PRngImplementation), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -46,7 +50,8 @@ namespace LoRa {
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.ExperimentResponse), global::LoRa.ExperimentResponse.Parser, new[]{ "MeasurementCount", "MeasurementsDisabled", "WasCleared" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.MeasurementStreamRequest), global::LoRa.MeasurementStreamRequest.Parser, new[]{ "FragmentSizeMax" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.MeasurementStreamFragment), global::LoRa.MeasurementStreamFragment.Parser, null, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.TransmitConfiguration), global::LoRa.TransmitConfiguration.Parser, new[]{ "TxPower", "TxBandwidth", "TxDataRate" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.SequenceConfiguration), global::LoRa.SequenceConfiguration.Parser, new[]{ "EnableAlwaysSend", "AlwaysSendPeriod", "LimitedSendCount", "Delay" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.TransmitReceiveConfiguration), global::LoRa.TransmitReceiveConfiguration.Parser, new[]{ "TxPower", "TxRxBandwidth", "TxRxDataRate", "SetRx", "SetTx" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.ReceptionRateConfig), global::LoRa.ReceptionRateConfig.Parser, new[]{ "PacketErrorRate", "OverrideSeed", "Seed", "DropUpdateCommands" }, null, null, null, null)
           }));
     }
@@ -890,16 +895,16 @@ namespace LoRa {
 
   }
 
-  public sealed partial class TransmitConfiguration : pb::IMessage<TransmitConfiguration>
+  public sealed partial class SequenceConfiguration : pb::IMessage<SequenceConfiguration>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<TransmitConfiguration> _parser = new pb::MessageParser<TransmitConfiguration>(() => new TransmitConfiguration());
+    private static readonly pb::MessageParser<SequenceConfiguration> _parser = new pb::MessageParser<SequenceConfiguration>(() => new SequenceConfiguration());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<TransmitConfiguration> Parser { get { return _parser; } }
+    public static pb::MessageParser<SequenceConfiguration> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -915,7 +920,7 @@ namespace LoRa {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public TransmitConfiguration() {
+    public SequenceConfiguration() {
       OnConstruction();
     }
 
@@ -923,17 +928,325 @@ namespace LoRa {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public TransmitConfiguration(TransmitConfiguration other) : this() {
-      txPower_ = other.txPower_;
-      txBandwidth_ = other.txBandwidth_;
-      txDataRate_ = other.txDataRate_;
+    public SequenceConfiguration(SequenceConfiguration other) : this() {
+      enableAlwaysSend_ = other.enableAlwaysSend_;
+      alwaysSendPeriod_ = other.alwaysSendPeriod_;
+      limitedSendCount_ = other.limitedSendCount_;
+      delay_ = other.delay_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public TransmitConfiguration Clone() {
-      return new TransmitConfiguration(this);
+    public SequenceConfiguration Clone() {
+      return new SequenceConfiguration(this);
+    }
+
+    /// <summary>Field number for the "EnableAlwaysSend" field.</summary>
+    public const int EnableAlwaysSendFieldNumber = 1;
+    private bool enableAlwaysSend_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool EnableAlwaysSend {
+      get { return enableAlwaysSend_; }
+      set {
+        enableAlwaysSend_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "AlwaysSendPeriod" field.</summary>
+    public const int AlwaysSendPeriodFieldNumber = 2;
+    private uint alwaysSendPeriod_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint AlwaysSendPeriod {
+      get { return alwaysSendPeriod_; }
+      set {
+        alwaysSendPeriod_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "LimitedSendCount" field.</summary>
+    public const int LimitedSendCountFieldNumber = 3;
+    private uint limitedSendCount_;
+    /// <summary>
+    /// Ignored if EnableAlwaysSend is true
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint LimitedSendCount {
+      get { return limitedSendCount_; }
+      set {
+        limitedSendCount_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "Delay" field.</summary>
+    public const int DelayFieldNumber = 4;
+    private uint delay_;
+    /// <summary>
+    /// Apply a DelayMs before the config goes into effect
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint Delay {
+      get { return delay_; }
+      set {
+        delay_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as SequenceConfiguration);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(SequenceConfiguration other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (EnableAlwaysSend != other.EnableAlwaysSend) return false;
+      if (AlwaysSendPeriod != other.AlwaysSendPeriod) return false;
+      if (LimitedSendCount != other.LimitedSendCount) return false;
+      if (Delay != other.Delay) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (EnableAlwaysSend != false) hash ^= EnableAlwaysSend.GetHashCode();
+      if (AlwaysSendPeriod != 0) hash ^= AlwaysSendPeriod.GetHashCode();
+      if (LimitedSendCount != 0) hash ^= LimitedSendCount.GetHashCode();
+      if (Delay != 0) hash ^= Delay.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (EnableAlwaysSend != false) {
+        output.WriteRawTag(8);
+        output.WriteBool(EnableAlwaysSend);
+      }
+      if (AlwaysSendPeriod != 0) {
+        output.WriteRawTag(16);
+        output.WriteUInt32(AlwaysSendPeriod);
+      }
+      if (LimitedSendCount != 0) {
+        output.WriteRawTag(24);
+        output.WriteUInt32(LimitedSendCount);
+      }
+      if (Delay != 0) {
+        output.WriteRawTag(32);
+        output.WriteUInt32(Delay);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (EnableAlwaysSend != false) {
+        output.WriteRawTag(8);
+        output.WriteBool(EnableAlwaysSend);
+      }
+      if (AlwaysSendPeriod != 0) {
+        output.WriteRawTag(16);
+        output.WriteUInt32(AlwaysSendPeriod);
+      }
+      if (LimitedSendCount != 0) {
+        output.WriteRawTag(24);
+        output.WriteUInt32(LimitedSendCount);
+      }
+      if (Delay != 0) {
+        output.WriteRawTag(32);
+        output.WriteUInt32(Delay);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (EnableAlwaysSend != false) {
+        size += 1 + 1;
+      }
+      if (AlwaysSendPeriod != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(AlwaysSendPeriod);
+      }
+      if (LimitedSendCount != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(LimitedSendCount);
+      }
+      if (Delay != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Delay);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(SequenceConfiguration other) {
+      if (other == null) {
+        return;
+      }
+      if (other.EnableAlwaysSend != false) {
+        EnableAlwaysSend = other.EnableAlwaysSend;
+      }
+      if (other.AlwaysSendPeriod != 0) {
+        AlwaysSendPeriod = other.AlwaysSendPeriod;
+      }
+      if (other.LimitedSendCount != 0) {
+        LimitedSendCount = other.LimitedSendCount;
+      }
+      if (other.Delay != 0) {
+        Delay = other.Delay;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            EnableAlwaysSend = input.ReadBool();
+            break;
+          }
+          case 16: {
+            AlwaysSendPeriod = input.ReadUInt32();
+            break;
+          }
+          case 24: {
+            LimitedSendCount = input.ReadUInt32();
+            break;
+          }
+          case 32: {
+            Delay = input.ReadUInt32();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            EnableAlwaysSend = input.ReadBool();
+            break;
+          }
+          case 16: {
+            AlwaysSendPeriod = input.ReadUInt32();
+            break;
+          }
+          case 24: {
+            LimitedSendCount = input.ReadUInt32();
+            break;
+          }
+          case 32: {
+            Delay = input.ReadUInt32();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  public sealed partial class TransmitReceiveConfiguration : pb::IMessage<TransmitReceiveConfiguration>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<TransmitReceiveConfiguration> _parser = new pb::MessageParser<TransmitReceiveConfiguration>(() => new TransmitReceiveConfiguration());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<TransmitReceiveConfiguration> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LoRa.ExperimentConfigReflection.Descriptor.MessageTypes[5]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public TransmitReceiveConfiguration() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public TransmitReceiveConfiguration(TransmitReceiveConfiguration other) : this() {
+      txPower_ = other.txPower_;
+      txRxBandwidth_ = other.txRxBandwidth_;
+      txRxDataRate_ = other.txRxDataRate_;
+      setRx_ = other.setRx_;
+      setTx_ = other.setTx_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public TransmitReceiveConfiguration Clone() {
+      return new TransmitReceiveConfiguration(this);
     }
 
     /// <summary>Field number for the "TxPower" field.</summary>
@@ -951,39 +1264,63 @@ namespace LoRa {
       }
     }
 
-    /// <summary>Field number for the "TxBandwidth" field.</summary>
-    public const int TxBandwidthFieldNumber = 2;
-    private uint txBandwidth_;
+    /// <summary>Field number for the "TxRxBandwidth" field.</summary>
+    public const int TxRxBandwidthFieldNumber = 2;
+    private uint txRxBandwidth_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public uint TxBandwidth {
-      get { return txBandwidth_; }
+    public uint TxRxBandwidth {
+      get { return txRxBandwidth_; }
       set {
-        txBandwidth_ = value;
+        txRxBandwidth_ = value;
       }
     }
 
-    /// <summary>Field number for the "TxDataRate" field.</summary>
-    public const int TxDataRateFieldNumber = 3;
-    private uint txDataRate_;
+    /// <summary>Field number for the "TxRxDataRate" field.</summary>
+    public const int TxRxDataRateFieldNumber = 3;
+    private uint txRxDataRate_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public uint TxDataRate {
-      get { return txDataRate_; }
+    public uint TxRxDataRate {
+      get { return txRxDataRate_; }
       set {
-        txDataRate_ = value;
+        txRxDataRate_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "SetRx" field.</summary>
+    public const int SetRxFieldNumber = 4;
+    private bool setRx_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool SetRx {
+      get { return setRx_; }
+      set {
+        setRx_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "SetTx" field.</summary>
+    public const int SetTxFieldNumber = 5;
+    private bool setTx_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool SetTx {
+      get { return setTx_; }
+      set {
+        setTx_ = value;
       }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as TransmitConfiguration);
+      return Equals(other as TransmitReceiveConfiguration);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(TransmitConfiguration other) {
+    public bool Equals(TransmitReceiveConfiguration other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -991,8 +1328,10 @@ namespace LoRa {
         return true;
       }
       if (TxPower != other.TxPower) return false;
-      if (TxBandwidth != other.TxBandwidth) return false;
-      if (TxDataRate != other.TxDataRate) return false;
+      if (TxRxBandwidth != other.TxRxBandwidth) return false;
+      if (TxRxDataRate != other.TxRxDataRate) return false;
+      if (SetRx != other.SetRx) return false;
+      if (SetTx != other.SetTx) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1001,8 +1340,10 @@ namespace LoRa {
     public override int GetHashCode() {
       int hash = 1;
       if (TxPower != 0) hash ^= TxPower.GetHashCode();
-      if (TxBandwidth != 0) hash ^= TxBandwidth.GetHashCode();
-      if (TxDataRate != 0) hash ^= TxDataRate.GetHashCode();
+      if (TxRxBandwidth != 0) hash ^= TxRxBandwidth.GetHashCode();
+      if (TxRxDataRate != 0) hash ^= TxRxDataRate.GetHashCode();
+      if (SetRx != false) hash ^= SetRx.GetHashCode();
+      if (SetTx != false) hash ^= SetTx.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1025,13 +1366,21 @@ namespace LoRa {
         output.WriteRawTag(8);
         output.WriteInt32(TxPower);
       }
-      if (TxBandwidth != 0) {
+      if (TxRxBandwidth != 0) {
         output.WriteRawTag(16);
-        output.WriteUInt32(TxBandwidth);
+        output.WriteUInt32(TxRxBandwidth);
       }
-      if (TxDataRate != 0) {
+      if (TxRxDataRate != 0) {
         output.WriteRawTag(24);
-        output.WriteUInt32(TxDataRate);
+        output.WriteUInt32(TxRxDataRate);
+      }
+      if (SetRx != false) {
+        output.WriteRawTag(32);
+        output.WriteBool(SetRx);
+      }
+      if (SetTx != false) {
+        output.WriteRawTag(40);
+        output.WriteBool(SetTx);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -1047,13 +1396,21 @@ namespace LoRa {
         output.WriteRawTag(8);
         output.WriteInt32(TxPower);
       }
-      if (TxBandwidth != 0) {
+      if (TxRxBandwidth != 0) {
         output.WriteRawTag(16);
-        output.WriteUInt32(TxBandwidth);
+        output.WriteUInt32(TxRxBandwidth);
       }
-      if (TxDataRate != 0) {
+      if (TxRxDataRate != 0) {
         output.WriteRawTag(24);
-        output.WriteUInt32(TxDataRate);
+        output.WriteUInt32(TxRxDataRate);
+      }
+      if (SetRx != false) {
+        output.WriteRawTag(32);
+        output.WriteBool(SetRx);
+      }
+      if (SetTx != false) {
+        output.WriteRawTag(40);
+        output.WriteBool(SetTx);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -1068,11 +1425,17 @@ namespace LoRa {
       if (TxPower != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(TxPower);
       }
-      if (TxBandwidth != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(TxBandwidth);
+      if (TxRxBandwidth != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(TxRxBandwidth);
       }
-      if (TxDataRate != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(TxDataRate);
+      if (TxRxDataRate != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(TxRxDataRate);
+      }
+      if (SetRx != false) {
+        size += 1 + 1;
+      }
+      if (SetTx != false) {
+        size += 1 + 1;
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1082,18 +1445,24 @@ namespace LoRa {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(TransmitConfiguration other) {
+    public void MergeFrom(TransmitReceiveConfiguration other) {
       if (other == null) {
         return;
       }
       if (other.TxPower != 0) {
         TxPower = other.TxPower;
       }
-      if (other.TxBandwidth != 0) {
-        TxBandwidth = other.TxBandwidth;
+      if (other.TxRxBandwidth != 0) {
+        TxRxBandwidth = other.TxRxBandwidth;
       }
-      if (other.TxDataRate != 0) {
-        TxDataRate = other.TxDataRate;
+      if (other.TxRxDataRate != 0) {
+        TxRxDataRate = other.TxRxDataRate;
+      }
+      if (other.SetRx != false) {
+        SetRx = other.SetRx;
+      }
+      if (other.SetTx != false) {
+        SetTx = other.SetTx;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1115,11 +1484,19 @@ namespace LoRa {
             break;
           }
           case 16: {
-            TxBandwidth = input.ReadUInt32();
+            TxRxBandwidth = input.ReadUInt32();
             break;
           }
           case 24: {
-            TxDataRate = input.ReadUInt32();
+            TxRxDataRate = input.ReadUInt32();
+            break;
+          }
+          case 32: {
+            SetRx = input.ReadBool();
+            break;
+          }
+          case 40: {
+            SetTx = input.ReadBool();
             break;
           }
         }
@@ -1142,11 +1519,19 @@ namespace LoRa {
             break;
           }
           case 16: {
-            TxBandwidth = input.ReadUInt32();
+            TxRxBandwidth = input.ReadUInt32();
             break;
           }
           case 24: {
-            TxDataRate = input.ReadUInt32();
+            TxRxDataRate = input.ReadUInt32();
+            break;
+          }
+          case 32: {
+            SetRx = input.ReadBool();
+            break;
+          }
+          case 40: {
+            SetTx = input.ReadBool();
             break;
           }
         }
@@ -1170,7 +1555,7 @@ namespace LoRa {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LoRa.ExperimentConfigReflection.Descriptor.MessageTypes[5]; }
+      get { return global::LoRa.ExperimentConfigReflection.Descriptor.MessageTypes[6]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

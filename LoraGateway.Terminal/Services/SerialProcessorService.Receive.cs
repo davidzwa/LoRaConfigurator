@@ -80,8 +80,8 @@ public partial class SerialProcessorService
             "FLASH",
             // "UC",
             // "MC",
-            // "LORARX_DONE",
-            // "LORATX_DONE",
+            "LORARX_DONE",
+            "LORATX_DONE",
             // "RLNC_NVM",
             "RLNC_PARSED_SEQ",
             // "RLNC_RNG_DROP",
@@ -91,7 +91,9 @@ public partial class SerialProcessorService
             // "RLNC_PER_SEED",
             "RLNC_ERR",
             // "RNG",
-            "DevConf", // TODO change to device ACK
+            "DevConf",
+            "TxConf",
+            "LORA_ACK",
             "DevConfStop",
             "PUSH-BUTTON"
         };
@@ -142,35 +144,6 @@ public partial class SerialProcessorService
             var matrixRow = SerialUtil.ArrayToStringLim(payloadArray, (int)(i * matrix.Cols), (int)matrix.Cols);
             _logger.LogInformation("\t{MatrixRow}", matrixRow);
         }
-    }
-
-    private void ReceiveDecodingResult(string portName, UartResponse response)
-    {
-        var decodingResult = response.DecodingResult;
-        var success = decodingResult.Success;
-        var missedGenFragments = decodingResult.MissedGenFragments;
-        var receivedGenFragments = decodingResult.ReceivedFragments;
-
-        _eventPublisher.PublishEventAsync(new DecodingResultEvent
-        {
-            DecodingResult = decodingResult
-        });
-
-        var total = receivedGenFragments + missedGenFragments;
-        var perReal = (float)missedGenFragments / total;
-
-        _logger.LogInformation(
-            "[{Name}, DecodingResult] Success: {Payload} GenIndex {GenIndex} Rank: {MatrixRank} PER {Rx}/{Total}={Per:F2} FirstNumber: {FirstNumber} LastNumber: {LastNumber}",
-            portName,
-            success,
-            decodingResult.CurrentGenerationIndex,
-            decodingResult.MatrixRank,
-            decodingResult.MissedGenFragments,
-            total,
-            perReal,
-            decodingResult.FirstDecodedNumber,
-            decodingResult.LastDecodedNumber
-        );
     }
 
     private async Task ReceiveLoRaMeasurement(string portName, UartResponse response)

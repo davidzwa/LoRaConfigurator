@@ -5,6 +5,7 @@ using LoRa;
 using LoraGateway.Handlers;
 using LoraGateway.Models;
 using LoraGateway.Services.Contracts;
+using LoraGateway.Services.Extensions;
 
 namespace LoraGateway.Services;
 
@@ -59,6 +60,7 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
     public void ReceiveAck(string portName, LoRaMessage message)
     {
         // Not yet built - wait for later specification
+        // AcksReceived.Add();
     }
 
     public async Task ReceivePeriodTxMessage(PeriodTxEvent transmitEvent)
@@ -69,6 +71,10 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
 
     public async Task ReceiveMessage(RxEvent receiveEvent)
     {
+        if (Store == null)
+        {
+            await LoadStore();
+        }
         var measurement = receiveEvent.Message.LoraMeasurement;
         _logger.LogInformation("Rx event triggered RSSI {RSSI} SNR {SNR} SeqNr {Nr}",
             measurement.Rssi,
@@ -117,9 +123,11 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
                     txPower,
                     sf,
                     totalDuration);
-                await RunIteration();
+                
+                // Sent iteration start and await RX for human intervention in case of failure
+                await SendAckedRadioConfigProgressive(Store.TargetedTransmitterNickname);
 
-                await Task.Delay((int)totalDuration + 200);
+                await Task.Delay((int)totalDuration + 500);
                 await WriteData();
             }
         }
@@ -127,35 +135,78 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
         _logger.LogInformation("PHY experiment done");
     }
 
-    public async Task RunIteration()
+    private async Task SendAckedRadioConfigProgressive(string targetTransmitter)
     {
+        var devConf = GetDevConf(true, false);
+        
+        // Configure proxy node radio config RX to new setting
+        SendRadioConfigUart(devConf);
+        
+        // Send unicast radio configs
+        devConf.TransmitConfiguration.SetTx = true;
+        devConf.TransmitConfiguration.SetRx = true;
+        
+        // Get target device to configure
         var store = GetStore();
+        _serialProcessorService.SetDeviceFilter(store.TargetedTransmitterNickname);
+        SendRadioConfigUnicastLora(targetTransmitter, devConf);
 
-        // Store multicast context
-        _serialProcessorService.SetDeviceFilter(store.TargetedReceiverNickname);
+        // TODO await specific console input -- communicate with other side
+        // _logger.LogInformation("-- Awaiting keypress to continue with this mode");
+        
+        await Task.Delay(3000);
 
-        var isMulticast = _serialProcessorService.IsDeviceFilterMulticast();
-        var selectedPortName = _selectedDeviceService.SelectedPortName;
+        // Now enable transmitter (with delay!)
+        devConf.EnableSequenceTransmit = true;
+        SendRadioConfigUnicastLora(targetTransmitter, devConf);
+        
+        // Configure proxy node radio config TX to new setting
+        devConf.TransmitConfiguration.SetTx = true;
+        SendRadioConfigUart(devConf);
+        
+        // Done
+    }
 
-        var loraMessage = new LoRaMessage();
-        loraMessage.DeviceConfiguration = new DeviceConfiguration();
-        loraMessage.DeviceConfiguration.TransmitConfiguration = new TransmitConfiguration();
-
-        var devConf = loraMessage.DeviceConfiguration;
-        devConf.AlwaysSendPeriod = store.SeqPeriodMs;
-        devConf.EnableAlwaysSend = false;
-        devConf.LimitedSendCount = store.SeqCount;
-
-        var txConf = devConf.TransmitConfiguration;
-        txConf.TxBandwidth = CurrentConfig.TxBandwidth;
-        txConf.TxPower = CurrentConfig.TxPower;
-        txConf.TxDataRate = CurrentConfig.TxDataRate;
-
-        _logger.LogInformation("Experiment command {Port} MC?{MC} BW{BW} P{P} SF{SF}",
-            selectedPortName, isMulticast,
-            txConf.TxBandwidth, txConf.TxBandwidth, txConf.TxDataRate);
-
+    private void SendRadioConfigUart(DeviceConfiguration deviceConfiguration)
+    {
+        _serialProcessorService.SendDeviceConfiguration(deviceConfiguration, false);
+    }
+    
+    private void SendRadioConfigUnicastLora(string device, DeviceConfiguration deviceConfiguration)
+    {
+        var loraMessage = new LoRaMessage
+        {
+            DeviceConfiguration = deviceConfiguration
+        };
+        _serialProcessorService.SetDeviceFilter(device);
         _serialProcessorService.SendUnicastTransmitCommand(loraMessage, false);
+    }
+
+    private DeviceConfiguration GetDevConf(bool rx, bool tx)
+    {
+        var devConf = new DeviceConfiguration
+        {
+            TransmitConfiguration = new TransmitReceiveConfiguration
+            {
+                TxPower = CurrentConfig.TxPower,
+                TxRxBandwidth = CurrentConfig.TxBandwidth,
+                TxRxDataRate = CurrentConfig.TxDataRate,
+                SetTx = tx,
+                SetRx = rx
+            },
+            SequenceConfiguration = new SequenceConfiguration
+            {
+                AlwaysSendPeriod = Store.SeqPeriodMs,
+                LimitedSendCount = Store.SeqCount,
+                Delay = Store.TransmitStartDelay,
+                EnableAlwaysSend = false
+            },
+            ApplyTransmitConfig = true,
+            EnableSequenceTransmit = false,
+            AckRequired = true,
+        };
+
+        return devConf;
     }
 
     private async Task WriteData()

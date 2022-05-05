@@ -26,41 +26,43 @@ namespace LoRa {
           string.Concat(
             "Chpsb3JhX2RldmljZV9tZXNzYWdlcy5wcm90bxoec2hhcmVkL2V4cGVyaW1l",
             "bnRfY29uZmlnLnByb3RvGhVzaGFyZWQvZmlybXdhcmUucHJvdG8iIgoPUmVx",
-            "dWVzdEJvb3RJbmZvEg8KB1JlcXVlc3QYASABKAgimgEKE0RldmljZUNvbmZp",
-            "Z3VyYXRpb24SGAoQRW5hYmxlQWx3YXlzU2VuZBgBIAEoCBIYChBBbHdheXNT",
-            "ZW5kUGVyaW9kGAIgASgNEhgKEExpbWl0ZWRTZW5kQ291bnQYAyABKA0SNQoV",
-            "dHJhbnNtaXRDb25maWd1cmF0aW9uGAQgASgLMhYuVHJhbnNtaXRDb25maWd1",
-            "cmF0aW9uIgsKCUxvUmFSZXNldCIbCgdMb1JhQWNrEhAKCERldmljZUlkGAEg",
-            "ASgNIs4ICgtMb1JhTWVzc2FnZRITCgtJc011bHRpY2FzdBgBIAEoCBIQCghE",
-            "ZXZpY2VJZBgCIAEoDRIXCg9Db3JyZWxhdGlvbkNvZGUYAyABKA0SDwoHUGF5",
-            "bG9hZBgEIAEoDBI9Chhmb3J3YXJkRXhwZXJpbWVudENvbW1hbmQYBSABKAsy",
-            "GS5Gb3J3YXJkRXhwZXJpbWVudENvbW1hbmRIABIxChJleHBlcmltZW50UmVz",
-            "cG9uc2UYBiABKAsyEy5FeHBlcmltZW50UmVzcG9uc2VIABI9ChhtZWFzdXJl",
-            "bWVudFN0cmVhbVJlcXVlc3QYByABKAsyGS5NZWFzdXJlbWVudFN0cmVhbVJl",
-            "cXVlc3RIABI/ChltZWFzdXJlbWVudFN0cmVhbUZyYWdtZW50GAggASgLMhou",
-            "TWVhc3VyZW1lbnRTdHJlYW1GcmFnbWVudEgAEkMKG3JsbmNSZW1vdGVGbGFz",
-            "aFN0YXJ0Q29tbWFuZBgJIAEoCzIcLlJsbmNSZW1vdGVGbGFzaFN0YXJ0Q29t",
-            "bWFuZEgAEkEKGnJsbmNSZW1vdGVGbGFzaFN0b3BDb21tYW5kGAogASgLMhsu",
-            "UmxuY1JlbW90ZUZsYXNoU3RvcENvbW1hbmRIABJBChtybG5jUXVlcnlSZW1v",
-            "dGVGbGFzaENvbW1hbmQYCyABKAsyGi5SbG5jUXVlcnlSZW1vdGVGbGFzaFN0",
-            "YXRlSAASOwoXcmxuY1JlbW90ZUZsYXNoUmVzcG9uc2UYDCABKAsyGC5SbG5j",
-            "UmVtb3RlRmxhc2hSZXNwb25zZUgAEjcKFXJsbmNJbml0Q29uZmlnQ29tbWFu",
-            "ZBgNIAEoCzIWLlJsbmNJbml0Q29uZmlnQ29tbWFuZEgAEjMKE3JsbmNFbmNv",
-            "ZGVkRnJhZ21lbnQYDiABKAsyFC5SbG5jRW5jb2RlZEZyYWdtZW50SAASKwoP",
-            "cmxuY1N0YXRlVXBkYXRlGA8gASgLMhAuUmxuY1N0YXRlVXBkYXRlSAASOQoW",
-            "cmxuY1Rlcm1pbmF0aW9uQ29tbWFuZBgQIAEoCzIXLlJsbmNUZXJtaW5hdGlv",
-            "bkNvbW1hbmRIABIpCg5kZWNvZGluZ1Jlc3VsdBgRIAEoCzIPLkRlY29kaW5n",
-            "UmVzdWx0SAASKQoOZGVjb2RpbmdVcGRhdGUYEiABKAsyDy5EZWNvZGluZ1Vw",
-            "ZGF0ZUgAEjMKE2RldmljZUNvbmZpZ3VyYXRpb24YEyABKAsyFC5EZXZpY2VD",
-            "b25maWd1cmF0aW9uSAASKwoPcmVxdWVzdEJvb3RJbmZvGBQgASgLMhAuUmVx",
-            "dWVzdEJvb3RJbmZvSAASIwoLYm9vdE1lc3NhZ2UYFSABKAsyDC5Cb290TWVz",
-            "c2FnZUgAEiAKCnJlc2V0UmFkaW8YFiABKAsyCi5Mb1JhUmVzZXRIABIXCgNh",
-            "Y2sYFyABKAsyCC5Mb1JhQWNrSABCBgoEQm9keUIHqgIETG9SYWIGcHJvdG8z"));
+            "dWVzdEJvb3RJbmZvEg8KB1JlcXVlc3QYASABKAgi3AEKE0RldmljZUNvbmZp",
+            "Z3VyYXRpb24SNQoVc2VxdWVuY2VDb25maWd1cmF0aW9uGAEgASgLMhYuU2Vx",
+            "dWVuY2VDb25maWd1cmF0aW9uEh4KFmVuYWJsZVNlcXVlbmNlVHJhbnNtaXQY",
+            "AiABKAgSEwoLYWNrUmVxdWlyZWQYAyABKAgSPAoVdHJhbnNtaXRDb25maWd1",
+            "cmF0aW9uGAQgASgLMh0uVHJhbnNtaXRSZWNlaXZlQ29uZmlndXJhdGlvbhIb",
+            "ChNhcHBseVRyYW5zbWl0Q29uZmlnGAUgASgIIgsKCUxvUmFSZXNldCIbCgdM",
+            "b1JhQWNrEhAKCERldmljZUlkGAEgASgNIs4ICgtMb1JhTWVzc2FnZRITCgtJ",
+            "c011bHRpY2FzdBgBIAEoCBIQCghEZXZpY2VJZBgCIAEoDRIXCg9Db3JyZWxh",
+            "dGlvbkNvZGUYAyABKA0SDwoHUGF5bG9hZBgEIAEoDBI9Chhmb3J3YXJkRXhw",
+            "ZXJpbWVudENvbW1hbmQYBSABKAsyGS5Gb3J3YXJkRXhwZXJpbWVudENvbW1h",
+            "bmRIABIxChJleHBlcmltZW50UmVzcG9uc2UYBiABKAsyEy5FeHBlcmltZW50",
+            "UmVzcG9uc2VIABI9ChhtZWFzdXJlbWVudFN0cmVhbVJlcXVlc3QYByABKAsy",
+            "GS5NZWFzdXJlbWVudFN0cmVhbVJlcXVlc3RIABI/ChltZWFzdXJlbWVudFN0",
+            "cmVhbUZyYWdtZW50GAggASgLMhouTWVhc3VyZW1lbnRTdHJlYW1GcmFnbWVu",
+            "dEgAEkMKG3JsbmNSZW1vdGVGbGFzaFN0YXJ0Q29tbWFuZBgJIAEoCzIcLlJs",
+            "bmNSZW1vdGVGbGFzaFN0YXJ0Q29tbWFuZEgAEkEKGnJsbmNSZW1vdGVGbGFz",
+            "aFN0b3BDb21tYW5kGAogASgLMhsuUmxuY1JlbW90ZUZsYXNoU3RvcENvbW1h",
+            "bmRIABJBChtybG5jUXVlcnlSZW1vdGVGbGFzaENvbW1hbmQYCyABKAsyGi5S",
+            "bG5jUXVlcnlSZW1vdGVGbGFzaFN0YXRlSAASOwoXcmxuY1JlbW90ZUZsYXNo",
+            "UmVzcG9uc2UYDCABKAsyGC5SbG5jUmVtb3RlRmxhc2hSZXNwb25zZUgAEjcK",
+            "FXJsbmNJbml0Q29uZmlnQ29tbWFuZBgNIAEoCzIWLlJsbmNJbml0Q29uZmln",
+            "Q29tbWFuZEgAEjMKE3JsbmNFbmNvZGVkRnJhZ21lbnQYDiABKAsyFC5SbG5j",
+            "RW5jb2RlZEZyYWdtZW50SAASKwoPcmxuY1N0YXRlVXBkYXRlGA8gASgLMhAu",
+            "UmxuY1N0YXRlVXBkYXRlSAASOQoWcmxuY1Rlcm1pbmF0aW9uQ29tbWFuZBgQ",
+            "IAEoCzIXLlJsbmNUZXJtaW5hdGlvbkNvbW1hbmRIABIpCg5kZWNvZGluZ1Jl",
+            "c3VsdBgRIAEoCzIPLkRlY29kaW5nUmVzdWx0SAASKQoOZGVjb2RpbmdVcGRh",
+            "dGUYEiABKAsyDy5EZWNvZGluZ1VwZGF0ZUgAEjMKE2RldmljZUNvbmZpZ3Vy",
+            "YXRpb24YEyABKAsyFC5EZXZpY2VDb25maWd1cmF0aW9uSAASKwoPcmVxdWVz",
+            "dEJvb3RJbmZvGBQgASgLMhAuUmVxdWVzdEJvb3RJbmZvSAASIwoLYm9vdE1l",
+            "c3NhZ2UYFSABKAsyDC5Cb290TWVzc2FnZUgAEiAKCnJlc2V0UmFkaW8YFiAB",
+            "KAsyCi5Mb1JhUmVzZXRIABIXCgNhY2sYFyABKAsyCC5Mb1JhQWNrSABCBgoE",
+            "Qm9keUIHqgIETG9SYWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LoRa.ExperimentConfigReflection.Descriptor, global::LoRa.FirmwareReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.RequestBootInfo), global::LoRa.RequestBootInfo.Parser, new[]{ "Request" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DeviceConfiguration), global::LoRa.DeviceConfiguration.Parser, new[]{ "EnableAlwaysSend", "AlwaysSendPeriod", "LimitedSendCount", "TransmitConfiguration" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DeviceConfiguration), global::LoRa.DeviceConfiguration.Parser, new[]{ "SequenceConfiguration", "EnableSequenceTransmit", "AckRequired", "TransmitConfiguration", "ApplyTransmitConfig" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.LoRaReset), global::LoRa.LoRaReset.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.LoRaAck), global::LoRa.LoRaAck.Parser, new[]{ "DeviceId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.LoRaMessage), global::LoRa.LoRaMessage.Parser, new[]{ "IsMulticast", "DeviceId", "CorrelationCode", "Payload", "ForwardExperimentCommand", "ExperimentResponse", "MeasurementStreamRequest", "MeasurementStreamFragment", "RlncRemoteFlashStartCommand", "RlncRemoteFlashStopCommand", "RlncQueryRemoteFlashCommand", "RlncRemoteFlashResponse", "RlncInitConfigCommand", "RlncEncodedFragment", "RlncStateUpdate", "RlncTerminationCommand", "DecodingResult", "DecodingUpdate", "DeviceConfiguration", "RequestBootInfo", "BootMessage", "ResetRadio", "Ack" }, new[]{ "Body" }, null, null, null)
@@ -299,10 +301,11 @@ namespace LoRa {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public DeviceConfiguration(DeviceConfiguration other) : this() {
-      enableAlwaysSend_ = other.enableAlwaysSend_;
-      alwaysSendPeriod_ = other.alwaysSendPeriod_;
-      limitedSendCount_ = other.limitedSendCount_;
+      sequenceConfiguration_ = other.sequenceConfiguration_ != null ? other.sequenceConfiguration_.Clone() : null;
+      enableSequenceTransmit_ = other.enableSequenceTransmit_;
+      ackRequired_ = other.ackRequired_;
       transmitConfiguration_ = other.transmitConfiguration_ != null ? other.transmitConfiguration_.Clone() : null;
+      applyTransmitConfig_ = other.applyTransmitConfig_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -312,54 +315,63 @@ namespace LoRa {
       return new DeviceConfiguration(this);
     }
 
-    /// <summary>Field number for the "EnableAlwaysSend" field.</summary>
-    public const int EnableAlwaysSendFieldNumber = 1;
-    private bool enableAlwaysSend_;
+    /// <summary>Field number for the "sequenceConfiguration" field.</summary>
+    public const int SequenceConfigurationFieldNumber = 1;
+    private global::LoRa.SequenceConfiguration sequenceConfiguration_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool EnableAlwaysSend {
-      get { return enableAlwaysSend_; }
+    public global::LoRa.SequenceConfiguration SequenceConfiguration {
+      get { return sequenceConfiguration_; }
       set {
-        enableAlwaysSend_ = value;
+        sequenceConfiguration_ = value;
       }
     }
 
-    /// <summary>Field number for the "AlwaysSendPeriod" field.</summary>
-    public const int AlwaysSendPeriodFieldNumber = 2;
-    private uint alwaysSendPeriod_;
+    /// <summary>Field number for the "enableSequenceTransmit" field.</summary>
+    public const int EnableSequenceTransmitFieldNumber = 2;
+    private bool enableSequenceTransmit_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public uint AlwaysSendPeriod {
-      get { return alwaysSendPeriod_; }
+    public bool EnableSequenceTransmit {
+      get { return enableSequenceTransmit_; }
       set {
-        alwaysSendPeriod_ = value;
+        enableSequenceTransmit_ = value;
       }
     }
 
-    /// <summary>Field number for the "LimitedSendCount" field.</summary>
-    public const int LimitedSendCountFieldNumber = 3;
-    private uint limitedSendCount_;
-    /// <summary>
-    /// Ignored if EnableAlwaysSend is true
-    /// </summary>
+    /// <summary>Field number for the "ackRequired" field.</summary>
+    public const int AckRequiredFieldNumber = 3;
+    private bool ackRequired_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public uint LimitedSendCount {
-      get { return limitedSendCount_; }
+    public bool AckRequired {
+      get { return ackRequired_; }
       set {
-        limitedSendCount_ = value;
+        ackRequired_ = value;
       }
     }
 
     /// <summary>Field number for the "transmitConfiguration" field.</summary>
     public const int TransmitConfigurationFieldNumber = 4;
-    private global::LoRa.TransmitConfiguration transmitConfiguration_;
+    private global::LoRa.TransmitReceiveConfiguration transmitConfiguration_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LoRa.TransmitConfiguration TransmitConfiguration {
+    public global::LoRa.TransmitReceiveConfiguration TransmitConfiguration {
       get { return transmitConfiguration_; }
       set {
         transmitConfiguration_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "applyTransmitConfig" field.</summary>
+    public const int ApplyTransmitConfigFieldNumber = 5;
+    private bool applyTransmitConfig_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool ApplyTransmitConfig {
+      get { return applyTransmitConfig_; }
+      set {
+        applyTransmitConfig_ = value;
       }
     }
 
@@ -378,10 +390,11 @@ namespace LoRa {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (EnableAlwaysSend != other.EnableAlwaysSend) return false;
-      if (AlwaysSendPeriod != other.AlwaysSendPeriod) return false;
-      if (LimitedSendCount != other.LimitedSendCount) return false;
+      if (!object.Equals(SequenceConfiguration, other.SequenceConfiguration)) return false;
+      if (EnableSequenceTransmit != other.EnableSequenceTransmit) return false;
+      if (AckRequired != other.AckRequired) return false;
       if (!object.Equals(TransmitConfiguration, other.TransmitConfiguration)) return false;
+      if (ApplyTransmitConfig != other.ApplyTransmitConfig) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -389,10 +402,11 @@ namespace LoRa {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (EnableAlwaysSend != false) hash ^= EnableAlwaysSend.GetHashCode();
-      if (AlwaysSendPeriod != 0) hash ^= AlwaysSendPeriod.GetHashCode();
-      if (LimitedSendCount != 0) hash ^= LimitedSendCount.GetHashCode();
+      if (sequenceConfiguration_ != null) hash ^= SequenceConfiguration.GetHashCode();
+      if (EnableSequenceTransmit != false) hash ^= EnableSequenceTransmit.GetHashCode();
+      if (AckRequired != false) hash ^= AckRequired.GetHashCode();
       if (transmitConfiguration_ != null) hash ^= TransmitConfiguration.GetHashCode();
+      if (ApplyTransmitConfig != false) hash ^= ApplyTransmitConfig.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -411,21 +425,25 @@ namespace LoRa {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (EnableAlwaysSend != false) {
-        output.WriteRawTag(8);
-        output.WriteBool(EnableAlwaysSend);
+      if (sequenceConfiguration_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(SequenceConfiguration);
       }
-      if (AlwaysSendPeriod != 0) {
+      if (EnableSequenceTransmit != false) {
         output.WriteRawTag(16);
-        output.WriteUInt32(AlwaysSendPeriod);
+        output.WriteBool(EnableSequenceTransmit);
       }
-      if (LimitedSendCount != 0) {
+      if (AckRequired != false) {
         output.WriteRawTag(24);
-        output.WriteUInt32(LimitedSendCount);
+        output.WriteBool(AckRequired);
       }
       if (transmitConfiguration_ != null) {
         output.WriteRawTag(34);
         output.WriteMessage(TransmitConfiguration);
+      }
+      if (ApplyTransmitConfig != false) {
+        output.WriteRawTag(40);
+        output.WriteBool(ApplyTransmitConfig);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -437,21 +455,25 @@ namespace LoRa {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (EnableAlwaysSend != false) {
-        output.WriteRawTag(8);
-        output.WriteBool(EnableAlwaysSend);
+      if (sequenceConfiguration_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(SequenceConfiguration);
       }
-      if (AlwaysSendPeriod != 0) {
+      if (EnableSequenceTransmit != false) {
         output.WriteRawTag(16);
-        output.WriteUInt32(AlwaysSendPeriod);
+        output.WriteBool(EnableSequenceTransmit);
       }
-      if (LimitedSendCount != 0) {
+      if (AckRequired != false) {
         output.WriteRawTag(24);
-        output.WriteUInt32(LimitedSendCount);
+        output.WriteBool(AckRequired);
       }
       if (transmitConfiguration_ != null) {
         output.WriteRawTag(34);
         output.WriteMessage(TransmitConfiguration);
+      }
+      if (ApplyTransmitConfig != false) {
+        output.WriteRawTag(40);
+        output.WriteBool(ApplyTransmitConfig);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -463,17 +485,20 @@ namespace LoRa {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (EnableAlwaysSend != false) {
+      if (sequenceConfiguration_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(SequenceConfiguration);
+      }
+      if (EnableSequenceTransmit != false) {
         size += 1 + 1;
       }
-      if (AlwaysSendPeriod != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(AlwaysSendPeriod);
-      }
-      if (LimitedSendCount != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(LimitedSendCount);
+      if (AckRequired != false) {
+        size += 1 + 1;
       }
       if (transmitConfiguration_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(TransmitConfiguration);
+      }
+      if (ApplyTransmitConfig != false) {
+        size += 1 + 1;
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -487,20 +512,26 @@ namespace LoRa {
       if (other == null) {
         return;
       }
-      if (other.EnableAlwaysSend != false) {
-        EnableAlwaysSend = other.EnableAlwaysSend;
+      if (other.sequenceConfiguration_ != null) {
+        if (sequenceConfiguration_ == null) {
+          SequenceConfiguration = new global::LoRa.SequenceConfiguration();
+        }
+        SequenceConfiguration.MergeFrom(other.SequenceConfiguration);
       }
-      if (other.AlwaysSendPeriod != 0) {
-        AlwaysSendPeriod = other.AlwaysSendPeriod;
+      if (other.EnableSequenceTransmit != false) {
+        EnableSequenceTransmit = other.EnableSequenceTransmit;
       }
-      if (other.LimitedSendCount != 0) {
-        LimitedSendCount = other.LimitedSendCount;
+      if (other.AckRequired != false) {
+        AckRequired = other.AckRequired;
       }
       if (other.transmitConfiguration_ != null) {
         if (transmitConfiguration_ == null) {
-          TransmitConfiguration = new global::LoRa.TransmitConfiguration();
+          TransmitConfiguration = new global::LoRa.TransmitReceiveConfiguration();
         }
         TransmitConfiguration.MergeFrom(other.TransmitConfiguration);
+      }
+      if (other.ApplyTransmitConfig != false) {
+        ApplyTransmitConfig = other.ApplyTransmitConfig;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -517,23 +548,30 @@ namespace LoRa {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 8: {
-            EnableAlwaysSend = input.ReadBool();
+          case 10: {
+            if (sequenceConfiguration_ == null) {
+              SequenceConfiguration = new global::LoRa.SequenceConfiguration();
+            }
+            input.ReadMessage(SequenceConfiguration);
             break;
           }
           case 16: {
-            AlwaysSendPeriod = input.ReadUInt32();
+            EnableSequenceTransmit = input.ReadBool();
             break;
           }
           case 24: {
-            LimitedSendCount = input.ReadUInt32();
+            AckRequired = input.ReadBool();
             break;
           }
           case 34: {
             if (transmitConfiguration_ == null) {
-              TransmitConfiguration = new global::LoRa.TransmitConfiguration();
+              TransmitConfiguration = new global::LoRa.TransmitReceiveConfiguration();
             }
             input.ReadMessage(TransmitConfiguration);
+            break;
+          }
+          case 40: {
+            ApplyTransmitConfig = input.ReadBool();
             break;
           }
         }
@@ -551,23 +589,30 @@ namespace LoRa {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 8: {
-            EnableAlwaysSend = input.ReadBool();
+          case 10: {
+            if (sequenceConfiguration_ == null) {
+              SequenceConfiguration = new global::LoRa.SequenceConfiguration();
+            }
+            input.ReadMessage(SequenceConfiguration);
             break;
           }
           case 16: {
-            AlwaysSendPeriod = input.ReadUInt32();
+            EnableSequenceTransmit = input.ReadBool();
             break;
           }
           case 24: {
-            LimitedSendCount = input.ReadUInt32();
+            AckRequired = input.ReadBool();
             break;
           }
           case 34: {
             if (transmitConfiguration_ == null) {
-              TransmitConfiguration = new global::LoRa.TransmitConfiguration();
+              TransmitConfiguration = new global::LoRa.TransmitReceiveConfiguration();
             }
             input.ReadMessage(TransmitConfiguration);
+            break;
+          }
+          case 40: {
+            ApplyTransmitConfig = input.ReadBool();
             break;
           }
         }

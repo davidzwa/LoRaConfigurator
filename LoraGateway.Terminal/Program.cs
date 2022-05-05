@@ -1,4 +1,4 @@
-﻿using LoraGateway.BackgroundServices;
+using LoraGateway.BackgroundServices;
 using LoraGateway.Handlers;
 using LoraGateway.Services;
 using LoraGateway.Services.CommandLine;
@@ -10,7 +10,6 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 using Serilog.Filters;
-using Shouldly;
 
 namespace LoraGateway;
 
@@ -43,7 +42,7 @@ public static class LoraGateway
                 .Filter.ByIncludingOnly(Matching.FromSource<SerialProcessorService>())
                 .WriteTo.File(GetUniqueLogFile("_serial"), LogEventLevel.Debug))
             .CreateLogger();
-        
+
         await CreateHostBuilder(args).RunConsoleAsync();
     }
 
