@@ -225,10 +225,6 @@ public partial class SerialProcessorService
         {
             await ReceiveDecodingUpdate(portName, response);
         }
-        else if (bodyCase.Equals(UartResponse.BodyOneofCase.DecodingResult))
-        {
-            ReceiveDecodingResult(portName, response);
-        }
         else if (bodyCase.Equals(UartResponse.BodyOneofCase.LoraMeasurement))
         {
             await ReceiveLoRaMeasurement(portName, response);

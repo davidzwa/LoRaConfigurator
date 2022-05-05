@@ -75,11 +75,13 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
         {
             await LoadStore();
         }
+
         var measurement = receiveEvent.Message.LoraMeasurement;
-        _logger.LogInformation("Rx event triggered RSSI {RSSI} SNR {SNR} SeqNr {Nr}",
+        _logger.LogInformation("[{Nr}] - RX event - RSSI {RSSI} SNR {SNR}",
+            measurement.SequenceNumber,
             measurement.Rssi,
-            measurement.Snr,
-            measurement.SequenceNumber);
+            measurement.Snr
+        );
 
         _dataPoints.Add(new()
         {
@@ -118,16 +120,16 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
                 // CurrentConfig.TxBandwidth = bandwidth;
                 CurrentConfig.TxPower = txPower;
                 CurrentConfig.TxDataRate = sf;
-                var totalDuration = config.SeqCount * config.SeqPeriodMs;
-                _logger.LogInformation("Iteration P{BW} SF{SF} Duration{Time}", 
+                var periodMs = config.SeqCount * config.SeqPeriodMs;
+                _logger.LogInformation("Iteration T{Time}ms P{BW}dBm SF{SF}",
+                    periodMs,
                     txPower,
-                    sf,
-                    totalDuration);
-                
+                    sf);
+
                 // Sent iteration start and await RX for human intervention in case of failure
                 await SendAckedRadioConfigProgressive(Store.TargetedTransmitterNickname);
 
-                await Task.Delay((int)totalDuration + 500);
+                await Task.Delay((int)periodMs + 500);
                 await WriteData();
             }
         }
@@ -138,14 +140,14 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
     private async Task SendAckedRadioConfigProgressive(string targetTransmitter)
     {
         var devConf = GetDevConf(true, false);
-        
+
         // Configure proxy node radio config RX to new setting
         SendRadioConfigUart(devConf);
-        
+
         // Send unicast radio configs
         devConf.TransmitConfiguration.SetTx = true;
         devConf.TransmitConfiguration.SetRx = true;
-        
+
         // Get target device to configure
         var store = GetStore();
         _serialProcessorService.SetDeviceFilter(store.TargetedTransmitterNickname);
@@ -153,17 +155,17 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
 
         // TODO await specific console input -- communicate with other side
         // _logger.LogInformation("-- Awaiting keypress to continue with this mode");
-        
+
         await Task.Delay(3000);
 
         // Now enable transmitter (with delay!)
         devConf.EnableSequenceTransmit = true;
         SendRadioConfigUnicastLora(targetTransmitter, devConf);
-        
+
         // Configure proxy node radio config TX to new setting
         devConf.TransmitConfiguration.SetTx = true;
         SendRadioConfigUart(devConf);
-        
+
         // Done
     }
 
@@ -171,7 +173,7 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
     {
         _serialProcessorService.SendDeviceConfiguration(deviceConfiguration, false);
     }
-    
+
     private void SendRadioConfigUnicastLora(string device, DeviceConfiguration deviceConfiguration)
     {
         var loraMessage = new LoRaMessage
