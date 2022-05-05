@@ -12,7 +12,6 @@ public class ExperimentPhyConfig : ICloneable
 
     public uint TransmitStartDelay { get; set; } = 3000;
     public string DeviceTargetNickName { get; set; } = "";
-    public bool ReceiverMode { get; set; } = false;
     public bool DeviceIsRemote { get; set; } = false;
 
     // Phy experiments

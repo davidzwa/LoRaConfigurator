@@ -83,9 +83,10 @@ public class SerialCommandHandler
     public Command RunPhyExperiments()
     {
         var command = new Command("exp-phy");
-        command.AddAlias("expp");
+        command.AddAlias("phy");
+        command.AddOption(new Option("--tx"));
         command.Handler = CommandHandler.Create(
-            async () => { await _experimentPhyService.RunPhyExperiments(); });
+            async (bool tx) => { await _experimentPhyService.RunPhyExperiments(tx); });
         return command;
     }
     

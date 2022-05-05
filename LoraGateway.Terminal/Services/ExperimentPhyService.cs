@@ -75,6 +75,7 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
     {
         if (Store == null)
         {
+            _logger.LogWarning("Loaded store on RX - are you sure we have started properly?");
             await LoadStore();
         }
 
@@ -104,10 +105,10 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
         }
     }
 
-    public async Task RunPhyExperiments()
+    public async Task RunPhyExperiments(bool runAsTransmitter)
     {
         var config = await LoadStore();
-        if (config.ReceiverMode)
+        if (runAsTransmitter)
         {
             _logger.LogInformation("Starting in RECEIVER MODE");
         }
@@ -134,8 +135,9 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
                 CurrentConfig.TxPower = txPower;
                 CurrentConfig.TxDataRate = sf;
                 var periodMs = config.SeqCount * config.SeqPeriodMs;
-                _logger.LogInformation("NEW RadioConfig T{Time}ms P{BW}dBm SF{SF}",
+                _logger.LogInformation("NEW RadioConfig T{Time}ms (t{TimeEach}ms) P{BW}dBm SF{SF}",
                     periodMs,
+                    config.SeqPeriodMs,
                     txPower,
                     sf);
 
@@ -143,7 +145,7 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
                 devConf.EnableSequenceTransmit = false;
 
                 // Send the start command 
-                if (!config.ReceiverMode)
+                if (runAsTransmitter)
                 {
                     // Transmitter must configure start
                     devConf.EnableSequenceTransmit = true;
