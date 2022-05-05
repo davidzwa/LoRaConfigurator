@@ -10,7 +10,7 @@
   },
   "ReceiverMode": false,
   "DeviceIsRemote": false,
-  "DeviceTargetNickName": "A2",
+  "DeviceTargetNickName": "A0",
   "TxBwSeries": [2],
   "TxSfSeries": [7, 8, 9],
   "TxPSeries": [14, 10, 6, 2, -2],
