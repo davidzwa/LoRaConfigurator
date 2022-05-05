@@ -29,6 +29,8 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
     }
 
     private readonly List<ExperimentPhyDataEntry> _dataPoints = new();
+    
+    private string _currentTimeStamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
 
     public ExperimentPhyService(
         ILogger<ExperimentPhyService> logger,
@@ -48,7 +50,7 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
 
     public string GetCsvFileName()
     {
-        return "experiment_phy.csv";
+        return $"0_phy/experiment_phy_{_currentTimeStamp}.csv";
     }
 
     public override ExperimentPhyConfig GetDefaultJson()
