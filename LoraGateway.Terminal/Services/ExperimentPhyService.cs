@@ -153,6 +153,8 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
                 {
                     // Receiver must just wait
                     var sleepTimeMs = (int)periodMs + 500;
+                    devConf.EnableSequenceTransmit = false;
+                    SendConfig(devConf, config.DeviceIsRemote, config.DeviceTargetNickName);
                     
                     await Task.Delay(sleepTimeMs);
                     _logger.LogInformation("AWAITING KEYPRESS to END ROUND + SAVE DATA");
