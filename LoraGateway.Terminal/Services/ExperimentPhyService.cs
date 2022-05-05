@@ -122,6 +122,10 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
         // var bws = config.TxBwSeries;
         var powers = config.TxPSeries;
         var sfs = config.TxSfSeries;
+        
+        _logger.LogInformation("AWAITING KEYPRESS to INIT sfs:{sfs} powers:{powers}", sfs, powers);
+        Console.ReadLine();
+        
         foreach (var txPower in powers)
         {
             foreach (var sf in sfs)
