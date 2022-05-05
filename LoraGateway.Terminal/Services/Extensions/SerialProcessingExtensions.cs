@@ -6,22 +6,14 @@ public static class SerialProcessingExtensions
 {
     public static void SendDeviceConfiguration(
         this SerialProcessorService processorService,
-        bool enableAlwaysSend,
-        uint alwaysSendPeriod,
-        uint limitedPacketCount,
+        DeviceConfiguration deviceConfiguration,
         bool doNotProxy
     )
     {
         var command = new UartCommand
         {
             DoNotProxyCommand = doNotProxy,
-            DeviceConfiguration =
-                new DeviceConfiguration
-                {
-                    AlwaysSendPeriod = alwaysSendPeriod,
-                    EnableAlwaysSend = enableAlwaysSend,
-                    LimitedSendCount = limitedPacketCount
-                }
+            DeviceConfiguration = deviceConfiguration
         };
 
         processorService.WriteMessage(command);
@@ -47,7 +39,7 @@ public static class SerialProcessingExtensions
         var command = new UartCommand
         {
             DoNotProxyCommand = doNotProxy,
-            ClearMeasurementsCommand = new ClearMeasurementsCommand {SendBootAfter = true}
+            ClearMeasurementsCommand = new ClearMeasurementsCommand { SendBootAfter = true }
         };
         processorService.WriteMessage(command);
     }

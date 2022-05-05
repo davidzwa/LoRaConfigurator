@@ -32,48 +32,48 @@ namespace LoRa {
             "RGV2aWNlSWQSIQoPRmlybXdhcmVWZXJzaW9uGAIgASgLMgguVmVyc2lvbhIY",
             "ChBNZWFzdXJlbWVudENvdW50GAMgASgNEhwKFE1lYXN1cmVtZW50c0Rpc2Fi",
             "bGVkGAQgASgIEhYKDlJsbmNGbGFzaFN0YXRlGAUgASgNEhgKEFJsbmNTZXNz",
-            "aW9uU3RhdGUYBiABKA0i+gEKG1JsbmNSZW1vdGVGbGFzaFN0YXJ0Q29tbWFu",
-            "ZBI1ChV0cmFuc21pdENvbmZpZ3VyYXRpb24YAiABKAsyFi5UcmFuc21pdENv",
-            "bmZpZ3VyYXRpb24SMQoTcmVjZXB0aW9uUmF0ZUNvbmZpZxgDIAEoCzIULlJl",
-            "Y2VwdGlvblJhdGVDb25maWcSEgoKVGltZXJEZWxheRgEIAEoDRIWCg5TZXRJ",
-            "c011bHRpY2FzdBgFIAEoCBIRCglEZXZpY2VJZDAYBiABKA0SFwoPRGVidWdN",
-            "YXRyaXhVYXJ0GAcgASgIEhkKEURlYnVnRnJhZ21lbnRVYXJ0GAggASgIIhwK",
-            "GlJsbmNSZW1vdGVGbGFzaFN0b3BDb21tYW5kIhsKGVJsbmNRdWVyeVJlbW90",
-            "ZUZsYXNoU3RhdGUioAMKF1JsbmNSZW1vdGVGbGFzaFJlc3BvbnNlEhYKDlJs",
-            "bmNGbGFzaFN0YXRlGAEgASgNEhgKEFJsbmNTZXNzaW9uU3RhdGUYAiABKA0S",
-            "FgoOQ3VycmVudFR4UG93ZXIYAyABKAUSGgoSQ3VycmVudFR4QmFuZHdpZHRo",
-            "GAQgASgNEhkKEUN1cnJlbnRUeERhdGFSYXRlGAUgASgNEhkKEUN1cnJlbnRU",
-            "aW1lckRlbGF5GAYgASgNEh0KFUN1cnJlbnRTZXRJc011bHRpY2FzdBgHIAEo",
-            "CBIYChBDdXJyZW50RGV2aWNlSWQwGAggASgNEhYKDkdlbmVyYXRpb25TaXpl",
-            "GAkgASgNEiAKGEdlbmVyYXRpb25SZWR1bmRhbmN5U2l6ZRgKIAEoDRIXCg9H",
-            "ZW5lcmF0aW9uQ291bnQYCyABKA0SEQoJRnJhbWVTaXplGAwgASgNEhcKD1Rv",
-            "dGFsRnJhbWVDb3VudBgNIAEoDRIxChNyZWNlcHRpb25SYXRlQ29uZmlnGA4g",
-            "ASgLMhQuUmVjZXB0aW9uUmF0ZUNvbmZpZyLCAgoVUmxuY0luaXRDb25maWdD",
-            "b21tYW5kEhYKDkdlbmVyYXRpb25TaXplGAEgASgNEiAKGEdlbmVyYXRpb25S",
-            "ZWR1bmRhbmN5U2l6ZRgCIAEoDRIXCg9HZW5lcmF0aW9uQ291bnQYAyABKA0S",
-            "EQoJRnJhbWVTaXplGAQgASgNEhcKD1RvdGFsRnJhbWVDb3VudBgFIAEoDRIT",
-            "CgtGaWVsZERlZ3JlZRgGIAEoDRIRCglGaWVsZFBvbHkYByABKA0SFwoPRGVi",
-            "dWdNYXRyaXhVYXJ0GAogASgIEhkKEURlYnVnRnJhZ21lbnRVYXJ0GAsgASgI",
-            "EjYKE3JlY2VwdGlvblJhdGVDb25maWcYDCABKAsyFC5SZWNlcHRpb25SYXRl",
-            "Q29uZmlnSACIAQFCFgoUX3JlY2VwdGlvblJhdGVDb25maWciLAoTUmxuY0Vu",
-            "Y29kZWRGcmFnbWVudBIVCg1QUm5nU2VlZFN0YXRlGAEgASgNIlAKGFJsbmNG",
-            "bGFzaEVuY29kZWRGcmFnbWVudBIVCg1QUm5nU2VlZFN0YXRlGAEgASgNEgwK",
-            "BE1ldGEYAiABKAwSDwoHUGF5bG9hZBgDIAEoDCIqCg9SbG5jU3RhdGVVcGRh",
-            "dGUSFwoPR2VuZXJhdGlvbkluZGV4GAEgASgNIhgKFlJsbmNUZXJtaW5hdGlv",
-            "bkNvbW1hbmQiwwEKDkRlY29kaW5nUmVzdWx0Eg8KB1N1Y2Nlc3MYASABKAgS",
-            "EgoKTWF0cml4UmFuaxgCIAEoDRIaChJGaXJzdERlY29kZWROdW1iZXIYAyAB",
-            "KA0SGQoRTGFzdERlY29kZWROdW1iZXIYBCABKA0SGQoRUmVjZWl2ZWRGcmFn",
-            "bWVudHMYBSABKA0SGgoSTWlzc2VkR2VuRnJhZ21lbnRzGAYgASgNEh4KFkN1",
-            "cnJlbnRHZW5lcmF0aW9uSW5kZXgYByABKA0iLAoORGVjb2RpbmdNYXRyaXgS",
-            "DAoEQ29scxgBIAEoDRIMCgRSb3dzGAIgASgNItQCCg5EZWNvZGluZ1VwZGF0",
-            "ZRIUCgxGaXJzdFJvd0NyYzgYASABKA0SEwoLTGFzdFJvd0NyYzgYAiABKA0S",
-            "FAoMTGFzdFJvd0luZGV4GAMgASgNEhQKDFJhbmtQcm9ncmVzcxgEIAEoDRIZ",
-            "ChFSZWNlaXZlZEZyYWdtZW50cxgFIAEoDRIeChZDdXJyZW50R2VuZXJhdGlv",
-            "bkluZGV4GAYgASgNEhEKCUlzUnVubmluZxgHIAEoCBIZChFVc2VkUHJuZ1Nl",
-            "ZWRTdGF0ZRgIIAEoDRIYChBDdXJyZW50UHJuZ1N0YXRlGAkgASgNEhoKEk1p",
-            "c3NlZEdlbkZyYWdtZW50cxgKIAEoDRIPCgdTdWNjZXNzGAsgASgIEhwKFEN1",
-            "cnJlbnRGcmFnbWVudEluZGV4GAwgASgNEh0KFUN1cnJlbnRTZXF1ZW5jZU51",
-            "bWJlchgNIAEoDUIHqgIETG9SYWIGcHJvdG8z"));
+            "aW9uU3RhdGUYBiABKA0igQIKG1JsbmNSZW1vdGVGbGFzaFN0YXJ0Q29tbWFu",
+            "ZBI8ChV0cmFuc21pdENvbmZpZ3VyYXRpb24YAiABKAsyHS5UcmFuc21pdFJl",
+            "Y2VpdmVDb25maWd1cmF0aW9uEjEKE3JlY2VwdGlvblJhdGVDb25maWcYAyAB",
+            "KAsyFC5SZWNlcHRpb25SYXRlQ29uZmlnEhIKClRpbWVyRGVsYXkYBCABKA0S",
+            "FgoOU2V0SXNNdWx0aWNhc3QYBSABKAgSEQoJRGV2aWNlSWQwGAYgASgNEhcK",
+            "D0RlYnVnTWF0cml4VWFydBgHIAEoCBIZChFEZWJ1Z0ZyYWdtZW50VWFydBgI",
+            "IAEoCCIcChpSbG5jUmVtb3RlRmxhc2hTdG9wQ29tbWFuZCIbChlSbG5jUXVl",
+            "cnlSZW1vdGVGbGFzaFN0YXRlIqADChdSbG5jUmVtb3RlRmxhc2hSZXNwb25z",
+            "ZRIWCg5SbG5jRmxhc2hTdGF0ZRgBIAEoDRIYChBSbG5jU2Vzc2lvblN0YXRl",
+            "GAIgASgNEhYKDkN1cnJlbnRUeFBvd2VyGAMgASgFEhoKEkN1cnJlbnRUeEJh",
+            "bmR3aWR0aBgEIAEoDRIZChFDdXJyZW50VHhEYXRhUmF0ZRgFIAEoDRIZChFD",
+            "dXJyZW50VGltZXJEZWxheRgGIAEoDRIdChVDdXJyZW50U2V0SXNNdWx0aWNh",
+            "c3QYByABKAgSGAoQQ3VycmVudERldmljZUlkMBgIIAEoDRIWCg5HZW5lcmF0",
+            "aW9uU2l6ZRgJIAEoDRIgChhHZW5lcmF0aW9uUmVkdW5kYW5jeVNpemUYCiAB",
+            "KA0SFwoPR2VuZXJhdGlvbkNvdW50GAsgASgNEhEKCUZyYW1lU2l6ZRgMIAEo",
+            "DRIXCg9Ub3RhbEZyYW1lQ291bnQYDSABKA0SMQoTcmVjZXB0aW9uUmF0ZUNv",
+            "bmZpZxgOIAEoCzIULlJlY2VwdGlvblJhdGVDb25maWciwgIKFVJsbmNJbml0",
+            "Q29uZmlnQ29tbWFuZBIWCg5HZW5lcmF0aW9uU2l6ZRgBIAEoDRIgChhHZW5l",
+            "cmF0aW9uUmVkdW5kYW5jeVNpemUYAiABKA0SFwoPR2VuZXJhdGlvbkNvdW50",
+            "GAMgASgNEhEKCUZyYW1lU2l6ZRgEIAEoDRIXCg9Ub3RhbEZyYW1lQ291bnQY",
+            "BSABKA0SEwoLRmllbGREZWdyZWUYBiABKA0SEQoJRmllbGRQb2x5GAcgASgN",
+            "EhcKD0RlYnVnTWF0cml4VWFydBgKIAEoCBIZChFEZWJ1Z0ZyYWdtZW50VWFy",
+            "dBgLIAEoCBI2ChNyZWNlcHRpb25SYXRlQ29uZmlnGAwgASgLMhQuUmVjZXB0",
+            "aW9uUmF0ZUNvbmZpZ0gAiAEBQhYKFF9yZWNlcHRpb25SYXRlQ29uZmlnIiwK",
+            "E1JsbmNFbmNvZGVkRnJhZ21lbnQSFQoNUFJuZ1NlZWRTdGF0ZRgBIAEoDSJQ",
+            "ChhSbG5jRmxhc2hFbmNvZGVkRnJhZ21lbnQSFQoNUFJuZ1NlZWRTdGF0ZRgB",
+            "IAEoDRIMCgRNZXRhGAIgASgMEg8KB1BheWxvYWQYAyABKAwiKgoPUmxuY1N0",
+            "YXRlVXBkYXRlEhcKD0dlbmVyYXRpb25JbmRleBgBIAEoDSIYChZSbG5jVGVy",
+            "bWluYXRpb25Db21tYW5kIsMBCg5EZWNvZGluZ1Jlc3VsdBIPCgdTdWNjZXNz",
+            "GAEgASgIEhIKCk1hdHJpeFJhbmsYAiABKA0SGgoSRmlyc3REZWNvZGVkTnVt",
+            "YmVyGAMgASgNEhkKEUxhc3REZWNvZGVkTnVtYmVyGAQgASgNEhkKEVJlY2Vp",
+            "dmVkRnJhZ21lbnRzGAUgASgNEhoKEk1pc3NlZEdlbkZyYWdtZW50cxgGIAEo",
+            "DRIeChZDdXJyZW50R2VuZXJhdGlvbkluZGV4GAcgASgNIiwKDkRlY29kaW5n",
+            "TWF0cml4EgwKBENvbHMYASABKA0SDAoEUm93cxgCIAEoDSLUAgoORGVjb2Rp",
+            "bmdVcGRhdGUSFAoMRmlyc3RSb3dDcmM4GAEgASgNEhMKC0xhc3RSb3dDcmM4",
+            "GAIgASgNEhQKDExhc3RSb3dJbmRleBgDIAEoDRIUCgxSYW5rUHJvZ3Jlc3MY",
+            "BCABKA0SGQoRUmVjZWl2ZWRGcmFnbWVudHMYBSABKA0SHgoWQ3VycmVudEdl",
+            "bmVyYXRpb25JbmRleBgGIAEoDRIRCglJc1J1bm5pbmcYByABKAgSGQoRVXNl",
+            "ZFBybmdTZWVkU3RhdGUYCCABKA0SGAoQQ3VycmVudFBybmdTdGF0ZRgJIAEo",
+            "DRIaChJNaXNzZWRHZW5GcmFnbWVudHMYCiABKA0SDwoHU3VjY2VzcxgLIAEo",
+            "CBIcChRDdXJyZW50RnJhZ21lbnRJbmRleBgMIAEoDRIdChVDdXJyZW50U2Vx",
+            "dWVuY2VOdW1iZXIYDSABKA1CB6oCBExvUmFiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LoRa.ExperimentConfigReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -1109,13 +1109,13 @@ namespace LoRa {
 
     /// <summary>Field number for the "transmitConfiguration" field.</summary>
     public const int TransmitConfigurationFieldNumber = 2;
-    private global::LoRa.TransmitConfiguration transmitConfiguration_;
+    private global::LoRa.TransmitReceiveConfiguration transmitConfiguration_;
     /// <summary>
     /// TX power, BW and SF
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LoRa.TransmitConfiguration TransmitConfiguration {
+    public global::LoRa.TransmitReceiveConfiguration TransmitConfiguration {
       get { return transmitConfiguration_; }
       set {
         transmitConfiguration_ = value;
@@ -1365,7 +1365,7 @@ namespace LoRa {
       }
       if (other.transmitConfiguration_ != null) {
         if (transmitConfiguration_ == null) {
-          TransmitConfiguration = new global::LoRa.TransmitConfiguration();
+          TransmitConfiguration = new global::LoRa.TransmitReceiveConfiguration();
         }
         TransmitConfiguration.MergeFrom(other.TransmitConfiguration);
       }
@@ -1407,7 +1407,7 @@ namespace LoRa {
             break;
           case 18: {
             if (transmitConfiguration_ == null) {
-              TransmitConfiguration = new global::LoRa.TransmitConfiguration();
+              TransmitConfiguration = new global::LoRa.TransmitReceiveConfiguration();
             }
             input.ReadMessage(TransmitConfiguration);
             break;
@@ -1456,7 +1456,7 @@ namespace LoRa {
             break;
           case 18: {
             if (transmitConfiguration_ == null) {
-              TransmitConfiguration = new global::LoRa.TransmitConfiguration();
+              TransmitConfiguration = new global::LoRa.TransmitReceiveConfiguration();
             }
             input.ReadMessage(TransmitConfiguration);
             break;

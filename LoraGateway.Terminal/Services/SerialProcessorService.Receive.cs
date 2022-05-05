@@ -74,14 +74,16 @@ public partial class SerialProcessorService
             "PROTO_FAIL_TX",
             "PROTO_LORA_FAIL",
             "CRC_FAIL",
+            "CRC_FAIL_UART",
+            "CRC_FAIL_UART_MAIN",
             "RLNC_TERMINATE",
             "LORATX_TIMEOUT",
             "RAMFUNC",
             "FLASH",
             // "UC",
             // "MC",
-            // "LORARX_DONE",
-            // "LORATX_DONE",
+            "LORARX_DONE",
+            "LORATX_DONE",
             // "RLNC_NVM",
             "RLNC_PARSED_SEQ",
             // "RLNC_RNG_DROP",
@@ -91,7 +93,9 @@ public partial class SerialProcessorService
             // "RLNC_PER_SEED",
             "RLNC_ERR",
             // "RNG",
-            "DevConf", // TODO change to device ACK
+            "DevConf",
+            "TxConf",
+            "LORA_ACK",
             "DevConfStop",
             "PUSH-BUTTON"
         };
@@ -144,35 +148,6 @@ public partial class SerialProcessorService
         }
     }
 
-    private void ReceiveDecodingResult(string portName, UartResponse response)
-    {
-        var decodingResult = response.DecodingResult;
-        var success = decodingResult.Success;
-        var missedGenFragments = decodingResult.MissedGenFragments;
-        var receivedGenFragments = decodingResult.ReceivedFragments;
-
-        _eventPublisher.PublishEventAsync(new DecodingResultEvent
-        {
-            DecodingResult = decodingResult
-        });
-
-        var total = receivedGenFragments + missedGenFragments;
-        var perReal = (float)missedGenFragments / total;
-
-        _logger.LogInformation(
-            "[{Name}, DecodingResult] Success: {Payload} GenIndex {GenIndex} Rank: {MatrixRank} PER {Rx}/{Total}={Per:F2} FirstNumber: {FirstNumber} LastNumber: {LastNumber}",
-            portName,
-            success,
-            decodingResult.CurrentGenerationIndex,
-            decodingResult.MatrixRank,
-            decodingResult.MissedGenFragments,
-            total,
-            perReal,
-            decodingResult.FirstDecodedNumber,
-            decodingResult.LastDecodedNumber
-        );
-    }
-
     private async Task ReceiveLoRaMeasurement(string portName, UartResponse response)
     {
         var bodyCase = response?.LoraMeasurement?.DownlinkPayload?.BodyCase;
@@ -187,7 +162,7 @@ public partial class SerialProcessorService
         {
             await InnerLoRaPacketHandler(portName, response.LoraMeasurement?.DownlinkPayload);
         }
-        else if (bodyCase is LoRaMessage.BodyOneofCase.None)
+        else if (bodyCase is LoRaMessage.BodyOneofCase.None or LoRaMessage.BodyOneofCase.DummyConfig)
         {
             // Measurement was a dummy - send to RX handler
             await _eventPublisher.PublishEventAsync(new RxEvent

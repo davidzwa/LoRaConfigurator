@@ -207,7 +207,7 @@ public partial class SerialProcessorService
         else if (bodyCase.Equals(UartResponse.BodyOneofCase.AckMessage))
         {
             var ackNumber = response.AckMessage.Code;
-            _logger.LogDebug("[{Name}] ACK {Int}", portName, ackNumber);
+            _logger.LogInformation("[{Name}] ACK {Int}", portName, ackNumber);
         }
         else if (bodyCase.Equals(UartResponse.BodyOneofCase.DebugMessage))
         {
@@ -224,10 +224,6 @@ public partial class SerialProcessorService
         else if (bodyCase.Equals(UartResponse.BodyOneofCase.DecodingUpdate))
         {
             await ReceiveDecodingUpdate(portName, response);
-        }
-        else if (bodyCase.Equals(UartResponse.BodyOneofCase.DecodingResult))
-        {
-            ReceiveDecodingResult(portName, response);
         }
         else if (bodyCase.Equals(UartResponse.BodyOneofCase.LoraMeasurement))
         {

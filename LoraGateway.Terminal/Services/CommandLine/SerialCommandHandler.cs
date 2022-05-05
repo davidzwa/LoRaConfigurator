@@ -83,9 +83,10 @@ public class SerialCommandHandler
     public Command RunPhyExperiments()
     {
         var command = new Command("exp-phy");
-        command.AddAlias("expp");
+        command.AddAlias("phy");
+        command.AddOption(new Option("--tx"));
         command.Handler = CommandHandler.Create(
-            async () => { await _experimentPhyService.RunPhyExperiments(); });
+            async (bool tx) => { await _experimentPhyService.RunPhyExperiments(tx); });
         return command;
     }
     
@@ -193,15 +194,17 @@ public class SerialCommandHandler
         command.AddOption(new Option<uint>("t", () => 1000));
         command.AddOption(new Option<uint>("n", () => 0)); // if 0 disable it 
         command.AddOption(new Option<string>("--loc", () => ""));
-        command.Handler = CommandHandler.Create(
-            (bool enableAlwaysSend, uint t, uint n, string loc) =>
-            {
-                if (loc.Length != 0) _measurementsService.SetLocationText(loc);
-
-                var selectedPortName = _selectedDeviceService.SelectedPortName;
-                _logger.LogInformation("Device config {Port}", selectedPortName);
-                _serialProcessorService.SendDeviceConfiguration(enableAlwaysSend, t, n, GetDoNotProxyConfig());
-            });
+        
+        // We need more than is given: SF, BW, TX
+        // command.Handler = CommandHandler.Create(
+        //     (bool enableAlwaysSend, uint t, uint n, string loc) =>
+        //     {
+        //         if (loc.Length != 0) _measurementsService.SetLocationText(loc);
+        //
+        //         var selectedPortName = _selectedDeviceService.SelectedPortName;
+        //         _logger.LogInformation("Device config {Port}", selectedPortName);
+        //         _serialProcessorService.SendDeviceConfiguration(enableAlwaysSend, t, n, GetDoNotProxyConfig());
+        //     });
         return command;
     }
 
@@ -224,21 +227,21 @@ public class SerialCommandHandler
 
                     var devConf = loraMessage.DeviceConfiguration;
                     var txConf = devConf.TransmitConfiguration;
-                    txConf.TxBandwidth = store!.DefaultPhy.TxBandwidth;
+                    txConf.TxRxBandwidth = store!.DefaultPhy.TxBandwidth;
                     txConf.TxPower = store.DefaultPhy.TxPower;
-                    txConf.TxDataRate = store.DefaultPhy.TxDataRate;
+                    txConf.TxRxDataRate = store.DefaultPhy.TxDataRate;
                     if (q)
                     {
                         _logger.LogInformation("Stopping all transmitters");
                         loraMessage.IsMulticast = true;
-                        devConf.AlwaysSendPeriod = 0;
-                        devConf.EnableAlwaysSend = false;
+                        // devConf.AlwaysSendPeriod = 0;
+                        // devConf.EnableAlwaysSend = false;
                     }
                     else
                     {
-                        devConf.EnableAlwaysSend = false;
-                        devConf.AlwaysSendPeriod = store.SeqPeriodMs;
-                        devConf.LimitedSendCount = store.SeqCount;
+                        // devConf.EnableAlwaysSend = false;
+                        // devConf.AlwaysSendPeriod = store.SeqPeriodMs;
+                        // devConf.LimitedSendCount = store.SeqCount;
                     }
                 }
                 else
