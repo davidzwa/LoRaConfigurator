@@ -3,8 +3,7 @@ using LoraGateway.Handlers;
 using LoraGateway.Services;
 using LoraGateway.Services.CommandLine;
 using LoraGateway.Services.Firmware;
-using LoraGateway.Services.Firmware.RandomLinearCoding;
-using LoraGateway.Utils;
+using LoraGateway.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -67,13 +66,16 @@ public static class LoraGateway
                 services.AddSingleton<RlncFlashBlobService>();
                 services.AddSingleton<FuotaSessionHostedService>();
                 services.AddHostedService<FuotaSessionHostedService>(p => p.GetService<FuotaSessionHostedService>());
+                services.AddHostedService<ConsoleHostedService>();
                 services.AddHostedService<SerialHostedService>();
                 services.AddTransient<SerialCommandHandler>();
                 services.AddTransient<SelectDeviceCommandHandler>();
                 services.AddTransient<ListDeviceCommandHandler>();
                 services.AddSingleton<ConsoleProcessorService>();
                 services.AddTransient<RlncDecodingFailureSelfTestService>();
-                services.AddHostedService<ConsoleHostedService>();
+                
+                services.AddTransient<SignalRClient>();
+                services.AddHostedService<FuotaHubClientService>();
 
                 services.AddEventBus(builder =>
                 {

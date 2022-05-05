@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoraGateway.Terminal", "Lor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoraGateway.Tests", "LoraGateway.Tests\LoraGateway.Tests.csproj", "{4344E7C8-5067-4447-B572-444A77D45AD9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoraGateway.Host", "LoraGateway.Host\LoraGateway.Host.csproj", "{DCBEC2A1-98E6-446F-8295-7B33DF47E9BA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{4344E7C8-5067-4447-B572-444A77D45AD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4344E7C8-5067-4447-B572-444A77D45AD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4344E7C8-5067-4447-B572-444A77D45AD9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCBEC2A1-98E6-446F-8295-7B33DF47E9BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCBEC2A1-98E6-446F-8295-7B33DF47E9BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCBEC2A1-98E6-446F-8295-7B33DF47E9BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCBEC2A1-98E6-446F-8295-7B33DF47E9BA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
