@@ -110,11 +110,11 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
         var config = await LoadStore();
         if (runAsTransmitter)
         {
-            _logger.LogInformation("Starting in RECEIVER MODE");
+            _logger.LogInformation("Starting in TRANSMITTER MODE");
         }
         else
         {
-            _logger.LogInformation("Starting in TRANSMITTER MODE");
+            _logger.LogInformation("Starting in RECEIVER MODE");
         }
 
         _dataPoints.Clear();
