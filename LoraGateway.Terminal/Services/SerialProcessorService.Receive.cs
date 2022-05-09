@@ -69,7 +69,7 @@ public partial class SerialProcessorService
 
         string[] inclusions =
         {
-            // "PeriodTX",
+            "PeriodTX",
             "PROTO_FAIL",
             "PROTO_FAIL_TX",
             "PROTO_LORA_FAIL",
@@ -83,7 +83,7 @@ public partial class SerialProcessorService
             // "UC",
             // "MC",
             "LORARX_DONE",
-            "LORATX_DONE",
+            // "LORATX_DONE",
             // "RLNC_NVM",
             "RLNC_PARSED_SEQ",
             // "RLNC_RNG_DROP",
@@ -162,7 +162,7 @@ public partial class SerialProcessorService
         {
             await InnerLoRaPacketHandler(portName, response.LoraMeasurement?.DownlinkPayload);
         }
-        else if (bodyCase is LoRaMessage.BodyOneofCase.None or LoRaMessage.BodyOneofCase.DummyConfig)
+        else if (bodyCase is LoRaMessage.BodyOneofCase.None)
         {
             // Measurement was a dummy - send to RX handler
             await _eventPublisher.PublishEventAsync(new RxEvent

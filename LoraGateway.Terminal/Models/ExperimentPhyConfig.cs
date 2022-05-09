@@ -14,15 +14,20 @@ public class ExperimentPhyConfig : ICloneable
     public string DeviceTargetNickName { get; set; } = "";
     public bool DeviceIsRemote { get; set; } = false;
 
+    public int[] TxPSeries { get; set; } = { 14, 12, 10, 8 };
+
     // Phy experiments
-    public uint SeqPeriodMs { get; set; } = 2000;
-    public uint SeqCount { get; set; } = 10;
-    public uint[] TxBwSeries { get; set; } = { 0, 1, 2 };
-    public uint[] TxSfSeries { get; set; } = { 7, 8, 9 };
-    public int[] TxPSeries { get; set; } = { 14, 10, 6, 2, -2 };
+    public uint SeqPeriodMs { get; set; } = 75;
+    public uint SeqCount { get; set; } = 100;
+    public uint[] TxSfSeries { get; set; } = { 10, 9, 8 };
+
+    public uint SeqPeriodMsSlow { get; set; } = 500;
+    public uint SeqCountSlow { get; set; } = 50;
+    public uint[] TxSfSeriesSlow { get; set; } = { 12, 11 };
+
     public PhyConfig DefaultPhy { get; set; } = PhyConfig.Default;
 
-    public uint WriteDataCounterDivisor { get; set; }
+    public uint WriteDataCounterDivisor { get; set; } = 20;
 
     public object Clone()
     {

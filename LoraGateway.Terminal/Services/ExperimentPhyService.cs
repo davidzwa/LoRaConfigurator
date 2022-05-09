@@ -29,8 +29,13 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
     }
 
     private readonly List<ExperimentPhyDataEntry> _dataPoints = new();
-    
+
     private string _currentTimeStamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+
+    private string GetCurrentTimeStamp()
+    {
+        return DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+    }
 
     public ExperimentPhyService(
         ILogger<ExperimentPhyService> logger,
@@ -50,12 +55,17 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
 
     public string GetCsvFileName()
     {
-        return $"0_phy/experiment_phy_{_currentTimeStamp}.csv";
+        return $"./0_phy/experiment_phy_{_currentTimeStamp}.csv";
     }
 
     public override ExperimentPhyConfig GetDefaultJson()
     {
         var jsonStore = new ExperimentPhyConfig();
+        if (jsonStore.WriteDataCounterDivisor == 0)
+        {
+            jsonStore.WriteDataCounterDivisor = 20;
+        }
+
         return jsonStore;
     }
 
@@ -98,7 +108,7 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
         });
 
         var store = GetStore();
-        if (_dataPoints.Count() % store.WriteDataCounterDivisor == 0)
+        if (_dataPoints.Count() % 100 == 0)
         {
             _logger.LogInformation("Updating CSV with {points} data points", _dataPoints.Count);
             await WriteData();
@@ -117,63 +127,112 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
             _logger.LogInformation("Starting in RECEIVER MODE");
         }
 
+        _currentTimeStamp = GetCurrentTimeStamp();
         _dataPoints.Clear();
         CurrentConfig = ExperimentPhyConfig.PhyConfig.Default;
 
-        // var bws = config.TxBwSeries;
         var powers = config.TxPSeries;
         var sfs = config.TxSfSeries;
-        
+        var sfsSlow = config.TxSfSeriesSlow;
+
         _logger.LogInformation("AWAITING KEYPRESS to INIT sfs:{sfs} powers:{powers}", sfs, powers);
-        Console.ReadLine();
-        
-        foreach (var txPower in powers)
+        var input = Console.ReadLine();
+        if (ShouldStop(input))
         {
-            foreach (var sf in sfs)
+            _logger.LogInformation("Stopping experiment");
+            return;
+        }
+
+        await Task.Delay(5000);
+        _logger.LogInformation("Starting");
+
+        foreach (var sf in sfs)
+        {
+            foreach (var txPower in powers)
             {
-                // CurrentConfig.TxBandwidth = bandwidth;
-                CurrentConfig.TxPower = txPower;
-                CurrentConfig.TxDataRate = sf;
-                var periodMs = config.SeqCount * config.SeqPeriodMs;
-                _logger.LogInformation("NEW RadioConfig T{Time}ms (t{TimeEach}ms) P{BW}dBm SF{SF}",
-                    periodMs,
-                    config.SeqPeriodMs,
+                await RunSpecificExperiment(
                     txPower,
-                    sf);
+                    sf,
+                    config.SeqCount,
+                    config.SeqPeriodMs,
+                    runAsTransmitter,
+                    config.DeviceIsRemote,
+                    config.DeviceTargetNickName
+                );
+            }
+        }
 
-                var devConf = GetDevConf(true, true);
-                devConf.EnableSequenceTransmit = false;
-
-                // Send the start command 
-                if (runAsTransmitter)
-                {
-                    // Transmitter must configure start
-                    devConf.EnableSequenceTransmit = true;
-                    SendConfig(devConf, config.DeviceIsRemote, config.DeviceTargetNickName);
-                 
-                    var sleepTimeMs = (int)periodMs + 500;
-                    
-                    await Task.Delay(sleepTimeMs);
-                    _logger.LogInformation("AWAITING KEYPRESS to END ROUND");
-                    Console.ReadLine();
-                }
-                else
-                {
-                    // Receiver must just wait
-                    var sleepTimeMs = (int)periodMs + 500;
-                    devConf.EnableSequenceTransmit = false;
-                    SendConfig(devConf, config.DeviceIsRemote, config.DeviceTargetNickName);
-                    
-                    await Task.Delay(sleepTimeMs);
-                    _logger.LogInformation("AWAITING KEYPRESS to END ROUND + SAVE DATA");
-                    Console.ReadLine();
-                }
-                
-                await WriteData();
+        foreach (var sfSlow in sfsSlow)
+        {
+            foreach (var txPower in powers)
+            {
+                await RunSpecificExperiment(
+                    txPower,
+                    sfSlow,
+                    config.SeqCountSlow,
+                    config.SeqPeriodMsSlow,
+                    runAsTransmitter,
+                    config.DeviceIsRemote,
+                    config.DeviceTargetNickName
+                );
             }
         }
 
         _logger.LogInformation("PHY experiment done");
+    }
+
+    public async Task RunSpecificExperiment(
+        int txPower,
+        uint sf,
+        uint seqCount,
+        uint seqPeriodMs,
+        bool runAsTransmitter,
+        bool deviceIsRemote,
+        string targetName
+        )
+    {
+        // CurrentConfig.TxBandwidth = bandwidth;
+        CurrentConfig.TxPower = txPower;
+        CurrentConfig.TxDataRate = sf;
+        var periodMs = seqCount * seqPeriodMs;
+        _logger.LogInformation("NEW RadioConfig T{Time}ms (t{TimeEach}ms) P{BW}dBm SF{SF}",
+            periodMs,
+            seqPeriodMs,
+            txPower,
+            sf);
+
+        var devConf = GetDevConf(true, true);
+        devConf.EnableSequenceTransmit = false;
+
+        // Patch the command with the given overrides
+        devConf.SequenceConfiguration.AlwaysSendPeriod = seqPeriodMs;
+        devConf.SequenceConfiguration.LimitedSendCount = seqCount;
+
+        // Send the start command 
+        if (runAsTransmitter)
+        {
+            // Transmitter must configure start
+            devConf.EnableSequenceTransmit = true;
+            SendConfig(devConf, deviceIsRemote, targetName);
+        }
+        else
+        {
+            // Receiver must just wait
+            devConf.EnableSequenceTransmit = false;
+            SendConfig(devConf, deviceIsRemote, targetName);
+        }
+
+        // Add wait time
+        var waitTimeMs = (int)periodMs + 3000;
+        _logger.LogInformation("AWAITING TIME to END ROUND ({Time})", waitTimeMs);
+        await Task.Delay(waitTimeMs);
+
+        await WriteData();
+    }
+
+    public bool ShouldStop(string? input)
+    {
+        return (input != null && input.ToLowerInvariant().Contains("stop"));
     }
 
     public void SendConfig(DeviceConfiguration deviceConfiguration, bool usingLoRa, string targetName)
@@ -183,11 +242,12 @@ public class ExperimentPhyService : JsonDataStore<ExperimentPhyConfig>
         {
             SendRadioConfigUnicastLora(targetName, deviceConfiguration);
         }
-        else {
+        else
+        {
             SendRadioConfigUart(deviceConfiguration);
         }
-    } 
-    
+    }
+
     private void SendRadioConfigUart(DeviceConfiguration deviceConfiguration)
     {
         _serialProcessorService.SendDeviceConfiguration(deviceConfiguration, false);
