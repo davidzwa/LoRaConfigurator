@@ -1,18 +1,32 @@
 {
-  "ExperimentAckTimeout": 2000,
-  "TransmitStartDelay": 500,
-  "SeqPeriodMs": 50,
-  "SeqCount": 500,
+  "TransmitStartDelay": 3000,
+  "DeviceTargetNickName": "",
+  "DeviceIsRemote": false,
+  "SeqPeriodMs": 75,
+  "SeqCount": 100,
+  "TxBwSeries": [
+    0,
+    1,
+    2
+  ],
+  "TxSfSeries": [
+    10,
+    9,
+    8
+  ],
+  "TxPSeries": [
+    14,
+    12,
+    10,
+    8
+  ],
+  "SeqPeriodMsSlow": 500,
+  "SeqCountSlow": 50,
+  "TxSfSeriesSlow": [12, 11],
   "DefaultPhy": {
     "TxPower": 14,
     "TxBandwidth": 2,
     "TxDataRate": 7
   },
-  "ReceiverMode": false,
-  "DeviceIsRemote": false,
-  "DeviceTargetNickName": "A0",
-  "TxBwSeries": [2],
-  "TxSfSeries": [7, 8, 9],
-  "TxPSeries": [14, 10, 6, 2, -2],
   "WriteDataCounterDivisor": 20
 }

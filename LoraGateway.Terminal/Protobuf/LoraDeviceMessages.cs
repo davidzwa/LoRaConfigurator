@@ -34,7 +34,7 @@ namespace LoRa {
             "ChNhcHBseVRyYW5zbWl0Q29uZmlnGAUgASgIIgsKCUxvUmFSZXNldCIbCgdM",
             "b1JhQWNrEhAKCERldmljZUlkGAEgASgNIksKC0R1bW15Q29uZmlnEg8KB1R4",
             "UG93ZXIYASABKAUSFQoNVHhSeEJhbmR3aWR0aBgCIAEoDRIUCgxUeFJ4RGF0",
-            "YVJhdGUYAyABKA0i8wgKC0xvUmFNZXNzYWdlEhMKC0lzTXVsdGljYXN0GAEg",
+            "YVJhdGUYAyABKA0izggKC0xvUmFNZXNzYWdlEhMKC0lzTXVsdGljYXN0GAEg",
             "ASgIEhAKCERldmljZUlkGAIgASgNEhcKD0NvcnJlbGF0aW9uQ29kZRgDIAEo",
             "DRIPCgdQYXlsb2FkGAQgASgMEj0KGGZvcndhcmRFeHBlcmltZW50Q29tbWFu",
             "ZBgFIAEoCzIZLkZvcndhcmRFeHBlcmltZW50Q29tbWFuZEgAEjEKEmV4cGVy",
@@ -58,8 +58,8 @@ namespace LoRa {
             "LkRldmljZUNvbmZpZ3VyYXRpb25IABIrCg9yZXF1ZXN0Qm9vdEluZm8YFCAB",
             "KAsyEC5SZXF1ZXN0Qm9vdEluZm9IABIjCgtib290TWVzc2FnZRgVIAEoCzIM",
             "LkJvb3RNZXNzYWdlSAASIAoKcmVzZXRSYWRpbxgWIAEoCzIKLkxvUmFSZXNl",
-            "dEgAEhcKA2FjaxgXIAEoCzIILkxvUmFBY2tIABIjCgtkdW1teUNvbmZpZxgY",
-            "IAEoCzIMLkR1bW15Q29uZmlnSABCBgoEQm9keUIHqgIETG9SYWIGcHJvdG8z"));
+            "dEgAEhcKA2FjaxgXIAEoCzIILkxvUmFBY2tIAEIGCgRCb2R5QgeqAgRMb1Jh",
+            "YgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LoRa.ExperimentConfigReflection.Descriptor, global::LoRa.FirmwareReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -68,7 +68,7 @@ namespace LoRa {
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.LoRaReset), global::LoRa.LoRaReset.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.LoRaAck), global::LoRa.LoRaAck.Parser, new[]{ "DeviceId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.DummyConfig), global::LoRa.DummyConfig.Parser, new[]{ "TxPower", "TxRxBandwidth", "TxRxDataRate" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.LoRaMessage), global::LoRa.LoRaMessage.Parser, new[]{ "IsMulticast", "DeviceId", "CorrelationCode", "Payload", "ForwardExperimentCommand", "ExperimentResponse", "MeasurementStreamRequest", "MeasurementStreamFragment", "RlncRemoteFlashStartCommand", "RlncRemoteFlashStopCommand", "RlncQueryRemoteFlashCommand", "RlncRemoteFlashResponse", "RlncInitConfigCommand", "RlncEncodedFragment", "RlncStateUpdate", "RlncTerminationCommand", "DecodingResult", "DecodingUpdate", "DeviceConfiguration", "RequestBootInfo", "BootMessage", "ResetRadio", "Ack", "DummyConfig" }, new[]{ "Body" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoRa.LoRaMessage), global::LoRa.LoRaMessage.Parser, new[]{ "IsMulticast", "DeviceId", "CorrelationCode", "Payload", "ForwardExperimentCommand", "ExperimentResponse", "MeasurementStreamRequest", "MeasurementStreamFragment", "RlncRemoteFlashStartCommand", "RlncRemoteFlashStopCommand", "RlncQueryRemoteFlashCommand", "RlncRemoteFlashResponse", "RlncInitConfigCommand", "RlncEncodedFragment", "RlncStateUpdate", "RlncTerminationCommand", "DecodingResult", "DecodingUpdate", "DeviceConfiguration", "RequestBootInfo", "BootMessage", "ResetRadio", "Ack" }, new[]{ "Body" }, null, null, null)
           }));
     }
     #endregion
@@ -1325,9 +1325,6 @@ namespace LoRa {
         case BodyOneofCase.Ack:
           Ack = other.Ack.Clone();
           break;
-        case BodyOneofCase.DummyConfig:
-          DummyConfig = other.DummyConfig.Clone();
-          break;
       }
 
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -1633,18 +1630,6 @@ namespace LoRa {
       }
     }
 
-    /// <summary>Field number for the "dummyConfig" field.</summary>
-    public const int DummyConfigFieldNumber = 24;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LoRa.DummyConfig DummyConfig {
-      get { return bodyCase_ == BodyOneofCase.DummyConfig ? (global::LoRa.DummyConfig) body_ : null; }
-      set {
-        body_ = value;
-        bodyCase_ = value == null ? BodyOneofCase.None : BodyOneofCase.DummyConfig;
-      }
-    }
-
     private object body_;
     /// <summary>Enum of possible cases for the "Body" oneof.</summary>
     public enum BodyOneofCase {
@@ -1668,7 +1653,6 @@ namespace LoRa {
       BootMessage = 21,
       ResetRadio = 22,
       Ack = 23,
-      DummyConfig = 24,
     }
     private BodyOneofCase bodyCase_ = BodyOneofCase.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1722,7 +1706,6 @@ namespace LoRa {
       if (!object.Equals(BootMessage, other.BootMessage)) return false;
       if (!object.Equals(ResetRadio, other.ResetRadio)) return false;
       if (!object.Equals(Ack, other.Ack)) return false;
-      if (!object.Equals(DummyConfig, other.DummyConfig)) return false;
       if (BodyCase != other.BodyCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -1754,7 +1737,6 @@ namespace LoRa {
       if (bodyCase_ == BodyOneofCase.BootMessage) hash ^= BootMessage.GetHashCode();
       if (bodyCase_ == BodyOneofCase.ResetRadio) hash ^= ResetRadio.GetHashCode();
       if (bodyCase_ == BodyOneofCase.Ack) hash ^= Ack.GetHashCode();
-      if (bodyCase_ == BodyOneofCase.DummyConfig) hash ^= DummyConfig.GetHashCode();
       hash ^= (int) bodyCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -1866,10 +1848,6 @@ namespace LoRa {
         output.WriteRawTag(186, 1);
         output.WriteMessage(Ack);
       }
-      if (bodyCase_ == BodyOneofCase.DummyConfig) {
-        output.WriteRawTag(194, 1);
-        output.WriteMessage(DummyConfig);
-      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -1972,10 +1950,6 @@ namespace LoRa {
         output.WriteRawTag(186, 1);
         output.WriteMessage(Ack);
       }
-      if (bodyCase_ == BodyOneofCase.DummyConfig) {
-        output.WriteRawTag(194, 1);
-        output.WriteMessage(DummyConfig);
-      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -2054,9 +2028,6 @@ namespace LoRa {
       }
       if (bodyCase_ == BodyOneofCase.Ack) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(Ack);
-      }
-      if (bodyCase_ == BodyOneofCase.DummyConfig) {
-        size += 2 + pb::CodedOutputStream.ComputeMessageSize(DummyConfig);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -2196,12 +2167,6 @@ namespace LoRa {
             Ack = new global::LoRa.LoRaAck();
           }
           Ack.MergeFrom(other.Ack);
-          break;
-        case BodyOneofCase.DummyConfig:
-          if (DummyConfig == null) {
-            DummyConfig = new global::LoRa.DummyConfig();
-          }
-          DummyConfig.MergeFrom(other.DummyConfig);
           break;
       }
 
@@ -2407,15 +2372,6 @@ namespace LoRa {
             Ack = subBuilder;
             break;
           }
-          case 194: {
-            global::LoRa.DummyConfig subBuilder = new global::LoRa.DummyConfig();
-            if (bodyCase_ == BodyOneofCase.DummyConfig) {
-              subBuilder.MergeFrom(DummyConfig);
-            }
-            input.ReadMessage(subBuilder);
-            DummyConfig = subBuilder;
-            break;
-          }
         }
       }
     #endif
@@ -2616,15 +2572,6 @@ namespace LoRa {
             }
             input.ReadMessage(subBuilder);
             Ack = subBuilder;
-            break;
-          }
-          case 194: {
-            global::LoRa.DummyConfig subBuilder = new global::LoRa.DummyConfig();
-            if (bodyCase_ == BodyOneofCase.DummyConfig) {
-              subBuilder.MergeFrom(DummyConfig);
-            }
-            input.ReadMessage(subBuilder);
-            DummyConfig = subBuilder;
             break;
           }
         }
