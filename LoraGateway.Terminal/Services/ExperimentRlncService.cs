@@ -50,9 +50,9 @@ public class ExperimentRlncService : JsonDataStore<ExperimentConfig>
         return "experiment.csv";
     }
 
-    public string GetCsvFileNameUpdates()
+    public string GetCsvFileNameUpdates(uint per100)
     {
-        return "experiment_updates.csv";
+        return $"experiment_updates_per{per100}.csv";
     }
 
     public string GetCsvFileNameFilteredGenUpdates()
@@ -190,7 +190,8 @@ public class ExperimentRlncService : JsonDataStore<ExperimentConfig>
             // Await initial response with used config (so we can dynamically update FuotaManager)
             _initReceived = false;
             _serialProcessorService.SendUnicastTransmitCommand(loraMessageStart, fuotaConfig.UartFakeLoRaRxMode);
-            _logger.LogInformation("PER {Per}% - Awaiting {Ms} Ms", _currentPer100, experimentConfig.ExperimentInitAckTimeout);
+            _logger.LogInformation("PER {Per}% - Awaiting {Ms} Ms", _currentPer100,
+                experimentConfig.ExperimentInitAckTimeout);
             await Task.Delay(experimentConfig.ExperimentInitAckTimeout, _cancellationTokenSource.Token);
 
             if (!_initReceived)
@@ -243,7 +244,7 @@ public class ExperimentRlncService : JsonDataStore<ExperimentConfig>
         _serialProcessorService.SetLoraRxMessagesSuppression(false);
         _dataPoints = null;
     }
-    
+
     private async Task AwaitTermination(CancellationToken ct)
     {
         _deviceRlncRoundTerminated = false;
@@ -356,7 +357,7 @@ public class ExperimentRlncService : JsonDataStore<ExperimentConfig>
                 lastGenUpdate.MissedPackets,
                 total
             );
-            
+
             // Process the decoding result (verdict)
             var per = (float)lastGenUpdate.MissedPackets / total;
             _dataPoints.Add(new()
@@ -388,7 +389,7 @@ public class ExperimentRlncService : JsonDataStore<ExperimentConfig>
     {
         if (_allDecodingUpdatesReceived.Count == 0) return;
 
-        var filePath = GetCsvFilePath(GetCsvFileNameUpdates());
+        var filePath = GetCsvFilePath(GetCsvFileNameUpdates(this._currentPer100));
         using (var writer = new StreamWriter(filePath))
         {
             using (var csv = new CsvWriter(writer, _experimentPlotService.CsvConfig))
@@ -411,6 +412,7 @@ public class ExperimentRlncService : JsonDataStore<ExperimentConfig>
             }
         }
     }
+
     private async Task WriteData()
     {
         if (_dataPoints.Count == 0) return;
