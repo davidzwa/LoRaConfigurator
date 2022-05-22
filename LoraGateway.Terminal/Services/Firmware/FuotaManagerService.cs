@@ -58,10 +58,16 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         Store = newConfig;
         WriteStore();
     }
-    
+
     public void SetPrngSeed(UInt32 seed)
     {
         Store.PRngSeedState = seed;
+        WriteStore();
+    }
+
+    public void SetBurstExitProbability(float per)
+    {
+        Store.BurstExitProbability = per;
         WriteStore();
     }
     
@@ -84,7 +90,7 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
         IsRemoteSessionStarted = false;
         return loraMessage;
     }
-    
+
     public LoRaMessage RemoteSessionStartCommand()
     {
         var config = GetStore();
@@ -102,15 +108,21 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
                 TxRxBandwidth = config.TxBandwidth,
                 TxRxDataRate = config.TxDataRate
             },
-            ReceptionRateConfig = new ()
+            ReceptionRateConfig = new()
             {
                 PacketErrorRate = config.ApproxPacketErrorRate,
                 OverrideSeed = config.OverridePacketErrorSeed,
                 DropUpdateCommands = config.DropUpdateCommands,
-                Seed = config.PacketErrorSeed
+                Seed = config.PacketErrorSeed,
+                UseBurstLoss = config.UseBurstModelOverride,
+                InitState = config.InitialBurstState,
+                ProbP = config.ProbP,
+                ProbR = config.ProbR,
+                ProbK = config.ProbK,
+                ProbH = config.ProbH,
             }
         };
-        
+
         IsRemoteSessionStarted = true;
 
         return loraMessage;
@@ -228,11 +240,11 @@ public class FuotaManagerService : JsonDataStore<FuotaConfig>
             _firmwarePackets = await _blobFragmentationService.GenerateFakeFirmwareAsync(firmwareSize, frameSize);
             // foreach (var packetIndex in Enumerable.Range(0, _firmwarePackets.Count))
             // {
-                // var packet = _firmwarePackets[packetIndex];
-                // var packetSerialized = SerialUtil.ByteArrayToString(packet.Payload
-                //     .Select(b => b.GetValue())
-                //     .ToArray());
-                // _logger.LogInformation("OriginalPacket {Packet}", packetSerialized);
+            // var packet = _firmwarePackets[packetIndex];
+            // var packetSerialized = SerialUtil.ByteArrayToString(packet.Payload
+            //     .Select(b => b.GetValue())
+            //     .ToArray());
+            // _logger.LogInformation("OriginalPacket {Packet}", packetSerialized);
             // }
         }
         else

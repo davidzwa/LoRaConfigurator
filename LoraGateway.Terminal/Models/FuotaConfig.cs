@@ -23,6 +23,13 @@ public class FuotaConfig : ICloneable
     public bool RemoteIsMulticast { get; set; } = true;
     public uint RemoteUpdateIntervalMs { get; set; } = 500;
     public float ApproxPacketErrorRate { get; set; } = 0.2f;
+    public float BurstExitProbability { get; set; } = 0.0001f;
+    public bool UseBurstModelOverride { get; set; } = true;
+    public uint InitialBurstState { get; set; } = 1;
+    public float ProbP { get; } = 0.0015f;
+    public float ProbR { get; } = 0.03f;
+    public float ProbK { get; } = 0.03f;
+    public float ProbH { get; } = 1.0f;
     public bool OverridePacketErrorSeed { get; set; } = true;
     public bool DropUpdateCommands { get; set; } = false;
     public UInt32 PacketErrorSeed { get; set; } = 1963;
