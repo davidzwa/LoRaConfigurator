@@ -80,13 +80,11 @@ public static class LoraGateway
                     {
                         subscriber.Subscribe<RxEvent, ExperimentEventHandler>();
                         subscriber.Subscribe<PeriodTxEvent, ExperimentEventHandler>();
-                        
+
                         subscriber.Subscribe<InitFuotaSession, FuotaEventHandler>();
                         subscriber.Subscribe<RlncRemoteFlashResponseEvent, FuotaEventHandler>();
                         subscriber.Subscribe<DecodingUpdateEvent, FuotaEventHandler>();
-                        subscriber.Subscribe<DecodingResultEvent, FuotaEventHandler>();
                         subscriber.Subscribe<StopFuotaSession, FuotaEventHandler>();
-                        
                     });
                 });
             });

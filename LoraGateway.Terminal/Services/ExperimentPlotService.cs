@@ -235,27 +235,6 @@ public class ExperimentPlotService
         plt.SaveFig(GetPlotFilePath(GetPlotMultiPerSuccessRateFileName()));
     }
 
-    private void SaveSuccessThresholdPerHistograms(double[] xAxis, List<PerSuccessRates> ySuccessRate)
-    {
-        // TODO wip
-        var plt = new Plot(600, 400);
-        foreach (var perPlot in ySuccessRate)
-        {
-            var per100 = perPlot.Per * 100.0f;
-            var c = ScottPlot.Drawing.Colormap.Viridis.GetColor(perPlot.Per);
-            plt.AddScatter(xAxis, perPlot.SuccessCumulative, label: $"PER {per100:F1}%", color: c);
-        }
-
-        // plt.Legend();
-        var cmap = ScottPlot.Drawing.Colormap.Viridis;
-        plt.AddColorbar(cmap);
-        plt.SetAxisLimits(0, xAxis.Max(), 0.0f, 1.0f);
-        plt.Title("Success Threshold Histogram vs Packet Redundancy for uniform PER");
-        plt.YLabel("Generation Success Rate");
-        plt.XLabel("Generation Redundancy (%)");
-        plt.SaveFig(GetPlotFilePath(GetPlotMultiPerSuccessRateFileName()));
-    }
-
     public void SavePlots(ExperimentPlotDto data)
     {
         _logger.LogInformation("Saving experiment plot");
@@ -267,7 +246,31 @@ public class ExperimentPlotService
         SaveNormalWithErrorBarPlot(configuredPerArray, averagePerArray, perErrorArray, configuredPerArray);
         SaveGenSuccessPlot(configuredPerArray, data.GenSuccessRateArray);
         SaveGenSuccessWithErrorPlot(configuredPerArray, data.GenSuccessRateArray, data.GenSuccessErrorArray);
+        
+        // How does this compare to real PER?
+        // SaveSuccessThresholdPerHistograms(configuredPerArray)
     }
+    
+    // private void SaveSuccessThresholdPerHistograms(double[] xAxis, List<PerSuccessRates> yRequiredSuccessRedundancy)
+    // {
+    //     // TODO wip
+    //     var plt = new Plot(600, 400);
+    //     foreach (var perPlot in ySuccessRate)
+    //     {
+    //         var per100 = perPlot.Per * 100.0f;
+    //         var c = ScottPlot.Drawing.Colormap.Viridis.GetColor(perPlot.Per);
+    //         plt.AddScatter(xAxis, perPlot.SuccessCumulative, label: $"PER {per100:F1}%", color: c);
+    //     }
+    //
+    //     // plt.Legend();
+    //     var cmap = ScottPlot.Drawing.Colormap.Viridis;
+    //     plt.AddColorbar(cmap);
+    //     plt.SetAxisLimits(0, xAxis.Max(), 0.0f, 1.0f);
+    //     plt.Title("Success Threshold Histogram vs Packet Redundancy for uniform PER");
+    //     plt.YLabel("Generation Success Rate");
+    //     plt.XLabel("Generation Redundancy (%)");
+    //     plt.SaveFig(GetPlotFilePath(GetPlotMultiPerSuccessRateFileName()));
+    // }
 
     private void SaveNormalPlot(double[] per, double[] yAxisRealPer, double[] yAxisInputPer)
     {

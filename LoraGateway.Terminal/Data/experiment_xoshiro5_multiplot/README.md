@@ -11,3 +11,7 @@ Runs:
 > Also I adjusted any missing packets when failure so the totals make sense for 100% failure
 2 - Accidentaly ran twice, but fixed color scheme to be more discrete steps
 3 - Lets run [0,80]
+
+4 - (4th of May 2022) Before I didn't save the data of previous PER iterations. I tried to fix that here, but introduced a bug.
+I basically set the updates not to be cleared, but this messed up the PER calculation and all the rest.
+I can fix that in post luckily and regenerate the plots.
