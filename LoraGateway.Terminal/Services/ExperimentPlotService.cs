@@ -153,7 +153,7 @@ public class ExperimentPlotService
     {
         // We first need to collect all Success vs Redundancy pairs for each PER
         var perGroupings = filteredUpdateEntries
-            .GroupBy(f => f.PerConfig);
+            .GroupBy(f => f.SweepParam);
 
         var perPlotsCumul = perGroupings.Select(per =>
         {

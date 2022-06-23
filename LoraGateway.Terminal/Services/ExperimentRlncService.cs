@@ -21,8 +21,8 @@ public class ExperimentRlncService : JsonDataStore<ExperimentConfig>
     private List<ExperimentDataUpdateEntry> _allDecodingUpdatesReceived = new();
     private List<ExperimentDataUpdateEntry> _filteredGenUpdates = new();
     private ExperimentDataUpdateEntry[] _currentPerGenUpdates = { };
-    private float _currentPer;
-    private uint _currentPer100;
+    private float _currentSweepParam;
+    private uint _currentSweepParam10000;
     private CancellationTokenSource _cancellationTokenSource = new();
 
     private List<ExperimentDataEntry> _dataPoints = new();
@@ -50,14 +50,16 @@ public class ExperimentRlncService : JsonDataStore<ExperimentConfig>
         return "experiment.csv";
     }
 
-    public string GetCsvFileNameUpdates(uint per100)
+    public string GetCsvFileNameUpdates(uint per10000, bool burst)
     {
-        return $"experiment_updates_per{per100}.csv";
+        var burstString = burst ? "BURST" : "PER";
+        return $"experiment_updates_per{per10000}_{burstString}.csv";
     }
 
-    public string GetCsvFileNameFilteredGenUpdates()
+    public string GetCsvFileNameFilteredGenUpdates(bool burst)
     {
-        return "experiment_filtered_gen_updates.csv";
+        var burstString = burst ? "BURST" : "PER";
+        return $"experiment_filtered_gen_updates_{burstString}.csv";
     }
 
     public string GetCsvFilePath(string fileName)
@@ -106,8 +108,8 @@ public class ExperimentRlncService : JsonDataStore<ExperimentConfig>
             ExperimentDataUpdateEntry lastUpdate = new()
             {
                 Timestamp = DateTime.Now.ToFileTimeUtc(),
-                PerConfig = _currentPer,
-                Per100 = _currentPer100,
+                SweepParam = _currentSweepParam,
+                SweepParam10000 = _currentSweepParam10000,
                 CurrentSequenceNumber = update.CurrentSequenceNumber,
                 GenerationIndex = update.CurrentGenerationIndex,
                 CurrentFragmentIndex = update.CurrentFragmentIndex,
@@ -150,25 +152,33 @@ public class ExperimentRlncService : JsonDataStore<ExperimentConfig>
     public async Task RunRlncExperiments()
     {
         var experimentConfig = await LoadStore();
-
+        var usingBurstModelOverride = experimentConfig.UseBurstModelOverride; 
         _serialProcessorService.SetLoraRxMessagesSuppression(true);
 
         _dataPoints = new();
-        var min100 = experimentConfig.MinPer;
-        var max100 = experimentConfig.MaxPer;
-        var step = experimentConfig.PerStep;
+        var min10000 = usingBurstModelOverride ? experimentConfig.MinPer : experimentConfig.MinProbP;
+        var max10000 = usingBurstModelOverride ? experimentConfig.MaxPer : experimentConfig.MaxProbP;
+        var step = usingBurstModelOverride ? experimentConfig.PerStep : experimentConfig.ProbPStep;
 
         _cancellationTokenSource = new CancellationTokenSource();
         _hasCrashed = false;
 
-        _currentPer100 = min100;
-        var cappedMax = Math.Min(100, max100);
+        _currentSweepParam10000 = min10000;
+        var cappedMax = Math.Min(10000, max10000);
         _lastUpdateReceived = DateTime.Now;
-        while (_currentPer100 <= cappedMax && !_hasCrashed)
+        while (_currentSweepParam10000 <= cappedMax && !_hasCrashed)
         {
             _logger.LogInformation("Next gen started");
-            _fuotaManagerService.SetPacketErrorRate(_currentPer100 / 100.0f);
-            _currentPer = _currentPer100 / 100.0f;
+            if (usingBurstModelOverride)
+            {
+                _fuotaManagerService.SetBurstExitProbability(_currentSweepParam10000 / 10000.0f);
+            }
+            else
+            {
+                _fuotaManagerService.SetPacketErrorRate(_currentSweepParam10000 / 10000.0f);
+            }
+            
+            _currentSweepParam = _currentSweepParam10000 / 10000.0f;
 
             if (experimentConfig.RandomPerSeed)
             {
@@ -190,7 +200,7 @@ public class ExperimentRlncService : JsonDataStore<ExperimentConfig>
             // Await initial response with used config (so we can dynamically update FuotaManager)
             _initReceived = false;
             _serialProcessorService.SendUnicastTransmitCommand(loraMessageStart, fuotaConfig.UartFakeLoRaRxMode);
-            _logger.LogInformation("PER {Per}% - Awaiting {Ms} Ms", _currentPer100,
+            _logger.LogInformation("PER {Per}% - Awaiting {Ms} Ms", _currentSweepParam10000 / 100.0f,
                 experimentConfig.ExperimentInitAckTimeout);
             await Task.Delay(experimentConfig.ExperimentInitAckTimeout, _cancellationTokenSource.Token);
 
@@ -217,7 +227,7 @@ public class ExperimentRlncService : JsonDataStore<ExperimentConfig>
             var loraMessageStop = _fuotaManagerService.RemoteSessionStopCommand();
             _serialProcessorService.SendUnicastTransmitCommand(loraMessageStop, fuotaConfig.UartFakeLoRaRxMode);
 
-            _currentPer100 += step;
+            _currentSweepParam10000 += step;
 
             // Check if some generations were not registered
             var genCount = fuotaConfig.GetGenerationCount();
@@ -319,7 +329,7 @@ public class ExperimentRlncService : JsonDataStore<ExperimentConfig>
             {
                 ExperimentDataUpdateEntry emptyEntry = new()
                 {
-                    PerConfig = _currentPer,
+                    SweepParam = _currentSweepParam,
                     Rank = 0,
                     GenerationIndex = index,
                     ReceivedPackets = 0,
@@ -374,7 +384,7 @@ public class ExperimentRlncService : JsonDataStore<ExperimentConfig>
                 TriggeredByDecodingResult = false,
                 TriggeredByCompleteLoss = wasLostGeneration,
                 PacketErrorRate = per,
-                ConfiguredPacketErrorRate = _currentPer
+                ConfiguredPacketErrorRate = _currentSweepParam
             });
             missedDecodingUpdates.Add(lastGenUpdate);
         }
@@ -382,14 +392,14 @@ public class ExperimentRlncService : JsonDataStore<ExperimentConfig>
         var genIndexString = currentGenIndex != null ? currentGenIndex.ToString() : "FINAL";
         _logger.LogWarning(
             "Saving generation results during run RecvGen:{LastGenUpdate} MissedGens:{MissedGens} PER:{CurrentPer}",
-            genIndexString, missedDecodingUpdates.Count(), _currentPer);
+            genIndexString, missedDecodingUpdates.Count(), _currentSweepParam);
     }
 
     private async Task WriteDataUpdates()
     {
         if (_allDecodingUpdatesReceived.Count == 0) return;
 
-        var filePath = GetCsvFilePath(GetCsvFileNameUpdates(this._currentPer100));
+        var filePath = GetCsvFilePath(GetCsvFileNameUpdates(_currentSweepParam10000, Store.UseBurstModelOverride));
         using (var writer = new StreamWriter(filePath))
         {
             using (var csv = new CsvWriter(writer, _experimentPlotService.CsvConfig))
@@ -403,7 +413,7 @@ public class ExperimentRlncService : JsonDataStore<ExperimentConfig>
     {
         if (_filteredGenUpdates.Count == 0) return;
 
-        var filePath = GetCsvFilePath(GetCsvFileNameFilteredGenUpdates());
+        var filePath = GetCsvFilePath(GetCsvFileNameFilteredGenUpdates(Store.UseBurstModelOverride));
         using (var writer = new StreamWriter(filePath))
         {
             using (var csv = new CsvWriter(writer, _experimentPlotService.CsvConfig))

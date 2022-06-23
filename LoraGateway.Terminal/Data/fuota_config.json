@@ -9,6 +9,12 @@
   "RemoteIsMulticast": true,
   "RemoteUpdateIntervalMs": 60,
   "ApproxPacketErrorRate": 0,
+  "UseBurstModelOverride": true,
+  "InitialBurstState": 1,
+  "ProbP": 0.0015,
+  "ProbR": 0.03,
+  "ProbK": 0.03,
+  "ProbH": 1,
   "OverridePacketErrorSeed": true,
   "DropUpdateCommands": true,
   "PacketErrorSeed": 16980,
@@ -21,5 +27,5 @@
   "GenerationSize": 20,
   "GenerationSizeRedundancy": 60,
   "FieldDegree": 8,
-  "PRngSeedState": 1436170011
+  "PRngSeedState": 869633985
 }

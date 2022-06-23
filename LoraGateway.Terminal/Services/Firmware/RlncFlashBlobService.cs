@@ -208,7 +208,13 @@ public class RlncFlashBlobService
                     PacketErrorRate = config.ApproxPacketErrorRate,
                     DropUpdateCommands = config.DropUpdateCommands,
                     OverrideSeed = config.OverridePacketErrorSeed,
-                    Seed = config.PacketErrorSeed
+                    Seed = config.PacketErrorSeed,
+                    UseBurstLoss = config.UseBurstModelOverride,
+                    InitState = config.InitialBurstState,
+                    ProbP = config.ProbP,
+                    ProbR = config.ProbR,
+                    ProbK = config.ProbK,
+                    ProbH = config.ProbH,
                 }
             }
         };
